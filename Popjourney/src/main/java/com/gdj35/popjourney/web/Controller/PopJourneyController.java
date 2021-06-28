@@ -10,7 +10,7 @@ public class PopJourneyController {
 		@RequestMapping(value="/main")
 		public ModelAndView main(ModelAndView mav)
 		{
-			mav.setViewName("/main");
+			mav.setViewName("main");
 			
 			return mav;
 		}
