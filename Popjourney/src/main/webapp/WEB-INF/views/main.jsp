@@ -339,31 +339,37 @@ svg{
 $(document).ready(function(){
 	var LCD = "#L";
 	var CD = "#"
-	
-	$("svg").on("hover", "path", function(){ //moouseover시 글자색 검은색으로 변경
+	var CDColor = "";
+	$("svg").on("mouseover", "path", function(){ //moouseover시 글자색 검은색으로 변경
 		LCD += $(this).attr("id");
 		$(LCD).css("fill", "#000");
 		LCD = "#L";
-	}); //svg path mouseover end
+	}); 
 	
-/* 	$("svg").on("mouseout", "path", function(){ //moouseout시 글자색 흰색으로 변경
+	$("svg").on("mouseout", "path", function(){
 		LCD += $(this).attr("id");
-		$(LCD).css("fill", "#ffffff");
+		$(LCD).css("fill", "#FFF");
 		LCD = "#L";
-	}); //svg path mouseout end
+	});
 	
-	 $("svg").on("mouseover", ".TEXT", function(){
-		console.log($(this).attr("id"));
+ 	 $("svg").on("mouseover", ".TEXT", function(){
+		CDColor = $(this).css("fill");
 		CD += $(this).attr("id").substr(1);
-		console.log(CD);
-		$(CD).hover();
+		if($(CD).css("fill") != "rgb(194, 194, 214)" && $(CD).css("fill") != "rgb(255, 255, 255)")
+		{
+			CDColor = $(CD).css("fill");
+		}
+		$(CD).css("fill", "#c2c2d6");
 		CD = "#";
-	}); //svg TEXT mouseover end 
-	
-	 $("svg").on("mouseout", ".TEXT", function(){
-
+	}); 
+ 	 
+   	 $("svg").on("mouseout", ".TEXT", function(){
+   		console.log(CDColor);
+ 		CD += $(this).attr("id").substr(1);
+ 		$(CD).css("fill", CDColor);
 		CD = "#";
-	}); //svg TEXT mouseout end  */ 
+		CDColor = "";
+	});   
 	
 }); // document read end
 </script>
