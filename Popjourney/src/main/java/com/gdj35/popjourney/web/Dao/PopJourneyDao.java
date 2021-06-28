@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class popJourneyDao implements IpopJourneyDao {
+public class PopJourneyDao implements IPopJourneyDao {
 	@Autowired
 	public SqlSession sql;
 }

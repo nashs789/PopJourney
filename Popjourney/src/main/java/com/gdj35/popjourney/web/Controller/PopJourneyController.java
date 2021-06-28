@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class popJourneyController {
+public class PopJourneyController {
 		
 		@RequestMapping(value="/main")
 		public ModelAndView main(ModelAndView mav)
 		{
-			mav.setViewName("popJourney/main");
+			mav.setViewName("/main");
 			
 			return mav;
 		}

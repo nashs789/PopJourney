@@ -1,5 +1,5 @@
 package com.gdj35.popjourney.web.Service;
 
-public interface IpopJourneyService {
+public interface IPopJourneyService {
 
 }
