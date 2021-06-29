@@ -15,4 +15,12 @@ public class PopJourneyController {
 			
 			return mav;
 		}
+		
+		@RequestMapping(value="join")
+		public ModelAndView join(ModelAndView mav)
+		{
+			mav.setViewName("join");
+			
+			return mav;
+		}
 }
