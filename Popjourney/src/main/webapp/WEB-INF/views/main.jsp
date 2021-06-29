@@ -314,6 +314,9 @@ svg{
     alignment-baseline: middle;
     cursor: pointer;
 }
+.TEXT:hover {
+	fill: #000;	
+}
 #footer {
    display: block;
    width: 100%;
@@ -355,7 +358,7 @@ $(document).ready(function(){
  	 $("svg").on("mouseover", ".TEXT", function(){
 		CDColor = $(this).css("fill");
 		CD += $(this).attr("id").substr(1);
-		if($(CD).css("fill") != "rgb(194, 194, 214)" && $(CD).css("fill") != "rgb(255, 255, 255)")
+		if($(CD).css("fill") != "rgb(194, 194, 214)" || $(CD).css("fill") != "rgb(255, 255, 255)")
 		{
 			CDColor = $(CD).css("fill");
 		}
