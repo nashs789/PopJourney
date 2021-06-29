@@ -190,121 +190,69 @@ svg{
     fill: #f1c40f;
     cursor: pointer;
 }
-#CD11:hover{
-	fill: #c2c2d6;
-}
-
-#CD26 { /* 부산광역시 */
+#CD26 { 
     fill: #16a085;
     cursor: pointer;
-}
-#CD26:hover{
-	fill: #c2c2d6;
 }
 #CD27 {
     fill: #f39c12;
     cursor: pointer;
 }
-#CD27:hover{
-	fill: #c2c2d6;
-}
 #CD28 {
     fill: #2ecc71;
     cursor: pointer;
-}
-#CD28:hover{
-	fill: #c2c2d6;
 }
 #CD29 {
     fill: #e67e22;
     cursor: pointer;
 }
-#CD29:hover{
-	fill: #c2c2d6;
-}
 #CD30 {
     fill: #27ae60;
     cursor: pointer;
-}
-#CD30:hover{
-	fill: #c2c2d6;
 }
 #CD31 {
     fill: #d35400;
     cursor: pointer;
 }
-#CD31:hover{
-	fill: #c2c2d6;
-}
 #CD36 {
     fill: #3498db;
     cursor: pointer;
-}
-#CD36:hover{
-	fill: #c2c2d6;
 }
 #CD41 {
     fill: #e74c3c;
 	cursor: pointer;
 }
-#CD41:hover{
-	fill: #c2c2d6;
-}
 #CD42 {
     fill: #2980b9;
     cursor: pointer;
-}
-#CD42:hover{
-	fill: #c2c2d6;
 }
 #CD43 {
     fill: #c0392b;
     cursor: pointer;
 }
-#CD43:hover{
-	fill: #c2c2d6;
-}
 #CD44 {
     fill: #9b59b6;
     cursor: pointer;
-}
-#CD44:hover{
-	fill: #c2c2d6;
 }
 #CD45 {
     fill: #8e44ad;
     cursor: pointer;
 }
-#CD45:hover{
-	fill: #c2c2d6;
-}
 #CD46 {
     fill: #34495e;
     cursor: pointer;
-}
-#CD46:hover{
-	fill: #c2c2d6;
 }
 #CD47 {
     fill: #2c3e50;
     cursor: pointer;
 }
-#CD47:hover{
-	fill: #c2c2d6;
-}
 #CD48 {
     fill: #1abc9c;
     cursor: pointer;
 }
-#CD48:hover{
-	fill: #c2c2d6;
-}
 #CD50 {
     fill: #f1c40f;
     cursor: pointer;
-}
-#CD50:hover{
-	fill: #c2c2d6;
 }
 .TEXT {
     fill: #ffffff;
@@ -313,9 +261,6 @@ svg{
     text-anchor: middle;
     alignment-baseline: middle;
     cursor: pointer;
-}
-.TEXT:hover {
-	fill: #000;	
 }
 #footer {
    display: block;
@@ -341,22 +286,33 @@ svg{
 <script type="text/javascript">
 $(document).ready(function(){
 	var LCD = "#L";
-	var CD = "#"
+	var CD = "#";
 	var CDColor = "";
-	$("svg").on("mouseover", "path", function(){ //moouseover시 글자색 검은색으로 변경
+
+	//지도에 호버시 해당 지역의 이름은 검은색 글씨로, 해당 지역 지도는 #c2c2d6색으로 변경	
+	$("svg").on("mouseover", "path", function(){
+		if($(this).css("fill") != "rgb(194, 194, 214)")
+		{
+			CDColor = $(this).css("fill");
+		}
+		$(this).css("fill", "#c2c2d6");
 		LCD += $(this).attr("id");
 		$(LCD).css("fill", "#000");
 		LCD = "#L";
 	}); 
 	
-	$("svg").on("mouseout", "path", function(){
+	//지도에 호버 종료시 지역의 이름은 흰색 글씨로, 해당 지역 지도는 원래 가지고있던 색으로 변경	
+	$("svg").on("mouseout", "path", function(){ 
 		LCD += $(this).attr("id");
 		$(LCD).css("fill", "#FFF");
+		$(this).css("fill", CDColor);
 		LCD = "#L";
+		CDColor = "";
 	});
 	
- 	 $("svg").on("mouseover", ".TEXT", function(){
-		CDColor = $(this).css("fill");
+	//지역 이름에 호버시 글씨 색은 검은색으로, 해당 지역 지도는 #c2c2d6색으로 변경	
+    $("svg").on("mouseover", ".TEXT", function(){
+    	$(this).css("fill", "#000");
 		CD += $(this).attr("id").substr(1);
 		if($(CD).css("fill") != "rgb(194, 194, 214)" || $(CD).css("fill") != "rgb(255, 255, 255)")
 		{
@@ -366,13 +322,14 @@ $(document).ready(function(){
 		CD = "#";
 	}); 
  	 
-   	 $("svg").on("mouseout", ".TEXT", function(){
-   		console.log(CDColor);
+  //지역 이름에 호버 종료시 글씨 색은 흰색으로, 해당 지역 지도는 원래 가지고있던 색으로 변경
+   	$("svg").on("mouseout", ".TEXT", function(){
+   		$(this).css("fill", "#FFF");
  		CD += $(this).attr("id").substr(1);
  		$(CD).css("fill", CDColor);
 		CD = "#";
-		CDColor = "";
-	});   
+		CDColor = ""; 
+	});     
 	
 }); // document read end
 </script>
