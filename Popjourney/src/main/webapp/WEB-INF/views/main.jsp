@@ -169,7 +169,7 @@ body {
    cursor: pointer;
 }
 #container{
-	width: 1000px;
+	width: 1280px;
 	margin: 0px auto;
 	border-right: 5px solid #2e3459;
 	border-left: 5px solid #2e3459;

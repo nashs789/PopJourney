@@ -36,7 +36,7 @@ body{
 .site_name {
    display: inline-block;
    vertical-align: top;
-   position: absolute; /* �߰��ϱ� */
+   position: absolute; 
    width: 200px;
    font-size: 16px;
    font-weight: bold;
@@ -54,7 +54,7 @@ body{
    height: 35px;
    margin-top: 18px;
 }
-.btns { /* .logins�� ����  */
+.btns { 
     display: inline-block;
     vertical-align: top;
     width: 470px;
@@ -156,18 +156,6 @@ body{
    text-decoration: none;
    color: white;
 }
-.search {
-   float: right;
-   margin: 20px 20px 20px 0px; 
-   width: 250px;
-   height: 29px;
-}   
-.filter {
-   float: right;
-   margin: 20px 20px 20px 0px; 
-   width: 100px;
-   height: 35px;
-}
 .search_icon {
    float: right;
    margin: 17px 20px 13px 0px;
@@ -175,14 +163,96 @@ body{
    cursor: pointer;
 }
 #container{
-	width: 600px;
+	width: 1280px;
 	margin: 0px auto;
-	border-right: 5px solid #2e3459;
-	border-left: 5px solid #2e3459;
 }
-
-
-
+.join{
+	margin-top: 50px;
+	width: 200px;
+	margin-left: 550px;
+	font-size: 18pt;
+	font-weight: bold;
+}
+.milestone{
+	width: 800px;
+	margin-left: 300px;
+	margin-top: 50px;
+	position: relative;
+}
+.milestone_title{
+	width: 120px;
+	height: 50px;
+	display: inline-block;
+	vertical-align: top;
+	border: 3px solid #2e3459;
+	border-radius: 5px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 50px;
+	margin-top: 0px;
+	background-color: #EAEAEA;
+}
+#milestone_on{
+	color: white;
+	background-color: #ff3333;
+}
+.arrow_img{
+	display: inline-block;	
+	vertical-align: top;
+}
+.arrow_img img{
+	width:30px;
+	height: 50px;
+}
+#infoWrap{
+	margin-top: 80px;
+	margin-left: 300px;
+}
+input[type='text'], input[type='password']{
+	width: 200px;
+	height: 30px;
+	margin-top: 15px;
+}
+input[type='button']{
+	padding: 4px 0px;
+	background-color: white;
+	border: 2px solid #2e3459;
+	border-radius: 20px;
+	height: 35px;
+	cursor: pointer;
+	width: 80px;
+	margin-left: 10px;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	font-weight: bold;
+}
+input[type='button']:hover{
+	color: white;
+	background-color: #2e3459;
+}
+input[type='text']:focus, input[type='password']:focus,
+select:focus{
+	outline-color: #fcba03;
+}
+select{
+	height: 36px;
+}
+.title{
+	font-weight: bold;
+	margin-top: 10px;
+	font-size: 14pt;
+}
+#inputAddressDetail{
+	width: 400px;
+}
+#btnWrap{
+	text-align: center;
+}
+#preBtn{
+	margin: 50px 70px 50px 0px;
+}
+#preBtn:hover{
+	background-color: #F1404B;
+}
 #footer {
    display: block;
    width: 100%;
@@ -198,6 +268,18 @@ body{
    width: 600px;
    height: 80px;
 }
+#search {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 250px;
+   height: 29px;
+}   
+#filter {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 100px;
+   height: 35px;
+}
 </style>
 </head>
 <body>
@@ -207,13 +289,13 @@ body{
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="logo.png" class="logo_photo"></a>
+                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
-                     <img alt="bell" src="bell.png" class="bell_icon">
-                     <img alt="bookmark" src="bmk.png">
-                     <img alt="프로필" src="profile.png">
+                     <img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+                     <img alt="bookmark" src="./resources/images/bmk.png">
+                     <img alt="프로필" src="./resources/images/profile.png">
                   </div>
                   <div class="logins">
                      <div class="sub_login1">
@@ -237,9 +319,9 @@ body{
                   <li>내부관리자</li>
                </ul>
             </nav>
-            <img alt="search" src="search.png" class="search_icon"/>
-            <input type="text" class="search" placeholder="검색">
-            <select class="filter">
+            <img alt="search" src="./resources/images/search.png" class="search_icon"/>
+            <input type="text" id="search" placeholder="검색">
+            <select id="filter">
 			   <option value="0" selected="selected">통합검색</option>
 			   <option value="1">여행일지</option>
 			   <option value="2">해시태그</option>
@@ -249,8 +331,99 @@ body{
          </div>
 		
 		<div id="container">
+			<div class="join">[회원가입]</div>
+		
 			<div class="milestone">
-							
+				<div class="milestone_title">
+					약관 동의
+				</div>
+				<div class="arrow_img"><img src="./resources/images/milestone.png"></div>
+				<div class="milestone_title" id="milestone_on">
+					개인정보 입력
+				</div>	
+				<div class="arrow_img"><img src="./resources/images/milestone.png"></div>
+				<div class="milestone_title">
+					프로필 설정
+				</div>
+				<div class="arrow_img"><img src="./resources/images/milestone.png"></div>
+				<div class="milestone_title">
+					가입 완료
+				</div>				
+			</div>
+			
+			<div id="infoWrap">
+				<div class="title">아이디</div>
+				<input type="text" class="input"/> 
+				<input type="button" value="중복확인"/>
+				
+				<div class="title">비밀번호</div>
+				<span><input type="password"/></span>
+				<span class="pw_condition">(숫자 / 소문자 / 대문자 사용 가능)</span>
+				
+				<div class="title">비밀번호 재확인</div>
+				<input type="password"/>
+				
+				<div class="title">전화번호</div>
+				
+				<div>
+					<select>
+						<option>010</option>
+						<option>112</option>
+						<option>114</option>
+					</select>
+					
+					<span>-</span>
+					<input type="text" maxlength="4"/>
+					<span>-</span>
+					<input type="text" maxlength="4"/>
+					
+					<select>
+						<option>--통신사--</option>
+						<option>KT</option>
+						<option>SKT</option>
+						<option>LG</option>
+					</select>
+				</div>
+			
+				<div class="title">이메일</div>
+				<div>
+					<input type="text"/>
+					<span>@</span>
+					<input type="text"/>
+					
+					<select>
+						<option>--직접입력--</option>
+						<option>naver.com</option>
+						<option>nate.com</option>
+						<option>gmail.com</option>
+					</select>
+					<input type="button" value="코드발송"/>
+					<input type="button" value="재발송"/>
+					<br/><br/>
+					
+					<input type="text" placeholder="인증번호를 입력하세요"/>
+				    <input type="button" value="확 인"/>
+				</div>
+				
+				<div class="title">키워드</div>
+				<input type="text"/>
+				<select>
+						<option>첫 사랑의 이름은?</option>
+						<option>아버지의 성함은?</option>
+						<option>내가 다녔던 초등학교 이름은?</option>
+				</select>
+				
+				<div class="title">주소(선택사항)</div>
+				<input type="text"/>
+				<input type="button" value="상세검색"/>
+				
+				<div class="title">상세주소(선택사항)</div>
+				<input type="text" id="inputAddressDetail"/>
+			</div>
+			
+			<div id="btnWrap">
+				<input id="preBtn" type="button" value="Prev"/>
+				<input type="button" value="Next"/>
 			</div>
 		</div>
 		
