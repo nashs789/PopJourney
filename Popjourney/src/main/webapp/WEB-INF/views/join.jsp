@@ -230,9 +230,10 @@ body{
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행일지</li>
+                  <li>여행게시판</li>
                   <li>자유게시판</li>
                   <li>여행작가</li>
+                  <li>고객센터</li>
                   <li>내부관리자</li>
                </ul>
             </nav>
@@ -248,7 +249,9 @@ body{
          </div>
 		
 		<div id="container">
-		
+			<div class="milestone">
+							
+			</div>
 		</div>
 		
 		<div id="footer">
