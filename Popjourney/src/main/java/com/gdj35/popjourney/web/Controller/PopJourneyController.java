@@ -60,4 +60,13 @@ public class PopJourneyController {
 			
 			return mav;
 		}
+		
+		//타임라인 - 이인복
+		@RequestMapping(value="/timeline")
+		public ModelAndView timeline(ModelAndView mav)
+		{
+			mav.setViewName("timeline");
+			
+			return mav;
+		}
 }
