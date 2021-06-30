@@ -238,7 +238,7 @@ select:focus{
 	outline-color: #fcba03;
 }
 #selectYear, #selectMonth, #selectDay{
-	width: 164px;
+	width: 165px;
 }
 #radioWrap {
   display: inline-flex;
@@ -278,6 +278,11 @@ select{
 }
 #selectDomain{
 	width: 80px;
+}
+#codeWrap{
+	width: 650px;
+	margin: 0px auto;
+    display: none; 
 }
 #inputCode{
 	margin-top: 20px;
@@ -330,6 +335,14 @@ select{
    height: 35px;
 }
 </style>
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#sendCode").on("click", function(){
+		$("#codeWrap").show();
+	}); //sendCode click end
+});//document ready end 
+</script>
 </head>
 <body>
 <div id="wrap">
@@ -464,10 +477,12 @@ select{
 						<option>nate.com</option>
 						<option>gmail.com</option>
 					</select>
-					<input type="button" value="코드발송"/>
-					<input type="text" id="inputCode" placeholder="인증번호를 입력하세요"/>
-				    <input type="button" value="확 인"/>
-				    <input type="button" value="재발송"/>
+					<input type="button" value="코드발송" id="sendCode"/>
+					<div id="codeWrap">
+						<input type="text" id="inputCode" placeholder="인증번호를 입력하세요"/>
+				  	    <input type="button" value="확 인"/>
+				    	<input type="button" value="재발송"/>
+					</div>
 				</div>
 				
 				<div class="title">키워드</div>
