@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,17 +168,17 @@ body{
 	margin: 0px auto;
 }
 .join{
-	margin-top: 50px;
-	width: 200px;
-	margin-left: 550px;
+	text-align: center;
+	width: 650px;
 	font-size: 18pt;
 	font-weight: bold;
+	margin: 50px auto 10px auto;
 }
 .milestone{
-	width: 800px;
-	margin-left: 300px;
-	margin-top: 50px;
+	width: 650px;
+	margin: 50px auto;
 	position: relative;
+	padding-left: 25px;
 }
 .milestone_title{
 	width: 120px;
@@ -205,13 +206,16 @@ body{
 	height: 50px;
 }
 #infoWrap{
-	margin-top: 80px;
-	margin-left: 300px;
+	width: 650px;
+	margin: 80px auto 20px auto;
+	padding: 10px 50px 30px 50px;
+    border: 1px solid #e5e5e5;
+	border-radius: 2px;
+    box-sizing: border-box;	
 }
 input[type='text'], input[type='password']{
-	width: 200px;
-	height: 30px;
 	margin-top: 15px;
+	height: 30px;
 }
 input[type='button']{
 	padding: 4px 0px;
@@ -233,16 +237,61 @@ input[type='text']:focus, input[type='password']:focus,
 select:focus{
 	outline-color: #fcba03;
 }
+#selectYear, #selectMonth, #selectDay{
+	width: 164px;
+}
+#radioWrap {
+  display: inline-flex;
+  align-items: center;
+}
+#radioWrap{
+	width: 650px;
+	margin: 10px auto;
+}
+label{
+	font-size: 12pt;
+	font-weight: bold;
+}
+#inputID{
+	width: 400px;
+}
+#inputPW, #inputRePW{
+	width: 498px;
+}
 select{
 	height: 36px;
 }
 .title{
 	font-weight: bold;
-	margin-top: 10px;
+	margin-top: 15px;
 	font-size: 14pt;
 }
-#inputAddressDetail{
-	width: 400px;
+#inputEmail, #inputDomain{
+	width: 140px;
+}
+#txtAt{
+	font-weight: bold;
+	font-size: 12pt;
+}
+#inputPhone{
+	width: 410px;
+}
+#selectDomain{
+	width: 80px;
+}
+#inputCode{
+	margin-top: 20px;
+	width: 305px;
+}
+#selectKeyword{
+	width: 506px;
+	margin-top: 15px;
+}
+#inputKeyword, #inputName{
+	width: 498px;
+}
+#inputKeyword{
+	margin-top: 20px;
 }
 #btnWrap{
 	text-align: center;
@@ -339,7 +388,7 @@ select{
 				</div>
 				<div class="arrow_img"><img src="./resources/images/milestone.png"></div>
 				<div class="milestone_title" id="milestone_on">
-					개인정보 입력
+					정보입력
 				</div>	
 				<div class="arrow_img"><img src="./resources/images/milestone.png"></div>
 				<div class="milestone_title">
@@ -352,73 +401,82 @@ select{
 			</div>
 			
 			<div id="infoWrap">
+				<div class="title">이름</div>
+				<input type="text" id="inputName" placeholder="이름를 입력해 주세요."/> 
+				
+				<div class="title">생일/성별</div>
+				<select id="selectYear">
+					<option>연도</option>
+					<c:forEach var="i" begin="1900" end="2021" step="1" >
+						<option value="${i}}">${i}</option>
+					</c:forEach>
+				</select>
+				<select id="selectMonth">
+					<option>월</option>
+					<c:forEach var="i" begin="1" end="12" step="1" >
+						<option value="${i}}">${i}</option>
+					</c:forEach>
+				</select>
+				<select id="selectDay">
+					<option>일</option>
+					<c:forEach var="i" begin="1" end="31" step="1" >
+						<option value="${i}}">${i}</option>
+					</c:forEach>
+				</select><br/>
+				
+				<div id="radioWrap">
+					<label><input type="radio" name="sex" value="0" checked/>선택없음</label>
+					<label><input type="radio" name="sex" value="1"/>남자</label>
+					<label><input type="radio" name="sex" value="2"/>여자</label>
+				</div>
+			
 				<div class="title">아이디</div>
-				<input type="text" class="input"/> 
+				<input type="text" id="inputID" placeholder="아이디 입력를 입력해 주세요."/> 
 				<input type="button" value="중복확인"/>
 				
 				<div class="title">비밀번호</div>
-				<span><input type="password"/></span>
-				<span class="pw_condition">(숫자 / 소문자 / 대문자 사용 가능)</span>
+				<input type="password" id="inputPW" placeholder="8~32자리 특수문자포함 입력해주세요"/>
 				
 				<div class="title">비밀번호 재확인</div>
-				<input type="password"/>
+				<input type="password" id="inputRePW" placeholder="비밀번호를 재입력 해주세요."/>
 				
 				<div class="title">전화번호</div>
 				
 				<div>
-					<select>
-						<option>010</option>
-						<option>112</option>
-						<option>114</option>
-					</select>
-					
-					<span>-</span>
-					<input type="text" maxlength="4"/>
-					<span>-</span>
-					<input type="text" maxlength="4"/>
-					
 					<select>
 						<option>--통신사--</option>
 						<option>KT</option>
 						<option>SKT</option>
 						<option>LG</option>
 					</select>
+					<input type="text" placeholder="전화번호 8자리" id="inputPhone"/>
 				</div>
 			
 				<div class="title">이메일</div>
 				<div>
-					<input type="text"/>
-					<span>@</span>
-					<input type="text"/>
+					<input type="text" id="inputEmail"/>
+					<span id="txtAt">@</span>
+					<input type="text" id="inputDomain"/>
 					
-					<select>
-						<option>--직접입력--</option>
+					<select id="selectDomain">
+						<option>직접입력</option>
 						<option>naver.com</option>
 						<option>nate.com</option>
 						<option>gmail.com</option>
 					</select>
 					<input type="button" value="코드발송"/>
-					<input type="button" value="재발송"/>
-					<br/><br/>
-					
-					<input type="text" placeholder="인증번호를 입력하세요"/>
+					<input type="text" id="inputCode" placeholder="인증번호를 입력하세요"/>
 				    <input type="button" value="확 인"/>
+				    <input type="button" value="재발송"/>
 				</div>
 				
 				<div class="title">키워드</div>
-				<input type="text"/>
-				<select>
+				<select id="selectKeyword">
 						<option>첫 사랑의 이름은?</option>
 						<option>아버지의 성함은?</option>
 						<option>내가 다녔던 초등학교 이름은?</option>
 				</select>
-				
-				<div class="title">주소(선택사항)</div>
-				<input type="text"/>
-				<input type="button" value="상세검색"/>
-				
-				<div class="title">상세주소(선택사항)</div>
-				<input type="text" id="inputAddressDetail"/>
+				<input type="text" id="inputKeyword" placeholder="키워드를 입력하세요."/>
 			</div>
 			
 			<div id="btnWrap">
