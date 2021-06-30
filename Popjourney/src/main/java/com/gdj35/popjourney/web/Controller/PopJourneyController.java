@@ -16,6 +16,16 @@ public class PopJourneyController {
 			return mav;
 		}
 		
+		//약관 페이지 - 이인복
+		@RequestMapping(value="terms")
+		public ModelAndView terms(ModelAndView mav)
+		{
+			mav.setViewName("terms");
+			
+			return mav;
+		}
+		
+		//회원가입 페이지 - 이인복
 		@RequestMapping(value="join")
 		public ModelAndView join(ModelAndView mav)
 		{
