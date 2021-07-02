@@ -1,5 +1,8 @@
 package com.gdj35.popjourney.web.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +12,10 @@ import com.gdj35.popjourney.web.Dao.IPopJourneyDao;
 public class PopJourneyService implements IPopJourneyService {
 	@Autowired
 	public IPopJourneyDao ipjd;
+
+	@Override
+	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.login(params);
+	}
 }

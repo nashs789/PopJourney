@@ -49,7 +49,7 @@ body {
    margin-top: 18px;
 }
 .btns { 
-    display: inline-block;
+    display: none;
     vertical-align: top;
     width: 470px;
     height: 70px;
@@ -66,7 +66,7 @@ body {
    margin-left: 160px;
 }
 .logins {
-   display: none;
+   display: inline-block;
    vertical-align: top;
    width: 470px;
    height: 70px;
@@ -98,14 +98,14 @@ body {
 .sub_login2 span:hover {
    color: #fcba03;
 }
-.login {
+#inputID, #inputPW {
    float: right;
    width: 100px;
    height: 25px;
    margin-top: 20px;
    margin-left: 5px;
 }
-.login_btn {
+#loginBtn {
    float: right;
    margin: 20px 20px 0px 5px;
    width: 50px;
@@ -117,9 +117,12 @@ body {
    text-align: center;
    line-height: 26px;
 }
-.login_btn:hover{
+#loginBtn:hover{
    color: #FFFFFF;
    background-color: #f37321;
+}
+input[type='text']:focus, input[type='password']:focus{
+	outline-color: #fcba03;
 }
 .banner {
    width: 100%;
@@ -279,12 +282,102 @@ svg{
 }
 .space{
 	height: 40px;
-}	
+}
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 1434px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
 
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	var popupText = "";
+	$("#loginBtn").on("click", function(){
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+			popupText = "";
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+			popupText = "";
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+		
+		$("#yesBtn").on("click", function(){
+			$(".popup").remove();
+			$(".bg").remove();
+		}); //yesBtn click end
+	}); //loginBtn click end
+	
 	var LCD = "#L";
 	var CD = "#";
 	var CDColor = "";
@@ -330,8 +423,21 @@ $(document).ready(function(){
 		CD = "#";
 		CDColor = ""; 
 	});     
-	
 }); // document read end
+function commonPopup(txt)
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+}
 </script>
 
 </head>
@@ -341,19 +447,21 @@ $(document).ready(function(){
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="logo.png" class="logo_photo"></a>
+                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
-                     <img alt="bell" src="bell.png" class="bell_icon">
-                     <img alt="bookmark" src="bmk.png">
-                     <img alt="프로필" src="profile.png">
+                     <img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+                     <img alt="bookmark" src="./resources/images/bmk.png">
+                     <img alt="프로필" src="./resources/images/profile.png">
                   </div>
                   <div class="logins">
                      <div class="sub_login1">
-                        <input type="button" class="login_btn" value="로그인" />
-                        <input type="password" class="login" placeholder="PW" />
-                        <input type="text" class="login" placeholder="ID" />
+                     	<form action="#" id="loginForm">
+	                        <input type="button" id="loginBtn" value="로그인" />
+	                        <input type="password" id="inputPW" name="inputPW" placeholder="PW" />
+	                        <input type="text" id="inputID" name="inputID" placeholder="ID" />
+                        </form>
                      </div>
                      <div class="sub_login2">
                         <span>회원가입</span>
@@ -370,7 +478,7 @@ $(document).ready(function(){
                   <li>내부관리자</li>
                </ul>
             </nav>
-            <img alt="search" src="search.png" class="search_icon"/>
+            <img alt="search" src="./resources/images/search.png" class="search_icon"/>
             <input type="text" class="search" placeholder="검색">
             <select class="filter">
                <option value="0">통합검색</option>
@@ -443,6 +551,6 @@ $(document).ready(function(){
                Copyright© POPJOURNEY. All Rights Reserved.
             </p>   
         </div> 
-	</div>
+	</div> <!-- wrap end -->
 </body>
 </html>
