@@ -42,8 +42,14 @@ public class PopJourneyController {
 		
 		//회원가입 페이지 - 이인복
 		@RequestMapping(value="/join")
-		public ModelAndView join(ModelAndView mav)
+		public ModelAndView join(@RequestParam HashMap<String, String>params,
+								 ModelAndView mav)
 		{
+			HashMap<String, String>data = new HashMap<String, String>();
+			
+			data.put("marketing", params.get("marketing"));
+			
+			mav.addObject("data", data);
 			mav.setViewName("join");
 			
 			return mav;
@@ -89,7 +95,7 @@ public class PopJourneyController {
 			data.put("birth", birth);
 			data.put("phone", phone);
 			data.put("email", email);
-			
+
 			mav.addObject("data", data);
 			
 			mav.setViewName("writeProfile");
@@ -135,22 +141,25 @@ public class PopJourneyController {
 
 			//넘어갈 키 값(사용할것): inputName, birth, phone, email, inputID, inputPW 
 			//inputCode, inputKeyword, sex, selectTelcom, selectKeyword, photoPath
-			//inputNic, inputIntro, maketing
-			//int cnt = ipjs.join(params);
-			
-			System.out.println(params.get("inputName"));
-			System.out.println(params.get("birth"));
-			System.out.println(params.get("phone"));
-			System.out.println(params.get("email"));
-			System.out.println(params.get("inputID"));
-			System.out.println(params.get("inputPW"));
-			System.out.println(params.get("inputCode"));
-			System.out.println(params.get("inputKeyword"));
-			System.out.println(params.get("sex"));
-			System.out.println(params.get("selectTelcom"));
-			System.out.println(params.get("selectKeyword"));
-			
-			 
+			//inputNic, inputIntro, marketing
+			try
+			{
+				int cnt = ipjs.join(params);
+				
+				if(cnt != 0)
+				{
+					modelMap.put("msg", "success");
+				}
+				else
+				{
+					modelMap.put("msg", "failed");
+				}
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
 			return mapper.writeValueAsString(modelMap);
 		}	
 				
@@ -163,7 +172,7 @@ public class PopJourneyController {
 			return mav;
 		}
 		
-		//아이디 찾기- 이인복
+		//비밀번호- 이인복
 		@RequestMapping(value="/findPW")
 		public ModelAndView findPW(ModelAndView mav)
 		{

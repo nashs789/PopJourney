@@ -445,6 +445,14 @@ $(document).ready(function(){
 		}
 	}); //inputPhone keypress end
 	
+	$("#ckCode").on("click", function(){ //이메일 인증 확인버튼 클릭
+		//이메일 인증코드 확인작업 yes or no
+		
+		popupText = "인증되었습니다.";
+		commonPopup(popupText);
+		$("#approvalCode").val(1);
+	});
+	
 	$("#selectDomain").change(function(){  //도메인 셀렉터 선택시 텍스트창으로 값 이동
 		$("#inputDomain").val("");
 		$("#inputDomain").val($("#selectDomain").val());
@@ -553,21 +561,12 @@ $(document).ready(function(){
 			commonPopup(popupText);
 			$("#inputEmail").focus();
 		}
-		/*else if($("#selectDomain").val() == 0)
+		else if($("#approvalCode").val() != 1)
 		{
-			if($.trim($("#inputDomain").val()) =="")
-			{
-				popupText = "이메일 주소를 입력하세요.";
-				commonPopup(popupText);
-				$("#inputDomain").focus();
-			}
-			else if($.trim($("#inputCode").val()) == "")
-			{
-				popupText = "이메일 인증을 해주세요.";
-				commonPopup(popupText);
-				$("#inputKeyCode").focus();
-			}
-		}*/
+			popupText = "이메일 인증을 진행해주세요.";
+			commonPopup(popupText);
+			$("#inputCode").focus();
+		}
  		else if($("#selectKeyword").val() == 0)
 		{
 			console.log($("#selectKeyword").val());
@@ -587,9 +586,13 @@ $(document).ready(function(){
 		}//if ~ else end
 	}); //nextBtn click end
 	
-	$("#sendCode").on("click", function(){
+	$("#sendCode").on("click", function(){ //이메일 인증 코드발송 버튼 클릭시
 		$("#codeWrap").show();
 	}); //sendCode click end
+	
+	$("#preBtn").on("click", function(){ //이전버튼 클릭
+		location.href = "terms";
+	});
 });//document ready end 
 
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
@@ -737,9 +740,9 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 					<div>
 						<select id="selectTelcom" name="selectTelcom">
 							<option value="0">통신사</option>
-							<option value="1">KT</option>
-							<option value="2">SKT</option>
-							<option value="3">LG</option>
+							<option value="KT">KT</option>
+							<option value="SKT">SKT</option>
+							<option value="LG">LG</option>
 						</select>
 						<input type="text" maxlength="8" placeholder="전화번호 8자리(010 / '-'제외)" id="inputPhone" name="inputPhone"/>
 					</div>
@@ -758,8 +761,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 						</select>
 						<input type="button" value="코드발송" id="sendCode"/>
 						<div id="codeWrap">
-							<input type="text" id="inputCode" name="inputCode" placeholder="인증번호를 입력하세요"/>
-					  	    <input type="button" value="확 인"/>
+							<input type="text" id="inputCode" placeholder="인증번호를 입력하세요"/>
+					  	    <input type="button" id="ckCode" value="확 인"/>
 					    	<input type="button" value="재발송"/>
 						</div>
 					</div>
@@ -773,6 +776,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 					</select>
 					<input type="text" id="inputKeyword" name="inputKeyword" placeholder="키워드를 입력하세요."/>
 				</div>
+				<input type="hidden" name="marketing" value="${data.marketing}"/>
+				<input type="hidden" name="inputCode" id="approvalCode" value="0"/>
 			</form>
 			
 			<div id="btnWrap">

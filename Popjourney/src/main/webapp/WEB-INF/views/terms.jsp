@@ -305,9 +305,126 @@ input[type='button']:hover{
    width: 100px;
    height: 35px;
 }
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 2010px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var popupText = ""; //팝업 문구변경
+	
+	$("#ckAll").change(function(){ //전체선택 체크박스 클릭
+		if($("#ckAll").prop("checked") == true)
+		{
+			$("#ck1, #ck2, #ck3").prop("checked", true);
+		}
+		else
+		{
+			$("#ck1, #ck2, #ck3").prop("checked", false);
+		}
+	});
+	
+	$("#preBtn").on("click", function(){ //이전버튼 클릭
+		location.href = "main";
+	});
+	
+	$("#nextBtn").on("click", function(){ //다음으로 가기버튼 클릭
+		if($("#ck1").prop("checked") == false)
+		{
+			popupText = "약관에 동의해주세요.";
+			commonPopup(popupText);
+			$("#ck1").focus();
+		}
+		else if($("#ck2").prop("checked") == false)
+		{
+			popupText = "약관에 동의해주세요.";
+			commonPopup(popupText);
+			$("#ck2").focus();
+		}
+		else
+		{
+			if($("#ck3").prop("checked") == true)
+			{
+				$("#marketing").val(1);
+			}
+			$("#marketingForm").submit();
+		}
+	}); //nextBtn click end
+}); //document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}
+</script>
 </head>
 <body>
+<form action="join" id="marketingForm" method="post">
+	<input type="hidden" name="marketing" id="marketing" value="0">
+</form>
 <div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -443,7 +560,7 @@ input[type='button']:hover{
 					<p>1. 기업마당 사이트와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 대한민국의 법원에 제기합니다.</p>
 		   		</div> <!-- long end -->
 		   		
-		   		<div class="text">이용약관에 동의합니다.(필수)  <input type="checkbox"/></div>
+		   		<div class="text">이용약관에 동의합니다.(필수)  <input type="checkbox" id="ck1"/></div>
 		   		
 		   		<div class="task"><span class="material-icons">task_alt 개인정보 수집 및 이용 동의</span></div>
 		   		
@@ -480,7 +597,7 @@ input[type='button']:hover{
 					정보주체는 개인정보 수집에 동의를 거부할 권리가 있습니다. 다만, 필수 항목에 대한 동의를 거부할 시 저희가 제공하는 서비스를 이용할 수 없습니다.</p>
 		   		</div> <!-- long end -->
 		   		
-		   		<div class="text">이용약관에 동의합니다.(필수)  <input type="checkbox"/></div>
+		   		<div class="text">이용약관에 동의합니다.(필수)  <input type="checkbox" id="ck2"/></div>
 		   		
 		   		<div class="task"><span class="material-icons">task_alt 마케팅/홍보의 수집 및 이용 동의</span></div>
 				
@@ -498,14 +615,14 @@ input[type='button']:hover{
 					<p>개인정보의 마케팅/홍보의 수집 및 이용 동의를 거부하시더라도 회원 가입 시 제한은 없습니다. 다만, 마케팅 활용 서비스 안내 및 참여에 제한이 있을 수 있습니다.</p>
 				</div>
 				
-				<div class="text">마케팅/홍보를 위하여 귀하의 개인정보를 이용하는데 동의합니다.(선택)  <input type="checkbox"/></div>
+				<div class="text">마케팅/홍보를 위하여 귀하의 개인정보를 이용하는데 동의합니다.(선택)  <input type="checkbox" id="ck3"/></div>
 		   </div> <!-- terms end --> 	
 		   
-		   <div class="text1"><input type="checkbox"/> 전체 동의 </div>
+		   <div class="text1"><input type="checkbox" id="ckAll"/> 전체 동의 </div>
 		   
    			<div id="btnWrap">
 				<input id="preBtn" type="button" value="Prev"/>
-				<input type="button" value="Next"/>
+				<input id="nextBtn" type="button" value="Next"/>
 			</div><!-- btnWrap end -->
 			
 	   </div> <!-- container end -->

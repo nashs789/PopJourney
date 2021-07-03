@@ -18,4 +18,12 @@
 		FROM MEM
 		WHERE NIC = #{storage}
 	</select>
+	
+	<insert id="join" parameterType="hashmap"> <!-- 사진경로 넣어야함 -->
+		INSERT INTO MEM(MEM_NO, ID, PW, PHONE, EMAIL, EMAIL_CONFIRM, NAME, TELCOM,
+         			    NIC, INTRO, BIRTH, SEX, KEYWORD_NO, MARKETING, JOIN_DATE, KEYWORD)
+		VALUES(MEM_SEQ.NEXTVAL, #{inputID}, #{inputPW}, #{phone}, #{email}, #{inputCode}, #{inputName},
+			   #{selectTelcom} ,#{inputNic}, #{inputIntro}, #{birth}, #{sex}, #{selectKeyword},
+			   #{marketing}, SYSDATE, #{inputKeyword})
+	</insert>
 </mapper>

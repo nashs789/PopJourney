@@ -347,6 +347,7 @@ input[type='button']:hover{
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	var popupText = ""; //팝업 문구변경
 	var nicCheck = "";  //닉네임 중복 확인용
 	
 	$("#nicDbCkBtn").on("click", function(){  //닉네임 중복체크
@@ -390,11 +391,22 @@ $(document).ready(function(){
 	}); //nicDbCkBtn click end
 	
 	$("#nextBtn").on("click", function(){
+		if($.trim($("#inputIntro").val()) == "") //소개글 입력 없을 시
+		{
+			$("#inputIntro").val("안녕하세요~ 잘 부탁드립니다.");
+		}
+		
+	/* 	if($("#photoPath").val() == "")
+		{
+			$("#photoPath").val(null);
+		} 
+		
 		if($("#photoPath").val() != 1) //사진경로 나중에 넣을것
 		{
-			console.log("나중에"); // 사진은 선택사항
-		}
-		else if($.trim($("#inputNic").val()) == "")
+			// 사진은 선택사항
+		}*/
+		
+		if($.trim($("#inputNic").val()) == "")
 		{
 			popupText = "닉네임을 입력하세요.";
 			commonPopup(popupText);
@@ -416,7 +428,22 @@ $(document).ready(function(){
 				type: "post",
 				success:function(result)
 				{
-					
+					if(result.msg = "success")
+					{
+						popupText = "회원가입 되셨습니다!!!";
+						commonPopup(popupText);
+						location.href="main";
+					}
+					else if(result.msg = "failed")
+					{
+						popupText = "회원가입에 실패아였습니다.";
+						commonPopup(popupText);
+					}
+					else
+					{
+						popupText = "가입중 문제가 발생하였습니다.";
+						commonPopup(popupText);
+					}
 				}, //success end
 				error: function(request, status, error) {
 					console.log(error);
@@ -424,6 +451,10 @@ $(document).ready(function(){
 			}); //ajax end 
 		} //if~ else end
 	}); //nextBtn click end
+	
+	$("#preBtn").on("click", function(){ //이전버튼 클릭
+		history.back();
+	});
 });//document ready end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
@@ -530,11 +561,12 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 					<input type="hidden" name="inputKeyword" value="${data.inputKeyword}"/>
 					<input type="hidden" name="sex" value="${data.sex}"/>
 					<input type="hidden" name="selectTelcom" value="${data.selectTelcom}"/>
-					<input type="hidden" name="selectKeyword" value="${data.selectKeyword}"/>	
+					<input type="hidden" name="selectKeyword" value="${data.selectKeyword}"/>
+					<input type="hidden" name="marketing" value="${data.marketing}"/>	
 				
 					<div id="photoArea">
 						<!-- 사진경로 추가할것 --> <!-- 절대 임시값임!!!!!!!!!!!!! -->
-						<input type="hidden" id="photoPath" name="photoPath" value="1"/>
+						<input type="hidden" id="photoPath" name="photoPath" value=""/>
 						<!-- 이미지 -->
 					</div>
 					<input type="button" value="사진찾기" id="findPhotoBtn"/>
