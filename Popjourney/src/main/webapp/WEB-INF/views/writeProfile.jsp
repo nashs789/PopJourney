@@ -212,14 +212,14 @@ body{
 	border-radius: 2px;
     box-sizing: border-box;	
 }
-#picArea{
+#photoArea{
 	width: 120px;
 	height: 120px;
 	border-radius: 120px;
 	border: 1px solid black;
 	margin-left: 210px;
 }
-#findPicBtn{
+#findPhotoBtn{
 	margin: 20px 0px 0px 232px;
 }
 .title{
@@ -227,7 +227,7 @@ body{
 	margin-top: 15px;
 	font-size: 14pt;
 }
-#inputNickname{
+#inputNic{
 	width: 400px;
 	margin-top: 15px;
 	height: 30px;
@@ -292,9 +292,164 @@ input[type='button']:hover{
    width: 100px;
    height: 35px;
 }
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 1434px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var nicCheck = "";  //닉네임 중복 확인용
+	
+	$("#nicDbCkBtn").on("click", function(){  //닉네임 중복체크
+		$(".popup").remove();
+		$(".bg").remove();
+		if($.trim($("#inputNic").val()) == "")
+		{
+			popupText = "닉네임을 입력하세요.";
+			commonPopup(popupText);
+			$("#inputNic").focus();
+			return false;
+		}
+		
+		$("#valueStorage").val($("#inputNic").val());
+		
+		var params = $("#Form").serialize();
+		
+		$.ajax({
+			url: "nicDbCk",
+			data: params,
+			dataType:"json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					popupText = "사용 가능한 닉네임입니다.";
+					commonPopup(popupText);
+					nicCheck = $("#inputNic").val();
+				}
+				else
+				{
+					popupText = "사용 불가능한 닉네임입니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //nicDbCkBtn click end
+	
+	$("#nextBtn").on("click", function(){
+		if($("#photoPath").val() != 1) //사진경로 나중에 넣을것
+		{
+			console.log("나중에"); // 사진은 선택사항
+		}
+		else if($.trim($("#inputNic").val()) == "")
+		{
+			popupText = "닉네임을 입력하세요.";
+			commonPopup(popupText);
+			$("#inputNic").focus();
+		}
+		else if($("#inputNic").val() != nicCheck)
+		{
+			popupText = "닉네임 중복확인을 해주세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#infoForm").serialize();
+			
+			$.ajax({
+				url: "joins",
+				data: params,
+				dataType:"json",
+				type: "post",
+				success:function(result)
+				{
+					
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		} //if~ else end
+	}); //nextBtn click end
+});//document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}
+</script>
 </head>
 <body>
+<form action="#" id="Form">
+	<input type="hidden" id="valueStorage" name="storage"/>
+</form>
 <div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -364,25 +519,40 @@ input[type='button']:hover{
 			</div> <!-- milestone end -->
 			
 			<div id="infoWrap">
-				<div id="picArea">
-					<!-- 이미지 -->
-				</div>
-				<input type="button" value="사진찾기" id="findPicBtn"/>
+				<form action="#" id="infoForm">
+					<input type="hidden" name="inputName" value="${data.inputName}"/>
+					<input type="hidden" name="birth" value="${data.birth}"/>
+					<input type="hidden" name="phone" value="${data.phone}"/>
+					<input type="hidden" name="email" value="${data.email}"/>
+					<input type="hidden" name="inputID" value="${data.inputID}"/>
+					<input type="hidden" name="inputPW" value="${data.inputPW}"/>
+					<input type="hidden" name="inputCode" value="${data.inputCode}"/>
+					<input type="hidden" name="inputKeyword" value="${data.inputKeyword}"/>
+					<input type="hidden" name="sex" value="${data.sex}"/>
+					<input type="hidden" name="selectTelcom" value="${data.selectTelcom}"/>
+					<input type="hidden" name="selectKeyword" value="${data.selectKeyword}"/>	
 				
-				<div class="title">닉네임</div>
-				<input type="text" placeholder="닉네임을 입력하세요." id="inputNickname"/>
-				<input type="button" value="중복확인" id="dbChBtn"/>
-				
-				<div class="title">소개글</div>
-				<input type="text" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro"/>
+					<div id="photoArea">
+						<!-- 사진경로 추가할것 --> <!-- 절대 임시값임!!!!!!!!!!!!! -->
+						<input type="hidden" id="photoPath" name="photoPath" value="1"/>
+						<!-- 이미지 -->
+					</div>
+					<input type="button" value="사진찾기" id="findPhotoBtn"/>
+					
+					<div class="title">닉네임</div>
+					<input type="text" placeholder="닉네임을 입력하세요." id="inputNic" name="inputNic"/>
+					<input type="button" value="중복확인" id="nicDbCkBtn"/>
+					
+					<div class="title">소개글</div>
+					<input type="text" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/>
+				</form>
 			</div> <!-- infoWrap end -->
 			
 			<div id="btnWrap">
 				<input id="preBtn" type="button" value="Prev"/>
-				<input type="button" value="Next"/>
+				<input id="nextBtn" type="button" value="Next"/>
 			</div> <!-- btnWrap -->
 		</div><!-- container end -->
-		
 		<div id="footer">
             <p>
                POPJOURNEY<br/>

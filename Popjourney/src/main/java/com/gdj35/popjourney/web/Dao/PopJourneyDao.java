@@ -17,4 +17,22 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.login", params);
 	}
+
+	@Override
+	public HashMap<String, String> IDDbCk(HashMap<String, String> params) throws Throwable
+	{
+		return sql.selectOne("PJ.IDDbCk", params);
+	}
+
+	@Override
+	public HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.nicDbCk", params);
+	}
+	
+	@Override
+	public int join(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.join",params);
+	}
 }

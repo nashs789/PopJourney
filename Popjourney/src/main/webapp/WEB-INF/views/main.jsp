@@ -153,6 +153,9 @@ input[type='text']:focus, input[type='password']:focus{
    text-decoration: none;
    color: white;
 }
+#admin{
+	display:none;
+}
 .search {
    float: right;
    margin: 20px 20px 20px 0px; 
@@ -345,13 +348,11 @@ $(document).ready(function(){
 		{
 			popupText = "아이디를 입력하세요.";
 			commonPopup(popupText);
-			popupText = "";
 		}
 		else if($.trim($("#inputPW").val()) == "")
 		{
 			popupText = "비밀번호를 입력하세요.";
 			commonPopup(popupText);
-			popupText = "";
 		}
 		else
 		{
@@ -364,19 +365,31 @@ $(document).ready(function(){
 				type: "post",
 				success:function(result)
 				{
-					
+					 if(result.msg == "success")
+					{
+						if(result.GRADE_NO == 0)
+						{
+							$("#admin").show();
+						}
+						$(".logins").css("display", "none");
+						$(".btns").css("display", "inline-block");
+					}
+					else
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+					} 
 				}, //success end
 				error: function(request, status, error) {
 					console.log(error);
 				} // error end
 			}); //ajax end 
 		}// if ~ else end
-		
-		$("#yesBtn").on("click", function(){
-			$(".popup").remove();
-			$(".bg").remove();
-		}); //yesBtn click end
 	}); //loginBtn click end
+	
+	$("#join").on("click", function(){
+		location.href="terms";
+	}); // join click end
 	
 	var LCD = "#L";
 	var CD = "#";
@@ -424,7 +437,7 @@ $(document).ready(function(){
 		CDColor = ""; 
 	});     
 }); // document read end
-function commonPopup(txt)
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
 	var html = "";
 	
@@ -437,6 +450,11 @@ function commonPopup(txt)
 	html	 +="<div class=\"bg\"></div>";
 	
 	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
 }
 </script>
 
@@ -464,8 +482,8 @@ function commonPopup(txt)
                         </form>
                      </div>
                      <div class="sub_login2">
-                        <span>회원가입</span>
-                        <span>ID/PW 찾기</span>
+                        <span id="join">회원가입</span>
+                        <span id="find">ID/PW 찾기</span>
                      </div>
                   </div>
                </div>
@@ -475,7 +493,8 @@ function commonPopup(txt)
                   <li>여행일지</li>
                   <li>자유게시판</li>
                   <li>여행작가</li>
-                  <li>내부관리자</li>
+                  <li>고객센터</li>
+                  <li id="admin">내부관리자</li>
                </ul>
             </nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>

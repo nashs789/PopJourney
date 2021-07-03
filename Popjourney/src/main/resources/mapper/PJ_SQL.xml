@@ -2,8 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PJ">
 	<select id="login" parameterType="hashmap" resultType="hashmap">
-		SELECT MEM_NO, ID, PW
+		SELECT MEM_NO, GRADE_NO, NIC
 		FROM MEM
 		WHERE ID = #{inputID} AND PW = #{inputPW}
+	</select>
+	
+	<select id="IDDbCk" parameterType="hashmap" resultType="hashmap">
+		SELECT MEM_NO
+		FROM MEM
+		WHERE ID = #{storage}
+	</select>
+	
+	<select id="nicDbCk" parameterType="hashmap" resultType="hashmap">
+		SELECT MEM_NO
+		FROM MEM
+		WHERE NIC = #{storage}
 	</select>
 </mapper>

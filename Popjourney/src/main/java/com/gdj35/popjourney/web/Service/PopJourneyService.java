@@ -18,4 +18,22 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.login(params);
 	}
+
+	@Override
+	public HashMap<String, String> IDDbCk(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.IDDbCk(params);
+	}
+
+	@Override
+	public HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.nicDbCk(params);
+	}
+	
+	@Override
+	public int join(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.join(params);
+	}
 }
