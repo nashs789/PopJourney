@@ -438,9 +438,18 @@ $(document).ready(function(){
 	});
   
   
+  
+   	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
   	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	});
+  	
+  	
 }); // document read end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {

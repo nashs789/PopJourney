@@ -15,6 +15,36 @@ public class JmPopJourneyController {
 	@Autowired 
 	public IJmPopjourneyService iJmPopjourneyService;
 	
+	// 여행작가랭킹
+	@RequestMapping(value="/travelWriterRank")
+	public ModelAndView travelWriterRank(@RequestParam HashMap<String, String> params,
+										 ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("travelWriterRank");
+		
+		return mav;
+	}
+	
+	// 고객센터-자주 묻는 질문
+	@RequestMapping(value="/clientCenterQuestion")
+	public ModelAndView clientCenterQuestion(@RequestParam HashMap<String, String> params,
+										     ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("clientCenterQuestion");
+		
+		return mav;
+	}
+	
+	// 고객센터-문의사항
+	@RequestMapping(value="/clientCenterMatter")
+	public ModelAndView clientCenterMatter(@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("clientCenterMatter");
+		
+		return mav;
+	}
+	
 	// 내부관리자-회원관리
 	@RequestMapping(value="/memAdmin")
 	public ModelAndView memAdmin(@RequestParam HashMap<String, String> params,

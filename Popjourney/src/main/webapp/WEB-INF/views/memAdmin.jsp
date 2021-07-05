@@ -387,6 +387,17 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				$("#travelWriter").on("click", function() {
+			  		location.href = "travelWriterRank";
+			  	});
+				$("#clientCenter").on("click", function() {
+			  		location.href = "clientCenterQuestion";
+			  	});
+				$("#admin").on("click", function() {
+			  		location.href = "memAdmin";
+			  	});
+				
+				
 				$("#menu1").on("click", function() {
 					location.href = "memAdmin";
 				});
@@ -440,9 +451,9 @@
 					<ul>
 						<li>여행일지</li>
 						<li>자유게시판</li>
-						<li>여행작가</li>
-						<li>고객센터</li>
-						<li>내부관리자</li>
+						<li id="travelWriter">여행작가</li>
+						<li id="clientCenter">고객센터</li>
+						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
 				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
