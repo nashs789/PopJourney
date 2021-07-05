@@ -191,7 +191,8 @@ public class PopJourneyController {
 				    method = RequestMethod.POST,
 				    produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String findPWs(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String findPWs(@RequestParam HashMap<String, String> params) throws Throwable 
+	{
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
@@ -213,25 +214,38 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-		// 비밀번호 재설정 - 이인복
-		@RequestMapping(value = "updateInputPWs",
-					    method = RequestMethod.POST,
-					    produces = "text/json;charset=UTF-8")
-		@ResponseBody
-		public String updateInputPWs(@RequestParam HashMap<String, String> params) throws Throwable {
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> modelMap = new HashMap<String, Object>();
-
-			System.out.println(params.get("MEM_NO"));
-			System.out.println(params.get("inputPW"));
+	// 비밀번호 재설정 - 이인복
+	@RequestMapping(value = "updateInputPWs",
+				    method = RequestMethod.POST,
+				    produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String updateInputPWs(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		int cnt = ipjs.updatePW(params);
+		
+		try
+		{
+			if(cnt != 0)
+			{
+				modelMap.put("msg", "success");
+			} 
+			else 
+			{
+				modelMap.put("msg", "failed");
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
 			
-			int cnt = ipjs.updatePW(params);
-			 
-			modelMap.put("msg", "success");
-			modelMap.put("msg", "failed");
-			
-			return mapper.writeValueAsString(modelMap);
+			modelMap.put("msg", "error");
 		}
+		 
+		
+		return mapper.writeValueAsString(modelMap);
+	}
 
 	// 타임라인 - 이인복
 	@RequestMapping(value = "/timeline")
@@ -244,7 +258,9 @@ public class PopJourneyController {
 	// 로그인 - 이인복
 	// params로 넘어오는 키: inputID, inputPW
 	// 작업이 안된것: 사진경로, 암호화
-	@RequestMapping(value = "/logins", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@RequestMapping(value = "/logins", 
+					method = RequestMethod.POST, 
+					produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String logins(HttpSession session, @RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
@@ -255,6 +271,7 @@ public class PopJourneyController {
 
 		if (loginInfo != null) {
 			session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
+			session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
 
 			modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
 			modelMap.put("NIC", loginInfo.get("NIC"));
@@ -263,6 +280,20 @@ public class PopJourneyController {
 			modelMap.put("msg", "failed");
 		}
 
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/logouts", 
+					method=RequestMethod.POST, 
+					produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String logouts(HttpSession session) throws Throwable
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		session.invalidate();
+		
 		return mapper.writeValueAsString(modelMap);
 	}
 

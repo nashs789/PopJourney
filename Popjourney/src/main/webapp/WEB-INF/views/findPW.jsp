@@ -450,6 +450,13 @@ $(document).ready(function(){
 		} // if ~ else end
 	}); //nextBtn click end
 	
+	$("#inputPW2, #inputID2").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});
+	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID2").val()) == "")
 		{
@@ -473,7 +480,9 @@ $(document).ready(function(){
 				success:function(result)
 				{
 					if(result.msg == "success")
+					{
 						location.href="main";
+					}
 					else
 					{
 						popupText = "ID와 PW가 일치하지 않습니다.";
@@ -580,7 +589,20 @@ function findPWPopup(MEM_NO)
 				type: "post",
 				success:function(result)
 				{
-
+					if(result.msg == "success")
+					{
+						location.href="main";
+					}
+					else if(result.msg == "failed")
+					{
+						popupText = "변경에 실패하였습니다.";
+						commonPopup(popupText);
+					}
+					else
+					{
+						popupText = "변경중 에러가 발생했습니다.";
+						commonPopup(popupText);
+					}
 				}, //success end
 				error: function(request, status, error) {
 					console.log(error);

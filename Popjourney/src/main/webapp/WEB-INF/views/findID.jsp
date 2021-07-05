@@ -431,6 +431,13 @@ $(document).ready(function(){
 		} // if ~ else end
 	}); //nextBtn click end
 	
+	$("#inputPW, #inputID").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});
+	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{

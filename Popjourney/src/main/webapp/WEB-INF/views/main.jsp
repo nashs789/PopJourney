@@ -458,6 +458,19 @@ svg{
 <script type="text/javascript">
 $(document).ready(function(){
 	var popupText = "";
+	
+	//로그인 상태 확인
+	if("${sMEM_NO}" != "")
+	{
+		$(".logins").css("display", "none");
+		$(".btns").css("display", "inline-block");
+		
+		if("${sGRADE_NO}" == "0")
+		{
+			$("#admin").show();
+		}
+	}
+	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
@@ -480,22 +493,18 @@ $(document).ready(function(){
 				type: "post",
 				success:function(result)
 				{
-					 if(result.msg == "success")
-					{
-						if(result.GRADE_NO == 0)
-						{
-							$("#admin").show();
-						}
-						$(".logins").css("display", "none");
-						$(".btns").css("display", "inline-block");
-					}
-					else
+					
+					if(result.msg == "failed")
 					{
 						popupText = "ID와 PW가 일치하지 않습니다.";
 						commonPopup(popupText);
 						$("#inputID").val("");
 						$("#inputPW").val("");
-					} 
+					}
+					else
+					{
+						location.reload();
+					}
 				}, //success end
 				error: function(request, status, error) {
 					console.log(error);
@@ -503,6 +512,13 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
+
+	$("#inputPW, #inputID").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});
 	
 	$("#join").on("click", function(){  //회원가입 버튼 클릭
 		location.href="terms";
@@ -562,7 +578,20 @@ $(document).ready(function(){
   		location.href = "memAdmin";
   	}); //admin click end
   	
-}); // document read end
+  	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
+}); // document ready end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
 	var html = "";
@@ -677,7 +706,7 @@ function findBtnPopup()
 									<li>마이 페이지</li>
 									<li>프로필 수정</li>
 									<li>회원정보 수정</li>
-									<li>로그아웃</li>
+									<li id="logoutBtn">로그아웃</li>
 								</ul>
 							</li>
 						</ul>

@@ -51,6 +51,6 @@ public class PopJourneyDao implements IPopJourneyDao {
 	@Override
 	public int updatePW(HashMap<String, String> params) throws Throwable 
 	{
-		return sql.insert("PJ.updatePW", params);
+		return sql.update("PJ.updatePW", params);
 	}
 }

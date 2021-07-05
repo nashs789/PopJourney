@@ -386,6 +386,13 @@ $(document).ready(function(){
     var pattern2 = /[a-zA-Z]/;
 	var pattern3 = /[~!@\#$%<>^&*]/; //특수문자 확인용 정규식
 	
+	$("#inputPW2, #inputID2").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});
+	
 	$("#IDDbCkBtn").on("click", function(){  //아이디 중복체크
 		$(".popup").remove();
 		$(".bg").remove();

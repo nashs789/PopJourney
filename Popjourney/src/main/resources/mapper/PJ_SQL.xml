@@ -45,4 +45,9 @@
 		AND KEYWORD_NO = #{selectKeyword} 
 		AND KEYWORD = #{inputKeyword}
 	</select>
+	
+	<update id="updatePW" parameterType="hashmap">
+		UPDATE MEM SET PW = #{inputPW}
+		WHERE MEM_NO = #{MEM_NO}
+	</update>
 </mapper>
