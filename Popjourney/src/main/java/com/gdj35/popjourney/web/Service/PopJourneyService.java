@@ -36,4 +36,22 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.join(params);
 	}
+
+	@Override
+	public HashMap<String, String> findID(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.findID(params);
+	}
+
+	@Override
+	public HashMap<String, String> findPW(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.findPW(params);
+	}
+
+	@Override
+	public int updatePW(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.updatePW(params);
+	}
 }

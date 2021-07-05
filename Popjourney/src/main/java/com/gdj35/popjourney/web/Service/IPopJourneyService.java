@@ -12,4 +12,10 @@ public interface IPopJourneyService {
 	HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable;
 
 	int join(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> findID(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> findPW(HashMap<String, String> params) throws Throwable;
+
+	int updatePW(HashMap<String, String> params) throws Throwable;
 }

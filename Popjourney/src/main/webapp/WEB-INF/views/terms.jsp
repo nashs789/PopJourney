@@ -14,7 +14,7 @@ html{
 body{
    margin: 0px;      
    font-family: 'Black Han Sans', sans-serif;
-   min-width: 1280px;
+   min-width: 1480px;
    height: 100%;
 }
 #wrap{
@@ -56,25 +56,8 @@ body{
    height: 35px;
    margin-top: 18px;
 }
-.btns { 
-    display: inline-block;
-    vertical-align: top;
-    width: 470px;
-    height: 70px;
-    text-align: right;
-    background-color: #FFFFFF;
-}
-.btns img {
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-}
-.bell_icon {
-   margin-left: 160px;
-}
 .logins {
-   display: none;
+   display: inline-block;
    vertical-align: top;
    width: 470px;
    height: 70px;
@@ -113,7 +96,7 @@ body{
    margin-top: 20px;
    margin-left: 5px;
 }
-.login_btn {
+#loginBtn {
    float: right;
    margin: 20px 20px 0px 5px;
    width: 50px;
@@ -123,9 +106,9 @@ body{
    font-size: 12px;
    color: #FFFFFF;
    text-align: center;
-   line-height: 26px;
+   border-radius: 0px;
 }
-.login_btn:hover{
+#loginBtn:hover{
    color: #FFFFFF;
    background-color: #f37321;
 }
@@ -340,6 +323,7 @@ input[type='button']:hover{
    font-weight: bold;
    line-height: 30px;
    border-radius: 0 0 10px 10px; 
+   cursor:pointer;
 }
 #yesBtn:hover {
    background-color: #f37321;
@@ -355,6 +339,13 @@ input[type='button']:hover{
 	background-color: #000000;
 	z-index: 400;
 	opacity: 0.2;
+}
+#inputID, #inputPW {
+   float: right;
+   width: 100px;
+   height: 25px;
+   margin-top: 20px;
+   margin-left: 5px;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
@@ -399,6 +390,45 @@ $(document).ready(function(){
 			$("#marketingForm").submit();
 		}
 	}); //nextBtn click end
+	
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "success")
+						location.href="main";
+					else
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					} 
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
 }); //document ready end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
@@ -434,16 +464,14 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
                      <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
-                  <div class="btns"> <!-- 밑에 logins와 연동 -->
-                     <img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-                     <img alt="bookmark" src="./resources/images/bmk.png">
-                     <img alt="프로필" src="./resources/images/profile.png">
-                  </div>
+
                   <div class="logins">
                      <div class="sub_login1">
-                        <input type="button" class="login_btn" value="로그인" />
-                        <input type="password" class="login" placeholder="PW" />
-                        <input type="text" class="login" placeholder="ID" />
+                        <form action="#" id="loginForm">
+	                        <input type="button" id="loginBtn" value="로그인" />
+	                        <input type="password" id="inputPW" name="inputPW" placeholder="PW" />
+	                        <input type="text" id="inputID" name="inputID" placeholder="ID" />
+                        </form>
                      </div>
                      <div class="sub_login2">
                         <span>회원가입</span>

@@ -12,7 +12,7 @@ html{
 body{
    margin: 0px;      
    font-family: 'Black Han Sans', sans-serif;
-   min-width: 1280px;
+   min-width: 1480px;
    height: 100%;
 }
 #wrap{
