@@ -394,6 +394,30 @@
 				height: 80px;
 			}
 		</style>
+		<script type="text/javascript"
+				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				$("#menu1").on("click", function() {
+					location.href = "memAdmin";
+				});
+				$("#menu2").on("click", function() {
+					location.href = "TravelDiaryAdmin";
+				});
+				$("#menu3").on("click", function() {
+					location.href = "communityAdmin";
+				});
+				$("#menu4").on("click", function() {
+					location.href = "noticeAdmin";
+				});
+				$("#menu5").on("click", function() {
+					location.href = "reportAdmin";
+				});
+				
+			});
+			
+		</script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -402,13 +426,13 @@
 				<div class="banner">
 					<div class="top">
 						<div class="logo_area">
-							<a href="#"><img alt="로고" src="./img/logo.png" class="logo_photo"></a>
+							<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 							<div class="site_name">우리들의 여행일지</div>
 						</div>
 						<div class="btns"> <!-- 밑에 logins와 연동 -->
-							<img alt="bell" src="./img/bell.png" class="bell_icon">
-							<img alt="bookmark" src="./img/bmk.png">
-							<img alt="프로필" src="./img/profile.png">
+							<img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+							<img alt="bookmark" src="./resources/images/bmk.png">
+							<img alt="프로필" src="./resources/images/profile.png">
 						</div>
 						<div class="logins">
 							<div class="sub_login1">
@@ -433,7 +457,7 @@
 						<li>내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./img/search.png" class="search_icon"/>
+				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
@@ -446,7 +470,7 @@
 			<div id="container">
 				<div class="mem_admin_area">
 					<div class="admin_menu">
-						<span class="menu1">· 회원관리 </span><span class="menu2"> · 일지관리 </span><span class="menu3"> · 게시판관리</span><span class="menu4"> · 공지관리</span><span class="menu5"> · 신고관리</span>
+						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
 					<div class="sub_search">
 						검색 :
