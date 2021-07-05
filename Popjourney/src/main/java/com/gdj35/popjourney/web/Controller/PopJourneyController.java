@@ -25,7 +25,7 @@ public class PopJourneyController {
 	// 메인페이지 - 이인복
 	@RequestMapping(value = "/main")
 	public ModelAndView main(ModelAndView mav) {
-		mav.setViewName("main");
+		mav.setViewName("LIB/main");
 
 		return mav;
 	}
@@ -33,7 +33,7 @@ public class PopJourneyController {
 	// 약관 페이지 - 이인복
 	@RequestMapping(value = "/terms")
 	public ModelAndView terms(ModelAndView mav) {
-		mav.setViewName("terms");
+		mav.setViewName("LIB/terms");
 
 		return mav;
 	}
@@ -46,7 +46,7 @@ public class PopJourneyController {
 		data.put("marketing", params.get("marketing"));
 
 		mav.addObject("data", data);
-		mav.setViewName("join");
+		mav.setViewName("LIB/join");
 
 		return mav;
 	}
@@ -86,7 +86,7 @@ public class PopJourneyController {
 
 		mav.addObject("data", data);
 
-		mav.setViewName("writeProfile");
+		mav.setViewName("LIB/writeProfile");
 
 		return mav;
 	}
@@ -138,8 +138,9 @@ public class PopJourneyController {
 
 	// 아이디 찾기 페이지- 이인복
 	@RequestMapping(value = "/findID")
-	public ModelAndView findID(ModelAndView mav) {
-		mav.setViewName("findID");
+	public ModelAndView findID(ModelAndView mav) 
+	{
+		mav.setViewName("LIB/findID");
 
 		return mav;
 	}
@@ -180,8 +181,9 @@ public class PopJourneyController {
 
 	// 비밀번호 찾기 페이지- 이인복
 	@RequestMapping(value = "/findPW")
-	public ModelAndView findPW(ModelAndView mav) {
-		mav.setViewName("findPW");
+	public ModelAndView findPW(ModelAndView mav) 
+	{
+		mav.setViewName("LIB/indPW");
 
 		return mav;
 	}
@@ -250,7 +252,7 @@ public class PopJourneyController {
 	// 타임라인 - 이인복
 	@RequestMapping(value = "/timeline")
 	public ModelAndView timeline(ModelAndView mav) {
-		mav.setViewName("timeline");
+		mav.setViewName("LIB/timeline");
 
 		return mav;
 	}

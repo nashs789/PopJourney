@@ -530,7 +530,7 @@ $(document).ready(function(){
 	
 	$("#find").on("click", function(){
 		findBtnPopup();
-	});
+	}); //find click end
 
 	//지도에 호버시 해당 지역의 이름은 검은색 글씨로, 해당 지역 지도는 #c2c2d6색으로 변경	
 	$("svg").on("mouseover", "path", function(){
@@ -574,16 +574,25 @@ $(document).ready(function(){
 		CDColor = ""; 
 	});
   
-  
    	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
-  	});
+  	}); //travelWriter click end
+   	
 	$("#clientCenter").on("click", function() {
   		location.href = "clientCenterQuestion";
-  	});
+  	}); //clientCenter click end
+	
   	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	}); //admin click end
+  	
+  	$("#editProfile").on("click", function(){
+  		location.href = "editProfile";
+  	}); //editProfile click end
+  	
+	$("#editInfo").on("click", function(){
+		location.href = "editInfo";
+  	}); //editInfo click end
   	
   	$("#logoutBtn").on("click", function(){
 		$.ajax({
@@ -711,8 +720,8 @@ function findBtnPopup()
 							<li><img alt="프로필" src="./resources/images/profile.png">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
 									<li id="logoutBtn">로그아웃</li>
 								</ul>
 							</li>
