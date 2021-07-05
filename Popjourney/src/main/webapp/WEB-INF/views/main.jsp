@@ -9,7 +9,7 @@
 body {
    margin: 0px;      
    font-family: 'Black Han Sans', sans-serif;
-   min-width: 1280px;
+   min-width: 1480px;
 }
 #wrap {
    width: 100%;
@@ -51,6 +51,7 @@ body {
 .btns { 
     display: none;
     vertical-align: top;
+    position:relative;   
     width: 470px;
     height: 70px;
     text-align: right;
@@ -63,7 +64,7 @@ body {
    cursor: pointer;
 }
 .bell_icon {
-   margin-left: 160px;
+   margin-left: 200px;
 }
 .logins {
    display: inline-block;
@@ -326,6 +327,28 @@ svg{
    background-color: #f37321;
    color: white;
 }
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
 .bg {
 	display: inline-block;
 	width: 100%;
@@ -337,13 +360,105 @@ svg{
 	z-index: 400;
 	opacity: 0.2;
 }
+#cancelImg{
+	margin-top: 10px;
+	width: 30px;
+	margin-left: 135px;
+	cursor: pointer;
+}
+.timeline{
+ 	 display:none;
+     /* display: inline-block; */
+     width: 400px;
+     background-color: #EAEAEA;
+     box-shadow: 0px 0px 1px 1px #444444;
+     position: absolute;
+     margin-top: 72px;
+     right: 10px;
+     z-index: 300;
+}
+.timeline tr{
+	height: 50px;
+}
+   
+.timeline table{
+	border-collapse: collapse;
+}
+
+.timeline table tr th:first-child{
+	text-align: center;
+}
+
+.timeline tr th{
+	text-align: left;
+}
+
+.timeline tr th img{
+	height: 50px;
+	widtht: 50px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline tfoot tr{
+	background-color: #939597;
+}
+   
+.timeline tfoot tr th{
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline table tr th span{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.timeline table tr th span:hover{
+	color: blue;
+}
+#profileSlidedown{
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	height: 108px;
+   	width: 122px;
+   	margin-top: 10px;
+}
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
+}
+#profileSlidedown li:hover {
+	background-color: #f37321;
+}
+.btns ul li {
+        list-style: none;
+		float: left;
+		text-align: center;
+        color: #2e3459;
+		line-height: 25px;
+		text-decoration: none;
+		font-size: 18px;
+		font-weight: 900;
+}
+.btns>ul>li {
+	margin-right: 10px;
+}
 </style>
 
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var popupText = "";
-	$("#loginBtn").on("click", function(){
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
 			popupText = "아이디를 입력하세요.";
@@ -378,6 +493,8 @@ $(document).ready(function(){
 					{
 						popupText = "ID와 PW가 일치하지 않습니다.";
 						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
 					} 
 				}, //success end
 				error: function(request, status, error) {
@@ -387,13 +504,17 @@ $(document).ready(function(){
 		}// if ~ else end
 	}); //loginBtn click end
 	
-	$("#join").on("click", function(){
+	$("#join").on("click", function(){  //회원가입 버튼 클릭
 		location.href="terms";
 	}); // join click end
 	
 	var LCD = "#L";
 	var CD = "#";
 	var CDColor = "";
+	
+	$("#find").on("click", function(){
+		findBtnPopup();
+	});
 
 	//지도에 호버시 해당 지역의 이름은 검은색 글씨로, 해당 지역 지도는 #c2c2d6색으로 변경	
 	$("svg").on("mouseover", "path", function(){
@@ -438,7 +559,6 @@ $(document).ready(function(){
 	});
   
   
-  
    	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
   	});
@@ -447,15 +567,14 @@ $(document).ready(function(){
   	});
   	$("#admin").on("click", function() {
   		location.href = "memAdmin";
-  	});
-  	
+  	}); //admin click end
   	
 }); // document read end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
 	var html = "";
 	
-	html +="<div class=\"popup\">";
+	html 	 +="<div class=\"popup\">";
 	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
 	html	 +="     <div class=\"btn_list\">";
 	html	 +="        <div id=\"yesBtn\">예</div>";
@@ -470,6 +589,27 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 		$(".bg").remove();
 	}); //yesBtn click end
 }
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html +="	   <div class=\"popup_entity_txt\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
+}
 </script>
 
 </head>
@@ -483,9 +623,71 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
-                     <img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-                     <img alt="bookmark" src="./resources/images/bmk.png">
-                     <img alt="프로필" src="./resources/images/profile.png">
+                     <ul>
+						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+							<div class="timeline">
+								<table border="1">
+									<colgroup>
+										<col width="70px">
+										<col width="331.6px">
+									</colgroup>
+									<tr>
+										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
+										<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
+										</th>
+									</tr>
+
+									<tr>
+										<th>2시간전 (오후)9:17분</th>
+									</tr>
+
+									<tr>
+										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
+										<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
+										</th>
+									</tr>
+
+									<tr>
+										<th>3시간전 (오후)8:54분</th>
+									</tr>
+
+									<tr>
+										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
+										<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
+										</th>
+									</tr>
+
+									<tr>
+										<th>3시간전 (오후)8:49분</th>
+									</tr>
+
+									<tr>
+										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
+										<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
+									</tr>
+
+									<tr>
+										<th>3시간전 (오후)8:45분</th>
+									</tr>
+
+
+									<tfoot>
+										<tr>
+											<th colspan="2">...더보기</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div></li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png">
+								<ul id="profileSlidedown">
+									<li>마이 페이지</li>
+									<li>프로필 수정</li>
+									<li>회원정보 수정</li>
+									<li>로그아웃</li>
+								</ul>
+							</li>
+						</ul>
                   </div>
                   <div class="logins">
                      <div class="sub_login1">

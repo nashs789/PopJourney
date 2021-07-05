@@ -26,4 +26,23 @@
 			   #{selectTelcom} ,#{inputNic}, #{inputIntro}, #{birth}, #{sex}, #{selectKeyword},
 			   #{marketing}, SYSDATE, #{inputKeyword})
 	</insert>
+	
+	<select id="findID" parameterType="hashmap" resultType="hashmap">
+		SELECT MEM_NO, NAME, ID, SUBSTR(ID, 0, 2)AS FIRST, SUBSTR(ID, LENGTH(ID)-1, 2)AS LAST
+		FROM MEM
+		WHERE NAME = #{inputName}
+		AND EMAIL = #{email}
+		AND KEYWORD_NO = #{selectKeyword} 
+		AND KEYWORD = #{inputKeyword}
+	</select>
+	
+	<select id="findPW" parameterType="hashmap" resultType="hashmap"> 
+		SELECT MEM_NO
+		FROM MEM
+		WHERE NAME = #{inputName}
+		AND ID = #{inputID}
+		AND EMAIL = #{email}
+		AND KEYWORD_NO = #{selectKeyword} 
+		AND KEYWORD = #{inputKeyword}
+	</select>
 </mapper>

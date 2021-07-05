@@ -35,4 +35,22 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.insert("PJ.join",params);
 	}
+
+	@Override
+	public HashMap<String, String> findID(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.findID", params);
+	}
+
+	@Override
+	public HashMap<String, String> findPW(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.findPW", params);
+	}
+
+	@Override
+	public int updatePW(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.updatePW", params);
+	}
 }

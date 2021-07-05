@@ -13,7 +13,7 @@ html{
 body{
    margin: 0px;      
    font-family: 'Black Han Sans', sans-serif;
-   min-width: 1280px;
+   min-width: 1480px;
    height: 100%;
 }
 #wrap{
@@ -55,25 +55,8 @@ body{
    height: 35px;
    margin-top: 18px;
 }
-.btns { 
-    display: inline-block;
-    vertical-align: top;
-    width: 470px;
-    height: 70px;
-    text-align: right;
-    background-color: #FFFFFF;
-}
-.btns img {
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-}
-.bell_icon {
-   margin-left: 160px;
-}
 .logins {
-   display: none;
+   display: inline-block;
    vertical-align: top;
    width: 470px;
    height: 70px;
@@ -112,7 +95,7 @@ body{
    margin-top: 20px;
    margin-left: 5px;
 }
-.login_btn {
+#loginBtn {
    float: right;
    margin: 20px 20px 0px 5px;
    width: 50px;
@@ -122,9 +105,9 @@ body{
    font-size: 12px;
    color: #FFFFFF;
    text-align: center;
-   line-height: 26px;
+   border-radius: 0px;
 }
-.login_btn:hover{
+#loginBtn:hover{
    color: #FFFFFF;
    background-color: #f37321;
 }
@@ -369,6 +352,7 @@ select{
    font-weight: bold;
    line-height: 30px;
    border-radius: 0 0 10px 10px; 
+   cursor:pointer;
 }
 #yesBtn:hover {
    background-color: #f37321;
@@ -385,22 +369,40 @@ select{
 	z-index: 400;
 	opacity: 0.2;
 }
+#inputID2, #inputPW2 {
+   float: right;
+   width: 100px;
+   height: 25px;
+   margin-top: 20px;
+   margin-left: 5px;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var popupText = ""; //팝업 문구변경
 	var IDCheck = "";  //아이디 중복 확인용
-	var pattern = /[~!@\#$%<>^&*]/; //특수문자 확인용 정규식
+	var pattern1 = /[0-9]/;
+    var pattern2 = /[a-zA-Z]/;
+	var pattern3 = /[~!@\#$%<>^&*]/; //특수문자 확인용 정규식
 	
 	$("#IDDbCkBtn").on("click", function(){  //아이디 중복체크
 		$(".popup").remove();
 		$(".bg").remove();
-		if($.trim($("#inputID").val()) == "")
+		if($.trim($("#inputID").val()) == "") //아이디가 비어있을경우
 		{
 			popupText = "아이디를 입력하세요.";
 			commonPopup(popupText);
 			$("#inputID").focus();
+			return false;
+		}
+		
+		if(pattern3.test($("#inputID").val())) //아이디에 특수문자 금지
+		{
+			popupText = "아이디에 특수문자는 불가능합니다.";
+			commonPopup(popupText);
+			$("#inputID").focus();
+			$("#inputID").val("");
 			return false;
 		}
 		
@@ -445,6 +447,25 @@ $(document).ready(function(){
 		}
 	}); //inputPhone keypress end
 	
+	$("#sendCode").on("click", function(){ //이메일 인증 코드발송 버튼 클릭시
+		if($.trim($("#inputEmail").val()) == "")
+		{
+			popupText = "이메일을 입력하세요.";
+			commonPopup(popupText);
+			$("#inputEmail").focus();
+			return false;
+		}
+		else if($.trim($("#inputDomain").val()) == "")
+		{
+			popupText = "이메일 주소를 입력하세요.";
+			commonPopup(popupText);
+			$("#inputDomain").focus();
+			return false;
+		}
+		
+		$("#codeWrap").show();
+	}); //sendCode click end
+	
 	$("#ckCode").on("click", function(){ //이메일 인증 확인버튼 클릭
 		//이메일 인증코드 확인작업 yes or no
 		
@@ -463,6 +484,20 @@ $(document).ready(function(){
 		{
 			popupText = "이름을 입력하세요.";
 			commonPopup(popupText);
+			$("#inputName").focus();
+		}
+		else if(pattern3.test($("#inputName").val()))
+		{
+			popupText = "이름에 특수문자 사용 불가능합니다.";
+			commonPopup(popupText);
+			$("#inputName").val("");
+			$("#inputName").focus();
+		}
+		else if(pattern1.test($("#inputName").val()))
+		{
+			popupText = "이름에 숫자는 사용 불가능합니다.";
+			commonPopup(popupText);
+			$("#inputName").val("");
 			$("#inputName").focus();
 		}
 		else if($("#selectYear").val() == "연도")
@@ -525,9 +560,9 @@ $(document).ready(function(){
 			commonPopup(popupText);
 			resetPW();
 		}
-		else if(!pattern.test($("#inputPW").val()))
+		else if(!pattern1.test($("#inputPW").val())||!pattern2.test($("#inputPW").val())||!pattern3.test($("#inputPW").val()))
 		{
-			popupText = "특수문자를 넣어주세요.";
+			popupText = "숫자/영문/특수문자를 조합하세요.";
 			commonPopup(popupText);
 			resetPW();
 		}
@@ -561,6 +596,12 @@ $(document).ready(function(){
 			commonPopup(popupText);
 			$("#inputEmail").focus();
 		}
+		else if($.trim($("#inputDomain").val()) == "")
+		{
+			popupText = "이메일 주소를 입력하세요.";
+			commonPopup(popupText);
+			$("#inputDomain").focus();
+		}
 		else if($("#approvalCode").val() != 1)
 		{
 			popupText = "이메일 인증을 진행해주세요.";
@@ -586,13 +627,48 @@ $(document).ready(function(){
 		}//if ~ else end
 	}); //nextBtn click end
 	
-	$("#sendCode").on("click", function(){ //이메일 인증 코드발송 버튼 클릭시
-		$("#codeWrap").show();
-	}); //sendCode click end
-	
 	$("#preBtn").on("click", function(){ //이전버튼 클릭
 		location.href = "terms";
-	});
+	}); //preBtn click end
+	
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID2").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW2").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "success")
+						location.href="main";
+					else
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID2").val("");
+						$("#inputPW2").val("");
+					} 
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
 });//document ready end 
 
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
@@ -635,16 +711,13 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                      <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
-                  <div class="btns"> <!-- 밑에 logins와 연동 -->
-                     <img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-                     <img alt="bookmark" src="./resources/images/bmk.png">
-                     <img alt="프로필" src="./resources/images/profile.png">
-                  </div>
                   <div class="logins">
                      <div class="sub_login1">
-                        <input type="button" class="login_btn" value="로그인" />
-                        <input type="password" class="login" placeholder="PW" />
-                        <input type="text" class="login" placeholder="ID" />
+                        <form action="#" id="loginForm">
+	                        <input type="button" id="loginBtn" value="로그인" />
+	                        <input type="password" id="inputPW2" name="inputPW" placeholder="PW" />
+	                        <input type="text" id="inputID2" name="inputID" placeholder="ID" />
+                        </form>
                      </div>
                      <div class="sub_login2">
                         <span>회원가입</span>
