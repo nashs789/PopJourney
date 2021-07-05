@@ -558,10 +558,10 @@ $(document).ready(function(){
 		CDColor = ""; 
 	});
   
-  
   	$("#admin").on("click", function() {
   		location.href = "memAdmin";
-  	});
+  	}); //admin click end
+  	
 }); // document read end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
