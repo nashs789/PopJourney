@@ -493,7 +493,6 @@ $(document).ready(function(){
 				type: "post",
 				success:function(result)
 				{
-					
 					if(result.msg == "failed")
 					{
 						popupText = "ID와 PW가 일치하지 않습니다.";
@@ -759,7 +758,7 @@ function findBtnPopup()
                <option value="2">자유게시판</option>
                <option value="3">닉네임</option>
             </select>
-         </div>
+         </div> <!-- header end -->
 
 		<div id="container">
 			<div class="space"></div>

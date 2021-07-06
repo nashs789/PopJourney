@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PJ">
 	<select id="login" parameterType="hashmap" resultType="hashmap">
-		SELECT MEM_NO, GRADE_NO, NIC
+		SELECT MEM_NO, GRADE_NO, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
 		FROM MEM
 		WHERE ID = #{inputID} AND PW = #{inputPW}
 	</select>
@@ -48,6 +48,25 @@
 	
 	<update id="updatePW" parameterType="hashmap">
 		UPDATE MEM SET PW = #{inputPW}
+		WHERE MEM_NO = #{MEM_NO}
+	</update>
+	
+	<select id="getInfo" parameterType="hashmap" resultType="hashmap">
+		SELECT ID, PW, SUBSTR(PHONE, 4, 11)AS PHONE , SUBSTR(EMAIL, 1, INSTR(EMAIL, '@')-1) AS EMAIL, SUBSTR(EMAIL, INSTR(EMAIL, '@')+1) AS DOMAIN,
+        NAME, TO_CHAR(BIRTH, 'YYYY') AS YEAR, SUBSTR(MONTH, 1, INSTR(MONTH, '월')-1) AS MONTH, TO_CHAR(BIRTH, 'DD') AS DAY, SEX, KEYWORD_NO, KEYWORD, TELCOM
+		FROM (SELECT M.*, TO_CHAR(BIRTH, 'MON') AS MONTH
+        FROM MEM M)
+	 	WHERE MEM_NO = #{MEM_NO}
+	</select>
+	
+	<update id="updateInfo" parameterType="hashmap">
+		UPDATE MEM SET ID = #{inputID}, PW = #{inputPW}, TELCOM = #{selectTelcom}, PHONE = #{inputPhone},
+               KEYWORD_NO = #{selectKeyword}, KEYWORD = #{inputKeyword}
+		WHERE MEM_NO = #{MEM_NO}
+	</update>
+	
+	<update id="accCnt" parameterType="hashmap">
+		UPDATE MEM SET ACC_CNT = ACC_CNT+1, LAST_DATE = SYSDATE
 		WHERE MEM_NO = #{MEM_NO}
 	</update>
 </mapper>

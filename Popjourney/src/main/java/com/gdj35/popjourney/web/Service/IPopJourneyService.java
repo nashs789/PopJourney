@@ -18,4 +18,10 @@ public interface IPopJourneyService {
 	HashMap<String, String> findPW(HashMap<String, String> params) throws Throwable;
 
 	int updatePW(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> getInfo(HashMap<String, String> params) throws Throwable;
+
+	int updateInfo(HashMap<String, String> params) throws Throwable;
+
+	void accCnt(HashMap<String, String> params) throws Throwable;
 }

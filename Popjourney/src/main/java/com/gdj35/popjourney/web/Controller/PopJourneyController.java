@@ -1,5 +1,7 @@
 package com.gdj35.popjourney.web.Controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -250,6 +252,77 @@ public class PopJourneyController {
 	}
 
 	// 타임라인 - 이인복
+	@RequestMapping(value = "/editInfo")
+	public ModelAndView editInfo(ModelAndView mav) {
+		mav.setViewName("LIB/editInfo");
+
+		return mav;
+	}
+	
+	//회원정보 가져오기 - 이인복
+	@RequestMapping(value = "/getInfo", 
+			method = RequestMethod.POST, 
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String getInfo(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap<String, String> modelMap = new HashMap<String, String>();
+		
+		//NAME, ID, PW, PHONE, EMAIL, DOMAIN, YEAR, MONTH, DAY, SEX, KEYWORD_NO, KEYWORD, TELCOM 
+		HashMap<String, String> myInfo = ipjs.getInfo(params);
+		modelMap = myInfo;
+		
+		if(myInfo != null)
+		{
+			modelMap.put("msg", "success");
+		}
+		else
+		{
+			modelMap.put("msg", "failed");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//프로필 수정 - 이 인복
+	@RequestMapping(value = "/editInfos", 
+					method = RequestMethod.POST, 
+					produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String editInfos(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap<String, String> modelMap = new HashMap<String, String>();
+		
+		String birth = params.get("inputYear") + "-" + params.get("inputMonth") + "-" + params.get("inputDay");
+		String phone = "010" + params.get("inputPhone");
+		String email = params.get("inputEmail") + "@" + params.get("inputDomain");
+
+		params.put("birth", birth);
+		params.put("phone", phone);
+		params.put("email", email);
+		
+		try {
+			int cnt = ipjs.updateInfo(params);
+			
+			if(cnt != 0)
+			{
+				modelMap.put("msg", "success");
+			}
+			else
+			{
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Exception e) {
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+
+	// 타임라인 - 이인복
 	@RequestMapping(value = "/timeline")
 	public ModelAndView timeline(ModelAndView mav) {
 		mav.setViewName("LIB/timeline");
@@ -267,19 +340,32 @@ public class PopJourneyController {
 	public String logins(HttpSession session, @RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
-		// loginInfo로 넘어오는 키: MEM_NO, GRADE_NO, NIC
+		// loginInfo로 넘어오는 키: MEM_NO, GRADE_NO, NIC, LAST_DATE, TODAY
 		HashMap<String, String> loginInfo = ipjs.login(params);
+		SimpleDateFormat simpleD = new SimpleDateFormat("yyyy-MM-dd");
 
-		if (loginInfo != null) {
-			session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
-			session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
+		try {
+			if (loginInfo != null) {
+				Date lastDate = simpleD.parse(loginInfo.get("LAST_DATE"));
+				Date today = simpleD.parse(loginInfo.get("TODAY"));
+				
+				if(lastDate.compareTo(today) < 0)
+				{
+					params.put("MEM_NO", String.valueOf(loginInfo.get("MEM_NO")));
+					
+					ipjs.accCnt(params);
+				}
+				session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
+				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
 
-			modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
-			modelMap.put("NIC", loginInfo.get("NIC"));
-			modelMap.put("msg", "success");
-		} else {
-			modelMap.put("msg", "failed");
+				modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
+				modelMap.put("NIC", loginInfo.get("NIC"));
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return mapper.writeValueAsString(modelMap);
