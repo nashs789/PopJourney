@@ -429,7 +429,7 @@
 					reloadList();
 				});
 				
-			}); // document ready end
+			}); // document ready end..
 		
 			function reloadList() {
 				var params = $("#actionForm").serialize();
