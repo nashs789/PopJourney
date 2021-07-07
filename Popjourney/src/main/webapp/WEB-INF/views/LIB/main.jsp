@@ -178,12 +178,42 @@ input[type='text']:focus, input[type='password']:focus{
 #container{
 	width: 1280px;
 	margin: 0px auto;
-	border-right: 5px solid #2e3459;
-	border-left: 5px solid #2e3459;
 	text-align: center;
 }
+#cityNmae{
+	width: 680px;
+	text-align: center;
+	font-size: 18pt;
+	font-weight: bold;
+	margin-top: 30px;
+}
+#boardWrap{
+	width: 600px;
+	heigth: 1110px;
+	display: inline-block;
+	vertical-align: top;
+}
+#yearBoard{
+	min-height: 350px;
+	background-color:gray;
+	margin-top: 20px;
+}
+#monthBoard{
+	min-height: 350px;
+	background-color:gray;
+	margin-top: 50px;
+}
+#weekBoard{
+	min-height: 350px;
+	background-color:gray;
+	margin-top: 50px;
+}
+#mapWrap{
+	width: 600px;
+	display: inline;
+}
 svg{
-	background:#eaeaea;
+	background: white;
 	overflow:visible;
 	height:1110px;
 	width:600px;
@@ -285,7 +315,7 @@ svg{
    height: 80px;
 }
 .space{
-	height: 40px;
+	height: 80px;
 }
 .popup {
    display: inline-block;
@@ -451,6 +481,11 @@ svg{
 }
 .btns>ul>li {
 	margin-right: 10px;
+}
+/* ************************** */
+#tempImg{
+	width: 100px;
+	height: 150px;
 }
 </style>
 
@@ -761,8 +796,213 @@ function findBtnPopup()
          </div> <!-- header end -->
 
 		<div id="container">
-			<div class="space"></div>
-				<svg style= xmlns="http://www.w3.org/2000/svg">
+			<div id="cityNmae">[서울]</div>
+				<div id="boardWrap">
+					<div id="yearBoard">
+						<div>[2021년 랭킹]</div>
+						<table>
+							<colgroup>
+								<col width="50px">
+								<col width="300px">
+								<col width="80px">
+								<col width="70px">
+								<col width="130px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>제목</th>
+									<th>작가</th>
+									<th>조회수</th>
+									<th>날짜</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1.</td>
+									<td>오늘은 부산에서</td>
+									<td>버즈</td>
+									<td>946</td>
+									<td>2021-06-21</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>2.</td>
+									<td>오늘은 경기에서</td>
+									<td>더크로스</td>
+									<td>746</td>
+									<td>2021-03-02</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>3.</td>
+									<td>오늘은 서울에서</td>
+									<td>아이유</td>
+									<td>697</td>
+									<td>2021-07-21</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>4.</td>
+									<td>오늘은 해운대에서</td>
+									<td>사탄</td>
+									<td>434</td>
+									<td>2021-08-18</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>5.</td>
+									<td>오늘은 집에서</td>
+									<td>케빈</td>
+									<td>226</td>
+									<td>2021-12-25</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- yearBoard end  -->
+					<div id="monthBoard">
+						<div>[월간 랭킹]</div>
+						<table>
+							<colgroup>
+								<col width="50px">
+								<col width="300px">
+								<col width="80px">
+								<col width="70px">
+								<col width="130px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>글번호</th>
+									<th>제목</th>
+									<th>작가</th>
+									<th>조회수</th>
+									<th>날짜</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1.</td>
+									<td>오늘은 부산에서</td>
+									<td>버즈</td>
+									<td>946</td>
+									<td>2021-06-21</td>
+								</tr>
+								<tr> <!-- ************************************************** -->
+									<td><img src="./resources/images/bmk.png" id="tempImg"/></td>
+									<td>오랜만에 여행간 부산 좋지 날씨가 좋지 않을거란 일기 예보는 도착과 동시에 마주한 날씨를 보고는무거웠던 근심이 깃털처럼 날아가버렸다....[3]</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>2.</td>
+									<td>오늘은 경기에서</td>
+									<td>더크로스</td>
+									<td>746</td>
+									<td>2021-03-02</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>3.</td>
+									<td>오늘은 서울에서</td>
+									<td>아이유</td>
+									<td>697</td>
+									<td>2021-07-21</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>4.</td>
+									<td>오늘은 해운대에서</td>
+									<td>사탄</td>
+									<td>434</td>
+									<td>2021-08-18</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>5.</td>
+									<td>오늘은 집에서</td>
+									<td>케빈</td>
+									<td>226</td>
+									<td>2021-12-25</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> <!-- monthBoard end -->
+					<div id="weekBoard">
+						<div>[주간 랭킹]</div>
+						<table>
+							<colgroup>
+								<col width="50px">
+								<col width="300px">
+								<col width="80px">
+								<col width="70px">
+								<col width="130px">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>제목</th>
+									<th>작가</th>
+									<th>조회수</th>
+									<th>날짜</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1.</td>
+									<td>오늘은 부산에서</td>
+									<td>버즈</td>
+									<td>946</td>
+									<td>2021-06-21</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>2.</td>
+									<td>오늘은 경기에서</td>
+									<td>더크로스</td>
+									<td>746</td>
+									<td>2021-03-02</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>3.</td>
+									<td>오늘은 서울에서</td>
+									<td>아이유</td>
+									<td>697</td>
+									<td>2021-07-21</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>4.</td>
+									<td>오늘은 해운대에서</td>
+									<td>사탄</td>
+									<td>434</td>
+									<td>2021-08-18</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<td>5.</td>
+									<td>오늘은 집에서</td>
+									<td>케빈</td>
+									<td>226</td>
+									<td>2021-12-25</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> <!-- weekBoard end -->
+				</div> <!-- boardWrap end -->
+				<div id="mapWrap">
+					<svg style= xmlns="http://www.w3.org/2000/svg">
 					<defs>
 					    <filter id="dropshadow">
 					        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -813,8 +1053,9 @@ function findBtnPopup()
 						<text id="LCD50" class="TEXT" x="76" y="1070">제주특별자치도</text>
 					</g>
 				</svg>
+				</div> <!-- mapWrap end -->	
 			<div class="space"></div>
-		</div>
+		</div> <!-- container end -->
 		
 		<div id="footer">
             <p>

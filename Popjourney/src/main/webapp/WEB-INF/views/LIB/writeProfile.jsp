@@ -298,6 +298,28 @@ input[type='button']:hover{
    height:40px;
    margin: 30px auto 30px auto;
 }
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
 #yesBtn{
    text-decoration: none;
    display:inline-block;
@@ -334,10 +356,20 @@ input[type='button']:hover{
    margin-top: 20px;
    margin-left: 5px;
 }
+#cancelImg{
+	margin-top: 10px;
+	width: 30px;
+	margin-left: 135px;
+	cursor: pointer;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if("${sMEM_NO}" != "" || "${data.marketing}" == "")
+	{	
+		location.href="main";
+	}
 	var popupText = ""; //팝업 문구변경
 	var nicCheck = "";  //닉네임 중복 확인용
 	
@@ -491,6 +523,19 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
+	
+	$("#join").on("click", function(){  //회원가입 버튼 클릭
+		location.href="terms";
+	}); // join click end
+	
+	$("#find").on("click", function(){
+		findBtnPopup();
+	}); //find click end
+	
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	}); //clientCenter click end
+	
 });//document ready end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
@@ -518,7 +563,7 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
 	html +="<div class=\"popup\">";
 	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
 	html	 +="     <div class=\"btn_list\">";
-	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="        <a href=\"main\" id=\"yesBtn\">예</div>";
 	html	 +="     </div>";
 	html	 +="</div>";
 	html	 +="<div class=\"bg\"></div>";
@@ -529,7 +574,27 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
 		$(".popup").remove();
 		$(".bg").remove();
 	}); //yesBtn click end
-	location.href="main";
+}
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html +="	   <div class=\"popup_entity_txt\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
 }
 </script>
 </head>
@@ -543,7 +608,7 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                     <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="logins">
@@ -555,8 +620,8 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
                         </form>
                      </div>
                      <div class="sub_login2">
-                        <span>회원가입</span>
-                        <span>ID/PW 찾기</span>
+                        <span id="join">회원가입</span>
+                        <span id="find">ID/PW 찾기</span>
                      </div>
                   </div>
                </div>
@@ -565,9 +630,8 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
                <ul>
                   <li>여행게시판</li>
                   <li>자유게시판</li>
-                  <li>여행작가</li>
-                  <li>고객센터</li>
-                  <li>내부관리자</li>
+                  <li id="travelWriter">여행작가</li>
+                  <li id="clientCenter">고객센터</li>
                </ul>
             </nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>

@@ -13,10 +13,24 @@
 		WHERE ID = #{storage}
 	</select>
 	
+	<select id="IDDbCk2" parameterType="hashmap" resultType="hashmap">
+		SELECT MEM_NO
+		FROM MEM
+		WHERE ID = #{storage}
+		AND MEM_NO != #{MEM_NO}
+	</select>
+	
 	<select id="nicDbCk" parameterType="hashmap" resultType="hashmap">
 		SELECT MEM_NO
 		FROM MEM
 		WHERE NIC = #{storage}
+	</select>
+	
+	<select id="nicDbCk2" parameterType="hashmap" resultType="hashmap">
+		SELECT MEM_NO
+		FROM MEM
+		WHERE NIC = #{storage}
+		AND MEM_NO != #{MEM_NO}
 	</select>
 	
 	<insert id="join" parameterType="hashmap"> <!-- 사진경로 넣어야함 -->
@@ -67,6 +81,17 @@
 	
 	<update id="accCnt" parameterType="hashmap">
 		UPDATE MEM SET ACC_CNT = ACC_CNT+1, LAST_DATE = SYSDATE
+		WHERE MEM_NO = #{MEM_NO}
+	</update>
+	
+	<select id="getInfo2" parameterType="hashmap" resultType="hashmap">
+		SELECT PHOTO_PATH, NIC, INTRO
+		FROM MEM
+		WHERE MEM_NO = ${MEM_NO}
+	</select>
+	
+	<update id="updateProfile" parameterType="hashmap">
+		UPDATE MEM SET PHOTO_PATH = #{photoPath}, NIC = #{inputNic}, INTRO = #{inputIntro}
 		WHERE MEM_NO = #{MEM_NO}
 	</update>
 </mapper>

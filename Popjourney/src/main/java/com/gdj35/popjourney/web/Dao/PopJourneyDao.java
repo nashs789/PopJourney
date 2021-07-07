@@ -23,11 +23,23 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.IDDbCk", params);
 	}
+	
+	@Override
+	public HashMap<String, String> IDDbCk2(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.IDDbCk2", params);
+	}
 
 	@Override
 	public HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable 
 	{
 		return sql.selectOne("PJ.nicDbCk", params);
+	}
+	
+	@Override
+	public HashMap<String, String> nicDbCk2(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.nicDbCk2", params);
 	}
 	
 	@Override
@@ -70,5 +82,24 @@ public class PopJourneyDao implements IPopJourneyDao {
 	public void accCnt(HashMap<String, String> params) throws Throwable
 	{
 		sql.update("PJ.accCnt", params);
+	}
+
+	@Override
+	public HashMap<String, String> getInfo2(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.getInfo2", params);
+	}
+
+	@Override
+	public int updateProfile(HashMap<String, String> params) throws Throwable 
+	{
+		System.out.println("dao돌았습니다~");
+		return sql.selectOne("PJ.updateProfile", params);
+	}
+
+	@Override
+	public int delete(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.update("PJ.delete", params);
 	}
 }
