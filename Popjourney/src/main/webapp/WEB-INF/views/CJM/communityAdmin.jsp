@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>회원관리</title>
+		<title>게시판관리</title>
 		<style type="text/css">
 			/*  #fcba03 노랑
 				#2e3459 남색
@@ -15,7 +15,7 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -104,7 +104,7 @@
 				margin-left: 10px;
 			}
 			.sub_login2 span:hover {
-				color: #F37321;
+				color: #f37321;
 			}
 			.login {
 				float: right;
@@ -150,7 +150,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #F37321;
+				color: #f37321;
 			}
 			.search {
 				float: right;
@@ -199,10 +199,10 @@
 				font-weight: bold;
 			}
 			.admin_menu span:hover {
-				color: #F37321;
+				color: #f37321;
 			}
-			.menu1 {
-				color: #F37321;
+			.menu3 {
+				color: #f37321;
 			}
 			.sub_search {
 				display: block;
@@ -234,6 +234,7 @@
 				height: 28px;
 				padding: 5px;
 				font-size: 10pt;
+				border: 1px solid black;
 			}
 			.search_btn {
 				width: 90px;
@@ -246,7 +247,7 @@
 				border-radius: 20px;
 				border: 2px solid #2E3459;
 			}
-			.mem_delete_btn {
+			.post_delete_btn {
 				width: 90px;
 				height: 40px;
 				background-color: #FFFFFF;
@@ -260,8 +261,8 @@
 			.search_btn:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
-			}
-			.mem_delete_btn:hover {
+			}			
+			.post_delete_btn:hover {
 				background-color: #F1404B;
 				color: #FFFFFF;
 				border: 2px solid #F1404B;
@@ -295,35 +296,21 @@
 				font-weight: 300;
 				text-align: center;
 			}
-			.article {
-				font-size: 13pt;
+			.board_title {
+				text-align: left;
+			}
+			.article th {
+				font-size: 10pt;
 			}
 			.click_article {
 				cursor: pointer;
 			}
 			.click_article:hover {
-				color: #F37321;
+				color: #f37321;
 			}
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
-			}
-			.grade_btn {
-				width: 70px;
-				height: 24px;
-				background-color: #FFFFFF;
-				color: #000000;
-				font-weight: bold;
-				font-size: 10pt;
-				cursor: pointer;
-				text-align: center;
-				border-radius: 20px;
-				border: 2px solid #2E3459;
-			}
-			.grade_btn:hover {
-				background-color: #2E3459;
-				color: #FFFFFF;
-				border: 2px solid #2E3459;
 			}
 			
 			
@@ -364,6 +351,23 @@
 	            color: #F1404B;
 	            text-decoration: underline;
 	        }
+	        
+	        .edit_btn {
+				width: 45px;
+				height: 24px;
+				background-color: #FFFFFF;
+				color: #000000;
+				font-weight: bold;
+				cursor: pointer;
+				text-align: center;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+			}
+			.edit_btn:hover {
+				background-color: #2E3459;
+				color: #FFFFFF;
+				border: 2px solid #2E3459;
+			}
 			
 			
 			#footer {
@@ -396,7 +400,6 @@
 				$("#admin").on("click", function() {
 			  		location.href = "memAdmin";
 			  	});
-				
 				
 				$("#menu1").on("click", function() {
 					location.href = "memAdmin";
@@ -475,500 +478,364 @@
 						검색 :
 						<select class="search_filter">
 								<option value="0" selected="selected">통합검색</option>
-								<option value="1">아이디</option>
+								<option value="1">카테고리</option>
 								<option value="2">닉네임</option>
-								<option value="3">이름</option>
+								<option value="3">제목</option>
 						</select>
 						<input class="search_date" type="date" /><span>부터</span> 
 						<input class="search_date" type="date" /><span>까지</span> 
 						<input class="search_txt" type="text" />
 						<input class="search_btn" type="button" value="검색" />
-						<input class="mem_delete_btn" type="button" value="회원삭제" />
+						<input class="post_delete_btn" type="button" value="게시글삭제" />
 					</div>
 					<table>
 						<colgroup>
-							<col width="32px" /> <!-- 체크박스 -->
-							<col width="95px" /> <!-- 회원번호 -->
-							<col width="111px" /> <!-- 아이디 -->
-							<col width="111px" /> <!-- 닉네임 -->
-							<col width="111px" /> <!-- 이름 -->
-							<col width="75px" /> <!-- 성별 -->
-							<col width="75px" /> <!-- 나이 -->
-							<col width="161px" /> <!-- 이메일 -->
-							<col width="133px" /> <!-- 전화번호 -->
-							<col width="100px" /> <!-- 가입일 -->
-							<col width="100px" /> <!-- 등급 -->
-							<col width="100px" /> <!-- 게시글 -->
-							<col width="100px" /> <!-- 좋아요 -->
-							<col width="100px" /> <!-- 팔로워 -->
-							<col width="120px" /> <!-- 누적신고 -->
-							<col width="100px" /> <!-- 접속횟수 -->
-							<col width="100px" /> <!-- 승인대기 -->
-							<col width="90px" /> <!-- 등급설정 -->
+								<col width="32px" /> <!-- 체크박스 -->
+								<col width="106px" /> <!-- No -->
+								<col width="124px" /> <!-- 카테고리 -->
+								<col width="430px" /> <!-- 제목 -->
+								<col width="124px" /> <!-- 등급 -->
+								<col width="101px" /> <!-- 닉네임 -->
+								<col width="161px" /> <!-- 작성일 -->
+								<col width="92px" /> <!-- 조회 -->
+								<col width="102px" /> <!-- 좋아요 -->
+								<col width="110px" /> <!-- 비고 -->
 						</colgroup>
 						<thead>
 							<tr class="article">
 								<th><input type="checkbox" class="ckbox"/></th>
-								<th>회원번호</th>
-								<th>아이디</th>
-								<th>닉네임</th>
-								<th>이름</th>
-								<th class="click_article">성별↕</th>
-								<th class="click_article">나이↕</th>
-								<th>이메일</th>
-								<th>전화번호</th>
-								<th class="click_article">가입일↕</th>
-								<th class="click_article">등급↕</th>
-								<th class="click_article">게시글↕</th>
-								<th class="click_article">좋아요↕</th>
-								<th class="click_article">팔로워↕</th>
-								<th class="click_article">누적신고↕</th>
-								<th class="click_article">접속수↕</th>
-								<th>등업신청</th>
-								<th>비고</th>
-							</tr>
+	            				<th>글번호</th>
+	            				<th class="click_article">카테고리↕</th>
+	            				<th>제목</th>
+	            				<th class="click_article">등급↕</th>
+	            				<th>닉네임</th>
+	            				<th class="click_article">작성일↕</th>
+	            				<th class="click_article">조회↕</th>
+	            				<th class="click_article">좋아요↕</th>
+	            				<th>비고</th>
+	            			</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 							<tr>
 								<td>
 									<input type="checkbox" class="ckbox"/>
 								</td>
-								<td>1</td>
-								<td>dassdsa7</td>
-								<td>닉네임이다</td>
-								<td>홍길동동</td>
-								<td>남</td>
-								<td>20</td>
-								<td>sadsad7@naver.com</td>
-								<td>010-0000-0000</td>
-								<td>21-04-29</td>
-								<td>여행작가</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>999</td>
-								<td>승인대기</td>
-								<td><input type="button" class="grade_btn" value="등급설정" readonly="readonly"/> </td>
-							</tr>
+	            				<td>20</td>
+	            				<td>여행꿀팁</td>
+	            				<td class="board_title">제목</td>
+	            				<td>여행작가</td>
+	            				<td>abc</td>
+	            				<td>2021-05-26</td>
+	            				<td>145</td>
+	            				<td>50</td>
+	            				<td>
+									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
+								</td>
+	            			</tr>
 						</tbody>
 					</table>
 				</div> <!-- mem_admin_area end -->

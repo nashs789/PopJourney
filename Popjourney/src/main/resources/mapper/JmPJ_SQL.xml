@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="JmPJ">
-
+	<select id="getMemCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM MEM
+		WHERE 1 = 1
+		<if test="searchTxt != null and searchTxt != ''">
+	      	<choose>
+	      		<when test="searchFilter == 0">
+			        AND (M.ID LIKE '%' || #{searchTxt} || '%' OR M.NIC LIKE '%' || #{searchTxt} || '%' OR M.NAME LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 1">
+   		        	AND M.ID LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 2">
+			        AND M.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 3">
+	      			AND M.NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2} 
+	      		</when>
+	      	</choose>
+	    </if>
+	</select>
+	
+	<select id="getMemList" parameterType="hashmap" resultType="hashmap">
+		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.JOIN_DATE, M.GRADE_NAME, M.ACC_CNT
+		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL, 
+		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, G.GRADE_NAME, M.ACC_CNT,
+		             ROW_NUMBER() OVER(ORDER BY MEM_NO DESC) AS RNUM
+		      FROM MEM M INNER JOIN GRADE G
+		                         ON M.GRADE_NO = G.GRADE_NO
+		                 INNER JOIN COMMON_CODE CC
+		                 		 ON M.SEX = CC.CODE_S AND CC.CODE_L = 1
+		      WHERE 1 = 1
+		      <if test="searchTxt != null and searchTxt != ''">
+		      	<choose>
+		      		<when test="searchFilter == 0">
+				        AND (M.ID LIKE '%' || #{searchTxt} || '%' OR M.NIC LIKE '%' || #{searchTxt} || '%' OR M.NAME LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 1">
+	   		        	AND M.ID LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 2">
+				        AND M.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 3">
+		      			AND M.NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2} 
+		      		</when>
+		      	</choose>
+		      </if>
+		      ) M
+		WHERE M.RNUM BETWEEN #{startCnt} AND #{endCnt}
+	</select>
 </mapper>
