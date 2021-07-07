@@ -11,6 +11,8 @@ public interface IPopJourneyDao {
 
 	HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable;
 	
+	HashMap<String, String> nicDbCk2(HashMap<String, String> params) throws Throwable;
+	
 	int join(HashMap<String, String> params) throws Throwable;
 
 	HashMap<String, String> findID(HashMap<String, String> params) throws Throwable;
@@ -24,4 +26,12 @@ public interface IPopJourneyDao {
 	int updateInfo(HashMap<String, String> params) throws Throwable;
 
 	void accCnt(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> IDDbCk2(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> getInfo2(HashMap<String, String> params) throws Throwable;
+
+	int updateProfile(HashMap<String, String> params) throws Throwable;
+
+	int delete(HashMap<String, String> params) throws Throwable;
 }

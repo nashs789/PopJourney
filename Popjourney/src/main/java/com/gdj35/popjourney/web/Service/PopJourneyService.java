@@ -24,11 +24,23 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.IDDbCk(params);
 	}
+	
+	@Override
+	public HashMap<String, String> IDDbCk2(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.IDDbCk2(params);
+	}
 
 	@Override
 	public HashMap<String, String> nicDbCk(HashMap<String, String> params) throws Throwable 
 	{
 		return ipjd.nicDbCk(params);
+	}
+	
+	@Override
+	public HashMap<String, String> nicDbCk2(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.nicDbCk2(params);
 	}
 	
 	@Override
@@ -71,5 +83,23 @@ public class PopJourneyService implements IPopJourneyService {
 	public void accCnt(HashMap<String, String> params) throws Throwable 
 	{
 		ipjd.accCnt(params);
+	}
+
+	@Override
+	public HashMap<String, String> getInfo2(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.getInfo2(params);
+	}
+
+	@Override
+	public int updateProfile(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.updateProfile(params);
+	}
+
+	@Override
+	public int delete(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.delete(params);
 	}
 }

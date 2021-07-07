@@ -55,31 +55,6 @@ body{
    height: 35px;
    margin-top: 18px;
 }
-.sub_login1 {
-   display: block;
-   position: relative;
-   width: 100%;
-   height: 55px;
-}
-.sub_login2 {
-   display: block;
-    width: calc(100% - 75px);
-    height: 15px;
-    line-height: 10px;
-    text-align: right;
-    padding-right: 75px;
-}
-.sub_login2 span {
-   position: relative;
-   width: 10px;
-   font-size: 12px;
-   font-weight: 600;
-   cursor: pointer;
-   margin-left: 10px;
-}
-.sub_login2 span:hover {
-   color: #fcba03;
-}
 .banner {
    width: 100%;
    height: 70px;
@@ -368,6 +343,7 @@ select{
 	color: blue;
 }
 #profileSlidedown{
+	display: none;
    	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
    	border: 2px solid #fcba03;
    	background-color: white;
@@ -387,6 +363,9 @@ select{
    	cursor: pointer;
 }
 #profileSlidedown li:hover {
+	background-color: #f37321;
+}
+#editInfo{
 	background-color: #f37321;
 }
 .btns ul li {
@@ -410,14 +389,15 @@ select{
 <script type="text/javascript">
 $(document).ready(function(){
 	if("${sMEM_NO}" != "")
-	{
-		$(".logins").css("display", "none");
-		$(".btns").css("display", "inline-block");
-		
+	{	
 		if("${sGRADE_NO}" == "0")
 		{
 			$("#admin").show();
 		}
+	}
+	else
+	{
+		location.href="main";
 	}
 	
 	var popupText = "";
@@ -425,7 +405,8 @@ $(document).ready(function(){
 	var pattern1 = /[0-9]/;
     var pattern2 = /[a-zA-Z]/;
 	var pattern3 = /[~!@\#$%<>^&*]/; //특수문자 확인용 정규식
-	var params = $("#memForm").serialize();
+	
+	var params = $("#form").serialize();
 
 	$.ajax({
 		url: "getInfo",
@@ -464,6 +445,55 @@ $(document).ready(function(){
 		} // error end
 	}); //ajax end 
 	
+	$("#IDDbCkBtn").on("click", function(){  //아이디 중복체크
+		$(".popup").remove();
+		$(".bg").remove();
+		if($.trim($("#inputID").val()) == "") //아이디가 비어있을경우
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+			$("#inputID").focus();
+			return false;
+		}
+		
+		if(pattern3.test($("#inputID").val())) //아이디에 특수문자 금지
+		{
+			popupText = "아이디에 특수문자는 불가능합니다.";
+			commonPopup(popupText);
+			$("#inputID").focus();
+			$("#inputID").val("");
+			return false;
+		}
+		
+		$("#valueStorage").val($("#inputID").val());
+		
+		var params = $("#form").serialize();
+		
+		$.ajax({
+			url: "IDDbCk",
+			data: params,
+			dataType:"json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					popupText = "사용 가능한 아이디입니다.";
+					commonPopup(popupText);
+					IDCheck = $("#inputID").val();
+				}
+				else
+				{
+					popupText = "사용 불가능한 아이디입니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //IdDbCkBtn click end
+	
 	$("#nextBtn").on("click", function(){      //다음 버튼을 눌렀을때 필수 입력필드가 전부 채워졌는지 확인
 		if($.trim($("#inputID").val()) == "")
 		{
@@ -471,11 +501,11 @@ $(document).ready(function(){
 			commonPopup(popupText);
 			$("#inputID").focus();
 		}
-/* 		else if($("#inputID").val() != IDCheck)
+ 		else if($("#inputID").val() != IDCheck)
 		{
 			popupText = "아이디 중복확인을 해주세요.";
 			commonPopup(popupText);
-		} */
+		} 
 		else if($.trim($("#inputPW").val()) == "")
 		{
 			popupText = "비밀번호를 입력하세요.";
@@ -579,7 +609,60 @@ $(document).ready(function(){
 	$("#preBtn").on("click", function(){ //이전버튼 클릭
 		location.href = "main";
 	}); //preBtn click end
-
+	
+/* 	$("#profilePhoto").on({
+		mouseover: function(){
+			$("#profileSlidedown").css("display", "block");	
+		},
+		mouseleave:function(){
+			$("#profileSlidedown").css("display", "none");
+		},
+		click:function(){
+			$(this).off("mouseleave");
+		}
+	}); //profilePhoto on end */
+	
+	 $("#profilePhoto").on("click", function(){
+		console.log($("#profileSlidedown").css("display"));
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
+	
+   	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	}); //travelWriter click end
+   	
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	}); //clientCenter click end
+	
+  	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	}); //admin click end
+  	
+  	$("#editProfile").on("click", function(){
+  		location.href = "editProfile";
+  	}); //editProfile click end
 });//document ready end 
 
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
@@ -610,7 +693,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 </script>
 </head>
 <body>
-<form action="#" id="memForm">
+<form action="#" id="form">
+	<input type="hidden" id="valueStorage" name="storage"/>
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 </form>
 <div id="wrap">
@@ -619,7 +703,7 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                     <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   
@@ -678,7 +762,7 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 								</table>
 							</div></li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
+							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>
 									<li id="editProfile">프로필 수정</li>
@@ -695,8 +779,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                <ul>
                   <li>여행게시판</li>
                   <li>자유게시판</li>
-                  <li>여행작가</li>
-                  <li>고객센터</li>
+                  <li id="travelWriter">여행작가</li>
+                  <li id="clientCenter">고객센터</li>
                   <li id="admin">내부관리자</li>
                </ul>
             </nav>
@@ -785,9 +869,16 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 					<div class="title">키워드</div>
 					<select id="selectKeyword" name="selectKeyword">
 							<option value="0">키워드 질문을 골라주세요</option>
-							<option value="1">첫 사랑의 이름은?</option>
-							<option value="2">아버지의 성함은?</option>
-							<option value="3">내가 다녔던 초등학교 이름은?</option>
+							<option value="1">당신의 첫 사랑의 이름은?</option>
+							<option value="2">기분이 우울할 때 듣는 노래 제목은?</option>
+							<option value="3">좋아하는 소설의 이름은?</option>
+							<option value="4">감명깊게 본 영화 이름은</option>
+							<option value="5">가장 존경하는 사람의 이름은?</option>
+							<option value="6">나에게 가장 큰 의미가 있는 장소는?</option>
+							<option value="7">내가 좋아하는 과자 이름은?</option>
+							<option value="8">나의 직업은?</option>
+							<option value="9">나의 버켓리스트 목록 1번은</option>
+							<option value="10">당신이 다녔던 초등학교는 어딘가요?</option>
 					</select>
 					<input type="text" id="inputKeyword" name="inputKeyword" placeholder="키워드를 입력하세요."/>
 					<input type="hidden" name="MEM_NO" value="${sMEM_NO}"/>

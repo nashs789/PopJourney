@@ -340,6 +340,28 @@ select{
    height:40px;
    margin: 30px auto 30px auto;
 }
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
 #yesBtn{
    text-decoration: none;
    display:inline-block;
@@ -376,10 +398,21 @@ select{
    margin-top: 20px;
    margin-left: 5px;
 }
+#cancelImg{
+	margin-top: 10px;
+	width: 30px;
+	margin-left: 135px;
+	cursor: pointer;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if("${sMEM_NO}" != "" || "${data.marketing}" == "")
+	{	
+		location.href="main";
+	}
+	
 	var popupText = ""; //팝업 문구변경
 	var IDCheck = "";  //아이디 중복 확인용
 	var pattern1 = /[0-9]/;
@@ -676,6 +709,19 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
+	
+	$("#join").on("click", function(){  //회원가입 버튼 클릭
+		location.href="terms";
+	}); // join click end
+	
+	$("#find").on("click", function(){
+		findBtnPopup();
+	}); //find click end
+	
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	}); //clientCenter click end
+  	
 });//document ready end 
 
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
@@ -703,6 +749,27 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 	$("#inputRePW").val("");
 	$("#inputPW").focus();
 }
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html +="	   <div class=\"popup_entity_txt\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
+}
 </script>
 </head>
 <body>
@@ -715,7 +782,7 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                     <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="logins">
@@ -727,8 +794,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                         </form>
                      </div>
                      <div class="sub_login2">
-                        <span>회원가입</span>
-                        <span>ID/PW 찾기</span>
+                        <span id="join">회원가입</span>
+                        <span id="find">ID/PW 찾기</span>
                      </div>
                   </div>
                </div>
@@ -737,9 +804,8 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                <ul>
                   <li>여행게시판</li>
                   <li>자유게시판</li>
-                  <li>여행작가</li>
-                  <li>고객센터</li>
-                  <li>내부관리자</li>
+                  <li id="travelWriter">여행작가</li>
+                  <li id="clientCenter">고객센터</li>
                </ul>
             </nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>
@@ -850,9 +916,17 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 					<div class="title">키워드</div>
 					<select id="selectKeyword" name="selectKeyword">
 							<option value="0">키워드 질문을 골라주세요</option>
-							<option value="1">첫 사랑의 이름은?</option>
-							<option value="2">아버지의 성함은?</option>
-							<option value="3">내가 다녔던 초등학교 이름은?</option>
+							<option value="1">당신의 첫 사랑의 이름은?</option>
+							<option value="2">기분이 우울할 때 듣는 노래 제목은?</option>
+							<option value="3">좋아하는 소설의 이름은?</option>
+							<option value="4">감명깊게 본 영화 이름은</option>
+							<option value="5">가장 존경하는 사람의 이름은?</option>
+							<option value="6">나에게 가장 큰 의미가 있는 장소는?</option>
+							<option value="7">내가 좋아하는 과자 이름은?</option>
+							<option value="8">나의 직업은?</option>
+							<option value="9">나의 버켓리스트 목록 1번은</option>
+							<option value="10">당신이 다녔던 초등학교는 어딘가요?</option>
+							
 					</select>
 					<input type="text" id="inputKeyword" name="inputKeyword" placeholder="키워드를 입력하세요."/>
 				</div>
