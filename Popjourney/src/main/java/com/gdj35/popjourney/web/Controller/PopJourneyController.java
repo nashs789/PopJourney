@@ -3,6 +3,7 @@ package com.gdj35.popjourney.web.Controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -26,12 +27,31 @@ public class PopJourneyController {
 
 	// 메인페이지 - 이인복
 	@RequestMapping(value = "/main")
-	public ModelAndView main(ModelAndView mav) {
+	public ModelAndView main(ModelAndView mav) { 
+		
 		mav.setViewName("LIB/main");
 
 		return mav;
 	}
+	
+	// 지역별 랭킹 - 이인복
+	@RequestMapping(value = "/regionBoard", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String regionBoard(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
 
+	     List<HashMap<String, String>> yearData = ipjs.yearRank(params);
+		 List<HashMap<String, String>> monthData = ipjs.monthRank(params); 
+		 List<HashMap<String, String>> weekData = ipjs.weekRank(params); 
+		
+	     modelMap.put("yearData", yearData);
+	     modelMap.put("monthData", monthData);
+	     modelMap.put("weekData", weekData);
+	     
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	// 약관 페이지 - 이인복
 	@RequestMapping(value = "/terms")
 	public ModelAndView terms(ModelAndView mav) {

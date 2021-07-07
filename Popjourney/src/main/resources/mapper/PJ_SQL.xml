@@ -94,4 +94,50 @@
 		UPDATE MEM SET PHOTO_PATH = #{photoPath}, NIC = #{inputNic}, INTRO = #{inputIntro}
 		WHERE MEM_NO = #{MEM_NO}
 	</update>
+	
+	<select id="yearRank" parameterType="hashmap" resultType="hashmap">
+		SELECT JOURNAL_NO, TITLE, NIC, MEM_NO, HIT, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE, REGION_NAME
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+             WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY'))
+		WHERE RK BETWEEN 1 AND 5
+		AND REGION_NO = #{regionNo}    
+	</select>
+	
+	<select id="monthRank" parameterType="hashmap" resultType="hashmap">
+		SELECT JOURNAL_NO, TITLE, NIC, MEM_NO, HIT, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE, REGION_NAME, CASE WHEN MONTH >= 10
+		                                                                            THEN MONTH
+		                                                                            ELSE SUBSTR(MONTH, 2)
+		                                                                        END AS MONTH
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO, TO_CHAR(SYSDATE, 'MM') AS MONTH
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM'))
+		WHERE RK BETWEEN 1 AND 5
+		AND REGION_NO = #{regionNo}  
+	</select>
+	
+	<select id="weekRank" parameterType="hashmap" resultType="hashmap">
+		SELECT JOURNAL_NO, TITLE, NIC, MEM_NO, HIT, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE, REGION_NAME
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'IW')= TO_CHAR(SYSDATE, 'IW'))
+		WHERE RK BETWEEN 1 AND 5
+		AND REGION_NO = #{regionNo}
+	</select>
 </mapper>

@@ -102,4 +102,22 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.update("PJ.delete", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.yearRank", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> monthRank(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.monthRank", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> weekRank(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.weekRank", params);
+	}
 }
