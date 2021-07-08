@@ -182,7 +182,7 @@ input[type='text']:focus, input[type='password']:focus{
 	text-align: center;
 }
 #cityName{ 
-	display: none;
+	display: inline-block;
 	width: 680px;
 	text-align: center;
 	font-size: 18pt;
@@ -197,9 +197,27 @@ input[type='text']:focus, input[type='password']:focus{
 }
 #yearBoard, #monthBoard, #weekBoard{
 	display: none;
-	min-height: 350px;
-	background-color:gray;
 	margin-top: 50px;
+	background-color: white;
+}
+#yearBoard table, #monthBoard table, 
+#weekBoard table {
+	border-collapse: collapse;
+		border-bottom: 3px solid black;
+}
+#yearBoard table tbody tr:hover, #monthBoard table tbody tr:hover, 
+#weekBoard table tbody tr:hover{
+	background-color: #F9F9F9;
+	cursor:pointer;
+}
+#yearBoard table tbody tr, #monthBoard table tbody tr, 
+#weekBoard table tbody tr {
+	border-bottom: 1px solid #FAFAFA;
+}
+.title{
+	font-size: 18pt;
+	font-weight: bold;
+	border-top: 3px solid black;
 }
 #mapWrap{
 	width: 600px;
@@ -600,12 +618,10 @@ $(document).ready(function(){
     	region = $(this).attr("id").substr(2);
     	$("#regionNo").val(region);
     	
-    	$("#cityName").css("display", "inline-block");
-    	
 		var params = $("#regionForm").serialize();
     	
     	$.ajax({
-			url: "regionBoard",
+			url: "regionBoards",
 			type: "post",
 			dataType: "json",
 			data: params,
@@ -617,19 +633,17 @@ $(document).ready(function(){
 				console.log(error);
 			} //error end
 		}); //ajax end
-    });
+    }); //svg path click end
     
     $("svg").on("click", ".TEXT", function(){
     	
     	region = $(this).attr("id").substr(3);
     	$("#regionNo").val(region);
     	
-    	$("#cityName").css("display", "inline-block");
-    	
     	var params = $("#regionForm").serialize();
     	
     	$.ajax({
-			url: "regionBoard",
+			url: "regionBoards",
 			type: "post",
 			dataType: "json",
 			data: params,
@@ -641,6 +655,11 @@ $(document).ready(function(){
 				console.log(error);
 			} //error end
 		}); //ajax end
+    }); //svg .TEXT click end
+    
+    $("#boardWrap").on("click", "tr ", function(){
+    	$("#journalNo").val($(this).attr("no"));
+    	// 상세보기 페이지 구현하면 만들기
     });
   
    	$("#travelWriter").on("click", function() {
@@ -730,7 +749,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	var html = "";
 	
 	html +=" <div id=\"yearBoard\">";
-	html +=" <div>[2021년 랭킹]</div>";
+	html +=" <div class=\"title\">[" + yearData[0].JOURNAL_DATE.substring(0, 4) + "년 랭킹]</div>";
 	html +=" <table>";
 	html +=" 	<colgroup>";
 	html +=" 		<col width=\"50px\">";
@@ -752,7 +771,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	for(var data of yearData)
 	{
 		html +=" 	<tbody>";
-		html +=" 		<tr>";
+		html +=" 		<tr no=\"" + data.JOURNAL_NO + "\">";
 		html +=" 			<td>" + data.JOURNAL_NO + "</td>";
 		html +=" 			<td>" + data.TITLE + "</td>";
 		html +=" 			<td>" + data.NIC + "</td>";
@@ -765,7 +784,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	html +="</div><!-- yearBoard end  -->";
 	/* -------------------------------------------------------------- */
 	html +="<div id=\"monthBoard\">";
-	html +="	<div>[월간 랭킹]</div>";
+	html +="	<div class=\"title\">["+monthData[0].MONTH+"월 랭킹]</div>";
 	html +="	<table>";
 	html +="		<colgroup>";
 	html +="			<col width=\"50px\">";
@@ -787,7 +806,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	for(data of monthData)
 	{ 
 		html +="	<tbody>";
-		html +="		<tr>";
+		html +="		<tr no=\"" + data.JOURNAL_NO + "\">";
 		html +="			<td>" + data.JOURNAL_NO + "</td>";
 		html +="			<td>" + data.TITLE + "</td>";
 		html +="			<td>" + data.NIC + "</td>";
@@ -800,7 +819,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	html +="</div> <!-- monthBoard end -->";
 	/* -------------------------------------------------------------- */
 	html +="<div id=\"weekBoard\">";
-	html +="	<div>[주간 랭킹]</div>";
+	html +="	<div class=\"title\">[이번 주 랭킹]</div>";
 	html +=" <table>";
 	html +="	<colgroup>";
 	html +="		<col width=\"50px\">";
@@ -822,7 +841,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	for(data of weekData)
 	{ 
 		html +="	<tbody>";
-		html +="		<tr>";
+		html +="		<tr no=\"" + data.JOURNAL_NO + "\">";
 		html +="			<td>" + data.JOURNAL_NO + "</td>";
 		html +="			<td>" + data.TITLE + "</td>";
 		html +="			<td>" + data.NIC + "</td>";
@@ -836,13 +855,15 @@ function drawRankBoard(yearData, monthData, weekData)
 	html +="</div> <!-- weekBoard end -->";
 	
 	$("#boardWrap").html(html);
-}                                               
+}         
 </script>
-
 </head>
 <body>
 <form action="#" id="regionForm">
 	<input type="hidden" id="regionNo" name="regionNo" value="1"/>
+</form>
+<form action="#" id="journalNoForm">
+	<input type="hidden" id="journalNo" name="journalNo" value=""/>
 </form>
 	<div id="wrap">
          <!-- header부분 고정 -->
@@ -955,7 +976,7 @@ function drawRankBoard(yearData, monthData, weekData)
          </div> <!-- header end -->
 
 		<div id="container">
-			<div id="cityName">[서울]</div>
+			<div id="cityName"></div>
 				<div id="boardWrap">
 				
 				</div> <!-- boardWrap end -->

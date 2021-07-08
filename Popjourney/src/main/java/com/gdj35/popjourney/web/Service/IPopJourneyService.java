@@ -41,4 +41,6 @@ public interface IPopJourneyService {
 
 	List<HashMap<String, String>> weekRank(HashMap<String, String> params) throws Throwable;
 
+	HashMap<String, String> getDetail(HashMap<String, String> params) throws Throwable;
+
 }

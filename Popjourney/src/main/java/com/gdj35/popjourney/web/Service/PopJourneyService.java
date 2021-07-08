@@ -120,4 +120,10 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.weekRank(params);
 	}
+
+	@Override
+	public HashMap<String, String> getDetail(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.getDetail(params);
+	}
 }
