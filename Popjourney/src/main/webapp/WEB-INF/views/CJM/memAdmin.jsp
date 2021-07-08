@@ -570,14 +570,14 @@
 				});
 				
 				function ckMemNo() {
-					/* $("tbody .ckbox:checked").each(function() {
+					$("tbody .ckbox:checked").each(function() {
 						$("tbody .ckbox:checked").val($("#mNo").val());
 						console.log($("tbody .ckbox:checked").val($("#mNo").val()));
-					}); */
-					$("tbody .ckbox").on("click", function() {
+					});
+					/* $("tbody .ckbox").on("click", function() {
 						$("tbody .ckbox:checked").val($("#mNo"));
 						console.log($("tbody .ckbox:checked").val($("#mNo")));
-					});
+					}); */
 				}
 				
 				// 회원삭제

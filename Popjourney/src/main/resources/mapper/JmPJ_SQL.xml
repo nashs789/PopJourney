@@ -68,6 +68,6 @@
 	
 	<update id="deleteMem" parameterType="hashmap">
 		UPDATE MEM SET LEAVE_DATE = SYSDATE
-		WHERE MEM_NO = #{memNo}
+		WHERE MEM_NO = #{ckMemNo}
 	</update>
 </mapper>

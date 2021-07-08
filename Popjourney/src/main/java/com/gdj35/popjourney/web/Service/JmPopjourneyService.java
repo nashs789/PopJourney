@@ -1,5 +1,6 @@
 package com.gdj35.popjourney.web.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	}
 
 	@Override
-	public int deleteMem(HashMap<String, String> params) throws Throwable {
-		return iJmPopjourneyDao.deleteMem(params);
+	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable {
+		return iJmPopjourneyDao.deleteMem(dMemNo);
 	}
 
 }

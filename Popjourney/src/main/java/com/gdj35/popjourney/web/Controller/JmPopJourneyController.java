@@ -151,13 +151,18 @@ public class JmPopJourneyController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
 		
-		/*
-		 * try { int cnt = iJmPopjourneyService.deleteMem(params);
-		 * 
-		 * if(cnt > 0) { modelMap.put("msg", "success"); } else { modelMap.put("msg",
-		 * "failed"); } } catch (Throwable e) { e.printStackTrace(); modelMap.put("msg",
-		 * "error"); }
-		 */
+		try {
+			int cnt = iJmPopjourneyService.deleteMem(dMemNo);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
 		System.out.println("dMemNo >> " + dMemNo);
 		return mapper.writeValueAsString(modelMap);
 		
