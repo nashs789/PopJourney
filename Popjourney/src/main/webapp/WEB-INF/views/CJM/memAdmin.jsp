@@ -176,6 +176,122 @@
 			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
+			.popupDel {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list span:first-child {
+			   border-radius: 0 0 0 10px;
+			}
+			.btn_list span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			.popupDel2 {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popupDel2 .popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.popupDel2 .btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px;
+			}
+			.popupDel2 .btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg2 { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
+			#leaveDate {
+				background-color: #F9F9F9;
+			}
+			
 			#container {
 				display: block;
 				width: 1480px;
@@ -387,6 +503,18 @@
 				
 				reloadList();
 				
+				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#travelWriter").on("click", function() {
+			  		location.href = "travelWriterRank";
+			  	});
+				$("#clientCenter").on("click", function() {
+			  		location.href = "clientCenterQuestion";
+			  	});
+				$("#admin").on("click", function() {
+			  		location.href = "memAdmin";
+			  	});
+				
+				// 내부관리자페이지 -> 회원관리 - 일지관리 - 게시판관리 - 공지관리 - 신고관리 메뉴 이동
 				$("#menu1").on("click", function() {
 					location.href = "memAdmin";
 				});
@@ -403,29 +531,118 @@
 					location.href = "reportAdmin";
 				});
 				
-				$("#travelWriter").on("click", function() {
-			  		location.href = "travelWriterRank";
-			  	});
-				$("#clientCenter").on("click", function() {
-			  		location.href = "clientCenterQuestion";
-			  	});
-				$("#admin").on("click", function() {
-			  		location.href = "memAdmin";
-			  	});
-				
+				// 검색어 유지
 				if("${param.searchFilter}" != "") {
 					$("#searchFilter").val("${param.searchFilter}");
 				}
 				
-				$(".paging").on("click", "div", function() {
-					$($("#page").val($(this).attr("page")));
-					$("#searchTxt").val($("#searchTxt").val());
-					reloadList();
-				});
-				
+				// 검색 처리
 				$(".search_btn").on("click", function() {
 					$("#page").val(1);
 					$("#searchOldTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					$("#allCkbox").prop("checked", false);
+					reloadList();
+				});
+				
+				// 체크박스 처리
+				$("#allCkbox").on("click", function() {
+					if($(this).is(":checked")) {
+						$(".ckbox").prop("checked", true);
+					} else {
+						$(".ckbox").prop("checked", false);
+					}
+					ckMemNo();
+				});
+				$("tbody").on("click", ".ckbox", function() {
+					if($("tbody .ckbox").length == $("tbody .ckbox:checked").length) {
+						$("#allCkbox").prop("checked", true);
+					} else {
+						$("#allCkbox").prop("checked", false);
+					}
+					ckMemNo();
+				});
+				
+				function ckMemNo() {
+					/* $("tbody .ckbox:checked").each(function() {
+						$("tbody .ckbox:checked").val($("#mNo").val());
+						console.log($("tbody .ckbox:checked").val($("#mNo").val()));
+					}); */
+					$("tbody .ckbox").on("click", function() {
+						$("tbody .ckbox:checked").val($("#mNo"));
+						console.log($("tbody .ckbox:checked").val($("#mNo")));
+					});
+				}
+				
+				// 회원삭제
+				$("#delBtn").on("click", function() {
+					if($("tbody .ckbox:checked").length >= 1) {
+						$(".popupDel").css("display", "inline-block");
+						$(".bg").css("display", "inline-block");
+						
+					} else {
+						$(".popupDel2").css("display", "inline-block");
+						$(".bg2").css("display", "inline-block");
+					}
+				});
+				$(".popupDel .btn_list #cancel").on("click", function() {
+						$(".popupDel").css("display", "none");
+						$(".bg").css("display", "none");
+				});
+				$(".popupDel2 .btn_list #ok").on("click", function() {
+						$(".popupDel2").css("display", "none");
+						$(".bg2").css("display", "none");
+				});
+				$(".popupDel .btn_list #ok").on("click", function() {
+					/* if(confirm("삭제하시겠습니까?")) {
+						$("#obNo").val($(this).parent().parent().attr("name")); */
+					var params = $("#actionForm").serialize();
+								
+						$.ajax({
+							url : "memAdminDeletes",
+							type : "post",
+							dataType : "json",
+							data : params,
+							success : function(res) {
+								if(res.msg == "success") {
+									//$("#memNo").val("");
+									resetVal();
+									reloadList();
+								} else if(res.msg == "failed") {
+									alert("작성에 실패하였습니다.");
+								} else {
+									alert("작성중 문제가 발생하였습니다.");
+								}
+							},
+							error : function(request, status, error) {
+								console.log(error);
+							}
+						});
+					$(".popupDel").css("display", "none");
+					$(".bg").css("display", "none");
+					if($("tbody #leaveDate").val() != "") {
+						$("#leaveDate").css("background-color", "#AAAAAA");
+					}
+					//}
+				});
+				
+				// 성별 오/내림차순
+				$("#sex").on("click", function() {
+					$("#sortGbn").val(1);
+					
+					if($("#sexGbn").val() == 1) {
+						//reloadListSex();
+						$("#sexGbn").val(2);
+					} else {
+						//reloadListSex();
+						$("#sexGbn").val(1);
+					}
 					reloadList();
 				});
 				
@@ -440,6 +657,11 @@
 					dataType: "json",
 					data: params,
 					success: function(res) {
+						//날자 가져오기
+						$("#searchDate1").val(res.startDay);
+						$("#searchDate2").val(res.today);
+						
+						//내부관리자-회원관리
 						drawList(res.list);
 						drawPaging(res.pb);
 					},
@@ -456,8 +678,8 @@
 				
 				for(d of list) {
 					html += "<tr mno=\"" + d.MEM_NO + "\">";
-					html += "<td><input type=\"checkbox\" class=\"ckbox\"/></td>";
-					html += "<td>" + d.MEM_NO + "</td>";
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
+					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
 					html += "<td>" + d.ID + "</td>";
 					html += "<td>" + d.NIC + "</td>";
 					html += "<td>" + d.NAME + "</td>";
@@ -465,8 +687,9 @@
 					html += "<td>" + d.AGE + "</td>";
 					html += "<td>" + d.EMAIL + "</td>";
 					html += "<td>" + d.PHONE + "</td>";
-					html += "<td>" + d.JOIN_DATE + "</td>";
 					html += "<td>" + d.GRADE_NAME + "</td>";
+					html += "<td>" + d.JOIN_DATE + "</td>";
+					html += "<td id=\"leaveDate\">" + d.LEAVE_DATE + "</td>";
 					html += "<td></td>"; // 게시글수
 					html += "<td></td>"; // 좋아요수
 					html += "<td></td>"; // 팔로워수
@@ -478,6 +701,7 @@
 				}
 				
 				$("#list_wrap tbody").html(html);
+				console.log($(".ckbox").val());
 			}
 			
 			function drawPaging(pb) {
@@ -511,9 +735,30 @@
 				
 			}
 			
+			function resetVal() {
+				$("#page").val(1);
+				$("#searchFilter").val("0");
+				$("#searchTxt").val("");
+			}
+			
 		</script>
 	</head>
 	<body>
+		<div class="popupDel">
+	   		<div class="popup_entity_txt">삭제하시겠습니까?</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		        <span id="cancel">CANCEL</span>
+		    </div>
+		</div>
+		<div class="popupDel2">
+	   		<div class="popup_entity_txt">삭제할 회원이 없습니다.</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		    </div>
+		</div>
+ 		<div class="bg"></div>
+ 		<div class="bg2"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -563,14 +808,16 @@
 			</div>
 			<div id="container">
 				<div class="mem_admin_area">
+					<form action="#" id="actionForm" method="post">
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
 					<div class="sub_search">
-						<form action="#" id="actionForm" method="post">
 						검색 :
 							<input type="hidden" id="memNo" name="memNo" />
 							<input type="hidden" id="page" name="page" value="${page}" />
+							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
+							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">아이디</option>
@@ -579,11 +826,10 @@
 							</select>
 							<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
 							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
-							<input class="search_txt" type="text" id="searchTxt" value="${param.searchTxt}" />
+							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 							<input class="search_btn" type="button" value="검색" />
-							<input class="mem_delete_btn" type="button" value="회원삭제" />
-						</form>
+							<input class="mem_delete_btn" type="button" id="delBtn" value="회원삭제" />
 					</div>
 					<div id="list_wrap">
 						<table>
@@ -597,8 +843,9 @@
 								<col width="75px" /> <!-- 나이 -->
 								<col width="160px" /> <!-- 이메일 -->
 								<col width="133px" /> <!-- 전화번호 -->
-								<col width="100px" /> <!-- 가입일 -->
 								<col width="100px" /> <!-- 등급 -->
+								<col width="100px" /> <!-- 가입일 -->
+								<col width="100px" /> <!-- 탈퇴일 -->
 								<col width="100px" /> <!-- 게시글 -->
 								<col width="100px" /> <!-- 좋아요 -->
 								<col width="100px" /> <!-- 팔로워 -->
@@ -609,17 +856,18 @@
 							</colgroup>
 							<thead>
 								<tr class="article">
-									<th><input type="checkbox" class="ckbox"/></th>
+									<th><input type="checkbox" class="ckbox" id="allCkbox"/></th>
 									<th>회원번호</th>
 									<th>아이디</th>
 									<th>닉네임</th>
 									<th>이름</th>
-									<th class="click_article">성별↕</th>
+									<th class="click_article" id="sex">성별↕</th>
 									<th class="click_article">나이↕</th>
 									<th>이메일</th>
 									<th>전화번호</th>
-									<th class="click_article">가입일↕</th>
 									<th class="click_article">등급↕</th>
+									<th class="click_article">가입일↕</th>
+									<th class="click_article">탈퇴일↕</th>
 									<th class="click_article">게시글↕</th>
 									<th class="click_article">좋아요↕</th>
 									<th class="click_article">팔로워↕</th>
@@ -629,11 +877,10 @@
 									<th>비고</th>
 								</tr>
 							</thead>
-							<tbody>
-							
-							</tbody>
+							<tbody></tbody>
 						</table>
 					</div>
+					</form>
 				</div> <!-- mem_admin_area end -->
 				<div class="paging"></div>
 			</div> <!-- container end -->

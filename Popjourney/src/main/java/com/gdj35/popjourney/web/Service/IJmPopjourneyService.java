@@ -9,5 +9,8 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> getMemList(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getSex(HashMap<String, String> params) throws Throwable;
+
+	public int deleteMem(HashMap<String, String> params) throws Throwable;
 
 }

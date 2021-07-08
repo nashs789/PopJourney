@@ -8,25 +8,26 @@
 		<if test="searchTxt != null and searchTxt != ''">
 	      	<choose>
 	      		<when test="searchFilter == 0">
-			        AND (M.ID LIKE '%' || #{searchTxt} || '%' OR M.NIC LIKE '%' || #{searchTxt} || '%' OR M.NAME LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+			        AND (ID LIKE '%' || #{searchTxt} || '%' OR NIC LIKE '%' || #{searchTxt} || '%' OR NAME LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
 	      		</when>
 	      		<when test="searchFilter == 1">
-   		        	AND M.ID LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+   		        	AND ID LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
 	      		</when>
 	      		<when test="searchFilter == 2">
-			        AND M.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+			        AND NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
 	      		</when>
 	      		<when test="searchFilter == 3">
-	      			AND M.NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2} 
+	      			AND NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2} 
 	      		</when>
 	      	</choose>
 	    </if>
 	</select>
 	
 	<select id="getMemList" parameterType="hashmap" resultType="hashmap">
-		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.JOIN_DATE, M.GRADE_NAME, M.ACC_CNT
-		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL, 
-		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, G.GRADE_NAME, M.ACC_CNT,
+		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.GRADE_NAME, M.JOIN_DATE, M.LEAVE_DATE, M.ACC_CNT, M.RNUM
+		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL,
+		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, G.GRADE_NAME,
+		             TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, M.ACC_CNT,
 		             ROW_NUMBER() OVER(ORDER BY MEM_NO DESC) AS RNUM
 		      FROM MEM M INNER JOIN GRADE G
 		                         ON M.GRADE_NO = G.GRADE_NO
@@ -51,5 +52,22 @@
 		      </if>
 		      ) M
 		WHERE M.RNUM BETWEEN #{startCnt} AND #{endCnt}
+		<choose>
+	      	<when test="sortGbn eq 1">
+	      		<choose>
+	      			<when test="sexGbn eq 1">
+	      				ORDER BY M.SEX ASC, M.RNUM ASC
+	      			</when>
+	      			<otherwise>
+	      				ORDER BY M.SEX DESC, M.RNUM ASC
+	      			</otherwise>
+	      		</choose>
+	      	</when>
+	      </choose>
 	</select>
+	
+	<update id="deleteMem" parameterType="hashmap">
+		UPDATE MEM SET LEAVE_DATE = SYSDATE
+		WHERE MEM_NO = #{memNo}
+	</update>
 </mapper>

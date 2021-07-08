@@ -21,4 +21,13 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectList("JmPJ.getMemList", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSex(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getSex", params);
+	}
+
+	@Override
+	public int deleteMem(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.deleteMem", params);
+	}
 }

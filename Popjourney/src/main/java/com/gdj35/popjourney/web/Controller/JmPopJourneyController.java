@@ -1,5 +1,8 @@
 package com.gdj35.popjourney.web.Controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,18 +63,29 @@ public class JmPopJourneyController {
 	public ModelAndView memAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 
 		int page = 1;
+		int sortGbn = 0;
+		int sexGbn = 1;
 
 		if (params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
+		
+		if (params.get("sortGbn") != null) {
+			page = Integer.parseInt(params.get("sortGbn"));
+		}
+	
+		if (params.get("sexGbn") != null) {
+			page = Integer.parseInt(params.get("sexGbn"));
+		}
 
 		mav.addObject("page", page);
+		mav.addObject("sortGbn", sortGbn);
+		mav.addObject("sexGbn", sexGbn);
 
 		mav.setViewName("CJM/memAdmin");
 
 		return mav;
 	}
-
 	
 	@RequestMapping(value="/memAdmins", method = RequestMethod.POST, produces =
 	"text/json;charset=UTF-8")
@@ -96,16 +110,59 @@ public class JmPopJourneyController {
 		
 		List<HashMap<String, String>> list = iJmPopjourneyService.getMemList(params);
 		
-		modelMap.put("list", list); modelMap.put("pb", pb);
+		//현재날짜 취득
+		String dateForm = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(dateForm);
+		String today = sdf.format(new Date());
+		String startDay = "2021-01-01";
+		
+		// 회원관리 오/내림차순 공통 (0:기본, 1:성별, 2:나이, 3:등급, 4:가입일, 5:탈퇴일, 6:게시글, 7:좋아요, 8:팔로워, 9:누적신고, 10:접속수)
+		int sortGbn = Integer.parseInt(params.get("sortGbn"));
+		modelMap.put("sortGbn", sortGbn);
+		
+		// 회원관리 - 오름차순/내림차순 -> 성별  sex=1(남자) sex=2(여자)
+		int sexGbn = Integer.parseInt(params.get("sexGbn"));
+		//List<HashMap<String, String>> sex = iJmPopjourneyService.getSex(params);
+		modelMap.put("sexGbn", sexGbn);
+			
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("today", today);
+		modelMap.put("startDay", startDay);
 		
 		System.out.println("list >> " + list); System.out.println("pb >> " + pb);
 		System.out.println("cnt >> " + cnt); System.out.println("page >> " + page);
 		System.out.println("params >> " + params);
+		System.out.println("startDay >> " + startDay);
+		System.out.println("today >> " + today);
+		System.out.println("sex >> " + sexGbn);
+		System.out.println("sortGbn >>" + sortGbn);
 		 
 		return mapper.writeValueAsString(modelMap);
 	
 	}
-	 
+	
+	@RequestMapping(value = "/memAdminDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String memAdminDeletes(@RequestParam ArrayList<Integer> dMemNo) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		
+		/*
+		 * try { int cnt = iJmPopjourneyService.deleteMem(params);
+		 * 
+		 * if(cnt > 0) { modelMap.put("msg", "success"); } else { modelMap.put("msg",
+		 * "failed"); } } catch (Throwable e) { e.printStackTrace(); modelMap.put("msg",
+		 * "error"); }
+		 */
+		System.out.println("dMemNo >> " + dMemNo);
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
 	// 내부관리자-여행일지
 	@RequestMapping(value = "/TravelDiaryAdmin")
 	public ModelAndView TravelDiaryAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav)

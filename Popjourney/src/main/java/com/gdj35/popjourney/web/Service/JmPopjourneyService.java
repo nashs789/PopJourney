@@ -23,4 +23,14 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getMemList(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSex(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getSex(params);
+	}
+
+	@Override
+	public int deleteMem(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteMem(params);
+	}
+
 }
