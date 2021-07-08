@@ -58,13 +58,13 @@ body {
     text-align: right;
     background-color: #FFFFFF;
 }
-.btns img {
+#bookmarkPhoto, #profilePhoto, #notificationPhoto {
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
    cursor: pointer;
 }
-.bell_icon {
+#notificationPhoto {
    margin-left: 200px;
 }
 .logins {
@@ -409,55 +409,55 @@ svg{
 	margin-left: 135px;
 	cursor: pointer;
 }
-.timeline{
+#notification{
  	 display:none;
-     /* display: inline-block; */
-     width: 400px;
+     width: 600px;
      background-color: #EAEAEA;
      box-shadow: 0px 0px 1px 1px #444444;
      position: absolute;
      margin-top: 72px;
      right: 10px;
      z-index: 300;
+     font-size: 10pt;
 }
-.timeline tr{
+#notification tr{
 	height: 50px;
 }
    
-.timeline table{
+#notification table{
 	border-collapse: collapse;
 }
 
-.timeline table tr th:first-child{
+#notification table tr th:first-child{
 	text-align: center;
 }
 
-.timeline tr th{
+#notification tr th{
 	text-align: left;
 }
 
-.timeline tr th img{
+#notification tr th img{
 	height: 50px;
-	widtht: 50px;
+	widtht: 70px;
 	text-align: center;
 	cursor: pointer;
 }
 
-.timeline tfoot tr{
+#notification tfoot tr{
 	background-color: #939597;
 }
    
-.timeline tfoot tr th{
+#notification tfoot tr th{
 	text-align: center;
 	cursor: pointer;
 }
 
-.timeline table tr th span{
+#notification table tr th span{
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-.timeline table tr th span:hover{
+#notification table tr th span:hover{
 	color: blue;
 }
 #profileSlidedown{
@@ -517,6 +517,22 @@ $(document).ready(function(){
 		{
 			$("#admin").show();
 		}
+		
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "notifications",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				makeNotification(result.notification);
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
 	}
 	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
@@ -566,6 +582,30 @@ $(document).ready(function(){
 		if(event.keyCode == 13)
 			$("#loginBtn").click();
 	});
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#notificationPhoto").on("click", function(){
+		$("#profileSlidedown").css("display", "none");
+		if($("#notification").css("display") == "block")
+		{
+			$("#notification").css("display", "none");
+		}
+		else
+		{
+			$("#notification").css("display", "inline-block");
+		}
+	}); //notificationPhoto click end
 	
 	var LCD = "#L"; // CD -> LCD
 	var CD = "#"; // LCD -> CD
@@ -636,7 +676,6 @@ $(document).ready(function(){
     }); //svg path click end
     
     $("svg").on("click", ".TEXT", function(){
-    	
     	region = $(this).attr("id").substr(3);
     	$("#regionNo").val(region);
     	
@@ -743,6 +782,42 @@ function findBtnPopup()
 		$(".popup").remove();
 		$(".bg").remove();
 	}); //cancelImg click end
+}
+function makeNotification(notification)
+{
+	var html = "";
+	
+	for(noti of notification)
+	{
+		switch(noti.EVENT_NO)
+		{
+			case 0:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			case 1:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th>[여행일지]" + noti.JTITLE + "...에  <span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이" + noti.JCONTENTS + "... 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;	
+			case 2:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th>[게시판]" + noti.BTITLE + "...에  <span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이" + noti.BCONTENTS + "... 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			default:
+				console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	$("#notification tbody").html(html);
 }
 function drawRankBoard(yearData, monthData, weekData)
 {
@@ -865,6 +940,9 @@ function drawRankBoard(yearData, monthData, weekData)
 <form action="#" id="journalNoForm">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
 </form>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+</form>
 	<div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -876,62 +954,27 @@ function drawRankBoard(yearData, monthData, weekData)
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
-						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-							<div class="timeline">
+						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
+							<div id="notification">
 								<table border="1">
 									<colgroup>
-										<col width="70px">
-										<col width="331.6px">
+										<col width="100px">
+										<col width="350px">
+										<col width="150px">
 									</colgroup>
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
+									<tbody>	
 
-									<tr>
-										<th>2시간전 (오후)9:17분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:54분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:49분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:45분</th>
-									</tr>
-
+									</tbody>
 
 									<tfoot>
 										<tr>
-											<th colspan="2">...더보기</th>
+											<th colspan="3">...더보기</th>
 										</tr>
 									</tfoot>
 								</table>
 							</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>
 									<li id="editProfile">프로필 수정</li>
