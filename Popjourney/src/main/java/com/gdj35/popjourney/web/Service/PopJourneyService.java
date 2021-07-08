@@ -102,4 +102,28 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.delete(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.yearRank(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> monthRank(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.monthRank(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> weekRank(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.weekRank(params);
+	}
+
+	@Override
+	public HashMap<String, String> getDetail(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.getDetail(params);
+	}
 }

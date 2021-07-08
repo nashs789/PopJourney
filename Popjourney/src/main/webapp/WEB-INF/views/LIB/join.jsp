@@ -408,6 +408,7 @@ select{
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
 	if("${sMEM_NO}" != "" || "${data.marketing}" == "")
 	{	
 		location.href="main";
@@ -930,7 +931,7 @@ function findBtnPopup()
 					</select>
 					<input type="text" id="inputKeyword" name="inputKeyword" placeholder="키워드를 입력하세요."/>
 				</div>
-				<input type="hidden" name="marketing" value="${data.marketing}"/>
+				<input type="hidden" id="marketing" name="marketing" value="${data.marketing}"/>
 				<input type="hidden" name="inputCode" id="approvalCode" value="0"/>
 			</form>
 			

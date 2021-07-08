@@ -94,4 +94,86 @@
 		UPDATE MEM SET PHOTO_PATH = #{photoPath}, NIC = #{inputNic}, INTRO = #{inputIntro}
 		WHERE MEM_NO = #{MEM_NO}
 	</update>
+	
+	<select id="yearRank" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
+		                                                                                                                             THEN SUBSTR(J.TITLE, 1, 25) || '....'
+		                                                                                                                             ELSE J.TITLE
+		                                                                                                                         END AS TITLE
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
+		                                                                               FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                                                                      ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                               GROUP BY J.JOURNAL_NO) JC
+		                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+		WHERE J.RK BETWEEN 1 AND 9
+		AND J.REGION_NO = #{regionNo} 
+		ORDER BY J.HIT DESC 
+	</select>
+	
+	<select id="monthRank" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME, CASE WHEN J.MONTH >= 10
+		                                                                                                                        THEN J.MONTH
+		                                                                                                                        ELSE SUBSTR(J.MONTH, 2)
+		                                                                                                                     END AS MONTH, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
+		                                                                                                                                             THEN SUBSTR(J.TITLE, 1, 25) || '....'
+		                                                                                                                                             ELSE J.TITLE
+		                                                                                                                                        END AS TITLE
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO, TO_CHAR(SYSDATE, 'MM') AS MONTH
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
+		                                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                                    GROUP BY J.JOURNAL_NO) JC
+		                                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
+		     WHERE J.RK BETWEEN 1 AND 9
+		     AND J.REGION_NO = #{regionNo}
+		     ORDER BY J.HIT DESC
+	</select>
+	
+	<select id="weekRank" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME,  CMT, CASE WHEN LENGTH(J.TITLE) > 20 
+		                                                                                                                              THEN SUBSTR(J.TITLE, 1, 25) || '....'
+		                                                                                                                              ELSE J.TITLE
+		                                                                                                                          END AS TITLE
+		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                            ON JC.CATEGORY_NO = 1
+		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
+		                    INNER JOIN MEM M
+		                             ON M.MEM_NO = J.MEM_NO
+		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM')
+		      AND TO_CHAR(J.JOURNAL_DATE, 'IW')= TO_CHAR(SYSDATE, 'IW')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
+                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+                                                                    GROUP BY J.JOURNAL_NO) JC
+                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
+		     WHERE J.RK BETWEEN 1 AND 9
+		     AND J.REGION_NO = #{regionNo}
+		     ORDER BY J.HIT DESC
+	</select>
+	
+	<select id="getDetail" parameterType="hashmap" resultType="hashmap">
+		SELECT JD.PHOTO_PATH, JD.CONTENTS, JL.LIKE_CNT
+		FROM JOURNAL_DETAIL JD INNER JOIN (SELECT COUNT(*)AS LIKE_CNT 
+		                                   FROM JOURNAL_LIKE
+		                                   WHERE JOURNAL_NO = #{journalNo}) JL
+		                               ON 1 = 1
+		WHERE JD.JOURNAL_NO = #{journalNo} 
+		AND JD.JOURNAL_SEQUENCE = 1     
+	</select>
 </mapper>
