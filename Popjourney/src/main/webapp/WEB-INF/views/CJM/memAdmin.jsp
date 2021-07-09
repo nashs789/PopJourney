@@ -558,7 +558,6 @@
 					} else {
 						$(".ckbox").prop("checked", false);
 					}
-					ckMemNo();
 				});
 				$("tbody").on("click", ".ckbox", function() {
 					if($("tbody .ckbox").length == $("tbody .ckbox:checked").length) {
@@ -566,19 +565,7 @@
 					} else {
 						$("#allCkbox").prop("checked", false);
 					}
-					ckMemNo();
 				});
-				
-				function ckMemNo() {
-					$("tbody .ckbox:checked").each(function() {
-						$("tbody .ckbox:checked").val($("#mNo").val());
-						console.log($("tbody .ckbox:checked").val($("#mNo").val()));
-					});
-					/* $("tbody .ckbox").on("click", function() {
-						$("tbody .ckbox:checked").val($("#mNo"));
-						console.log($("tbody .ckbox:checked").val($("#mNo")));
-					}); */
-				}
 				
 				// 회원삭제
 				$("#delBtn").on("click", function() {
@@ -600,8 +587,7 @@
 						$(".bg2").css("display", "none");
 				});
 				$(".popupDel .btn_list #ok").on("click", function() {
-					/* if(confirm("삭제하시겠습니까?")) {
-						$("#obNo").val($(this).parent().parent().attr("name")); */
+
 					var params = $("#actionForm").serialize();
 								
 						$.ajax({
@@ -611,9 +597,10 @@
 							data : params,
 							success : function(res) {
 								if(res.msg == "success") {
-									//$("#memNo").val("");
 									resetVal();
 									reloadList();
+									$(".popupDel").css("display", "none");
+									$(".bg").css("display", "none");
 								} else if(res.msg == "failed") {
 									alert("작성에 실패하였습니다.");
 								} else {
@@ -624,12 +611,10 @@
 								console.log(error);
 							}
 						});
-					$(".popupDel").css("display", "none");
-					$(".bg").css("display", "none");
 					if($("tbody #leaveDate").val() != "") {
 						$("#leaveDate").css("background-color", "#AAAAAA");
 					}
-					//}
+					
 				});
 				
 				// 성별 오/내림차순
