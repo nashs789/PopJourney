@@ -15,7 +15,8 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -179,7 +180,7 @@
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
 			
 			
@@ -290,6 +291,10 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
+				cursor: pointer;
+			}
+			tbody tr:hover {
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;

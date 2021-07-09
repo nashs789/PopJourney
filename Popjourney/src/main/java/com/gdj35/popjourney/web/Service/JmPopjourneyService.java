@@ -44,4 +44,24 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getCommunityCnt(params);
 	}
 
+	@Override
+	public int getNoticeCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNoticeCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> noticeList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.noticeList(params);
+	}
+
+	@Override
+	public int getTravelDiaryCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getTravelDiaryCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> travelDiaryList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.travelDiaryList(params);
+	}
+
 }

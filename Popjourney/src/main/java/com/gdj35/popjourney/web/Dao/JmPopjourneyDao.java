@@ -41,4 +41,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	public int getCommunityCnt(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("JmPJ.getCommunityCnt", params);
 	}
+
+	@Override
+	public int getNoticeCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getNoticeCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> noticeList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.noticeList", params);
+	}
+
+	@Override
+	public int getTravelDiaryCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getTravelDiaryCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> travelDiaryList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.travelDiaryList", params);
+	}
 }

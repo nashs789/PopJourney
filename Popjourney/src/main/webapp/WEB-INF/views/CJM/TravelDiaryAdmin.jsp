@@ -16,6 +16,7 @@
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
 				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -179,7 +180,7 @@
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
 			
 			
@@ -290,6 +291,10 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
+				cursor: pointer;
+			}
+			tbody tr:hover {
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;
@@ -419,58 +424,82 @@
 					location.href = "reportAdmin";
 				});
 				
-				function reloadList() {
-					var params = $("actionForm").serialize();
-					
-					$.ajax({
-						url: "TravelDiaryAdmins",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							//날짜 가져오기
-							$("#searchDate1").val(res.startDay);
-							$("#searchDate2").val(res.today);
-							
-							//내부관리자 - 여행일지
-							drawList(res.list);
-							drawPaging(res.pb);
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
+				
+			});
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "TravelDiaryAdmins",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						//날짜 가져오기
+						$("#searchDate1").val(res.startDay);
+						$("#searchDate2").val(res.today);
+						
+						//내부관리자 - 여행일지
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+			
+			function drawList(list) {
+				var html = "";
+				
+				for(d of list) {
+					html += "<tr mno=\"" + d.JOURNAL_NO + "\">";
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.JOURNAL_NO + "\"/></td>";
+					html += "<td id=\"mNo\">" + d.JOURNAL_NO + "</td>";
+					html += "<td>" + d.CATEGORY_NAME + "</td>";
+					html += "<td>" + d.SUB_CATEGORY_NAME + "</td>";
+					html += "<td class=\"diary_title\">" + d.TITLE + "</td>";
+					html += "<td>" + d.GRADE_NAME + "</td>";
+					html += "<td>" + d.JOURNAL_DATE + "</td>";
+					html += "<td>" + d.HIT + "</td>";
+					html += "<td>" + d.LIKE_CNT + "</td>";
+					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					html += "</tr>";
+				}
+				$("#list_wrap tbody").html(html);
+			}
+			
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
 				}
 				
-				function drawList(list) {
-					var html = "";
-					
-					for(d of list) {
-						html += "<tr mno=\"" + d.MEM_NO + "\">";
-						html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
-						html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
-						html += "<td>" + d.ID + "</td>";
-						html += "<td>" + d.NIC + "</td>";
-						html += "<td>" + d.NAME + "</td>";
-						html += "<td>" + d.SEX + "</td>";
-						html += "<td>" + d.AGE + "</td>";
-						html += "<td>" + d.EMAIL + "</td>";
-						html += "<td>" + d.PHONE + "</td>";
-						html += "<td>" + d.GRADE_NAME + "</td>";
-						html += "<td>" + d.JOIN_DATE + "</td>";
-						html += "<td id=\"leaveDate\">" + d.LEAVE_DATE + "</td>";
-						html += "<td></td>"; // 게시글수
-						html += "<td></td>"; // 좋아요수
-						html += "<td></td>"; // 팔로워수
-						html += "<td></td>"; // 누적신고수
-						html += "<td>" + d.ACC_CNT + "</td>";
-						html += "<td></td>"; // 등업신청유무
-						html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
-						html += "</tr>";
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
 					}
 				}
 				
-			});
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+				
+			}
 			
 		</script>
 	</head>
@@ -524,75 +553,60 @@
 			</div>
 			<div id="container">
 				<div class="mem_admin_area">
+				<form action="#" id="actionForm" method="post">
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
-					<form action="#" id="actionForm" method="post">
-						<div class="sub_search">
-							검색 :
-							<select class="search_filter">
-									<option value="0" selected="selected">통합검색</option>
-									<option value="1">닉네임</option>
-									<option value="2">제목</option>
-							</select>
-							<input class="search_date" type="date" /><span>부터</span> 
-							<input class="search_date" type="date" /><span>까지</span> 
-							<input class="search_txt" type="text" />
-							<input class="search_btn" type="button" value="검색" />
-							<input class="diary_delete_btn" type="button" value="일지삭제" />
-						</div>
-					</form>
-					<table>
-						<colgroup>
-								<col width="32px" /> <!-- 체크박스 -->
-								<col width="106px" /> <!-- 일지번호 -->
-								<col width="101px" /> <!-- 닉네임 -->
-								<col width="124px" /> <!-- 선호도 -->
-								<col width="124px" /> <!-- 카테고리 -->
-								<col width="430px" /> <!-- 제목 -->
-								<col width="161px" /> <!-- 해시태그 -->
-								<col width="124px" /> <!-- 등급 -->
-								<col width="161px" /> <!-- 작성일 -->
-								<col width="92px" /> <!-- 조회 -->
-								<col width="102px" /> <!-- 좋아요 -->
-								<col width="110px" /> <!-- 비고 -->
-						</colgroup>
-						<thead>
-							<tr class="article">
-								<th><input type="checkbox" class="ckbox"/></th>
-	            				<th>일지번호</th>
-	            				<th>닉네임</th>
-	            				<th class="click_article">선호도↕</th>
-	            				<th class="click_article">카테고리↕</th>
-	            				<th>제목</th>
-	            				<th>해시태그</th>
-	            				<th class="click_article">등급↕</th>
-	            				<th class="click_article">작성일↕</th>
-	            				<th class="click_article">조회↕</th>
-	            				<th class="click_article">좋아요↕</th>
-	            				<th>비고</th>
-	            			</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-					</table>
+					<div class="sub_search">
+						검색 :
+						<input type="hidden" id="page" name="page" value="${page}" />
+						<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+						<select class="search_filter" id="searchFilter" name="searchFilter">
+								<option value="0" selected="selected">통합검색</option>
+								<option value="1">닉네임</option>
+								<option value="2">제목</option>
+						</select>
+						<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
+						<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
+						<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
+						<input class="search_btn" type="button" value="검색" />
+						<input class="diary_delete_btn" type="button" value="일지삭제" />
+					</div>
+					<div id="list_wrap">
+						<table>
+							<colgroup>
+									<col width="32px" /> <!-- 체크박스 -->
+									<col width="106px" /> <!-- 일지번호 -->
+									<col width="101px" /> <!-- 닉네임 -->
+									<col width="124px" /> <!-- 선호도 -->
+									<col width="124px" /> <!-- 카테고리 -->
+									<col width="430px" /> <!-- 제목 -->
+									<col width="161px" /> <!-- 해시태그 -->
+									<col width="124px" /> <!-- 등급 -->
+									<col width="161px" /> <!-- 작성일 -->
+									<col width="92px" /> <!-- 조회 -->
+									<col width="102px" /> <!-- 좋아요 -->
+									<col width="110px" /> <!-- 비고 -->
+							</colgroup>
+							<thead>
+								<tr class="article">
+									<th><input type="checkbox" class="ckbox"/></th>
+		            				<th>일지번호</th>
+		            				<th>닉네임</th>
+		            				<th class="click_article">선호도↕</th>
+		            				<th class="click_article">카테고리↕</th>
+		            				<th>제목</th>
+		            				<th class="click_article">등급↕</th>
+		            				<th class="click_article">작성일↕</th>
+		            				<th class="click_article">조회↕</th>
+		            				<th class="click_article">좋아요↕</th>
+		            				<th>비고</th>
+		            			</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</form>
 				</div> <!-- mem_admin_area end -->
 				<div class="paging"></div>
 			</div> <!-- container end -->

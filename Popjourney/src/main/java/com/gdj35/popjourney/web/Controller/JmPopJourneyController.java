@@ -180,6 +180,48 @@ public class JmPopJourneyController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value="/TravelDiaryAdmins", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String TravelDiaryAdmins(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getTravelDiaryCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		System.out.println("params >> " + params);
+		List<HashMap<String, String>> list = iJmPopjourneyService.travelDiaryList(params);
+		
+		//현재날짜 취득
+		String dateForm = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(dateForm);
+		String today = sdf.format(new Date());
+		String startDay = "2021-01-01";
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("today", today);
+		modelMap.put("startDay", startDay);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		System.out.println("startDay >> " + startDay);
+		System.out.println("today >> " + today);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
 
 	// 내부관리자-자유게시판
 	@RequestMapping(value = "/communityAdmin")
@@ -244,9 +286,58 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/noticeAdmin")
 	public ModelAndView noticeAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
 		mav.setViewName("CJM/noticeAdmin");
 
 		return mav;
+	}
+	
+	@RequestMapping(value="/noticeAdmins", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String noticeAdmins(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getNoticeCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.noticeList(params);
+		
+		//현재날짜 취득
+		String dateForm = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(dateForm);
+		String today = sdf.format(new Date());
+		String startDay = "2021-01-01";
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("today", today);
+		modelMap.put("startDay", startDay);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		System.out.println("startDay >> " + startDay);
+		System.out.println("today >> " + today);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 
 	// 내부관리자-신고관리

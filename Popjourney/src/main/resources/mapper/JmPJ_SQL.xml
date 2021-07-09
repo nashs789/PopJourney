@@ -71,13 +71,99 @@
 		WHERE MEM_NO = #{ckMemNo}
 	</update>
 	
+	<select id="getTravelDiaryCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, M.GRADE_NO, G.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME
+		      FROM MEM M INNER JOIN JOURNAL J
+		                         ON M.MEM_NO = J.MEM_NO
+		                 INNER JOIN JOURNAL_CATEGORY JC
+		                         ON J.CATEGORY = JC.CATEGORY_NO
+		                        AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+		                 INNER JOIN GRADE G
+		                         ON M.GRADE_NO = G.GRADE_NO) J INNER JOIN (SELECT CATEGORY_NO, SUB_CATEGORY_NO, SUB_CATEGORY_NAME AS CATEGORY_NAME
+		                                                                   FROM JOURNAL_CATEGORY
+		                                                                   WHERE CATEGORY_NO = 0) JC
+		                                                               ON J.CATEGORY = JC.SUB_CATEGORY_NO
+		                                                       LEFT OUTER JOIN (SELECT JL.JOURNAL_NO, COUNT(*) AS LIKE_CNT
+		                                                                        FROM JOURNAL J INNER JOIN JOURNAL_LIKE JL
+		                                                                                               ON J.JOURNAL_NO = JL.JOURNAL_NO
+		                                                                        GROUP BY JL.JOURNAL_NO) JL
+		                                                                    ON J.JOURNAL_NO = JL.JOURNAL_NO
+		WHERE 1 = 1
+		<if test="searchTxt != null and searchTxt != ''">
+			<choose>
+				<when test="searchFilter == 0">
+					AND (J.NIC LIKE '%' || #{searchTxt} || '%' OR JC.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR J.SUB_CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR J.TITLE LIKE '%' || #{searchTxt} || '%')
+					AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 1">
+					AND J.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 2">
+					AND JC.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 3">
+					AND J.SUB_CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 4">
+					AND J.TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="travelDiaryList" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, J.NIC, J.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, J.LIKE_CNT, J.RNUM
+		FROM (SELECT J.JOURNAL_NO, J.NIC, JC.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, JL.LIKE_CNT,
+		             ROW_NUMBER() OVER(ORDER BY J.JOURNAL_NO DESC) AS RNUM
+		      FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, M.GRADE_NO, G.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME
+		            FROM MEM M INNER JOIN JOURNAL J
+		                               ON M.MEM_NO = J.MEM_NO
+		                       INNER JOIN JOURNAL_CATEGORY JC
+		                               ON J.CATEGORY = JC.CATEGORY_NO
+		                              AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+		                       INNER JOIN GRADE G
+		                               ON M.GRADE_NO = G.GRADE_NO) J INNER JOIN (SELECT CATEGORY_NO, SUB_CATEGORY_NO, SUB_CATEGORY_NAME AS CATEGORY_NAME
+		                                                                         FROM JOURNAL_CATEGORY
+		                                                                         WHERE CATEGORY_NO = 0) JC
+		                                                                     ON J.CATEGORY = JC.SUB_CATEGORY_NO
+		                                                             LEFT OUTER JOIN (SELECT JL.JOURNAL_NO, COUNT(*) AS LIKE_CNT
+		                                                                              FROM JOURNAL J INNER JOIN JOURNAL_LIKE JL
+		                                                                                                     ON J.JOURNAL_NO = JL.JOURNAL_NO
+		                                                                              GROUP BY JL.JOURNAL_NO) JL
+		                                                                          ON J.JOURNAL_NO = JL.JOURNAL_NO
+		      WHERE 1 = 1
+		      <if test="searchTxt != null and searchTxt != ''">
+				<choose>
+					<when test="searchFilter == 0">
+						AND (J.NIC LIKE '%' || #{searchTxt} || '%' OR JC.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR J.SUB_CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR J.TITLE LIKE '%' || #{searchTxt} || '%')
+						AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+					</when>
+					<when test="searchFilter == 1">
+						AND J.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+					</when>
+					<when test="searchFilter == 2">
+						AND JC.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+					</when>
+					<when test="searchFilter == 3">
+						AND J.SUB_CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+					</when>
+					<when test="searchFilter == 4">
+						AND J.TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+					</when>
+				</choose>
+			  </if>
+		      ) J
+		WHERE J.RNUM BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
 	<select id="getCommunityCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
 		FROM MEM M INNER JOIN BOARD B
                            ON M.MEM_NO = B.MEM_NO
                    INNER JOIN BOARD_CATEGORY BC
                    		   ON B.CATEGORY_NO = BC.CATEGORY_NO
-		WHERE CATEGORY_NAME != '공지사항'
+		WHERE BC.CATEGORY_NAME != '공지사항'
 		<if test="searchTxt != null and searchTxt != ''">
 	      	<choose>
 	      		<when test="searchFilter == 0">
@@ -98,19 +184,20 @@
 	
 	<select id="communityList" parameterType="hashmap" resultType="hashmap">
 		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM
-		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT, B.RNUM
-		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT,
-		                   ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
+		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT,
+			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
+		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT
 		            FROM MEM M INNER JOIN BOARD B
 		                               ON M.MEM_NO = B.MEM_NO
 		                       INNER JOIN BOARD_CATEGORY BC
 		                               ON B.CATEGORY_NO = BC.CATEGORY_NO
 		                       INNER JOIN GRADE G
-		                               ON M.GRADE_NO = G.GRADE_NO) B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
+		                               ON M.GRADE_NO = G.GRADE_NO
+		            WHERE BC.CATEGORY_NAME != '공지사항') B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 		                                                                              FROM BOARD_LIKE
 		                                                                              GROUP BY POST_NO) BL
 		                                                                          ON B.POST_NO = BL.POST_NO
-		      WHERE B.CATEGORY_NAME != '공지사항'
+		      WHERE 1 = 1
 		      <if test="searchTxt != null and searchTxt != ''">
 		      	<choose>
 		      		<when test="searchFilter == 0">
@@ -127,6 +214,40 @@
 		      		</when>
 		      	</choose>
 		      </if>
+		      ) B
+		WHERE B.RNUM BETWEEN ${startCnt} AND #{endCnt}
+	</select>
+	
+	<select id="getNoticeCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM MEM M INNER JOIN BOARD B
+                           ON M.MEM_NO = B.MEM_NO
+                   INNER JOIN BOARD_CATEGORY BC
+                   		   ON B.CATEGORY_NO = BC.CATEGORY_NO
+		WHERE BC.CATEGORY_NAME = '공지사항'
+		<if test="searchTxt != null and searchTxt != ''">
+		AND B.TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+        </if>
+	</select>
+	
+	<select id="noticeList" parameterType="hashmap" resultType="hashmap">
+		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM
+		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT,
+			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
+		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT
+		            FROM MEM M INNER JOIN BOARD B
+		                               ON M.MEM_NO = B.MEM_NO
+		                       INNER JOIN BOARD_CATEGORY BC
+		                               ON B.CATEGORY_NO = BC.CATEGORY_NO
+		                       INNER JOIN GRADE G
+		                               ON M.GRADE_NO = G.GRADE_NO
+		            WHERE BC.CATEGORY_NAME = '공지사항') B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
+                                                                         FROM BOARD_LIKE
+                                                                         GROUP BY POST_NO) BL
+                                                                     ON B.POST_NO = BL.POST_NO
+              <if test="searchTxt != null and searchTxt != ''">
+		      WHERE B.TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+              </if>
 		      ) B
 		WHERE B.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>

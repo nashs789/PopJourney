@@ -18,4 +18,12 @@ public interface IJmPopjourneyService {
 
 	public int getCommunityCnt(HashMap<String, String> params) throws Throwable;
 
+	public int getNoticeCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> noticeList(HashMap<String, String> params) throws Throwable;
+
+	public int getTravelDiaryCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> travelDiaryList(HashMap<String, String> params) throws Throwable;
+
 }

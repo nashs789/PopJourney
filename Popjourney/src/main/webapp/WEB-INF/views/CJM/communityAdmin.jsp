@@ -16,6 +16,7 @@
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
 				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -179,7 +180,7 @@
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
 			
 			
@@ -290,6 +291,10 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
+				cursor: pointer;
+			}
+			tbody tr:hover {
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;
@@ -453,82 +458,83 @@
 					}
 				});
 				
-				function reloadList() {
-					var params = $("#actionForm").serialize();
-					
-					$.ajax({
-						url: "communityAdmins",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							//날짜 가져오기
-							$("#searchDate1").val(res.startDay);
-							$("#searchDate2").val(res.today);
-							
-							//내부관리자-게시판관리
-							drawList(res.list);
-							drawPaging(res.pb);
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
-					
-				}
 				
-				function drawList(list) {
-					var html = "";
-					
-					for(d of list) {
-						html += "<tr mno=\"" + d.POST_NO + "\">";
-						html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
-						html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
-						html += "<td>" + d.CATEGORY_NAME + "</td>";
-						html += "<td class=\"board_title\">" + d.TITLE + "</td>";
-						html += "<td>" + d.GRADE_NAME + "</td>";
-						html += "<td>" + d.NIC + "</td>";
-						html += "<td>" + d.BOARD_DATE + "</td>";
-						html += "<td>" + d.HIT + "</td>";
-						html += "<td>" + d.LIKE_CNT + "</td>";
-						html += "<td><input type=\"button\" class=\"edit_btn\" value=\"수정\" readonly=\"readonly\"/></td>";
-						html += "</tr>";
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "communityAdmins",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						//날짜 가져오기
+						$("#searchDate1").val(res.startDay);
+						$("#searchDate2").val(res.today);
+						
+						//내부관리자-게시판관리
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(error);
 					}
-					
-					$("#list_wrap tbody").html(html);
+				});
+				
+			}
+			
+			function drawList(list) {
+				var html = "";
+				
+				for(d of list) {
+					html += "<tr mno=\"" + d.POST_NO + "\">";
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
+					html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
+					html += "<td>" + d.CATEGORY_NAME + "</td>";
+					html += "<td class=\"board_title\">" + d.TITLE + "</td>";
+					html += "<td>" + d.GRADE_NAME + "</td>";
+					html += "<td>" + d.NIC + "</td>";
+					html += "<td>" + d.BOARD_DATE + "</td>";
+					html += "<td>" + d.HIT + "</td>";
+					html += "<td>" + d.LIKE_CNT + "</td>";
+					html += "<td><input type=\"button\" class=\"edit_btn\" value=\"수정\" readonly=\"readonly\"/></td>";
+					html += "</tr>";
 				}
 				
-				function drawPaging(pb) {
-					var html = "";
-					
-					html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
-					
-					if($("#page").val() == "1") {
-						html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				$("#list_wrap tbody").html(html);
+			}
+			
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
 					} else {
-						html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
 					}
-					
-					for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-						if($("#page").val() == i) {
-							html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
-						} else {
-							html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
-						}
-					}
-					
-					if($("#page").val() == pb.maxPcount) {
-						html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
-					} else {
-						html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
-					}
-					
-					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
-					
-					$(".paging").html(html);
 				}
 				
-			});
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+			}
 			
 		</script>
 	</head>

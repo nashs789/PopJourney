@@ -288,10 +288,6 @@
 				opacity: 0.2;
 			}
 			
-			#leaveDate {
-				background-color: #F9F9F9;
-			}
-			
 			#container {
 				display: block;
 				width: 1480px;
@@ -390,12 +386,12 @@
 				border-collapse: collapse;
 			}
 			thead tr {
-				background-color: #FFFFFF;
 				color: #000000;
 				height: 40px;
 				border-top: 2px solid #2e3459;
 				border-bottom: 1px solid #ccc;
 				text-align: center;
+				background-color: #FFFFFF;
 			}
 			thead tr th {
 				padding: 0px 5px;
@@ -407,6 +403,10 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
+				cursor: pointer;
+			}
+			tbody tr:hover {
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;
@@ -611,9 +611,6 @@
 								console.log(error);
 							}
 						});
-					if($("tbody #leaveDate").val() != "") {
-						$("#leaveDate").css("background-color", "#AAAAAA");
-					}
 					
 				});
 				
@@ -674,7 +671,7 @@
 					html += "<td>" + d.PHONE + "</td>";
 					html += "<td>" + d.GRADE_NAME + "</td>";
 					html += "<td>" + d.JOIN_DATE + "</td>";
-					html += "<td id=\"leaveDate\">" + d.LEAVE_DATE + "</td>";
+					html += "<td>" + d.LEAVE_DATE + "</td>";
 					html += "<td></td>"; // 게시글수
 					html += "<td></td>"; // 좋아요수
 					html += "<td></td>"; // 팔로워수
