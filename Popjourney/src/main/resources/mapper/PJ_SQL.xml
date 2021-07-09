@@ -178,44 +178,56 @@
 	</select>
 	
 	<select id="notification" parameterType="hashmap" resultType="hashmap">
-		SELECT NOTF_NO, EVENT_NO, TO_CHAR(NOTF_DATE, 'YYYY-MM-DD')AS NOTF_DATE, NOTF_MEM_NO, REQUEST, MEM_NO, TARGET, JTITLE, JCONTENTS, BTITLE, BCONTENTS, DOWN_CONTENTS, UP_CMT_MEM_NO, UP_CONTENTS
-		FROM(SELECT NF.NOTF_NO, NF.EVENT_NO, NFE.EVENT_NAME, NF.NOTF_MEM_NO, M.NIC AS REQUEST, NF.MEM_NO, M2.NIC AS TARGET, NF.GBN_NO, NF.NOTF_DATE,  
-		     RANK() OVER(PARTITION BY NF.MEM_NO ORDER BY TO_CHAR(NF.NOTF_DATE, 'YYYY-MM-DD HH:MMI:SS')DESC) AS RK, JCMT.TITLE AS JTITLE, JCMT.CONTENTS AS JCONTENTS, BCMT.TITLE AS BTITLE, 
-		     BCMT.CONTENTS AS BCONTENTS, JCCMT.DOWN_CONTENTS, JCCMT.UP_CMT_MEM_NO, JCCMT.UP_CONTENTS
+		SELECT NOTF_NO, EVENT_NO, NOTF_MEM_NO, REQUEST, MEM_NO, GBN_NO, NOTF_DATE, JOURNAL_NO, JTITLE, JCONTENTS, POST_NO, BTITLE, BCONTENTS, JCJOURNAL_NO, JCTITLE,
+		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO
+		FROM(SELECT NOTF_NO, NF.EVENT_NO, NF.NOTF_MEM_NO, M.NIC AS REQUEST, NF.MEM_NO, NF.GBN_NO, TO_CHAR(NOTF_DATE, 'YYYY-MM-DD') AS NOTF_DATE, JCMT.JOURNAL_NO, JCMT.JTITLE, 
+		     JCMT.JCONTENTS, BCMT.POST_NO, BCMT.BTITLE, BCMT.BCONTENTS, JCCMT.JCJOURNAL_NO, JCCMT.JCTITLE, JCCMT.JUP_CONTENTS, BCCMT.BCPOST_NO,
+		     BCCMT.BCTITLE, BCCMT.BUP_CONTENTS, JCCMT2.UPJCONTENTS, JCCMT2.JCCMEM_NO, JCCMT2.DOWNJCONTENTS, JCCMT2.CCJOURNAL_NO, BCCMT2.UPBCONTENTS, BCCMT2.BCCMEM_NO, 
+		     BCCMT2.DOWNBCONTENTS, BCCMT2.CCPOST_NO,
+		     RANK() OVER(PARTITION BY NF.MEM_NO ORDER BY TO_CHAR(NF.NOTF_DATE, 'YYYY-MM-DD HH:MMI:SS')DESC) AS RK
 		     FROM NOTF NF INNER JOIN MEM M --알람주체
 		                          ON NF.NOTF_MEM_NO = M.MEM_NO
 		                  INNER JOIN MEM M2 --알람대상
 		                          ON NF.MEM_NO = M2.MEM_NO
-		                  INNER JOIN NOTF_EVENT NFE
-		                          ON NF.EVENT_NO = NFE.EVENT_NO
-		                  LEFT OUTER JOIN (SELECT NF.NOTF_NO, JC.CONTENTS, J.TITLE
-		                                   FROM NOTF NF INNER JOIN NOTF_EVENT NFE
-		                                                        ON NF.EVENT_NO = NFE.EVENT_NO
-		                                                        AND NF.EVENT_NO = 1
-		                                                INNER JOIN JOURNAL_CMT JC
-		                                                        ON NF.GBN_NO = JC.JOURNAL_CMT_NO
-		                                                INNER JOIN JOURNAL J
-		                                                        ON JC.JOURNAL_NO = J.JOURNAL_NO) JCMT
-		                               ON NF.NOTF_NO = JCMT.NOTF_NO 
-		                 LEFT OUTER JOIN (SELECT NF.*, NFE.EVENT_NAME, B.TITLE, BC.CONTENTS
-		                                  FROM NOTF NF INNER JOIN NOTF_EVENT NFE
-		                                                       ON NF.EVENT_NO = NFE.EVENT_NO
-		                                                       AND NF.EVENT_NO = 2
-		                                               INNER JOIN BOARD_CMT BC
-		                                                       ON NF.GBN_NO = BC.POST_CMT_NO
-		                                               INNER JOIN BOARD B
-		                                                       ON BC.POST_NO = B.POST_NO) BCMT
-		                              ON NF.NOTF_NO = BCMT.NOTF_NO
-		                 LEFT OUTER JOIN (SELECT NF.NOTF_NO, JC.CONTENTS AS DOWN_CONTENTS, JC2.MEM_NO AS UP_CMT_MEM_NO, JC2.CONTENTS AS UP_CONTENTS
-		                                  FROM NOTF NF INNER JOIN NOTF_EVENT NFE
-		                                                       ON NF.EVENT_NO = NFE.EVENT_NO
-		                                                       AND NF.EVENT_NO = 3
-		                                               INNER JOIN JOURNAL_CMT JC --하위댓글
-		                                                       ON NF.GBN_NO = JC.JOURNAL_CMT_NO
-		                                               INNER JOIN JOURNAL_CMT JC2 --상위댓글
-		                                                       ON JC2.JOURNAL_CMT_NO = JC.PARENTS_CMT_NO) JCCMT
-		                              ON NF.NOTF_NO = JCCMT.NOTF_NO)
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, JC.JOURNAL_CMT_NO, JC.CONTENTS AS JCONTENTS, J.TITLE AS JTITLE
+		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL J
+		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCMT
+		                               ON NF.GBN_NO = JCMT.JOURNAL_CMT_NO
+		                               AND NF.EVENT_NO = 1
+		                  LEFT OUTER JOIN (SELECT BC.POST_NO, BC.POST_CMT_NO, BC.CONTENTS AS BCONTENTS, B.TITLE AS BTITLE
+		                                   FROM BOARD_CMT BC INNER JOIN BOARD B
+		                                                             ON BC.POST_NO = B.POST_NO) BCMT
+		                               ON NF.GBN_NO = BCMT.POST_CMT_NO
+		                               AND NF.EVENT_NO = 2
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, JC2.CONTENTS AS JUP_CONTENTS, J.TITLE AS JCTITLE
+		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL_CMT JC2 
+		                                                               ON JC2.JOURNAL_CMT_NO = JC.PARENTS_CMT_NO
+		                                                       INNER JOIN JOURNAL J
+		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCCMT
+		                               ON NF.GBN_NO = JCCMT.JOURNAL_CMT_NO
+		                               AND NF.EVENT_NO = 3
+		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.POST_NO AS BCPOST_NO, BC2.CONTENTS AS BUP_CONTENTS, B.TITLE AS BCTITLE
+		                                   FROM BOARD_CMT BC INNER JOIN BOARD_CMT BC2 
+		                                                               ON BC2.POST_CMT_NO = BC.PARENTS_CMT_NO
+		                                                     INNER JOIN BOARD B
+		                                                             ON BC.POST_NO = B.POST_NO) BCCMT
+		                               ON NF.GBN_NO = BCCMT.POST_CMT_NO
+		                               AND NF.EVENT_NO = 4
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC2.CONTENTS AS UPJCONTENTS, JC.CONTENTS AS DOWNJCONTENTS, JC.MEM_NO AS JCCMEM_NO, JC.JOURNAL_NO AS CCJOURNAL_NO
+		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL_CMT JC2 
+		                                                               ON JC2.JOURNAL_CMT_NO = JC.PARENTS_CMT_NO
+		                                                       INNER JOIN JOURNAL J
+		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCCMT2
+		                               ON NF.GBN_NO = JCCMT2.JOURNAL_CMT_NO
+		                               AND NF.EVENT_NO = 5
+		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC2.CONTENTS AS UPBCONTENTS, BC.CONTENTS AS DOWNBCONTENTS, BC.MEM_NO AS BCCMEM_NO, BC.POST_NO AS CCPOST_NO
+		                                   FROM BOARD_CMT BC INNER JOIN BOARD_CMT BC2 
+		                                                               ON BC2.POST_CMT_NO = BC.PARENTS_CMT_NO
+		                                                       INNER JOIN BOARD B
+		                                                               ON BC.POST_NO = B.POST_NO) BCCMT2
+		                               ON NF.GBN_NO = BCCMT2.POST_CMT_NO
+		                               AND NF.EVENT_NO = 6)
 		WHERE MEM_NO = #{MEM_NO}
-		AND RK BETWEEN 1 AND 10    
+		AND RK BETWEEN 1 AND 10 
 	</select>
 </mapper>
