@@ -314,17 +314,12 @@
 			}
 			
 			
-			.paging_wrap {
-            	width: 100%;
-            	height: 100px;
-            	padding-top: 50px;
-	        }
-	        .paging { 
+			.paging { 
 	            font-size: 0;
 	            text-align: center;
 	            margin: 40px 0px 60px 0px;
 	        }  
-	        .paging a {
+	        .paging div {
 	            display: inline-block;
 	            margin-left: 10px;
 	            padding: 5px 10px;
@@ -333,23 +328,24 @@
 	            font-weight: bold;
 	            text-decoration: none;
 	        }   
-	        .paging a.paging_btn {
+	        .paging_btn {
 	            background-color: none;
 	            color: #2e3459;
 	            letter-spacing:-5px;
 	            font-size: 12pt;
 	        }
-	        .paging a.num {           
+	        .paging div.num {           
 	            color: #2e3459;
 	        }
-	        .paging a:first-child {
+	        .paging div:first-child {
 	            margin-left: 0;
 	        } 
-	        .paging a.num:hover,
-	        .paging a.num.on,
-	        .paging a.paging_btn:hover  {
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
 	            color: #F1404B;
 	            text-decoration: underline;
+	            cursor: pointer;
 	        }
 	        
 	        .edit_btn {
@@ -391,6 +387,9 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				reloadList();
+				
+				// 페이지 상단 배너 메뉴
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -401,6 +400,7 @@
 			  		location.href = "memAdmin";
 			  	});
 				
+				// 내부관리자 메뉴
 				$("#menu1").on("click", function() {
 					location.href = "memAdmin";
 				});
@@ -416,6 +416,117 @@
 				$("#menu5").on("click", function() {
 					location.href = "reportAdmin";
 				});
+				
+				// 셀렉터 옵션 유지
+				if("${params.searchFilter}" != "") {
+					$("#searchFilter").val("${params.searchFilter}");
+				}
+				
+				// 검색 처리
+				$(".search_btn").on("click", function() {
+					$("#page").val(1);
+					$("#searchOldTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					$("#allCkbox").prop("checked", false);
+					reloadList();
+				});
+				
+				// 체크박스 처리
+				$("#allCkbox").on("click", function() {
+					if($(this).is(":checked")) {
+						$(".ckbox").prop("checked", true);
+					} else {
+						$(".ckbox").prop("checked", false);
+					}
+				});
+				$("tbody").on("click", ".ckbox", function() {
+					if($("tbody .ckbox").length == $("tbody .ckbox:checked").length) {
+						$("#allCkbox").prop("checked", true);
+					} else {
+						$("#allCkbox").prop("checked", false);
+					}
+				});
+				
+				function reloadList() {
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "communityAdmins",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							//날짜 가져오기
+							$("#searchDate1").val(res.startDay);
+							$("#searchDate2").val(res.today);
+							
+							//내부관리자-게시판관리
+							drawList(res.list);
+							drawPaging(res.pb);
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+					
+				}
+				
+				function drawList(list) {
+					var html = "";
+					
+					for(d of list) {
+						html += "<tr mno=\"" + d.POST_NO + "\">";
+						html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
+						html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
+						html += "<td>" + d.CATEGORY_NAME + "</td>";
+						html += "<td class=\"board_title\">" + d.TITLE + "</td>";
+						html += "<td>" + d.GRADE_NAME + "</td>";
+						html += "<td>" + d.NIC + "</td>";
+						html += "<td>" + d.BOARD_DATE + "</td>";
+						html += "<td>" + d.HIT + "</td>";
+						html += "<td>" + d.LIKE_CNT + "</td>";
+						html += "<td><input type=\"button\" class=\"edit_btn\" value=\"수정\" readonly=\"readonly\"/></td>";
+						html += "</tr>";
+					}
+					
+					$("#list_wrap tbody").html(html);
+				}
+				
+				function drawPaging(pb) {
+					var html = "";
+					
+					html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+					
+					if($("#page").val() == "1") {
+						html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+					} else {
+						html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+					}
+					
+					for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+						if($("#page").val() == i) {
+							html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+						} else {
+							html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+						}
+					}
+					
+					if($("#page").val() == pb.maxPcount) {
+						html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+					} else {
+						html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+					}
+					
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+					
+					$(".paging").html(html);
+				}
 				
 			});
 			
@@ -474,382 +585,57 @@
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
-					<div class="sub_search">
-						검색 :
-						<select class="search_filter">
-								<option value="0" selected="selected">통합검색</option>
-								<option value="1">카테고리</option>
-								<option value="2">닉네임</option>
-								<option value="3">제목</option>
-						</select>
-						<input class="search_date" type="date" /><span>부터</span> 
-						<input class="search_date" type="date" /><span>까지</span> 
-						<input class="search_txt" type="text" />
-						<input class="search_btn" type="button" value="검색" />
-						<input class="post_delete_btn" type="button" value="게시글삭제" />
+					<form action="#" id="actionForm" method="post">
+						<div class="sub_search">
+							검색 :
+							<input type="hidden" id="page" name="page" value="${page}" />
+							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+							<select class="search_filter" id="searchFilter" name="searchFilter">
+									<option value="0" selected="selected">통합검색</option>
+									<option value="1">카테고리</option>
+									<option value="2">닉네임</option>
+									<option value="3">제목</option>
+							</select>
+							<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
+							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
+							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
+							<input class="search_btn" type="button" value="검색" />
+							<input class="post_delete_btn" type="button" id="delBtn" value="게시글삭제" />
+						</div>
+					</form>
+					<div id="list_wrap">
+						<table>
+							<colgroup>
+									<col width="32px" /> <!-- 체크박스 -->
+									<col width="106px" /> <!-- No -->
+									<col width="124px" /> <!-- 카테고리 -->
+									<col width="430px" /> <!-- 제목 -->
+									<col width="124px" /> <!-- 등급 -->
+									<col width="140px" /> <!-- 닉네임 -->
+									<col width="161px" /> <!-- 작성일 -->
+									<col width="92px" /> <!-- 조회 -->
+									<col width="102px" /> <!-- 좋아요 -->
+									<col width="110px" /> <!-- 비고 -->
+							</colgroup>
+							<thead>
+								<tr class="article">
+									<th><input type="checkbox" class="ckbox" id="allCkbox" /></th>
+		            				<th>글번호</th>
+		            				<th class="click_article">카테고리↕</th>
+		            				<th>제목</th>
+		            				<th class="click_article">등급↕</th>
+		            				<th>닉네임</th>
+		            				<th class="click_article">작성일↕</th>
+		            				<th class="click_article">조회↕</th>
+		            				<th class="click_article">좋아요↕</th>
+		            				<th>비고</th>
+		            			</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
 					</div>
-					<table>
-						<colgroup>
-								<col width="32px" /> <!-- 체크박스 -->
-								<col width="106px" /> <!-- No -->
-								<col width="124px" /> <!-- 카테고리 -->
-								<col width="430px" /> <!-- 제목 -->
-								<col width="124px" /> <!-- 등급 -->
-								<col width="101px" /> <!-- 닉네임 -->
-								<col width="161px" /> <!-- 작성일 -->
-								<col width="92px" /> <!-- 조회 -->
-								<col width="102px" /> <!-- 좋아요 -->
-								<col width="110px" /> <!-- 비고 -->
-						</colgroup>
-						<thead>
-							<tr class="article">
-								<th><input type="checkbox" class="ckbox"/></th>
-	            				<th>글번호</th>
-	            				<th class="click_article">카테고리↕</th>
-	            				<th>제목</th>
-	            				<th class="click_article">등급↕</th>
-	            				<th>닉네임</th>
-	            				<th class="click_article">작성일↕</th>
-	            				<th class="click_article">조회↕</th>
-	            				<th class="click_article">좋아요↕</th>
-	            				<th>비고</th>
-	            			</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-						</tbody>
-					</table>
 				</div> <!-- mem_admin_area end -->
-				<div class="paging">
-	           		<a href="#" class=paging_btn><<</a>
-	           		<a href="#" class=paging_btn><</a>
-	           		<a href="#" class="num on">1</a>
-	           		<a href="#" class="num">2</a>
-	           		<a href="#" class="num">3</a>
-	           		<a href="#" class="num">4</a>
-	           		<a href="#" class="num">5</a>
-	           		<a href="#" class=paging_btn>></a>
-	           		<a href="#" class=paging_btn>>></a>
-	            </div>
+				<div class="paging"></div>
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>

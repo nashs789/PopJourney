@@ -70,4 +70,64 @@
 		UPDATE MEM SET LEAVE_DATE = SYSDATE
 		WHERE MEM_NO = #{ckMemNo}
 	</update>
+	
+	<select id="getCommunityCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM MEM M INNER JOIN BOARD B
+                           ON M.MEM_NO = B.MEM_NO
+                   INNER JOIN BOARD_CATEGORY BC
+                   		   ON B.CATEGORY_NO = BC.CATEGORY_NO
+		WHERE CATEGORY_NAME != '공지사항'
+		<if test="searchTxt != null and searchTxt != ''">
+	      	<choose>
+	      		<when test="searchFilter == 0">
+			        AND (CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR NIC LIKE '%' || #{searchTxt} || '%' OR TITLE LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 1">
+   		        	AND CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 2">
+			        AND NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      		<when test="searchFilter == 3">
+	      			AND TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+	      		</when>
+	      	</choose>
+	    </if>
+	</select>
+	
+	<select id="communityList" parameterType="hashmap" resultType="hashmap">
+		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM
+		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT, B.RNUM
+		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT,
+		                   ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
+		            FROM MEM M INNER JOIN BOARD B
+		                               ON M.MEM_NO = B.MEM_NO
+		                       INNER JOIN BOARD_CATEGORY BC
+		                               ON B.CATEGORY_NO = BC.CATEGORY_NO
+		                       INNER JOIN GRADE G
+		                               ON M.GRADE_NO = G.GRADE_NO) B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
+		                                                                              FROM BOARD_LIKE
+		                                                                              GROUP BY POST_NO) BL
+		                                                                          ON B.POST_NO = BL.POST_NO
+		      WHERE B.CATEGORY_NAME != '공지사항'
+		      <if test="searchTxt != null and searchTxt != ''">
+		      	<choose>
+		      		<when test="searchFilter == 0">
+		      			AND (B.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' OR B.NIC LIKE '%' || #{searchTxt} || '%' OR B.TITLE LIKE '%' || #{searchTxt} || '%') AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 1">
+		      			AND B.CATEGORY_NAME LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 2">
+		      			AND B.NIC LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      		<when test="searchFilter == 3">
+		      			AND B.TITLE LIKE '%' || #{searchTxt} || '%' AND TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') BETWEEN #{searchDate1} AND #{searchDate2}
+		      		</when>
+		      	</choose>
+		      </if>
+		      ) B
+		WHERE B.RNUM BETWEEN ${startCnt} AND #{endCnt}
+	</select>
 </mapper>

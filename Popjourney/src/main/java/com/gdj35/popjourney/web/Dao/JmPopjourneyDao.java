@@ -31,4 +31,14 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable {
 		return sqlSession.update("JmPJ.deleteMem", dMemNo);
 	}
+
+	@Override
+	public List<HashMap<String, String>> communityList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.communityList", params);
+	}
+
+	@Override
+	public int getCommunityCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getCommunityCnt", params);
+	}
 }

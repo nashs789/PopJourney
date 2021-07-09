@@ -34,4 +34,14 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.deleteMem(dMemNo);
 	}
 
+	@Override
+	public List<HashMap<String, String>> communityList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.communityList(params);
+	}
+
+	@Override
+	public int getCommunityCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getCommunityCnt(params);
+	}
+
 }

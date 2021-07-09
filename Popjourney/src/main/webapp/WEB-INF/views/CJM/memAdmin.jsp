@@ -531,7 +531,7 @@
 					location.href = "reportAdmin";
 				});
 				
-				// 검색어 유지
+				// 셀렉터 옵션 유지
 				if("${param.searchFilter}" != "") {
 					$("#searchFilter").val("${param.searchFilter}");
 				}
@@ -686,7 +686,6 @@
 				}
 				
 				$("#list_wrap tbody").html(html);
-				console.log($(".ckbox").val());
 			}
 			
 			function drawPaging(pb) {
@@ -793,16 +792,17 @@
 			</div>
 			<div id="container">
 				<div class="mem_admin_area">
-					<form action="#" id="actionForm" method="post">
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
+					<form action="#" id="actionForm" method="post">
 					<div class="sub_search">
 						검색 :
 							<input type="hidden" id="memNo" name="memNo" />
 							<input type="hidden" id="page" name="page" value="${page}" />
 							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
 							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
+							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">아이디</option>
@@ -812,7 +812,6 @@
 							<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
 							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
 							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
-							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 							<input class="search_btn" type="button" value="검색" />
 							<input class="mem_delete_btn" type="button" id="delBtn" value="회원삭제" />
 					</div>
@@ -822,7 +821,7 @@
 								<col width="32px" /> <!-- 체크박스 -->
 								<col width="95px" /> <!-- 회원번호 -->
 								<col width="110px" /> <!-- 아이디 -->
-								<col width="130px" /> <!-- 닉네임 -->
+								<col width="140px" /> <!-- 닉네임 -->
 								<col width="111px" /> <!-- 이름 -->
 								<col width="75px" /> <!-- 성별 -->
 								<col width="75px" /> <!-- 나이 -->
@@ -834,7 +833,7 @@
 								<col width="100px" /> <!-- 게시글 -->
 								<col width="100px" /> <!-- 좋아요 -->
 								<col width="100px" /> <!-- 팔로워 -->
-								<col width="100px" /> <!-- 누적신고 -->
+								<col width="110px" /> <!-- 누적신고 -->
 								<col width="100px" /> <!-- 접속횟수 -->
 								<col width="100px" /> <!-- 승인대기 -->
 								<col width="90px" /> <!-- 등급설정 -->

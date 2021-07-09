@@ -14,4 +14,8 @@ public interface IJmPopjourneyService {
 
 	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable;
 
+	public List<HashMap<String, String>> communityList(HashMap<String, String> params) throws Throwable;
+
+	public int getCommunityCnt(HashMap<String, String> params) throws Throwable;
+
 }

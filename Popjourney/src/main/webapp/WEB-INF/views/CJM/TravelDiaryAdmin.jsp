@@ -15,7 +15,7 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -391,6 +391,7 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				// 페이지 상단 배너 메뉴
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -401,6 +402,7 @@
 			  		location.href = "memAdmin";
 			  	});
 				
+				// 내부관리자 메뉴 이동
 				$("#menu1").on("click", function() {
 					location.href = "memAdmin";
 				});
@@ -416,6 +418,57 @@
 				$("#menu5").on("click", function() {
 					location.href = "reportAdmin";
 				});
+				
+				function reloadList() {
+					var params = $("actionForm").serialize();
+					
+					$.ajax({
+						url: "TravelDiaryAdmins",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							//날짜 가져오기
+							$("#searchDate1").val(res.startDay);
+							$("#searchDate2").val(res.today);
+							
+							//내부관리자 - 여행일지
+							drawList(res.list);
+							drawPaging(res.pb);
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				}
+				
+				function drawList(list) {
+					var html = "";
+					
+					for(d of list) {
+						html += "<tr mno=\"" + d.MEM_NO + "\">";
+						html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
+						html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
+						html += "<td>" + d.ID + "</td>";
+						html += "<td>" + d.NIC + "</td>";
+						html += "<td>" + d.NAME + "</td>";
+						html += "<td>" + d.SEX + "</td>";
+						html += "<td>" + d.AGE + "</td>";
+						html += "<td>" + d.EMAIL + "</td>";
+						html += "<td>" + d.PHONE + "</td>";
+						html += "<td>" + d.GRADE_NAME + "</td>";
+						html += "<td>" + d.JOIN_DATE + "</td>";
+						html += "<td id=\"leaveDate\">" + d.LEAVE_DATE + "</td>";
+						html += "<td></td>"; // 게시글수
+						html += "<td></td>"; // 좋아요수
+						html += "<td></td>"; // 팔로워수
+						html += "<td></td>"; // 누적신고수
+						html += "<td>" + d.ACC_CNT + "</td>";
+						html += "<td></td>"; // 등업신청유무
+						html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+						html += "</tr>";
+					}
+				}
 				
 			});
 			
@@ -474,19 +527,21 @@
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
-					<div class="sub_search">
-						검색 :
-						<select class="search_filter">
-								<option value="0" selected="selected">통합검색</option>
-								<option value="1">닉네임</option>
-								<option value="2">제목</option>
-						</select>
-						<input class="search_date" type="date" /><span>부터</span> 
-						<input class="search_date" type="date" /><span>까지</span> 
-						<input class="search_txt" type="text" />
-						<input class="search_btn" type="button" value="검색" />
-						<input class="diary_delete_btn" type="button" value="일지삭제" />
-					</div>
+					<form action="#" id="actionForm" method="post">
+						<div class="sub_search">
+							검색 :
+							<select class="search_filter">
+									<option value="0" selected="selected">통합검색</option>
+									<option value="1">닉네임</option>
+									<option value="2">제목</option>
+							</select>
+							<input class="search_date" type="date" /><span>부터</span> 
+							<input class="search_date" type="date" /><span>까지</span> 
+							<input class="search_txt" type="text" />
+							<input class="search_btn" type="button" value="검색" />
+							<input class="diary_delete_btn" type="button" value="일지삭제" />
+						</div>
+					</form>
 					<table>
 						<colgroup>
 								<col width="32px" /> <!-- 체크박스 -->
@@ -537,362 +592,9 @@
 									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
 								</td>
 	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td>20</td>
-	            				<td>닉네임</td>
-	            				<td>선호도</td>
-	            				<td>카테고리</td>
-	            				<td class="diary_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            				<td>50</td>
-	            				<td>
-									<input type="button" class="edit_btn" value="수정" readonly="readonly"/>
-								</td>
-	            			</tr>
-						</tbody>
 					</table>
 				</div> <!-- mem_admin_area end -->
-				<div class="paging">
-	           		<a href="#" class=paging_btn><<</a>
-	           		<a href="#" class=paging_btn><</a>
-	           		<a href="#" class="num on">1</a>
-	           		<a href="#" class="num">2</a>
-	           		<a href="#" class="num">3</a>
-	           		<a href="#" class="num">4</a>
-	           		<a href="#" class="num">5</a>
-	           		<a href="#" class=paging_btn>></a>
-	           		<a href="#" class=paging_btn>>></a>
-	            </div>
+				<div class="paging"></div>
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>
