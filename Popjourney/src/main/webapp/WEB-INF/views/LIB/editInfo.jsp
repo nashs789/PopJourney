@@ -291,55 +291,55 @@ select{
 .bell_icon {
    margin-left: 200px;
 }
-.timeline{
+#notification{
  	 display:none;
-     /* display: inline-block; */
-     width: 400px;
+     width: 600px;
      background-color: #EAEAEA;
      box-shadow: 0px 0px 1px 1px #444444;
      position: absolute;
      margin-top: 72px;
      right: 10px;
      z-index: 300;
+     font-size: 10pt;
 }
-.timeline tr{
+#notification tr{
 	height: 50px;
 }
    
-.timeline table{
+#notification table{
 	border-collapse: collapse;
 }
 
-.timeline table tr th:first-child{
+#notification table tr th:first-child{
 	text-align: center;
 }
 
-.timeline tr th{
+#notification tr th{
 	text-align: left;
 }
 
-.timeline tr th img{
+#notification tr th img{
 	height: 50px;
-	widtht: 50px;
+	widtht: 70px;
 	text-align: center;
 	cursor: pointer;
 }
 
-.timeline tfoot tr{
+#notification tfoot tr{
 	background-color: #939597;
 }
    
-.timeline tfoot tr th{
+#notification tfoot tr th{
 	text-align: center;
 	cursor: pointer;
 }
 
-.timeline table tr th span{
+#notification table tr th span{
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-.timeline table tr th span:hover{
+#notification table tr th span:hover{
 	color: blue;
 }
 #profileSlidedown{
@@ -399,6 +399,73 @@ $(document).ready(function(){
 	{
 		location.href="main";
 	}
+	
+	var params = $("#form").serialize();
+	
+	$.ajax({
+		url: "notifications",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				makeNotification(result.notification);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#notificationPhoto").on("click", function(){
+		$("#profileSlidedown").css("display", "none");
+		if($("#notification").css("display") == "block")
+		{
+			$("#notification").css("display", "none");
+		}
+		else
+		{
+			$("#notification").css("display", "inline-block");
+		}
+	}); //notificationPhoto click end
+	
+	$("#notification tbody").on("click", "span", function(){
+
+		if($(this).attr("class") == "user")
+		{
+			console.log("user");
+			console.log($(this).attr($(this).attr("class")));
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			console.log("journal");
+			console.log($(this).attr($(this).attr("class")));
+		}
+		else
+		{
+			console.log("post");
+			console.log($(this).attr($(this).attr("class")));
+		}
+	}); //notification tbody span click end
 	
 	var popupText = "";
 	var IDCheck = "";  //아이디 중복 확인용
@@ -622,18 +689,6 @@ $(document).ready(function(){
 		}
 	}); //profilePhoto on end */
 	
-	 $("#profilePhoto").on("click", function(){
-		console.log($("#profileSlidedown").css("display"));
-		if($("#profileSlidedown").css("display") == "block")
-		{
-			$("#profileSlidedown").css("display", "none");
-		}
-		else
-		{
-			$("#profileSlidedown").css("display", "block");
-		}
-	}); //profilePhoto click end
-	
 	$("#logoutBtn").on("click", function(){
 		$.ajax({
 			url: "logouts",
@@ -690,6 +745,70 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 	$("#inputRePW").val("");
 	$("#inputPW").focus();
 }
+function makeNotification(notification)
+{
+	var html = "";
+	
+	for(noti of notification)
+	{
+		switch(noti.EVENT_NO)
+		{
+			case 0:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 1:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">[여행일지]" + noti.JTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;	
+			case 2:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.POST_NO + "\">[게시글]" + noti.BTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 3:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">[여행일지]" + noti.JCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 4:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.BCPOST_NO + "\">[게시글]" + noti.BCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 5:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">내 댓글" + noti.UPJCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.JCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 6:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.CCPOST_NO + "\">[게시글]" + noti.UPBCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.BCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			default:
+				console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	$("#notification tbody").html(html);
+}
 </script>
 </head>
 <body>
@@ -707,61 +826,28 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   
-                   <div class="btns"> <!-- 밑에 logins와 연동 -->
+                  <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
-						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-							<div class="timeline">
+						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
+							<div id="notification">
 								<table border="1">
 									<colgroup>
-										<col width="70px">
-										<col width="331.6px">
+										<col width="100px">
+										<col width="350px">
+										<col width="150px">
 									</colgroup>
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
+									<tbody>	
 
-									<tr>
-										<th>2시간전 (오후)9:17분</th>
-									</tr>
+									</tbody>
 
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:54분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:49분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:45분</th>
-									</tr>
 									<tfoot>
 										<tr>
-											<th colspan="2">...더보기</th>
+											<th colspan="3">...더보기</th>
 										</tr>
 									</tfoot>
 								</table>
 							</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>

@@ -495,6 +495,52 @@ public class PopJourneyController {
 		try {
 			if(notification != null)
 			{
+				SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
+				
+				Date day1 = new Date();
+				Date day2;
+				
+				for(int i = 0; i < notification.size(); i++)
+				{
+			    	String msg ="";
+					
+					day2 = simple.parse(String.valueOf(notification.get(i).get("NOTF_DATE2")));
+					 
+				 	if(day1.getYear() != day2.getYear())
+					{
+						msg = day1.getYear() - day2.getYear()+"년 전";
+					}
+					else if(day1.getMonth() != day2.getMonth())
+					{
+						msg = day1.getMonth() - day2.getMonth()+"달 전";
+					}
+					else if(day1.getDate() != day2.getDate())
+					{
+						msg = day1.getDate() - day2.getDate()+"일 전";
+					}
+					else if(day1.getDate() == day2.getDate())
+					{
+						long SYSDATE = day1.getTime(); //스크립트는 var라서 형변환 필요 없을듯
+						long date = day2.getTime(); // day2는 가져온값 넣기
+						
+						long diff = SYSDATE - date;
+						
+						if(diff < 60)
+						{
+							msg = 60 - diff +"초 전";
+						}
+						else if(diff < 3600)
+						{
+							msg = (3600 - diff)/60 +"분 전";
+						}
+						else
+						{
+							msg = (86400 - diff)/3600 +"분 전";
+						}
+				   }
+				   notification.get(i).put("msg", msg);
+				}
+				
 				modelMap.put("msg", "success");
 				modelMap.put("notification", notification);
 			}
