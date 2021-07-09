@@ -125,4 +125,10 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.getDetail", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.notification", params);
+	}
 }

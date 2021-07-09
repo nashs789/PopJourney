@@ -483,7 +483,6 @@ $(document).ready(function(){
 	}); //nextBtn click end
 	
  	$("#profilePhoto").on("click", function(){
-		console.log($("#profileSlidedown").css("display"));
 		if($("#profileSlidedown").css("display") == "block")
 		{
 			$("#profileSlidedown").css("display", "none");

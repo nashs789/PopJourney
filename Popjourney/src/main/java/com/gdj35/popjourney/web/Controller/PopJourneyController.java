@@ -52,28 +52,28 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-		// 지역별 랭킹 - 이인복
-		@RequestMapping(value = "/journalDetails", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-		@ResponseBody
-		public String journalDetails(@RequestParam HashMap<String, String> params) throws Throwable {
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> modelMap = new HashMap<String, Object>();
-			
-			try {
-				//detail: PHOTO_PATH, CONTENTS, LIKE_CNT
-			    HashMap<String, String> detail = ipjs.getDetail(params); 
-			    
-			    if(detail != null)
-			    {
-			    	modelMap.put("detail", detail);
-				    modelMap.put("msg", "success");
-			    }
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	// 지역별 랭킹 - 이인복
+	@RequestMapping(value = "/journalDetails", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalDetails(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			//detail: PHOTO_PATH, CONTENTS, LIKE_CNT
+		    HashMap<String, String> detail = ipjs.getDetail(params); 
 		    
-			return mapper.writeValueAsString(modelMap);
+		    if(detail != null)
+		    {
+		    	modelMap.put("detail", detail);
+			    modelMap.put("msg", "success");
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	    
+		return mapper.writeValueAsString(modelMap);
+	}
 	
 	// 약관 페이지 - 이인복
 	@RequestMapping(value = "/terms")
@@ -476,6 +476,19 @@ public class PopJourneyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/notifications", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		List<HashMap<String, String>> notification  = ipjs.notification(params);
+		
+		modelMap.put("notification", notification);
 
 		return mapper.writeValueAsString(modelMap);
 	}

@@ -126,4 +126,10 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.getDetail(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.notification(params);
+	}
 }
