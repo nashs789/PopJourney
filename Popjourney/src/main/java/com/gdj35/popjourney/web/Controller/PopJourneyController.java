@@ -44,10 +44,14 @@ public class PopJourneyController {
 	     List<HashMap<String, String>> yearData = ipjs.yearRank(params);
 		 List<HashMap<String, String>> monthData = ipjs.monthRank(params); 
 		 List<HashMap<String, String>> weekData = ipjs.weekRank(params); 
-		
-	     modelMap.put("yearData", yearData);
-	     modelMap.put("monthData", monthData);
-	     modelMap.put("weekData", weekData);
+	     
+	     try {
+	    	 modelMap.put("yearData", yearData);
+		     modelMap.put("monthData", monthData);
+		     modelMap.put("weekData", weekData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	     
 		return mapper.writeValueAsString(modelMap);
 	}
@@ -488,7 +492,20 @@ public class PopJourneyController {
 
 		List<HashMap<String, String>> notification  = ipjs.notification(params);
 		
-		modelMap.put("notification", notification);
+		try {
+			if(notification != null)
+			{
+				modelMap.put("msg", "success");
+				modelMap.put("notification", notification);
+			}
+			else
+			{
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
 
 		return mapper.writeValueAsString(modelMap);
 	}

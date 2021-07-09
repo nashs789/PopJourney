@@ -527,13 +527,40 @@ $(document).ready(function(){
 			type: "post",
 			success:function(result)
 			{
-				makeNotification(result.notification);
+				if(result.msg == "success")
+				{
+					makeNotification(result.notification);
+				}
+				else
+				{
+					popupText = "오류가 발생했습니다.";
+					commonPopup(popupText);
+				}
 			}, //success end
 			error: function(request, status, error) {
 				console.log(error);
 			} // error end
 		}); //ajax end 
 	}
+	
+	$("#notification tbody").on("click", "span", function(){
+
+		if($(this).attr("class") == "user")
+		{
+			console.log("user");
+			console.log($(this).attr($(this).attr("class")));
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			console.log("journal");
+			console.log($(this).attr($(this).attr("class")));
+		}
+		else
+		{
+			console.log("post");
+			console.log($(this).attr($(this).attr("class")));
+		}
+	}); //notification tbody span click end
 	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
@@ -698,6 +725,7 @@ $(document).ready(function(){
     
     $("#boardWrap").on("click", "tr ", function(){
     	$("#journalNo").val($(this).attr("no"));
+    	console.log($("#journalNo").val());
     	// 상세보기 페이지 구현하면 만들기
     });
   
@@ -794,21 +822,49 @@ function makeNotification(notification)
 			case 0:
 				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th><span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
 				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
 				html +=" </tr>";
 				break;
 			case 1:
 				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th>[여행일지]" + noti.JTITLE + "...에  <span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이" + noti.JCONTENTS + "... 댓글을 다셨습니다</th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">[여행일지]" + noti.JTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
 				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
 				html +=" </tr>";
 				break;	
 			case 2:
 				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th>[게시판]" + noti.BTITLE + "...에  <span mem=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이" + noti.BCONTENTS + "... 댓글을 다셨습니다</th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.POST_NO + "\">[게시글]" + noti.BTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			case 3:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">[여행일지]" + noti.JCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			case 4:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.BCPOST_NO + "\">[게시글]" + noti.BCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			case 5:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">내 댓글" + noti.UPJCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.JCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" </tr>";
+				break;
+			case 6:
+				html +=" <tr>";
+				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
+				html +=" 	<th><span class=\"post\" post=\"" + noti.CCPOST_NO + "\">[게시글]" + noti.UPBCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.BCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
 				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
 				html +=" </tr>";
 				break;
@@ -937,7 +993,7 @@ function drawRankBoard(yearData, monthData, weekData)
 <form action="#" id="regionForm">
 	<input type="hidden" id="regionNo" name="regionNo" value="1"/>
 </form>
-<form action="#" id="journalNoForm">
+<form action="#" id="journalForm">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
 </form>
 <form action="#" id="memForm">
