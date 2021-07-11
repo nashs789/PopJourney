@@ -34,6 +34,8 @@ public interface IPopJourneyDao {
 	int updateProfile(HashMap<String, String> params) throws Throwable;
 
 	int delete(HashMap<String, String> params) throws Throwable;
+	
+	List<HashMap<String, String>> notice() throws Throwable;
 
 	List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable;
 
@@ -44,4 +46,6 @@ public interface IPopJourneyDao {
 	HashMap<String, String> getDetail(HashMap<String, String> params)throws Throwable;
 
 	List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable;
+
+	int read(HashMap<String, String> params) throws Throwable;
 }

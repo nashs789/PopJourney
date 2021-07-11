@@ -291,57 +291,6 @@ select{
 .bell_icon {
    margin-left: 200px;
 }
-.timeline{
- 	 display:none;
-     /* display: inline-block; */
-     width: 400px;
-     background-color: #EAEAEA;
-     box-shadow: 0px 0px 1px 1px #444444;
-     position: absolute;
-     margin-top: 72px;
-     right: 10px;
-     z-index: 300;
-}
-.timeline tr{
-	height: 50px;
-}
-   
-.timeline table{
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child{
-	text-align: center;
-}
-
-.timeline tr th{
-	text-align: left;
-}
-
-.timeline tr th img{
-	height: 50px;
-	widtht: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr{
-	background-color: #939597;
-}
-   
-.timeline tfoot tr th{
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span{
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover{
-	color: blue;
-}
 #profileSlidedown{
 	display: none;
    	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
@@ -399,6 +348,19 @@ $(document).ready(function(){
 	{
 		location.href="main";
 	}
+
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
 	
 	var popupText = "";
 	var IDCheck = "";  //아이디 중복 확인용
@@ -622,18 +584,6 @@ $(document).ready(function(){
 		}
 	}); //profilePhoto on end */
 	
-	 $("#profilePhoto").on("click", function(){
-		console.log($("#profileSlidedown").css("display"));
-		if($("#profileSlidedown").css("display") == "block")
-		{
-			$("#profileSlidedown").css("display", "none");
-		}
-		else
-		{
-			$("#profileSlidedown").css("display", "block");
-		}
-	}); //profilePhoto click end
-	
 	$("#logoutBtn").on("click", function(){
 		$.ajax({
 			url: "logouts",
@@ -707,61 +657,11 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   
-                   <div class="btns"> <!-- 밑에 logins와 연동 -->
+                  <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
-						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-							<div class="timeline">
-								<table border="1">
-									<colgroup>
-										<col width="70px">
-										<col width="331.6px">
-									</colgroup>
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>2시간전 (오후)9:17분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:54분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-										</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:49분</th>
-									</tr>
-
-									<tr>
-										<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-										<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-									</tr>
-
-									<tr>
-										<th>3시간전 (오후)8:45분</th>
-									</tr>
-									<tfoot>
-										<tr>
-											<th colspan="2">...더보기</th>
-										</tr>
-									</tfoot>
-								</table>
-							</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
+							</li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>

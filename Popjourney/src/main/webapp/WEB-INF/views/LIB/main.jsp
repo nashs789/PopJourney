@@ -200,18 +200,23 @@ input[type='text']:focus, input[type='password']:focus{
 	margin-top: 50px;
 	background-color: white;
 }
+#noticeBoard{
+	display: inline-block;
+	margin-top: 50px;
+	background-color: white;
+}
 #yearBoard table, #monthBoard table, 
-#weekBoard table {
+#weekBoard table, #noticeBoard table {
 	border-collapse: collapse;
-		border-bottom: 3px solid black;
+	border-bottom: 3px solid black;
 }
 #yearBoard table tbody tr:hover, #monthBoard table tbody tr:hover, 
-#weekBoard table tbody tr:hover{
+#weekBoard table tbody tr:hover, #noticeBoard table tbody tr:hover{
 	background-color: #F9F9F9;
 	cursor:pointer;
 }
 #yearBoard table tbody tr, #monthBoard table tbody tr, 
-#weekBoard table tbody tr {
+#weekBoard table tbody tr, #noticeBoard table tbody tr {
 	border-bottom: 1px solid #FAFAFA;
 }
 .title{
@@ -412,7 +417,6 @@ svg{
 #notification{
  	 display:none;
      width: 600px;
-     background-color: #EAEAEA;
      box-shadow: 0px 0px 1px 1px #444444;
      position: absolute;
      margin-top: 72px;
@@ -420,10 +424,16 @@ svg{
      z-index: 300;
      font-size: 10pt;
 }
-#notification tr{
+.read{
+    background-color: #d1d1e0;
 	height: 50px;
+	border-bottom: 1px solid black;
 }
-   
+.notRead{
+	background-color: #a3a3c2;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
 #notification table{
 	border-collapse: collapse;
 }
@@ -444,12 +454,17 @@ svg{
 }
 
 #notification tfoot tr{
-	background-color: #939597;
+	background-color: #48486a;
+	color: white;
 }
    
 #notification tfoot tr th{
 	text-align: center;
 	cursor: pointer;
+}
+
+#notification tfoot tr th:hover{
+	background-color: #a4a4c1;
 }
 
 #notification table tr th span{
@@ -461,6 +476,7 @@ svg{
 	color: blue;
 }
 #profileSlidedown{
+	display: none;
    	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
    	border: 2px solid #fcba03;
    	background-color: white;
@@ -483,14 +499,14 @@ svg{
 	background-color: #f37321;
 }
 .btns ul li {
-        list-style: none;
-		float: left;
-		text-align: center;
-        color: #2e3459;
-		line-height: 25px;
-		text-decoration: none;
-		font-size: 18px;
-		font-weight: 900;
+    list-style: none;
+	float: left;
+	text-align: center;
+    color: #2e3459;
+	line-height: 25px;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: 900;
 }
 .btns>ul>li {
 	margin-right: 10px;
@@ -543,8 +559,28 @@ $(document).ready(function(){
 		}); //ajax end 
 	}
 	
-	$("#notification tbody").on("click", "span", function(){
-
+	$.ajax({
+		url: "notices",
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				makeNoticeBoard(result.noticeData);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
+	$("#notification tbody").on("click", "span, tr", function(){
 		if($(this).attr("class") == "user")
 		{
 			console.log("user");
@@ -555,12 +591,35 @@ $(document).ready(function(){
 			console.log("journal");
 			console.log($(this).attr($(this).attr("class")));
 		}
-		else
+		else if($(this).attr("class") == "post")
 		{
 			console.log("post");
 			console.log($(this).attr($(this).attr("class")));
 		}
-	}); //notification tbody span click end
+		else if($(this).attr("class") == "notRead")
+		{
+			console.log("notRead");
+			console.log($(this).attr($(this).attr("class")));
+			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
+			console.log($("#NOTF_NO").val())
+			
+		    var params = $("#notificationForm").serialize();
+			
+			$.ajax({
+				url: "reads",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					console.log("성공~")
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end  
+		} //if ~ else end
+	}); //notification tbody span tr click end
 	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
@@ -693,7 +752,7 @@ $(document).ready(function(){
 			dataType: "json",
 			data: params,
 			success: function(result) {
-				drawRankBoard(result.yearData, result.monthData, result.weekData);
+				makeRankBoard(result.yearData, result.monthData, result.weekData);
 				$("#yearBoard, #monthBoard, #weekBoard").css("display", "inline-block");
 			}, //success end
 			error: function(request, status, error) {
@@ -726,8 +785,7 @@ $(document).ready(function(){
     $("#boardWrap").on("click", "tr ", function(){
     	$("#journalNo").val($(this).attr("no"));
     	console.log($("#journalNo").val());
-    	// 상세보기 페이지 구현하면 만들기
-    });
+    }); // 상세보기 페이지 구현하면 만들기
   
    	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
@@ -756,6 +814,10 @@ $(document).ready(function(){
 	$("#find").on("click", function(){
 		findBtnPopup();
 	}); //find click end
+	
+	$("#notificationMore").on("click", function(){
+		location.href="notification";
+	}); //notificationMore click end
   	
   	$("#logoutBtn").on("click", function(){
 		$.ajax({
@@ -817,55 +879,57 @@ function makeNotification(notification)
 	
 	for(noti of notification)
 	{
+		if(noti.READ == 1)
+		{
+			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+		}
+		else
+		{
+			html += "<tr class=\"read\">";
+		}
+		
 		switch(noti.EVENT_NO)
 		{
 			case 0:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			case 1:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">[여행일지]" + noti.JTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;	
 			case 2:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.POST_NO + "\">[게시글]" + noti.BTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			case 3:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">[여행일지]" + noti.JCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			case 4:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.BCPOST_NO + "\">[게시글]" + noti.BCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			case 5:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">내 댓글" + noti.UPJCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.JCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.JCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			case 6:
-				html +=" <tr>";
 				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.CCPOST_NO + "\">[게시글]" + noti.UPBCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.BCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"</th>";
+				html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.BCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
 			default:
@@ -875,7 +939,48 @@ function makeNotification(notification)
 	
 	$("#notification tbody").html(html);
 }
-function drawRankBoard(yearData, monthData, weekData)
+function makeNoticeBoard(noticeData)
+{
+	var html = "";
+	
+	html +=" <div id=\"noticeBoard\">";
+	html +=" <div class=\"title\">[공지 사항]</div>";
+	html +=" <table>";
+	html +=" 	<colgroup>";
+	html +=" 		<col width=\"50px\">";
+	html +=" 		<col width=\"300px\">";
+	html +=" 		<col width=\"80px\">";
+	html +=" 		<col width=\"70px\">";
+	html +=" 		<col width=\"130px\">";
+	html +=" 	</colgroup>";
+	html +=" 	<thead>";
+	html +=" 		<tr>";
+	html +=" 			<th>번호</th>";
+	html +=" 			<th>제목</th>";
+	html +=" 			<th>작가</th>";
+	html +=" 			<th>조회수</th>";
+	html +=" 			<th>날짜</th>";
+	html +=" 		</tr>";
+	html +=" 	</thead>";
+	
+	for(var data of noticeData)
+	{
+		html +=" 	<tbody>";
+		html +=" 		<tr no=\"" + data.POST_NO + "\">";
+		html +=" 			<td>" + data.POST_NO + "</td>";
+		html +=" 			<td>" + data.TITLE + "</td>";
+		html +=" 			<td>운영자</td>";
+		html +=" 			<td>" + data.HIT + "</td>";
+		html +=" 			<td>" + data.BOARD_DATE + "</td>";
+		html +=" 		</tr>";
+		html +=" 	</tbody>";
+	}
+	html +="	</table>";
+	html +="</div><!-- noticeBoard end  -->";
+	
+	$("#noticeWrap").html(html);
+}
+function makeRankBoard(yearData, monthData, weekData)
 {
 	var html = "";
 	
@@ -985,7 +1090,7 @@ function drawRankBoard(yearData, monthData, weekData)
 	html +="	</table>";
 	html +="</div> <!-- weekBoard end -->";
 	
-	$("#boardWrap").html(html);
+	$("#rankWrap").html(html);
 }         
 </script>
 </head>
@@ -999,6 +1104,9 @@ function drawRankBoard(yearData, monthData, weekData)
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
 </form>
+<form action="#" id="notificationForm">
+	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
+</form>
 	<div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -1010,7 +1118,7 @@ function drawRankBoard(yearData, monthData, weekData)
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
-						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
+						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
 							<div id="notification">
 								<table border="1">
 									<colgroup>
@@ -1024,7 +1132,7 @@ function drawRankBoard(yearData, monthData, weekData)
 
 									<tfoot>
 										<tr>
-											<th colspan="3">...더보기</th>
+											<th colspan="3" id="notificationMore">...더보기</th>
 										</tr>
 									</tfoot>
 								</table>
@@ -1077,7 +1185,8 @@ function drawRankBoard(yearData, monthData, weekData)
 		<div id="container">
 			<div id="cityName"></div>
 				<div id="boardWrap">
-				
+					<div id="noticeWrap"></div>
+					<div id="rankWrap"></div>
 				</div> <!-- boardWrap end -->
 				<div id="mapWrap">
 					<svg style= xmlns="http://www.w3.org/2000/svg">
