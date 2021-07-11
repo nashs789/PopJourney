@@ -487,7 +487,7 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr mno=\"" + d.JOURNAL_NO + "\">";
+					html += "<tr jno=\"" + d.JOURNAL_NO + "\">";
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.JOURNAL_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.JOURNAL_NO + "</td>";
 					html += "<td>" + d.NIC + "</td>";
@@ -598,7 +598,9 @@
 						<select class="search_filter" id="searchFilter" name="searchFilter">
 								<option value="0" selected="selected">통합검색</option>
 								<option value="1">닉네임</option>
-								<option value="2">제목</option>
+								<option value="2">선호도</option>
+								<option value="3">카테고리</option>
+								<option value="4">제목</option>
 						</select>
 						<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
 						<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 

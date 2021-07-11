@@ -573,46 +573,58 @@
 						$(".popupDel").css("display", "inline-block");
 						$(".bg").css("display", "inline-block");
 						
+						$(".popupDel .btn_list #cancel").on("click", function() {
+							$(".popupDel").css("display", "none");
+							$(".bg").css("display", "none");
+						});
+						
+						$(".popupDel .btn_list #ok").on("click", function() {
+							
+							var array = new Array();
+							$(".ckbox:checked").each(function() {
+								array.push($(this).val());
+							});
+							$("#userNo").val(array);
+							
+							console.log(array);
+							
+							var params = $("#actionForm").serialize();
+										
+								$.ajax({
+									url : "memAdminDeletes",
+									type : "post",
+									dataType : "json",
+									data : params,
+									success : function(res) {
+										if(res.msg == "success") {
+											resetVal();
+											reloadList();
+											$(".popupDel").css("display", "none");
+											$(".bg").css("display", "none");
+										} else if(res.msg == "failed") {
+											alert("작성에 실패하였습니다.");
+										} else {
+											alert("작성중 문제가 발생하였습니다.");
+										}
+									},
+									error : function(request, status, error) {
+										console.log(error);
+									}
+								});
+								
+						});
 					} else {
 						$(".popupDel2").css("display", "inline-block");
 						$(".bg2").css("display", "inline-block");
-					}
-				});
-				$(".popupDel .btn_list #cancel").on("click", function() {
-						$(".popupDel").css("display", "none");
-						$(".bg").css("display", "none");
-				});
-				$(".popupDel2 .btn_list #ok").on("click", function() {
-						$(".popupDel2").css("display", "none");
-						$(".bg2").css("display", "none");
-				});
-				$(".popupDel .btn_list #ok").on("click", function() {
-
-					var params = $("#actionForm").serialize();
-								
-						$.ajax({
-							url : "memAdminDeletes",
-							type : "post",
-							dataType : "json",
-							data : params,
-							success : function(res) {
-								if(res.msg == "success") {
-									resetVal();
-									reloadList();
-									$(".popupDel").css("display", "none");
-									$(".bg").css("display", "none");
-								} else if(res.msg == "failed") {
-									alert("작성에 실패하였습니다.");
-								} else {
-									alert("작성중 문제가 발생하였습니다.");
-								}
-							},
-							error : function(request, status, error) {
-								console.log(error);
-							}
+						
+						$(".popupDel2 .btn_list #ok").on("click", function() {
+							$(".popupDel2").css("display", "none");
+							$(".bg2").css("display", "none");
 						});
+					}
 					
 				});
+				
 				
 				// 성별 오/내림차순
 				$("#sex").on("click", function() {
@@ -627,6 +639,17 @@
 					}
 					reloadList();
 				});
+				
+				/* $("#delBtn").on("click", function() {
+					var array = new Array();
+					$(".ckbox:checked").each(function() {
+						array.push($(this).val());
+					});
+					$("#userNo").val(array);
+					
+					console.log(array);
+				}); */
+				
 				
 			}); // document ready end..
 		
@@ -722,6 +745,19 @@
 				$("#searchTxt").val("");
 			}
 			
+			function getCkboxValue() {
+				var obj = $("[name=ckMemNo]");
+				var array = new Array();
+				
+				$("input:checkbox[name=ckMemNo]:checked").each(function() {
+					array.push(this.value);
+				});
+				$("hiddenValue").val(array);
+				
+				alert($("#hiddenValue").val());
+				
+			}
+			
 		</script>
 	</head>
 	<body>
@@ -800,6 +836,7 @@
 							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
 							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+							<input type="hidden" id="userNo" name="userNo" value="" />
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">아이디</option>

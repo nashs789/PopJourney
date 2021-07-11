@@ -423,8 +423,8 @@
 				});
 				
 				// 셀렉터 옵션 유지
-				if("${params.searchFilter}" != "") {
-					$("#searchFilter").val("${params.searchFilter}");
+				if("${param.searchFilter}" != "") {
+					$("#searchFilter").val("${param.searchFilter}");
 				}
 				
 				// 검색 처리
@@ -489,7 +489,7 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr mno=\"" + d.POST_NO + "\">";
+					html += "<tr pno=\"" + d.POST_NO + "\">";
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
 					html += "<td>" + d.CATEGORY_NAME + "</td>";

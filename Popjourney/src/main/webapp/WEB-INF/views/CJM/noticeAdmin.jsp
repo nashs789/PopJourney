@@ -492,9 +492,9 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr mno=\"" + d.POST_NO + "\">";
+					html += "<tr pno=\"" + d.POST_NO + "\">";
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
-					html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
+					html += "<td id=\"pNo\">" + d.POST_NO + "</td>";
 					html += "<td>" + d.CATEGORY_NAME + "</td>";
 					html += "<td class=\"notice_title\">" + d.TITLE + "</td>";
 					html += "<td>" + d.GRADE_NAME + "</td>";
