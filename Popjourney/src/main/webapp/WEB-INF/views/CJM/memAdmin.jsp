@@ -443,6 +443,13 @@
 				color: #FFFFFF;
 				border: 2px solid #2E3459;
 			}
+			.leave {
+				background-color: #d9d9d9;
+				pointer-events: none;
+			}
+			.not_leave {
+				background-color: #f9f9f9;
+			}
 			
 			
 	        .paging { 
@@ -602,9 +609,9 @@
 											$(".popupDel").css("display", "none");
 											$(".bg").css("display", "none");
 										} else if(res.msg == "failed") {
-											alert("작성에 실패하였습니다.");
+											alert("삭제에 실패하였습니다.");
 										} else {
-											alert("작성중 문제가 발생하였습니다.");
+											alert("삭제중 문제가 발생하였습니다.");
 										}
 									},
 									error : function(request, status, error) {
@@ -682,7 +689,11 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr mno=\"" + d.MEM_NO + "\">";
+					if(d.LEAVE_DATE == "-") {
+						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"not_leave\">";
+					} else {
+						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
+					}				
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
 					html += "<td>" + d.ID + "</td>";

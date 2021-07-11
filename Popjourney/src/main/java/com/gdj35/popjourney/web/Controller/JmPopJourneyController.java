@@ -151,17 +151,18 @@ public class JmPopJourneyController {
 			String userNo = (params.get("userNo"));
 			String[] arrayUserNo = userNo.split(",");
 			for(int i = 0 ; i < arrayUserNo.length ; i++) {
-				//System.out.println("arrayUserNo[i] >> " + arrayUserNo[i]);
+				System.out.println("arrayUserNo[i] >> " + arrayUserNo[i]);
 				params.put("userNo", arrayUserNo[i]);
+				
+				int cnt = iJmPopjourneyService.deleteMem(params);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
 			}
 			
-			int cnt = iJmPopjourneyService.deleteMem(params);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
-			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
