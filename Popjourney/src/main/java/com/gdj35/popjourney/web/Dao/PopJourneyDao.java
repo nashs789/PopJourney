@@ -101,6 +101,12 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.update("PJ.delete", params);
 	}
+	
+	@Override
+	public List<HashMap<String, String>> notice() throws Throwable 
+	{
+		return sql.selectList("PJ.notice");
+	}
 
 	@Override
 	public List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable 
@@ -130,5 +136,11 @@ public class PopJourneyDao implements IPopJourneyDao {
 	public List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable 
 	{
 		return sql.selectList("PJ.notification", params);
+	}
+
+	@Override
+	public int read(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.update("PJ.read", params);
 	}
 }

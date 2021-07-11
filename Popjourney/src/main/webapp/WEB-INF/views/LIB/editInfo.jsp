@@ -291,57 +291,6 @@ select{
 .bell_icon {
    margin-left: 200px;
 }
-#notification{
- 	 display:none;
-     width: 600px;
-     background-color: #EAEAEA;
-     box-shadow: 0px 0px 1px 1px #444444;
-     position: absolute;
-     margin-top: 72px;
-     right: 10px;
-     z-index: 300;
-     font-size: 10pt;
-}
-#notification tr{
-	height: 50px;
-}
-   
-#notification table{
-	border-collapse: collapse;
-}
-
-#notification table tr th:first-child{
-	text-align: center;
-}
-
-#notification tr th{
-	text-align: left;
-}
-
-#notification tr th img{
-	height: 50px;
-	widtht: 70px;
-	text-align: center;
-	cursor: pointer;
-}
-
-#notification tfoot tr{
-	background-color: #939597;
-}
-   
-#notification tfoot tr th{
-	text-align: center;
-	cursor: pointer;
-}
-
-#notification table tr th span{
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-#notification table tr th span:hover{
-	color: blue;
-}
 #profileSlidedown{
 	display: none;
    	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
@@ -399,31 +348,7 @@ $(document).ready(function(){
 	{
 		location.href="main";
 	}
-	
-	var params = $("#form").serialize();
-	
-	$.ajax({
-		url: "notifications",
-		data: params,
-		dataType: "json",
-		type: "post",
-		success:function(result)
-		{
-			if(result.msg == "success")
-			{
-				makeNotification(result.notification);
-			}
-			else
-			{
-				popupText = "오류가 발생했습니다.";
-				commonPopup(popupText);
-			}
-		}, //success end
-		error: function(request, status, error) {
-			console.log(error);
-		} // error end
-	}); //ajax end 
-	
+
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
 		if($("#profileSlidedown").css("display") == "block")
@@ -436,36 +361,6 @@ $(document).ready(function(){
 		}
 	}); //profilePhoto click end
 	
-	$("#notificationPhoto").on("click", function(){
-		$("#profileSlidedown").css("display", "none");
-		if($("#notification").css("display") == "block")
-		{
-			$("#notification").css("display", "none");
-		}
-		else
-		{
-			$("#notification").css("display", "inline-block");
-		}
-	}); //notificationPhoto click end
-	
-	$("#notification tbody").on("click", "span", function(){
-
-		if($(this).attr("class") == "user")
-		{
-			console.log("user");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else if($(this).attr("class") == "journal")
-		{
-			console.log("journal");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else
-		{
-			console.log("post");
-			console.log($(this).attr($(this).attr("class")));
-		}
-	}); //notification tbody span click end
 	
 	var popupText = "";
 	var IDCheck = "";  //아이디 중복 확인용
@@ -745,70 +640,6 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
 	$("#inputRePW").val("");
 	$("#inputPW").focus();
 }
-function makeNotification(notification)
-{
-	var html = "";
-	
-	for(noti of notification)
-	{
-		switch(noti.EVENT_NO)
-		{
-			case 0:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			case 1:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">[여행일지]" + noti.JTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;	
-			case 2:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.POST_NO + "\">[게시글]" + noti.BTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			case 3:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">[여행일지]" + noti.JCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			case 4:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.BCPOST_NO + "\">[게시글]" + noti.BCTITLE + "...</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			case 5:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">내 댓글" + noti.UPJCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.JCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			case 6:
-				html +=" <tr>";
-				html +=" 	<th ><img alt=\"프로필\" src=\"./resources/images/profile.png\"></th>";
-				html +=" 	<th><span class=\"post\" post=\"" + noti.CCPOST_NO + "\">[게시글]" + noti.UPBCONTENTS + "...</span>에  <span class=\"user\" user=" + noti.BCCMEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
-				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
-				html +=" </tr>";
-				break;
-			default:
-				console.log("여긴 뭐넣을까?");
-		}
-	}
-	
-	$("#notification tbody").html(html);
-}
 </script>
 </head>
 <body>
@@ -829,24 +660,7 @@ function makeNotification(notification)
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
 						<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
-							<div id="notification">
-								<table border="1">
-									<colgroup>
-										<col width="100px">
-										<col width="350px">
-										<col width="150px">
-									</colgroup>
-									<tbody>	
-
-									</tbody>
-
-									<tfoot>
-										<tr>
-											<th colspan="3">...더보기</th>
-										</tr>
-									</tfoot>
-								</table>
-							</div></li>
+							</li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">

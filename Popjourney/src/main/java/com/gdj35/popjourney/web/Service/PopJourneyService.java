@@ -102,6 +102,12 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.delete(params);
 	}
+	
+	@Override
+	public List<HashMap<String, String>> notice() throws Throwable 
+	{
+		return ipjd.notice();
+	}
 
 	@Override
 	public List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable
@@ -131,5 +137,11 @@ public class PopJourneyService implements IPopJourneyService {
 	public List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable
 	{
 		return ipjd.notification(params);
+	}
+
+	@Override
+	public int read(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.read(params);
 	}
 }

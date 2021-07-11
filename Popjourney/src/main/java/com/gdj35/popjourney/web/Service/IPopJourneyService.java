@@ -35,6 +35,8 @@ public interface IPopJourneyService {
 
 	int delete(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> notice() throws Throwable;
+
 	List<HashMap<String, String>> yearRank(HashMap<String, String> params) throws Throwable;
 
 	List<HashMap<String, String>> monthRank(HashMap<String, String> params) throws Throwable;
@@ -44,5 +46,8 @@ public interface IPopJourneyService {
 	HashMap<String, String> getDetail(HashMap<String, String> params) throws Throwable;
 
 	List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable;
+
+	int read(HashMap<String, String> params) throws Throwable;
+
 
 }

@@ -40,7 +40,7 @@ public class PopJourneyController {
 	public String regionBoards(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
+		
 	     List<HashMap<String, String>> yearData = ipjs.yearRank(params);
 		 List<HashMap<String, String>> monthData = ipjs.monthRank(params); 
 		 List<HashMap<String, String>> weekData = ipjs.weekRank(params); 
@@ -438,10 +438,10 @@ public class PopJourneyController {
 	  }
 	 
 
-	// 타임라인 - 이인복
-	@RequestMapping(value = "/timeline")
-	public ModelAndView timeline(ModelAndView mav) {
-		mav.setViewName("LIB/timeline");
+	// 알람 모아보기 - 이인복
+	@RequestMapping(value = "/notification")
+	public ModelAndView notification(ModelAndView mav) {
+		mav.setViewName("LIB/notification");
 
 		return mav;
 	}
@@ -484,6 +484,7 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	// 알람 팝업 - 이인복
 	@RequestMapping(value = "/notifications", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
@@ -555,7 +556,63 @@ public class PopJourneyController {
 
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	// 알람 팝업창에 읽음표시 - 이인복
+	@RequestMapping(value = "/reads", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String reads(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		System.out.println(params);
+		 
+		 try {
+			 
+			 int cnt = ipjs.read(params);
+			 
+			 if(cnt != 0)
+			 {
+				 modelMap.put("msg", "success");
+			 }
+			 else
+			 {
+				 modelMap.put("msg", "failed");
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	// 메인화면 공지사항 - 이인복
+	@RequestMapping(value = "/notices", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String notices() throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
 
+		 List<HashMap<String, String>> noticeData = ipjs.notice();
+		 
+		 try {
+			if(noticeData != null)
+			{
+				modelMap.put("msg", "success");
+				modelMap.put("noticeData", noticeData);
+			}
+			else
+			{
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
+
+	// 로그아읏 - 이인복
 	@RequestMapping(value = "/logouts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String logouts(HttpSession session) throws Throwable {
@@ -567,6 +624,7 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	// 회원정보 삭제 - 이인복
 	@RequestMapping(value = "/deletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String deletes(HttpSession session, @RequestParam HashMap<String, String> params) throws Throwable {
@@ -575,7 +633,23 @@ public class PopJourneyController {
 
 		session.invalidate();
 
-		int cnt = ipjs.delete(params);
+		 try {
+			 
+			 int cnt = ipjs.delete(params);
+			 
+			 if(cnt != 0)
+			 {
+				 modelMap.put("msg", "success");
+			 }
+			 else
+			 {
+				 modelMap.put("msg", "failed");
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
 		
 		return mapper.writeValueAsString(modelMap);
 	}
