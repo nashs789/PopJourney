@@ -108,12 +108,22 @@ body{
 	border-radius: 2px;
     box-sizing: border-box;	
 }
+#att{
+	display:none;
+}
 #photoArea{
 	width: 120px;
 	height: 120px;
-	border-radius: 120px;
+	border-radius: 50%;
+	border: 1px thin rgb(242, 242, 242, 0.6);
+	margin-left: 200px;
+}
+#photo{
+	width: 140px;
+	height: 120px;
+	border-radius: 50%;
 	border: 1px solid black;
-	margin-left: 210px;
+	box-sizing: border-box;
 }
 #findPhotoBtn{
 	margin: 20px 0px 0px 232px;
@@ -302,6 +312,7 @@ input[type='button']:hover{
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
+<script type="text/javascript" src="resources/script/jquery/jquery.form.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	if("${sMEM_NO}" != "")
@@ -327,7 +338,19 @@ $(document).ready(function(){
 		{
 			if(result.msg == "success")
 			{
-				$("#photoPath").val(result.PHOTO_PATH);
+				var path = "";
+				
+				if(result.PHOTO_PATH != null)
+				{
+					path = "resources/upload/"+result.PHOTO_PATH;
+				}
+				else
+				{
+					path = "./resources/images/profile.png";
+				}
+				
+				$("#photo").attr("src", path);
+				
 				$("#inputNic").val(result.NIC);
 				$("#inputIntro").val(result.INTRO);
 			}
@@ -397,50 +420,93 @@ $(document).ready(function(){
 		}); //ajax end 
 	}); //nicDbCkBtn click end
 	
-	$("#nextBtn").on("click", function(){
-		if($.trim($("#inputIntro").val()) == "") //소개글 입력 없을 시
-		{
-			$("#inputIntro").val("안녕하세요~ 잘 부탁드립니다.");
-		}
-	    /*if($("#photoPath").val() == "")
-		{
-			$("#photoPath").val(null);
-		} 
+	$("#findPhotoBtn").on("click", function() {
+		$("#att").click();
+	});
+	
+	$("#att").on("change", function() {
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") + 1));
 		
-		if($("#photoPath").val() != 1) //사진경로 나중에 넣을것
-		{
-			// 사진은 선택사항
-		}*/
-		if($.trim($("#inputNic").val()) == "")
-		{
-			popupText = "닉네임을 입력하세요.";
-			commonPopup(popupText);
-			$("#inputNic").focus();
-		}
-		else if($("#inputNic").val() != nicCheck)
-		{
-			popupText = "닉네임 중복확인을 해주세요.";
-			commonPopup(popupText);
-		}
-		else
-		{
-			var params = $("#editInfoForm").serialize();
-			
-			$.ajax({
-				url: "editProfiles",
-				data: params,
-				dataType:"json",
-				type: "post",
-				success:function(result)
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+				success : function(res) {
+				if(res.result == "SUCCESS") {
+					// 올라간 파일명 저장
+					if(res.fileName.length > 0) 
+					{
+						$("#photoPath").val(res.fileName[0]);
+						
+						var path = "resources/upload/"+res.fileName[0];
+						$("#photo").attr("src", path);
+					}
+				} 
+				else 
 				{
-					var txt = "프로필 업데이트 되었습니다.";
-					endPopup(txt)
-				}, //success end
-				error: function(request, status, error) {
-					console.log(error);
-				} // error end
-			}); //ajax end 
-		} //if~ else end
+					alert("파일 업로드중 문제 발생");
+				}
+			},
+			error : function() {
+				alert("파일 업로드중 문제 발생");
+			}
+		}); // ajaxForm end
+		fileForm.submit();
+	}); //att change end
+	
+	$("#nextBtn").on("click", function(){
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+			beforeSubmit : function() { // 파일이 있던 없던 유효성 체크.
+				if($.trim($("#inputIntro").val()) == "") //소개글 입력 없을 시
+				{
+					$("#inputIntro").val("안녕하세요~ 잘 부탁드립니다.");
+				}
+				if($.trim($("#inputNic").val()) == "")
+				{
+					popupText = "닉네임을 입력하세요.";
+					commonPopup(popupText);
+					$("#inputNic").focus();
+					return false;
+				}
+				else if($("#inputNic").val() != nicCheck)
+				{
+					popupText = "닉네임 중복확인을 해주세요.";
+					commonPopup(popupText);
+					return false;
+				}
+			},success : function(res) {
+				if(res.result == "SUCCESS") {
+					// 올라간 파일명 저장
+					if(res.fileName.length > 0) {
+						$("#photoPath").val(res.fileName[0]);
+					}
+					// 글 저장
+					var params = $("#editInfoForm").serialize();
+					
+					$.ajax({
+						url: "editProfiles",
+						data: params,
+						dataType:"json",
+						type: "post",
+						success:function(result)
+						{
+							var txt = "프로필 업데이트 되었습니다.";
+							endPopup(txt)
+						}, //success end
+						error: function(request, status, error) {
+							console.log(error);
+						} // error end
+					}); //ajax end 
+				} else {
+					alert("파일 업로드중 문제 발생");
+				}
+			},
+			error : function() {
+				alert("파일 업로드중 문제 발생");
+			}
+		}); // ajaxForm end
+		fileForm.submit();
 	}); //nextBtn click end
 		
 	$("#logoutBtn").on("click", function(){
@@ -518,6 +584,9 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
 </script>
 </head>
 <body>
+<form id="fileForm" action="fileUploadAjax" method="post" enctype="multipart/form-data">
+	<input type="file" name="att" id="att" /> <!-- attach : 첨부 -->
+</form>
 <form action="#" id="form">
 	<input type="hidden" id="valueStorage" name="storage"/>
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
@@ -575,11 +644,10 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
 			<div id="infoWrap">
 				<form action="#" id="editInfoForm">
 					<div id="photoArea">
-						<!-- 사진경로 추가할것 --> <!-- 절대 임시값임!!!!!!!!!!!!! -->
+						<img id="photo" src="./resources/images/profile.png">
 						<input type="hidden" id="photoPath" name="photoPath" value=""/>
-						<!-- 이미지 -->
 					</div>
-					<input type="button" value="사진찾기" id="findPhotoBtn"/>
+					<input type="button" value="사진찾기" id="findPhotoBtn"/><span id="fileName"></span>
 					
 					<div class="title">닉네임</div>
 					<input type="text" placeholder="닉네임을 입력하세요." id="inputNic" name="inputNic"/>

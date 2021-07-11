@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PJ">
 	<select id="login" parameterType="hashmap" resultType="hashmap">
-		SELECT MEM_NO, GRADE_NO, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
+		SELECT MEM_NO, GRADE_NO, PHOTO_PATH, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
 		FROM MEM
 		WHERE ID = #{inputID} AND PW = #{inputPW}
 	</select>
@@ -33,11 +33,11 @@
 		AND MEM_NO != #{MEM_NO}
 	</select>
 	
-	<insert id="join" parameterType="hashmap"> <!-- 사진경로 넣어야함 -->
-		INSERT INTO MEM(MEM_NO, ID, PW, PHONE, EMAIL, EMAIL_CONFIRM, NAME, TELCOM,
+	<insert id="join" parameterType="hashmap"> 
+		INSERT INTO MEM(MEM_NO, ID, PW, PHONE, EMAIL, EMAIL_CONFIRM, NAME, TELCOM, PHOTO_PATH,
          			    NIC, INTRO, BIRTH, SEX, KEYWORD_NO, MARKETING, JOIN_DATE, KEYWORD)
 		VALUES(MEM_SEQ.NEXTVAL, #{inputID}, #{inputPW}, #{phone}, #{email}, #{inputCode}, #{inputName},
-			   #{selectTelcom} ,#{inputNic}, #{inputIntro}, #{birth}, #{sex}, #{selectKeyword},
+			   #{selectTelcom}, #{photoPath} ,#{inputNic}, #{inputIntro}, #{birth}, #{sex}, #{selectKeyword},
 			   #{marketing}, SYSDATE, #{inputKeyword})
 	</insert>
 	
@@ -96,24 +96,43 @@
 	</update>
 	
 	<select id="notice" parameterType="hashmap" resultType="hashmap">
-		SELECT POST_NO, TITLE, HIT, BOARD_DATE
-		FROM (SELECT POST_NO, CASE WHEN LENGTH(TITLE) > 25
-		                           THEN SUBSTR(TITLE, 1, 25) || '....'
-		                           ELSE TITLE
-		                      END AS TITLE, CONTENTS, HIT, TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, 
-		            RANK() OVER(ORDER BY TO_CHAR(BOARD_DATE, 'YYYY-MM-DD') DESC) AS RK
-		     FROM BOARD 
-		     WHERE CATEGORY_NO = 1)
-		WHERE RK BETWEEN 1 AND 5     
+		SELECT B.POST_NO, B.HIT, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, BC.CMT, CASE WHEN LENGTH(B.TITLE) > 25
+		                                                                                         THEN SUBSTR(B.TITLE, 1, 25) || '...[' || CASE WHEN BC.CMT >= 1
+		                                                                                                                                       THEN BC.CMT
+		                                                                                                                                       ELSE 0
+		                                                                                                                                   END || ']'
+		                                                                                         ELSE B.TITLE || '  [' || CASE WHEN BC.CMT >= 1
+		                                                                                                                       THEN BC.CMT
+		                                                                                                                       ELSE 0
+		                                                                                                                   END || ']'
+		                                                                                        END AS TITLE                          
+		FROM (SELECT POST_NO, TITLE, CONTENTS, HIT, BOARD_DATE, RANK() OVER(ORDER BY BOARD_DATE DESC) AS RK
+		      FROM BOARD
+		      WHERE CATEGORY_NO = 1
+		      AND DEL = 1) B LEFT OUTER JOIN (SELECT POST_NO, COUNT(POST_NO) AS CMT
+		                                      FROM BOARD_CMT
+		                                      GROUP BY POST_NO) BC
+		                                  ON B.POST_NO = BC.POST_NO
+		WHERE B.RK BETWEEN 1 AND 5
+		ORDER BY BOARD_DATE DESC             
 	</select>
 	
 	<select id="yearRank" parameterType="hashmap" resultType="hashmap">
-		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
-		                                                                                                                             THEN SUBSTR(J.TITLE, 1, 25) || '....'
-		                                                                                                                             ELSE J.TITLE
-		                                                                                                                         END AS TITLE
+		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME, CASE WHEN J.MONTH >= 10
+		                                                                                                                        THEN J.MONTH
+		                                                                                                                        ELSE SUBSTR(J.MONTH, 2)
+		                                                                                                                     END AS MONTH, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
+		                                                                                                                                             THEN SUBSTR(J.TITLE, 1, 20) || '...[' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                                        THEN JC.CMT
+		                                                                                                                                                                                        ELSE 0
+		                                                                                                                                                                                    END || ']'     
+		                                                                                                                                             ELSE J.TITLE || '  [' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                           THEN JC.CMT
+		                                                                                                                                                                           ELSE 0
+		                                                                                                                                                                      END || ']' 
+		                                                                                                                                        END AS TITLE
 		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
-		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO, TO_CHAR(SYSDATE, 'MM') AS MONTH
 		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
 		                            ON JC.CATEGORY_NO = 1
 		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
@@ -124,9 +143,9 @@
 		                                                                                                      ON J.JOURNAL_NO = JC.JOURNAL_NO
 		                                                                               GROUP BY J.JOURNAL_NO) JC
 		                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
-		WHERE J.RK BETWEEN 1 AND 9
-		AND J.REGION_NO = #{regionNo} 
-		ORDER BY J.HIT DESC 
+		WHERE J.RK BETWEEN 1 AND 10
+		AND J.REGION_NO = #{regionNo}
+		ORDER BY J.HIT DESC
 	</select>
 	
 	<select id="monthRank" parameterType="hashmap" resultType="hashmap">
@@ -134,8 +153,14 @@
 		                                                                                                                        THEN J.MONTH
 		                                                                                                                        ELSE SUBSTR(J.MONTH, 2)
 		                                                                                                                     END AS MONTH, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
-		                                                                                                                                             THEN SUBSTR(J.TITLE, 1, 25) || '....'
-		                                                                                                                                             ELSE J.TITLE
+		                                                                                                                                             THEN SUBSTR(J.TITLE, 1, 20) || '...[' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                                           THEN JC.CMT
+		                                                                                                                                                                                           ELSE 0
+		                                                                                                                                                                                       END || ']'     
+		                                                                                                                                             ELSE J.TITLE || '  [' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                         THEN JC.CMT
+		                                                                                                                                                                         ELSE 0
+		                                                                                                                                                                     END || ']' 
 		                                                                                                                                        END AS TITLE
 		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
 		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO, TO_CHAR(SYSDATE, 'MM') AS MONTH
@@ -150,18 +175,27 @@
 		                                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
 		                                                                                    GROUP BY J.JOURNAL_NO) JC
 		                                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
-		     WHERE J.RK BETWEEN 1 AND 9
-		     AND J.REGION_NO = #{regionNo}
-		     ORDER BY J.HIT DESC
+		WHERE J.RK BETWEEN 1 AND 10
+		AND J.REGION_NO = #{regionNo}
+		ORDER BY J.HIT DESC
 	</select>
 	
 	<select id="weekRank" parameterType="hashmap" resultType="hashmap">
-		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME,  CMT, CASE WHEN LENGTH(J.TITLE) > 20 
-		                                                                                                                              THEN SUBSTR(J.TITLE, 1, 25) || '....'
-		                                                                                                                              ELSE J.TITLE
-		                                                                                                                          END AS TITLE
+		SELECT J.JOURNAL_NO, J.NIC, J.MEM_NO, J.HIT, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE , J.REGION_NAME, CASE WHEN J.MONTH >= 10
+		                                                                                                                        THEN J.MONTH
+		                                                                                                                        ELSE SUBSTR(J.MONTH, 2)
+		                                                                                                                     END AS MONTH, CMT, CASE WHEN LENGTH(J.TITLE) > 20 
+		                                                                                                                                             THEN SUBSTR(J.TITLE, 1, 20) || '...[' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                                           THEN JC.CMT
+		                                                                                                                                                                                           ELSE 0
+		                                                                                                                                                                                       END || ']'     
+		                                                                                                                                             ELSE J.TITLE || '  [' || CASE WHEN JC.CMT >= 1
+		                                                                                                                                                                         THEN JC.CMT
+		                                                                                                                                                                         ELSE 0
+		                                                                                                                                                                     END || ']' 
+		                                                                                                                                        END AS TITLE
 		FROM(SELECT J.JOURNAL_NO, J.TITLE, M.NIC, M.MEM_NO, J.HIT, J.JOURNAL_DATE, RANK() OVER(PARTITION BY JC.SUB_CATEGORY_NO ORDER BY HIT DESC)AS RK, 
-		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO
+		            JC.SUB_CATEGORY_NAME AS REGION_NAME, J.REGION_NO, TO_CHAR(SYSDATE, 'MM') AS MONTH
 		     FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
 		                            ON JC.CATEGORY_NO = 1
 		                            AND J.REGION_NO = JC.SUB_CATEGORY_NO
@@ -170,13 +204,13 @@
 		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')
 		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM')
 		      AND TO_CHAR(J.JOURNAL_DATE, 'IW')= TO_CHAR(SYSDATE, 'IW')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
-                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
-                                                                    GROUP BY J.JOURNAL_NO) JC
-                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
-		     WHERE J.RK BETWEEN 1 AND 9
-		     AND J.REGION_NO = #{regionNo}
-		     ORDER BY J.HIT DESC
+		                                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                                    GROUP BY J.JOURNAL_NO) JC
+		                                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
+		WHERE J.RK BETWEEN 1 AND 10
+		AND J.REGION_NO = #{regionNo}
+		ORDER BY J.HIT DESC
 	</select>
 	
 	<select id="getDetail" parameterType="hashmap" resultType="hashmap">
@@ -190,57 +224,100 @@
 	</select>
 	
 	<select id="notification" parameterType="hashmap" resultType="hashmap">
-		SELECT READ, NOTF_NO, EVENT_NO, NOTF_MEM_NO, REQUEST, MEM_NO, GBN_NO, NOTF_DATE, JOURNAL_NO, JTITLE, JCONTENTS, POST_NO, BTITLE, BCONTENTS, JCJOURNAL_NO, JCTITLE,
-		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, SYSDATE
+		SELECT READ, PHOTO_PATH, NOTF_NO, EVENT_NO, NOTF_MEM_NO, REQUEST, MEM_NO, GBN_NO, NOTF_DATE, JOURNAL_NO, JTITLE, JCONTENTS, POST_NO, BTITLE, BCONTENTS, JCJOURNAL_NO, JCTITLE,
+		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, SYSDATE  
 		FROM(SELECT READ, NOTF_NO, NF.EVENT_NO, NF.NOTF_MEM_NO, M.NIC AS REQUEST, NF.MEM_NO, NF.GBN_NO, TO_CHAR(NOTF_DATE, 'YYYY-MM-DD') AS NOTF_DATE, JCMT.JOURNAL_NO, JCMT.JTITLE,  
 		     JCMT.JCONTENTS, BCMT.POST_NO, BCMT.BTITLE, BCMT.BCONTENTS, JCCMT.JCJOURNAL_NO, JCCMT.JCTITLE, JCCMT.JUP_CONTENTS, BCCMT.BCPOST_NO,
 		     BCCMT.BCTITLE, BCCMT.BUP_CONTENTS, JCCMT2.UPJCONTENTS, JCCMT2.JCCMEM_NO, JCCMT2.DOWNJCONTENTS, JCCMT2.CCJOURNAL_NO, BCCMT2.UPBCONTENTS, BCCMT2.BCCMEM_NO, 
-		     BCCMT2.DOWNBCONTENTS, BCCMT2.CCPOST_NO, NOTF_DATE AS NOTF_DATE2, SYSDATE,
+		     BCCMT2.DOWNBCONTENTS, BCCMT2.CCPOST_NO, NOTF_DATE AS NOTF_DATE2, SYSDATE, M.PHOTO_PATH,
 		     RANK() OVER(PARTITION BY NF.MEM_NO ORDER BY TO_CHAR(NF.NOTF_DATE, 'YYYY-MM-DD HH:MMI:SS')DESC) AS RK
 		     FROM NOTF NF INNER JOIN MEM M --알람주체
 		                          ON NF.NOTF_MEM_NO = M.MEM_NO
 		                  INNER JOIN MEM M2 --알람대상
 		                          ON NF.MEM_NO = M2.MEM_NO
-		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, JC.JOURNAL_CMT_NO, JC.CONTENTS AS JCONTENTS, J.TITLE AS JTITLE
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, JC.JOURNAL_CMT_NO, CASE WHEN LENGTH(JC.CONTENTS) > 25
+		                                                                                 THEN SUBSTR(JC.CONTENTS, 1, 25) || '....'
+		                                                                                 ELSE JC.CONTENTS
+		                                                                            END AS JCONTENTS, 
+		                                                                            CASE WHEN LENGTH(J.TITLE) > 25
+		                                                                                 THEN SUBSTR(J.TITLE, 1, 25) || '....'
+		                                                                                 ELSE J.TITLE
+		                                                                            END AS JTITLE
 		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL J
 		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCMT
 		                               ON NF.GBN_NO = JCMT.JOURNAL_CMT_NO
 		                               AND NF.EVENT_NO = 1
-		                  LEFT OUTER JOIN (SELECT BC.POST_NO, BC.POST_CMT_NO, BC.CONTENTS AS BCONTENTS, B.TITLE AS BTITLE
+		                  LEFT OUTER JOIN (SELECT BC.POST_NO, BC.POST_CMT_NO, CASE WHEN LENGTH(BC.CONTENTS) > 25
+		                                                                                 THEN SUBSTR(BC.CONTENTS, 1, 25) || '....'
+		                                                                                 ELSE BC.CONTENTS
+		                                                                            END AS BCONTENTS, 
+		                                                                            CASE WHEN LENGTH(B.TITLE) > 25
+		                                                                                 THEN SUBSTR(B.TITLE, 1, 25) || '....'
+		                                                                                 ELSE B.TITLE
+		                                                                            END AS BTITLE
 		                                   FROM BOARD_CMT BC INNER JOIN BOARD B
 		                                                             ON BC.POST_NO = B.POST_NO) BCMT
 		                               ON NF.GBN_NO = BCMT.POST_CMT_NO
 		                               AND NF.EVENT_NO = 2
-		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, JC2.CONTENTS AS JUP_CONTENTS, J.TITLE AS JCTITLE
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, CASE WHEN LENGTH(JC2.CONTENTS) > 25
+		                                                                                                 THEN SUBSTR(JC2.CONTENTS, 1, 25) || '....'
+		                                                                                                 ELSE JC2.CONTENTS
+		                                                                                             END AS JUP_CONTENTS, 
+		                                                                                            CASE WHEN LENGTH(J.TITLE) > 25
+		                                                                                                 THEN SUBSTR(J.TITLE, 1, 25) || '....'
+		                                                                                                 ELSE J.TITLE
+		                                                                                             END AS JCTITLE
 		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL_CMT JC2 
 		                                                               ON JC2.JOURNAL_CMT_NO = JC.PARENTS_CMT_NO
 		                                                       INNER JOIN JOURNAL J
 		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCCMT
 		                               ON NF.GBN_NO = JCCMT.JOURNAL_CMT_NO
 		                               AND NF.EVENT_NO = 3
-		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.POST_NO AS BCPOST_NO, BC2.CONTENTS AS BUP_CONTENTS, B.TITLE AS BCTITLE
+		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.POST_NO AS BCPOST_NO, CASE WHEN LENGTH(BC2.CONTENTS) > 25
+		                                                                                                 THEN SUBSTR(BC2.CONTENTS, 1, 25) || '....'
+		                                                                                                 ELSE BC2.CONTENTS
+		                                                                                             END AS BUP_CONTENTS, 
+		                                                                                            CASE WHEN LENGTH(B.TITLE) > 25
+		                                                                                                 THEN SUBSTR(B.TITLE, 1, 25) || '....'
+		                                                                                                 ELSE B.TITLE
+		                                                                                             END AS BCTITLE
 		                                   FROM BOARD_CMT BC INNER JOIN BOARD_CMT BC2 
 		                                                               ON BC2.POST_CMT_NO = BC.PARENTS_CMT_NO
 		                                                     INNER JOIN BOARD B
 		                                                             ON BC.POST_NO = B.POST_NO) BCCMT
 		                               ON NF.GBN_NO = BCCMT.POST_CMT_NO
 		                               AND NF.EVENT_NO = 4
-		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC2.CONTENTS AS UPJCONTENTS, JC.CONTENTS AS DOWNJCONTENTS, JC.MEM_NO AS JCCMEM_NO, JC.JOURNAL_NO AS CCJOURNAL_NO
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.MEM_NO AS JCCMEM_NO, JC.JOURNAL_NO AS CCJOURNAL_NO, CASE WHEN LENGTH(JC2.CONTENTS) > 25
+		                                                                                                                         THEN SUBSTR(JC2.CONTENTS, 1, 25) || '....'
+		                                                                                                                         ELSE JC2.CONTENTS
+		                                                                                                                     END AS UPJCONTENTS, 
+		                                                                                                                    CASE WHEN LENGTH(JC.CONTENTS) > 25
+		                                                                                                                         THEN SUBSTR(JC.CONTENTS, 1, 25) || '....'
+		                                                                                                                         ELSE JC.CONTENTS
+		                                                                                                                     END AS DOWNJCONTENTS
 		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL_CMT JC2 
 		                                                               ON JC2.JOURNAL_CMT_NO = JC.PARENTS_CMT_NO
 		                                                       INNER JOIN JOURNAL J
 		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCCMT2
 		                               ON NF.GBN_NO = JCCMT2.JOURNAL_CMT_NO
 		                               AND NF.EVENT_NO = 5
-		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC2.CONTENTS AS UPBCONTENTS, BC.CONTENTS AS DOWNBCONTENTS, BC.MEM_NO AS BCCMEM_NO, BC.POST_NO AS CCPOST_NO
+		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.MEM_NO AS BCCMEM_NO, BC.POST_NO AS CCPOST_NO, CASE WHEN LENGTH(BC2.CONTENTS) > 25
+		                                                                                                                THEN SUBSTR(BC2.CONTENTS, 1, 25) || '....'
+		                                                                                                                ELSE BC2.CONTENTS
+		                                                                                                            END AS UPBCONTENTS, 
+		                                                                                                           CASE WHEN LENGTH(BC.CONTENTS) > 25
+		                                                                                                                THEN SUBSTR(BC.CONTENTS, 1, 25) || '....'
+		                                                                                                                ELSE BC.CONTENTS
+		                                                                                                            END AS DOWNBCONTENTS                 
 		                                   FROM BOARD_CMT BC INNER JOIN BOARD_CMT BC2 
 		                                                               ON BC2.POST_CMT_NO = BC.PARENTS_CMT_NO
 		                                                       INNER JOIN BOARD B
 		                                                               ON BC.POST_NO = B.POST_NO) BCCMT2
 		                               ON NF.GBN_NO = BCCMT2.POST_CMT_NO
-		                               AND NF.EVENT_NO = 6)
+		                               AND NF.EVENT_NO = 6
+		      WHERE NF.NOTF_MEM_NO != NF.MEM_NO)
 		WHERE MEM_NO = #{MEM_NO}
-		AND RK BETWEEN 1 AND 10      
+		AND RK BETWEEN 1 AND 10    
 	</select>
 	
 	<update id="read" parameterType="hashmap">

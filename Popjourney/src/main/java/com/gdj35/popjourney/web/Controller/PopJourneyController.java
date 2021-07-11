@@ -206,6 +206,8 @@ public class PopJourneyController {
 		// 넘어갈 키 값(사용할것): inputName, birth, phone, email, inputID, inputPW
 		// inputCode, inputKeyword, sex, selectTelcom, selectKeyword, photoPath
 		// inputNic, inputIntro, marketing
+		
+		System.out.println(params);
 		try {
 			int cnt = ipjs.join(params);
 
@@ -470,6 +472,7 @@ public class PopJourneyController {
 				}
 				session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
 				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
+				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
 
 				modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
 				modelMap.put("NIC", loginInfo.get("NIC"));

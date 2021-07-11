@@ -140,6 +140,67 @@ input[type='text']:focus, input[type='password']:focus{
    width: 600px;
    height: 80px;
 }
+#notification{
+ 	 display:none;
+     width: 600px;
+     box-shadow: 0px 0px 1px 1px #444444;
+     position: absolute;
+     margin-top: 72px;
+     right: 10px;
+     z-index: 300;
+     font-size: 10pt;
+}
+.read{
+    background-color: #d1d1e0;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+.notRead{
+	background-color: #a3a3c2;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+#notification table{
+	border-collapse: collapse;
+}
+
+#notification table tr th:first-child{
+	text-align: center;
+}
+
+#notification tr th{
+	text-align: left;
+}
+
+#notification tr th img{
+	height: 50px;
+	widtht: 70px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#notification tfoot tr{
+	background-color: #48486a;
+	color: white;
+}
+   
+#notification tfoot tr th{
+	text-align: center;
+	cursor: pointer;
+}
+
+#notification tfoot tr th:hover{
+	background-color: #a4a4c1;
+}
+
+#notification table tr th span{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#notification table tr th span:hover{
+	color: blue;
+}
 #profileSlidedown{
 	display: none;
    	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
@@ -308,7 +369,7 @@ $(document).ready(function(){
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                     <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
