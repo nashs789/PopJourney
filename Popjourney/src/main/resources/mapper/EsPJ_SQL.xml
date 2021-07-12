@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EsPJ">
+	<select id="getBMKCnt" parameterType="hashmap" resultType="Integer">
+		SELECT  COUNT(*) AS CNT
+		FROM B
+		WHERE 1=1
+	</select>
+	<select id="getBMKFolder" parameterType="hashmap" resultType="Integer">
+		SELECT BMK_NO, MEM_NO, FOLDER_NAME, FOLDER_MEMO, ORDER_SEQUENCE, RANK() OVER (ORDER BY ORDER_SEQUENCE ASC, BMK_NO)
+        FROM BMK_FOLDER
+        WHERE MEM_NO=#{MEM_NO};
+	</select>
+</mapper>
