@@ -42,7 +42,7 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/myPageBMK")
 	public ModelAndView myPageBMK(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		
-		mav.setViewName("LES/myPage");
+		mav.setViewName("LES/myPageBMK");
 		
 		return mav;
 	
