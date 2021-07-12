@@ -125,6 +125,10 @@ input[type='text']:focus, input[type='password']:focus{
 	margin: 0px auto;
 	text-align: center;
 }
+#notificationWrap{
+	width: 800px;
+	margin: 0px auto;
+}
 #footer {
    display: block;
    width: 100%;
@@ -274,6 +278,10 @@ $(document).ready(function(){
 				console.log(error);
 			} // error end
 		}); //ajax end 
+	}
+	else
+	{
+		location.href="main";
 	}
 	
 	$("#notification tbody").on("click", "span", function(){
@@ -426,6 +434,22 @@ $(document).ready(function(){
          </div> <!-- header end -->
 
 		<div id="container">
+			<div id="notificationWrap">
+				<table>
+					<colgroup>
+						<col width="100px">
+						<col width="600px">
+						<col width="100px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>사진</th>
+							<th>제목</th>
+							<th>날짜</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
 		</div>
 		
 		<div id="footer">
