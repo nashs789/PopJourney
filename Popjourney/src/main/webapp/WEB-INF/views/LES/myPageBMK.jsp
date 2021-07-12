@@ -891,13 +891,13 @@ function setDivHeight() {
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="logo.png" class="logo_photo"></a>
+						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
 						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="bell.png" class="bell_icon">
+							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
 								<div class="timeline">
 									<table border="1">
 										<colgroup>
@@ -905,7 +905,7 @@ function setDivHeight() {
 											<col width="331.6px">
 										</colgroup>
 										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
+											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
 											<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
 											</th>
 										</tr>
@@ -913,7 +913,7 @@ function setDivHeight() {
 											<th>2시간전 (오후)9:17분</th>
 										</tr>
 										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
+											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
 											<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
 											</th>
 										</tr>
@@ -921,7 +921,7 @@ function setDivHeight() {
 											<th>3시간전 (오후)8:54분</th>
 										</tr>
 										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
+											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
 											<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
 											</th>
 										</tr>
@@ -929,7 +929,7 @@ function setDivHeight() {
 											<th>3시간전 (오후)8:49분</th>
 										</tr>
 										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
+											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
 											<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
 										</tr>
 										<tr>
@@ -942,8 +942,8 @@ function setDivHeight() {
 										</tfoot>
 									</table>
 								</div></li>
-							<li><img alt="bookmark" src="bmk.png"></li>
-							<li><img alt="프로필" src="profile.png">
+							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png">
 								<ul id="dd">
 									<li>마이 페이지</li>
 									<li>프로필 수정</li>
@@ -974,7 +974,7 @@ function setDivHeight() {
 					<li>내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="search.png" class="search_icon" /> <input
+			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
 				type="text" class="search" placeholder="검색"> <select
 				class="filter">
 				<option value="0">통합검색</option>
@@ -985,7 +985,7 @@ function setDivHeight() {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="profile3.png" class="profile_img">
+				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
 				<div>닉네임</div>
 				<span>소개글</span>
 			</div>
@@ -995,21 +995,21 @@ function setDivHeight() {
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_group">
-							<li><img alt="thumbnail" src="flag.png"><br />여행일지</li>
-							<li><img alt="map" src="map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
+							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
 						<ul class="right_group">
-							<li><img alt="bookmark" src="bmrk.png"><br />북마크
+							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
-							<li><img alt="follower" src="follower.png"><br />팔로워
+							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
 									100</li>
-							<li><img alt="following" src="following.png"><br />팔로잉
+							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
 									100</li>
 						</ul>
 					</nav>
 				</div>
 				<div id="path_info">
-					<span> <img alt="메인페이지" src="home.png" class="home_icon">
+					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 북마크 </span> &nbsp;>&nbsp;&nbsp;폴더1
 				</div>
@@ -1028,7 +1028,7 @@ function setDivHeight() {
 					<div class="folder">
 						<input type = "checkbox" id = "c1" /><label for = "c1"></label>
 						<span class="folder_thumb"><img alt="썸네일"
-								src="backpack1.png"></span>
+								src="./resources/images/backpack1.png"></span>
 							<div class="folder_info">
 								<p>
 									<strong>폴더명</strong>
@@ -1041,7 +1041,7 @@ function setDivHeight() {
 					<div class="folder">
 						<input type = "checkbox" id = "c2" /><label for = "c2"></label>
 						<span class="folder_thumb"><img alt="썸네일"
-								src="backpack2.png"></span>
+								src="./resources/images/backpack2.png"></span>
 							<div class="folder_info">
 								<p>
 									<strong>폴더명</strong>
@@ -1054,7 +1054,7 @@ function setDivHeight() {
 					<div class="folder">
 						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
 						<span class="folder_thumb"><img alt="썸네일"
-								src="backpack3.png"></span>
+								src="./resources/images/backpack3.png"></span>
 							<div class="folder_info">
 								<p>
 									<strong>폴더명</strong>
@@ -1066,7 +1066,7 @@ function setDivHeight() {
 					</div>
 					<div class="post">
 						<span class="thumb"><img alt="썸네일"
-								src="a4.jpg"></span>
+								src="./resources/images/a4.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1079,7 +1079,7 @@ function setDivHeight() {
 								</p>
 							</div>
 							<div class="post_profile">
-								<img alt="작성자" src="profile3.png"> <span>닉네임</span>
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
 								<div>
 									<div>
 										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
@@ -1092,7 +1092,7 @@ function setDivHeight() {
 					</div>
 					<div class="post">
 						<span class="thumb"><img alt="썸네일"
-								src="a1.jpg"></span>
+								src="./resources/images/a1.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1105,7 +1105,7 @@ function setDivHeight() {
 								</p>
 							</div>
 							<div class="post_profile">
-								<img alt="작성자" src="profile3.png"> <span>닉네임</span>
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
 								<div>
 									<div>
 										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
@@ -1117,7 +1117,7 @@ function setDivHeight() {
 					</div>
 					<div class="post">
 						<span class="thumb"><img alt="썸네일"
-								src="a2.jpg"></span>
+								src="./resources/images/a2.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1130,7 +1130,7 @@ function setDivHeight() {
 								</p>
 							</div>
 							<div class="post_profile">
-								<img alt="작성자" src="profile3.png"> <span>닉네임</span>
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
 								<div>
 									<div>
 										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
@@ -1142,7 +1142,7 @@ function setDivHeight() {
 					</div>
 					<div class="post">
 						<span class="thumb"><img alt="썸네일"
-								src="a3.jpg"></span>
+								src="./resources/images/a3.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1155,7 +1155,7 @@ function setDivHeight() {
 								</p>
 							</div>
 							<div class="post_profile">
-								<img alt="작성자" src="profile3.png"> <span>닉네임</span>
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
 								<div>
 									<div>
 										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
@@ -1393,15 +1393,15 @@ function setDivHeight() {
 			<div class="folder_radio">
 				<div class="folder_radio_box">
 					<input type="radio" id="folder_radio1" name="folder_img"><br/>
-			    	<label for="folder_radio1"><img src="backpack1.png"> </label>
+			    	<label for="folder_radio1"><img src="./resources/images/backpack1.png"> </label>
 				</div>
 				<div class="folder_radio_box">
 					<input type="radio" id="folder_radio2" name="folder_img"><br/>
-			    	<label for="folder_radio2"><img src="backpack2.png"></label>
+			    	<label for="folder_radio2"><img src="./resources/images/backpack2.png"></label>
 				</div>
 			    <div class="folder_radio_box">
 				    <input type="radio" id="folder_radio3" name="folder_img"><br/>
-				    <label for="folder_radio3"><img src="backpack3.png"></label>
+				    <label for="folder_radio3"><img src="./resources/images/backpack3.png"></label>
 			    </div>
 			</div>
 			<div>
