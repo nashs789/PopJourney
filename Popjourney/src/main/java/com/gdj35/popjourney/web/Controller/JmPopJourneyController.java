@@ -2,6 +2,7 @@ package com.gdj35.popjourney.web.Controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -140,26 +141,36 @@ public class JmPopJourneyController {
 	
 	@RequestMapping(value = "/memAdminDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String memAdminDeletes(@RequestParam ArrayList<Integer> dMemNo) throws Throwable {
+	public String memAdminDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
 		
 		try {
-			int cnt = iJmPopjourneyService.deleteMem(dMemNo);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
+			String userNo = (params.get("userNo"));
+			String[] arrayUserNo = userNo.split(",");
+			for(int i = 0 ; i < arrayUserNo.length ; i++) {
+				System.out.println("arrayUserNo[i] >> " + arrayUserNo[i]);
+				params.put("userNo", arrayUserNo[i]);
+				
+				int cnt = iJmPopjourneyService.deleteMem(params);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
 			}
+			
 		} catch (Throwable e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		System.out.println("dMemNo >> " + dMemNo);
+		//System.out.println("userNo >> " + userNo);
+		//System.out.println("arrayUserNo >> " + Arrays.toString(arrayUserNo));
+		
+		System.out.println("delParams >> " + params);
 		return mapper.writeValueAsString(modelMap);
 		
 	}

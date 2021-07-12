@@ -30,8 +30,8 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	}
 
 	@Override
-	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable {
-		return iJmPopjourneyDao.deleteMem(dMemNo);
+	public int deleteMem(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteMem(params);
 	}
 
 	@Override

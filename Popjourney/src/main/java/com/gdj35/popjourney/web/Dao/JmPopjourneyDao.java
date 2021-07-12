@@ -28,8 +28,8 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	}
 
 	@Override
-	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable {
-		return sqlSession.update("JmPJ.deleteMem", dMemNo);
+	public int deleteMem(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.deleteMem", params);
 	}
 
 	@Override

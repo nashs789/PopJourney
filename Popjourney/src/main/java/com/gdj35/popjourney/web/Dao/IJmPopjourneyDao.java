@@ -12,7 +12,7 @@ public interface IJmPopjourneyDao {
 
 	public List<HashMap<String, String>> getSex(HashMap<String, String> params) throws Throwable;
 
-	public int deleteMem(ArrayList<Integer> dMemNo) throws Throwable;
+	public int deleteMem(HashMap<String, String> params) throws Throwable;
 
 	public List<HashMap<String, String>> communityList(HashMap<String, String> params) throws Throwable;
 
