@@ -125,10 +125,6 @@ input[type='text']:focus, input[type='password']:focus{
 	margin: 0px auto;
 	text-align: center;
 }
-#notificationWrap{
-	width: 800px;
-	margin: 0px auto;
-}
 #footer {
    display: block;
    width: 100%;
@@ -163,47 +159,6 @@ input[type='text']:focus, input[type='password']:focus{
 	background-color: #a3a3c2;
 	height: 50px;
 	border-bottom: 1px solid black;
-}
-#notification table{
-	border-collapse: collapse;
-}
-
-#notification table tr th:first-child{
-	text-align: center;
-}
-
-#notification tr th{
-	text-align: left;
-}
-
-#notification tr th img{
-	height: 50px;
-	widtht: 70px;
-	text-align: center;
-	cursor: pointer;
-}
-
-#notification tfoot tr{
-	background-color: #48486a;
-	color: white;
-}
-   
-#notification tfoot tr th{
-	text-align: center;
-	cursor: pointer;
-}
-
-#notification tfoot tr th:hover{
-	background-color: #a4a4c1;
-}
-
-#notification table tr th span{
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-#notification table tr th span:hover{
-	color: blue;
 }
 #profileSlidedown{
 	display: none;
@@ -241,6 +196,97 @@ input[type='text']:focus, input[type='password']:focus{
 .btns>ul>li {
 	margin-right: 10px;
 }
+#notificationWrap{
+	width: 650px;
+	margin: 50px auto;
+}
+#notificationWrap thead th{
+	text-align: center;
+}
+#notificationWrap table{
+	border-collapse: collapse;
+}
+
+#notificationWrap table tr th:first-child{
+	text-align: center;
+}
+
+#notificationWrap tbody tr th{
+	text-align: left;
+}
+
+#notificationWrap tr th img{
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+    margin-top: 5px;
+    border-radius: 50%;
+}
+
+#notificationWrap tfoot tr{
+	background-color: #48486a;
+	color: white;
+}
+   
+#notificationWrap tfoot tr th{
+	text-align: center;
+	cursor: pointer;
+}
+
+#notificationWrap tfoot tr th:hover{
+	background-color: #a4a4c1;
+}
+
+#notificationWrap table tr th span{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#notificationWrap table tr th span:hover{
+	color: blue;
+}
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+   cursor:pointer;
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
@@ -258,7 +304,7 @@ $(document).ready(function(){
 		var params = $("#memForm").serialize();
 		
 		$.ajax({
-			url: "notifications",
+			url: "pageCnts",
 			data: params,
 			dataType: "json",
 			type: "post",
@@ -266,7 +312,8 @@ $(document).ready(function(){
 			{
 				if(result.msg == "success")
 				{
-					makeNotification(result.notification);
+					$("#pageCnt").val(result.pageCnt);
+					$("#notificationMore").click();
 				}
 				else
 				{
@@ -284,25 +331,6 @@ $(document).ready(function(){
 		location.href="main";
 	}
 	
-	$("#notification tbody").on("click", "span", function(){
-
-		if($(this).attr("class") == "user")
-		{
-			console.log("user");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else if($(this).attr("class") == "journal")
-		{
-			console.log("journal");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else
-		{
-			console.log("post");
-			console.log($(this).attr($(this).attr("class")));
-		}
-	}); //notification tbody span click end
-	
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
 		if($("#profileSlidedown").css("display") == "block")
@@ -314,18 +342,6 @@ $(document).ready(function(){
 			$("#profileSlidedown").css("display", "block");
 		}
 	}); //profilePhoto click end
-	
-	$("#notificationPhoto").on("click", function(){
-		$("#profileSlidedown").css("display", "none");
-		if($("#notification").css("display") == "block")
-		{
-			$("#notification").css("display", "none");
-		}
-		else
-		{
-			$("#notification").css("display", "inline-block");
-		}
-	}); //notificationPhoto click end
 	
 	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
@@ -346,11 +362,41 @@ $(document).ready(function(){
 	$("#editInfo").on("click", function(){
 		location.href = "editInfo";
   	}); //editInfo click end
-  	
-  	$("#notificationMore").on("click", function(){
-		location.href="notification";
-	}); //notificationMore click end
 	
+  	$("#notificationMore").on("click", function(){
+		
+  		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "notifications",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					$("#page").val(result.page);
+					$("#firstPage").val(result.firstPage);
+					makeNotificationTable(result.notification, result.page);
+				}
+				else if(result.msg == "failed")
+				{
+					popupText = "오류가 발생했습니다.";
+					commonPopup(popupText);
+				}
+				else
+				{
+					popupText = "마지막 입니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //notificationMore click end
+  	
 	$("#logoutBtn").on("click", function(){
 		$.ajax({
 			url: "logouts",
@@ -365,11 +411,109 @@ $(document).ready(function(){
 		}); //ajax end
   	}); //logoutBtn click end
 }); // document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+	}); //yesBtn click end
+}
+function makeNotificationTable(notification, page)
+{
+	var html = "";
+	
+	for(noti of notification)
+	{
+		if(noti.READ == 1)
+		{
+			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+		}
+		else
+		{
+			html += "<tr class=\"read\">";
+		}
+		
+		var path ="";
+		
+		if(noti.PHOTO_PATH != null)
+		{
+			path = "resources/upload/"+noti.PHOTO_PATH;
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
+		}
+		
+		switch(noti.EVENT_NO)
+		{
+		case 0:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+			html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		case 1:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+			html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;	
+		case 2:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+			html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		case 3:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+			html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		case 4:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+			html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		case 5:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.JCCMEM_NO + "\"></th>";
+			html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.JCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		case 6:
+			html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.BCCMEM_NO + "\"></th>";
+			html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.BCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+			html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+			html +=" </tr>";
+			break;
+		default:
+			console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	$("#notificationWrap tbody").append(html);
+}
 </script>
 </head>
 <body>
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="${firstPage}"/>
+	<input type="hidden" id="GBN" name="GBN" value="2"/>
+	<input type="hidden" id="pageCnt" name="pageCnt"/>
 </form>
 <div id="wrap">
          <!-- header부분 고정 -->
@@ -383,24 +527,7 @@ $(document).ready(function(){
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
-							<div id="notification">
-								<table border="1">
-									<colgroup>
-										<col width="100px">
-										<col width="350px">
-										<col width="150px">
-									</colgroup>
-									<tbody>	
-
-									</tbody>
-
-									<tfoot>
-										<tr>
-											<th colspan="3" id="notificationMore">...더보기</th>
-										</tr>
-									</tfoot>
-								</table>
-							</div></li>
+						</li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
@@ -434,23 +561,31 @@ $(document).ready(function(){
          </div> <!-- header end -->
 
 		<div id="container">
-			<div id="notificationWrap">
-				<table>
-					<colgroup>
-						<col width="100px">
-						<col width="600px">
-						<col width="100px">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>사진</th>
-							<th>제목</th>
-							<th>날짜</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-		</div>
+			 	<div id="notificationWrap">
+					<table>
+						<colgroup>
+							<col width="100px">
+							<col width="350px">
+							<col width="200px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>사진</th>
+								<th>내용</th>
+								<th>날짜</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+						<tfoot>
+							<tr>
+								<th colspan="3" id="notificationMore">...더보기</th>
+							</tr>
+						</tfoot>
+					</table>
+			</div>	 
+		</div> <!-- container end -->
 		
 		<div id="footer">
             <p>

@@ -144,4 +144,16 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.read(params);
 	}
+
+	@Override
+	public void setProfile() throws Throwable 
+	{
+		ipjd.setProfile();
+	}
+
+	@Override
+	public HashMap<String, String> pageCnt(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.pageCnt(params);
+	}
 }

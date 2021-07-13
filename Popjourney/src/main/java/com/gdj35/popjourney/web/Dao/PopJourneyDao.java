@@ -143,4 +143,16 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.update("PJ.read", params);
 	}
+
+	@Override
+	public void setProfile() throws Throwable 
+	{
+		sql.insert("PJ.setProfile");
+	}
+
+	@Override
+	public HashMap<String, String> pageCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.pageCnt", params);
+	}
 }

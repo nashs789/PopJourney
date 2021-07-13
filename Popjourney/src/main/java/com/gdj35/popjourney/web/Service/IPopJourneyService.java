@@ -49,5 +49,9 @@ public interface IPopJourneyService {
 
 	int read(HashMap<String, String> params) throws Throwable;
 
+	void setProfile() throws Throwable;
+
+	HashMap<String, String> pageCnt(HashMap<String, String> params) throws Throwable;
+
 
 }

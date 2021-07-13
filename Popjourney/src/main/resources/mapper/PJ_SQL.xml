@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PJ">
 	<select id="login" parameterType="hashmap" resultType="hashmap">
-		SELECT MEM_NO, GRADE_NO, PHOTO_PATH, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
-		FROM MEM
+		SELECT M.MEM_NO, G.GRADE_NO, PHOTO_PATH, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
+		FROM MEM M INNER JOIN GRADE G
+		                   ON M.MEM_NO = G.MEM_NO
 		WHERE ID = #{inputID} AND PW = #{inputPW}
 	</select>
 	
@@ -317,11 +318,23 @@
 		                               AND NF.EVENT_NO = 6
 		      WHERE NF.NOTF_MEM_NO != NF.MEM_NO)
 		WHERE MEM_NO = #{MEM_NO}
-		AND RK BETWEEN 1 AND 10    
+		AND RK BETWEEN #{firstPage} AND #{page}    
 	</select>
 	
 	<update id="read" parameterType="hashmap">
 		UPDATE NOTF SET READ = 0
 		WHERE NOTF_NO = #{NOTF_NO}
 	</update>
+	
+	<insert id="setProfile">
+		INSERT INTO GRADE(MEM_NO)
+		VALUES(GRADE_SEQ.NEXTVAL)	
+	</insert>
+	
+	<select id="pageCnt" parameterType="hashmap" resultType="hashmap">
+		SELECT COUNT(*) AS CNT
+		FROM NOTF
+		WHERE MEM_NO = #{MEM_NO}
+		AND NOTF_MEM_NO != #{MEM_NO}
+	</select>
 </mapper>
