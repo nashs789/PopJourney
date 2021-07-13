@@ -643,12 +643,12 @@
 				// 회원삭제
 				$("#delBtn").on("click", function() {
 					if($("tbody .ckbox:checked").length >= 1) {
-						$(".popupDel").css("display", "inline-block");
-						$(".bg").css("display", "inline-block");
+						$(".popupDel").show();
+						$(".bg").show();
 						
 						$(".popupDel .btn_list #cancel").on("click", function() {
-							$(".popupDel").css("display", "none");
-							$(".bg").css("display", "none");
+							$(".popupDel").hide();
+							$(".bg").hide();
 						});
 						
 						$(".popupDel .btn_list #ok").on("click", function() {
@@ -672,8 +672,8 @@
 										if(res.msg == "success") {
 											resetVal();
 											reloadList();
-											$(".popupDel").css("display", "none");
-											$(".bg").css("display", "none");
+											$(".popupDel").hide();
+											$(".bg").hide();
 										} else if(res.msg == "failed") {
 											alert("삭제에 실패하였습니다.");
 										} else {
@@ -687,22 +687,56 @@
 								
 						});
 					} else {
-						$(".popupDel2").css("display", "inline-block");
-						$(".bg2").css("display", "inline-block");
+						$(".popupDel2").show();
+						$(".bg2").show();
 						
 						$(".popupDel2 .btn_list #ok").on("click", function() {
-							$(".popupDel2").css("display", "none");
-							$(".bg2").css("display", "none");
+							$(".popupDel2").hide();
+							$(".bg2").hide();
 						});
 					}
 					
 				});
 				
-				// 등급설정 버튼
-				$("table tbody").on("click", "#gradeBtn", function() {
-					$(".bg_grade").css("display", "inline-block");
-					$(".popup_grade").css("display", "inline-block");
+				$(".popupDel").on("click", function() {
+					popupDel();
 				});
+				
+				
+				// 등급설정 버튼
+				$("#list_wrap tbody").on("click", ".grade_btn", function() {
+					$(".bg_grade").show();
+					$(".popup_grade").show();
+				});
+				$(".popup_grade #cancel").on("click", function() {
+					$(".bg_grade").hide();
+					$(".popup_grade").hide();
+				});
+				
+				$("popup_grade #ok").on("click", function() {
+					var params = $("#gradeActionForm").serialize();
+					
+					$.ajax({
+						url: "memGrade",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				});
+				
+				/* // 회원프로필 이동
+				$("#list_wrap body").on("click", "tr", function() {
+					$("#memNo").val($(this).attr("mno"));
+					
+					$("#actionForm").attr("action", "주소");
+					$("#actionForm").submit();
+				}); */
 				
 				
 				// 성별 오/내림차순
@@ -773,7 +807,7 @@
 					html += "<td></td>"; // 누적신고수
 					html += "<td>" + d.ACC_CNT + "</td>";
 					html += "<td></td>"; // 등업신청유무
-					html += "<td><input type=\"button\" id=\"gradeBtn\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
 				
@@ -817,6 +851,33 @@
 				$("#searchTxt").val("");
 			}
 			
+			/* function popupDel() {
+				var html = "";
+				
+				html += "<div class=\"popupDel\">                             "
+			   	html += "	<div class=\"popup_entity_txt\">삭제하시겠습니까?<\"/div>"
+			    html += "    <div class=\"btn_list\">                         "
+				html += "    	<span id=\"ok\">OK</span>                     "
+				html += "        <span id=\"cancel\">CANCEL</span>            "
+				html += "    </div>                                         "
+				html += "</div>                                             "
+				html += "<div class=\"bg\"></div>                             "
+				
+				$("body").prepend(html);
+				
+				$(".bg").hide();
+				$(".popupDel").hide();
+				
+				$(".bg").fadeIn();
+				$(".popupDel").fadeIn();
+				
+				$("#ok").off("click");
+			}
+			
+			function closePopup() {
+				$()
+			} */
+			
 		</script>
 	</head>
 	<body>
@@ -833,19 +894,21 @@
 		    	<span id="ok">OK</span>
 		    </div>
 		</div>
- 		<div class="popup_grade">
-			<div class="popup_entity_grade">
-				<select class="popup_opt_grade">
-					<option value="0" selected="selected">등급설정</option>
-					<option value="1">여행꾼</option>
-					<option value="2">여행작가</option>
-				</select>
-				<div class="btn_list_grade">
-		           <span id="ok">확인</span>>
-		           <span id="cancel">취소</span>>
-		        </div>
+		<form action="#" id="gradeActionForm" method="post">
+	 		<div class="popup_grade">
+				<div class="popup_entity_grade">
+					<select class="popup_opt_grade" id="gradeSearchFilter" name="gradeSearchFilter">
+						<option value="0" selected="selected">등급설정</option>
+						<option value="1">여행꾼</option>
+						<option value="2">여행작가</option>
+					</select>
+					<div class="btn_list_grade">
+			           <span id="ok">확인</span>>
+			           <span id="cancel">취소</span>>
+			        </div>
+				</div>
 			</div>
-		</div>
+		</form>
  		<div class="bg"></div>
  		<div class="bg2"></div>
  		<div class="bg_grade"></div>

@@ -186,6 +186,19 @@ public class JmPopJourneyController {
 		
 	}
 	
+	@RequestMapping(value="/memGrade", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
+	@ResponseBody public String memGrade(@RequestParam HashMap<String, String>	params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		System.out.println("params >> " + params);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
 	// 내부관리자-여행일지
 	@RequestMapping(value = "/TravelDiaryAdmin")
 	public ModelAndView TravelDiaryAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {

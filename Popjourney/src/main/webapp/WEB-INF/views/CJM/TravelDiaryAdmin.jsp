@@ -637,7 +637,16 @@
 						});
 					}
 					
+					
 				});
+				
+				/* // 여행일지 세부페이지 이동
+				$("#list_wrap tbody").on("click", "tr", function() {
+					$("#journalNoS").val($(this).attr("jno"));
+					
+					$("#actionForm").attr("action", "주소");
+					$("#actionForm").submit();
+				}); */
 				
 			}); // document ready end..
 			
@@ -799,6 +808,7 @@
 					</div>
 					<div class="sub_search">
 						검색 :
+						<input type="hidden" id="journalNoS" name="journalNoS" />
 						<input type="hidden" id="page" name="page" value="${page}" />
 						<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 						<input type="hidden" id="journalNo" name="journalNo" value="" />
