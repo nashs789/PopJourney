@@ -480,10 +480,11 @@ public class PopJourneyController {
 				}
 				session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
 				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
+				session.setAttribute("sNIC", loginInfo.get("NIC"));
 				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
 
-				modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
-				modelMap.put("NIC", loginInfo.get("NIC"));
+				//modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
+				//modelMap.put("NIC", loginInfo.get("NIC")); 필요없는거 같아서 주석해놈
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
