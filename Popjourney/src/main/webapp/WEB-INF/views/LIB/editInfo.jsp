@@ -318,14 +318,14 @@ select{
 	background-color: #f37321;
 }
 .btns ul li {
-        list-style: none;
-		float: left;
-		text-align: center;
-        color: #2e3459;
-		line-height: 25px;
-		text-decoration: none;
-		font-size: 18px;
-		font-weight: 900;
+    list-style: none;
+	float: left;
+	text-align: center;
+    color: #2e3459;
+	line-height: 25px;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: 900;
 }
 .btns>ul>li {
 	margin-right: 10px;
