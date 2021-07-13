@@ -127,8 +127,10 @@ public class JmPopJourneyController {
 		modelMap.put("startDay", startDay);
 		
 		System.out.println("params >> " + params);
-		System.out.println("list >> " + list); System.out.println("pb >> " + pb);
-		System.out.println("cnt >> " + cnt); System.out.println("page >> " + page);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
 		System.out.println("params >> " + params);
 		System.out.println("startDay >> " + startDay);
 		System.out.println("today >> " + today);
@@ -153,8 +155,17 @@ public class JmPopJourneyController {
 			for(int i = 0 ; i < arrayUserNo.length ; i++) {
 				System.out.println("arrayUserNo[i] >> " + arrayUserNo[i]);
 				params.put("userNo", arrayUserNo[i]);
-				
+				// 탈퇴일
 				int cnt = iJmPopjourneyService.deleteMem(params);
+				
+				// 여행일지
+				//int cnt2 = iJmPopjourneyService.deleteJournal(params);
+				// 여행일지 댓글
+				//int cnt3 = iJmPopjourneyService.deleteJournalCmt(params);
+				// 게시판
+				//int cnt4 = iJmPopjourneyService.deleteBoard(params);
+				// 게시판 댓글
+				//int cnt5 = iJmPopjourneyService.deleteBoardCmt(params);
 				
 				if(cnt > 0) {
 					modelMap.put("msg", "success");
@@ -233,6 +244,45 @@ public class JmPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	
 	}
+	
+	@RequestMapping(value = "/TravelDiaryAdminsDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String TravelDiaryAdminsDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			String journalNo = (params.get("journalNo"));
+			String[] arrayJournalNo = journalNo.split(",");
+			for(int i = 0 ; i < arrayJournalNo.length ; i++) {
+				System.out.println("arrayJournalNo[i] >> " + arrayJournalNo[i]);
+				params.put("journalNo", arrayJournalNo[i]);
+				
+				// 게시글 DEL 1 -> 0
+				int cnt = iJmPopjourneyService.deleteJournal(params);
+				// 게시글댓글 DEL 1 -> 0
+				int cnt2 = iJmPopjourneyService.deleteJournalCmt(params);
+				
+				if(cnt > 0 || cnt2 > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				System.out.println("journalNo >> " + journalNo);
+				System.out.println("arrayJournalNo >> " + Arrays.toString(arrayJournalNo));
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		System.out.println("delParams >> " + params);
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 	// 내부관리자-자유게시판
 	@RequestMapping(value = "/communityAdmin")
@@ -292,6 +342,45 @@ public class JmPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	
 	}
+	
+	@RequestMapping(value = "/communityAdminsDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String communityAdminsDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			String postNo = (params.get("postNo"));
+			String[] arrayPostNo = postNo.split(",");
+			for(int i = 0 ; i < arrayPostNo.length ; i++) {
+				System.out.println("arrayJournalNo[i] >> " + arrayPostNo[i]);
+				params.put("postNo", arrayPostNo[i]);
+				
+				// 게시글 DEL 1 -> 0
+				int cnt = iJmPopjourneyService.deletePost(params);
+				// 게시글댓글 DEL 1 -> 0
+				int cnt2 = iJmPopjourneyService.deletePostCmt(params);
+				
+				if(cnt > 0 || cnt2 > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				System.out.println("postNo >> " + postNo);
+				System.out.println("arrayPostNo >> " + Arrays.toString(arrayPostNo));
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		System.out.println("delParams >> " + params);
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 	// 내부관리자-공지관리
 	@RequestMapping(value = "/noticeAdmin")
@@ -350,14 +439,102 @@ public class JmPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	
 	}
+	
+	@RequestMapping(value = "/noticeAdminsDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String noticeAdminsDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			String postNo = (params.get("postNo"));
+			String[] arrayPostNo = postNo.split(",");
+			for(int i = 0 ; i < arrayPostNo.length ; i++) {
+				System.out.println("arrayJournalNo[i] >> " + arrayPostNo[i]);
+				params.put("postNo", arrayPostNo[i]);
+				
+				// 공지 DEL 1 -> 0
+				int cnt = iJmPopjourneyService.deletePost(params);
+				// 공지 댓글 DEL 1 -> 0
+				int cnt2 = iJmPopjourneyService.deletePostCmt(params);
+				
+				if(cnt > 0 || cnt2 > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				System.out.println("postNo >> " + postNo);
+				System.out.println("arrayPostNo >> " + Arrays.toString(arrayPostNo));
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		System.out.println("delParams >> " + params);
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 	// 내부관리자-신고관리
 	@RequestMapping(value = "/reportAdmin")
 	public ModelAndView reportAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
 		mav.setViewName("CJM/reportAdmin");
 
 		return mav;
+	}
+	
+	@RequestMapping(value="/reportAdmins", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
+	@ResponseBody public String reportAdmins(@RequestParam HashMap<String, String>	params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getReportCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getReportList(params);
+		
+		//현재날짜 취득
+		String dateForm = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(dateForm);
+		String today = sdf.format(new Date());
+		String startDay = "2021-01-01";
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("today", today);
+		modelMap.put("startDay", startDay);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list); 
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt); 
+		System.out.println("page >> " + page);
+		System.out.println("startDay >> " + startDay);
+		System.out.println("today >> " + today);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 
 }

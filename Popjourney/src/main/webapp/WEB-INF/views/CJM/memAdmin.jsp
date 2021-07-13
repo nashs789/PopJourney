@@ -287,6 +287,68 @@
 				z-index: 400;
 				opacity: 0.2;
 			}
+			.bg_grade {
+				display: none;
+				width: 100%;
+				height: 1388px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			.popup_grade {
+				display: none;
+				width: 300px;
+				height: 150px;
+				background-color: #fcfcfc;
+			    box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			    position: fixed;
+			    top: calc(50% - 75px); 
+			    left: calc(50% - 150px); 
+			    z-index: 500;
+			    font-size: 16pt;
+			    border-radius: 10px;
+			    font-size: 0px;
+			    border: 0px;
+			}
+			.popup_entity_grade {
+				display: block;
+				width: 100%;
+				height: 110px;
+				margin: 20px auto;	
+			}
+			.popup_opt_grade {
+				display: block;
+				width: 268px;
+				height: 40px;	
+				margin: 30px auto 30px auto;
+				font-weight: bold;
+			}
+			.btn_list_grade span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list_grade span:first-child {
+			   border-radius: 0 0 0 10px; 
+			}
+			.btn_list_grade span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list_grade span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
 			
 			#container {
 				display: block;
@@ -449,6 +511,10 @@
 			}
 			.not_leave {
 				background-color: #f9f9f9;
+			}
+			.leave .grade_btn {
+				background-color: #d9d9d9;
+				border: 2px solid #2E3459;
 			}
 			
 			
@@ -632,6 +698,12 @@
 					
 				});
 				
+				// 등급설정 버튼
+				$("table tbody").on("click", "#gradeBtn", function() {
+					$(".bg_grade").css("display", "inline-block");
+					$(".popup_grade").css("display", "inline-block");
+				});
+				
 				
 				// 성별 오/내림차순
 				$("#sex").on("click", function() {
@@ -646,17 +718,6 @@
 					}
 					reloadList();
 				});
-				
-				/* $("#delBtn").on("click", function() {
-					var array = new Array();
-					$(".ckbox:checked").each(function() {
-						array.push($(this).val());
-					});
-					$("#userNo").val(array);
-					
-					console.log(array);
-				}); */
-				
 				
 			}); // document ready end..
 		
@@ -694,7 +755,7 @@
 					} else {
 						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
 					}				
-					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
 					html += "<td>" + d.ID + "</td>";
 					html += "<td>" + d.NIC + "</td>";
@@ -712,7 +773,7 @@
 					html += "<td></td>"; // 누적신고수
 					html += "<td>" + d.ACC_CNT + "</td>";
 					html += "<td></td>"; // 등업신청유무
-					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					html += "<td><input type=\"button\" id=\"gradeBtn\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
 				
@@ -756,19 +817,6 @@
 				$("#searchTxt").val("");
 			}
 			
-			function getCkboxValue() {
-				var obj = $("[name=ckMemNo]");
-				var array = new Array();
-				
-				$("input:checkbox[name=ckMemNo]:checked").each(function() {
-					array.push(this.value);
-				});
-				$("hiddenValue").val(array);
-				
-				alert($("#hiddenValue").val());
-				
-			}
-			
 		</script>
 	</head>
 	<body>
@@ -785,8 +833,22 @@
 		    	<span id="ok">OK</span>
 		    </div>
 		</div>
+ 		<div class="popup_grade">
+			<div class="popup_entity_grade">
+				<select class="popup_opt_grade">
+					<option value="0" selected="selected">등급설정</option>
+					<option value="1">여행꾼</option>
+					<option value="2">여행작가</option>
+				</select>
+				<div class="btn_list_grade">
+		           <span id="ok">확인</span>>
+		           <span id="cancel">취소</span>>
+		        </div>
+			</div>
+		</div>
  		<div class="bg"></div>
  		<div class="bg2"></div>
+ 		<div class="bg_grade"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -878,7 +940,7 @@
 								<col width="100px" /> <!-- 게시글 -->
 								<col width="100px" /> <!-- 좋아요 -->
 								<col width="100px" /> <!-- 팔로워 -->
-								<col width="110px" /> <!-- 누적신고 -->
+								<col width="120px" /> <!-- 누적신고 -->
 								<col width="100px" /> <!-- 접속횟수 -->
 								<col width="100px" /> <!-- 승인대기 -->
 								<col width="90px" /> <!-- 등급설정 -->

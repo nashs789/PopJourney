@@ -176,6 +176,118 @@
 			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
+			.popupDel {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list span:first-child {
+			   border-radius: 0 0 0 10px;
+			}
+			.btn_list span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			.popupDel2 {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popupDel2 .popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.popupDel2 .btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px;
+			}
+			.popupDel2 .btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg2 { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
 			#container {
 				display: block;
 				width: 1280px;
@@ -316,6 +428,17 @@
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
+			}
+			.not_del {
+				background-color: #f9f9f9;
+			}
+			.del {
+				background-color: #d9d9d9;
+				pointer-events: none;
+			}
+			.del .edit_btn {
+				background-color: #d9d9d9;
+				border: 2px solid #2E3459;
 			}
 			
 			
@@ -458,6 +581,64 @@
 					}
 				});
 				
+				// 게시판삭제
+				$("#postDeleteBtn").on("click", function() {
+					if($("tbody .ckbox:checked").length >= 1) {
+						$(".popupDel").css("display", "inline-block");
+						$(".bg").css("display", "inline-block");
+						
+						$(".popupDel .btn_list #cancel").on("click", function() {
+							$(".popupDel").css("display", "none");
+							$(".bg").css("display", "none");
+						});
+						
+						$(".popupDel .btn_list #ok").on("click", function() {
+							
+							var array = new Array();
+							$(".ckbox:checked").each(function() {
+								array.push($(this).val());
+							});
+							$("#postNo").val(array);
+							
+							console.log(array);
+							
+							var params = $("#actionForm").serialize();
+										
+								$.ajax({
+									url : "communityAdminsDeletes",
+									type : "post",
+									dataType : "json",
+									data : params,
+									success : function(res) {
+										if(res.msg == "success") {
+											resetVal();
+											reloadList();
+											$(".popupDel").css("display", "none");
+											$(".bg").css("display", "none");
+										} else if(res.msg == "failed") {
+											alert("삭제에 실패하였습니다.");
+										} else {
+											alert("삭제중 문제가 발생하였습니다.");
+										}
+									},
+									error : function(request, status, error) {
+										console.log(error);
+									}
+								});
+								
+						});
+					} else {
+						$(".popupDel2").css("display", "inline-block");
+						$(".bg2").css("display", "inline-block");
+						
+						$(".popupDel2 .btn_list #ok").on("click", function() {
+							$(".popupDel2").css("display", "none");
+							$(".bg2").css("display", "none");
+						});
+					}
+					
+				});
+				
 				
 			}); // document ready end..
 			
@@ -489,8 +670,12 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr pno=\"" + d.POST_NO + "\">";
-					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.POST_NO + "\"/></td>";
+					if(d.DEL == 1) {
+						html += "<tr pno=\"" + d.POST_NO + "\" class=\"not_del\">";
+					} else {
+						html += "<tr pno=\"" + d.POST_NO + "\" class=\"del\">";
+					}
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckPostNo\" value=\"" + d.POST_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.POST_NO + "</td>";
 					html += "<td>" + d.CATEGORY_NAME + "</td>";
 					html += "<td class=\"board_title\">" + d.TITLE + "</td>";
@@ -536,9 +721,30 @@
 				$(".paging").html(html);
 			}
 			
+			function resetVal() {
+				$("#page").val(1);
+				$("#searchFilter").val("0");
+				$("#searchTxt").val("");
+			}
+			
 		</script>
 	</head>
 	<body>
+		<div class="popupDel">
+	   		<div class="popup_entity_txt">삭제하시겠습니까?</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		        <span id="cancel">CANCEL</span>
+		    </div>
+		</div>
+		<div class="popupDel2">
+	   		<div class="popup_entity_txt">삭제할 일지가 없습니다.</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		    </div>
+		</div>
+ 		<div class="bg"></div>
+ 		<div class="bg2"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -596,6 +802,7 @@
 							검색 :
 							<input type="hidden" id="page" name="page" value="${page}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+							<input type="hidden" id="postNo" name="postNo" value="" />
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">카테고리</option>
@@ -606,40 +813,40 @@
 							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
 							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
 							<input class="search_btn" type="button" value="검색" />
-							<input class="post_delete_btn" type="button" id="delBtn" value="게시글삭제" />
+							<input class="post_delete_btn" type="button" id="postDeleteBtn" value="게시글삭제" />
+						</div>
+						<div id="list_wrap">
+							<table>
+								<colgroup>
+										<col width="32px" /> <!-- 체크박스 -->
+										<col width="106px" /> <!-- No -->
+										<col width="124px" /> <!-- 카테고리 -->
+										<col width="430px" /> <!-- 제목 -->
+										<col width="124px" /> <!-- 등급 -->
+										<col width="140px" /> <!-- 닉네임 -->
+										<col width="161px" /> <!-- 작성일 -->
+										<col width="92px" /> <!-- 조회 -->
+										<col width="102px" /> <!-- 좋아요 -->
+										<col width="110px" /> <!-- 비고 -->
+								</colgroup>
+								<thead>
+									<tr class="article">
+										<th><input type="checkbox" class="ckbox" id="allCkbox" /></th>
+			            				<th>글번호</th>
+			            				<th class="click_article">카테고리↕</th>
+			            				<th>제목</th>
+			            				<th class="click_article">등급↕</th>
+			            				<th>닉네임</th>
+			            				<th class="click_article">작성일↕</th>
+			            				<th class="click_article">조회↕</th>
+			            				<th class="click_article">좋아요↕</th>
+			            				<th>비고</th>
+			            			</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
 						</div>
 					</form>
-					<div id="list_wrap">
-						<table>
-							<colgroup>
-									<col width="32px" /> <!-- 체크박스 -->
-									<col width="106px" /> <!-- No -->
-									<col width="124px" /> <!-- 카테고리 -->
-									<col width="430px" /> <!-- 제목 -->
-									<col width="124px" /> <!-- 등급 -->
-									<col width="140px" /> <!-- 닉네임 -->
-									<col width="161px" /> <!-- 작성일 -->
-									<col width="92px" /> <!-- 조회 -->
-									<col width="102px" /> <!-- 좋아요 -->
-									<col width="110px" /> <!-- 비고 -->
-							</colgroup>
-							<thead>
-								<tr class="article">
-									<th><input type="checkbox" class="ckbox" id="allCkbox" /></th>
-		            				<th>글번호</th>
-		            				<th class="click_article">카테고리↕</th>
-		            				<th>제목</th>
-		            				<th class="click_article">등급↕</th>
-		            				<th>닉네임</th>
-		            				<th class="click_article">작성일↕</th>
-		            				<th class="click_article">조회↕</th>
-		            				<th class="click_article">좋아요↕</th>
-		            				<th>비고</th>
-		            			</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
 				</div> <!-- mem_admin_area end -->
 				<div class="paging"></div>
 			</div> <!-- container end -->

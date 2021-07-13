@@ -176,6 +176,65 @@
 			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
+			.popup_approval, .popup_unapproval {
+			   display: none;
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list span:first-child {
+			   border-radius: 0 0 0 10px; 
+			}
+			.btn_list span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg_approval, .bg_unapproval { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1388px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
 			#container {
 				display: block;
 				width: 1280px;
@@ -248,26 +307,10 @@
 				border-radius: 20px;
 				border: 2px solid #2E3459;
 			}
-			.diary_delete_btn {
-				width: 90px;
-				height: 40px;
-				background-color: #FFFFFF;
-				font-size: 11pt;
-				font-weight: bold;
-				color: #000000;
-				cursor: pointer;
-				border-radius: 20px;
-				border: 2px solid #2E3459;
-			}
 			.search_btn:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
 			}			
-			.diary_delete_btn:hover {
-				background-color: #F1404B;
-				color: #FFFFFF;
-				border: 2px solid #F1404B;
-			}
 			
 			
 			table {
@@ -359,19 +402,25 @@
 				font-size: 10pt;
 				text-align: right;
 			}
+			/* .not_del {
+				background-color: #f9f9f9;
+			}
+			.del {
+				background-color: #d9d9d9;
+				pointer-events: none;
+			}
+			.del .edit_btn {
+				background-color: #d9d9d9;
+				border: 2px solid #2E3459;
+			} */
 			
 			
-			.paging_wrap {
-            	width: 100%;
-            	height: 100px;
-            	padding-top: 50px;
-	        }
-	        .paging { 
+			.paging { 
 	            font-size: 0;
 	            text-align: center;
-	            margin: 20px 0px 60px 0px;
+	            margin: 40px 0px 60px 0px;
 	        }  
-	        .paging a {
+	        .paging div {
 	            display: inline-block;
 	            margin-left: 10px;
 	            padding: 5px 10px;
@@ -380,23 +429,24 @@
 	            font-weight: bold;
 	            text-decoration: none;
 	        }   
-	        .paging a.paging_btn {
+	        .paging_btn {
 	            background-color: none;
 	            color: #2e3459;
 	            letter-spacing:-5px;
 	            font-size: 12pt;
 	        }
-	        .paging a.num {           
+	        .paging div.num {           
 	            color: #2e3459;
 	        }
-	        .paging a:first-child {
+	        .paging div:first-child {
 	            margin-left: 0;
 	        } 
-	        .paging a.num:hover,
-	        .paging a.num.on,
-	        .paging a.paging_btn:hover  {
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
 	            color: #F1404B;
 	            text-decoration: underline;
+	            cursor: pointer;
 	        }
 	        
 	        .edit_btn {
@@ -438,6 +488,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				reloadList();
+				
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -464,11 +516,159 @@
 					location.href = "reportAdmin";
 				});
 				
-			});
+				// 셀렉터 옵션 유지
+				if("${param.searchFilter}" != "") {
+					$("#searchFilter").val("${param.searchFilter}");
+				}
+				
+				// 검색 처리
+				$(".search_btn").on("click", function() {
+					$("#page").val(1);
+					$("#searchOldTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				//승인
+				$("#list_wrap table").on("click", "#approvalBtn", function() {
+					$(".popup_approval").css("display", "inline-block");
+					$(".bg_approval").css("display", "inline-block");
+				});
+				$("#list_wrap table").on("click", "#approvalBtn #ok", function() {
+					$(".popup_approval").css("display", "none");
+					$(".bg_approval").css("display", "none");
+					// 추가 작업하기
+				});
+				$("#list_wrap table").on("click", "#approvalBtn #cancel", function() {
+					$(".popup_approval").css("display", "none");
+					$(".bg_approval").css("display", "none");
+				});
+				//미승인
+				$("#list_wrap table").on("click", "#unApprovalBtn", function() {
+					$(".popup_unapproval").css("display", "inline-block");
+					$(".bg_unapproval").css("display", "inline-block");
+				});
+				$("#list_wrap table").on("click", "#unApprovalBtn #ok", function() {
+					$(".popup_unapproval").css("display", "none");
+					$(".bg_unapproval").css("display", "none");
+					// 추가 작업하기
+				});
+				$("#list_wrap table").on("click", "#unApprovalBtn #cancel", function() {
+					$(".popup_unapproval").css("display", "none");
+					$(".bg_unapproval").css("display", "none");
+				});
+				
+				
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "reportAdmins",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						//날짜 가져오기
+						$("#searchDate1").val(res.startDay);
+						$("#searchDate2").val(res.today);
+						
+						//내부관리자-게시판관리
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+				
+			}
+			
+			function drawList(list) {
+				var html = "";
+				
+				for(d of list) {
+					if(d.HANDEL_DATE == "-") {
+						html += "<tr pno=\"" + d.REPORT_NO + "\" class=\"not_del\">";
+					} else {
+						html += "<tr pno=\"" + d.REPORT_NO + "\" class=\"del\">";
+					}
+					html += "<td id=\"mNo\">" + d.REPORT_NO + "</td>";
+					html += "<td>" + d.REASON_NAME + "</td>";
+					html += "<td>" + d.CONTENTS + "</td>";
+					html += "<td>" + d.REQUEST_NIC + "</td>";
+					html += "<td>" + d.TARGET_NIC + "</td>";
+					html += "<td>" + d.REPORT_DATE + "</td>";
+					html += "<td>" + d.HANDLE_DATE + "</td>";
+					html += "<td><input type=\"button\" class=\"approval_btn\" id=\"approvalBtn\" value=\"승인\" readonly=\"readonly\"/><input type=\"button\" class=\"un_approval_btn\" id=\"unApprovalBtn\" value=\"미승인\" readonly=\"readonly\"/></td>";
+					html += "</tr>";
+				}
+				
+				$("#list_wrap tbody").html(html);
+			}
+			
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+					}
+				}
+				
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+			}
+			
+			function resetVal() {
+				$("#page").val(1);
+				$("#searchFilter").val("0");
+				$("#searchTxt").val("");
+			}
 			
 		</script>
 	</head>
 	<body>
+		<div class="popup_approval">
+	   		<div class="popup_entity_txt">승인하시겠습니까?</div>
+	        <div class="btn_list">
+	           <span id="ok">확인</span>>
+	           <span id="cancel">취소</span>>
+	        </div>
+	    </div>
+		<div class="bg_approval"></div>
+		<div class="popup_unapproval">
+	   		<div class="popup_entity_txt">미승인하시겠습니까?</div>
+	        <div class="btn_list">
+	           <span id="ok">확인</span>>
+	           <span id="cancel">취소</span>>
+	        </div>
+	    </div>
+ 		<div class="bg_unapproval"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -521,403 +721,53 @@
 					<div class="admin_menu">
 						<span class="menu1" id="menu1">· 회원관리 </span><span class="menu2" id="menu2"> · 일지관리 </span><span class="menu3" id="menu3"> · 게시판관리</span><span class="menu4" id="menu4"> · 공지관리</span><span class="menu5" id="menu5"> · 신고관리</span>
 					</div>
-					<div class="sub_search">
-						검색 :
-						<select class="search_filter">
-								<option value="0" selected="selected">통합검색</option>
-								<option value="1">내용</option>
-								<option value="2">신고회원</option>
-								<option value="3">처리회원</option>
-						</select>
-						<input class="search_date" type="date" /><span>부터</span> 
-						<input class="search_date" type="date" /><span>까지</span> 
-						<input class="search_txt" type="text" />
-						<input class="search_btn" type="button" value="검색" />
-						<input class="diary_delete_btn" type="button" value="신고삭제" />
-					</div>
-					<table>
-						<colgroup>
-								<col width="32px" /> <!-- 체크박스 -->
-								<col width="106px" /> <!-- 일지(글)번호 -->
-								<col width="101px" /> <!-- 신고번호 -->
-								<col width="124px" /> <!-- 신고사유 -->
-								<col width="430px" /> <!-- 내용 -->
-								<col width="124px" /> <!-- 신고회원 -->
-								<col width="124px" /> <!-- 처리회원 -->
-								<col width="124px" /> <!-- 등록일 -->
-								<col width="124px" /> <!-- 처리일 -->
-								<col width="150px" /> <!-- 비고 -->
-						</colgroup>
-						<thead>
-							<tr class="article">
-								<th><input type="checkbox" class="ckbox"/></th>
-	            				<th>일지(글)번호</th>
-	            				<th>신고번호</th>
-	            				<th class="click_article">신고사유↕</th>
-	            				<th>내용</th>
-	            				<th>신고회원</th>
-	            				<th>처리회원</th>
-	            				<th class="click_article">등록일↕</th>
-	            				<th class="click_article">처리일↕</th>
-	            				<th>비고</th>
-	            			</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-							<tr>
-								<td>
-									<input type="checkbox" class="ckbox"/>
-								</td>
-	            				<td class="profile_move">A-1</td>
-	            				<td>1</td>
-	            				<td>욕설 및 음란</td>
-	            				<td class="report_title">내용</td>
-	            				<td>신고회원</td>
-	            				<td>처리회원</td>
-	            				<td>2021-05-26</td>
-	            				<td>2021-05-26</td>
-	            				<td>
-									<input type="button" class="approval_btn" value="승인" readonly="readonly"/>
-									<input type="button" class="un_approval_btn" value="미승인" readonly="readonly"/>
-								</td>
-	            			</tr>
-						</tbody>
-					</table>
+					<form action="#" id="actionForm" method="post">
+						<div class="sub_search">
+							검색 :
+							<input type="hidden" id="page" name="page" value="${page}" />
+							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+							<select class="search_filter" id="searchFilter" name="searchFilter">
+									<option value="0" selected="selected">통합검색</option>
+									<option value="1">내용</option>
+									<option value="2">신고회원</option>
+									<option value="3">처리회원</option>
+							</select>
+							<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
+							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
+							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
+							<input class="search_btn" type="button" value="검색" />
+						</div>
+						<div id="list_wrap">
+							<table>
+								<colgroup>
+										<col width="101px" /> <!-- 신고번호 -->
+										<col width="124px" /> <!-- 신고사유 -->
+										<col width="430px" /> <!-- 내용 -->
+										<col width="124px" /> <!-- 신고회원 -->
+										<col width="124px" /> <!-- 처리회원 -->
+										<col width="124px" /> <!-- 등록일 -->
+										<col width="124px" /> <!-- 처리일 -->
+										<col width="150px" /> <!-- 비고 -->
+								</colgroup>
+								<thead>
+									<tr class="article">
+			            				<th>신고번호</th>
+			            				<th class="click_article">신고사유↕</th>
+			            				<th>내용</th>
+			            				<th>신고회원</th>
+			            				<th>처리회원</th>
+			            				<th class="click_article">등록일↕</th>
+			            				<th class="click_article">처리일↕</th>
+			            				<th>비고</th>
+			            			</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</form>
 					<div class="info">일지(글)번호 클릭 시 해당 세부페이지로 이동합니다. (A: 일지 / B: 게시판)</div>
 				</div> <!-- mem_admin_area end -->
-				<div class="paging">
-	           		<a href="#" class=paging_btn><<</a>
-	           		<a href="#" class=paging_btn><</a>
-	           		<a href="#" class="num on">1</a>
-	           		<a href="#" class="num">2</a>
-	           		<a href="#" class="num">3</a>
-	           		<a href="#" class="num">4</a>
-	           		<a href="#" class="num">5</a>
-	           		<a href="#" class=paging_btn>></a>
-	           		<a href="#" class=paging_btn>>></a>
-	            </div>
+				<div class="paging"></div>
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>

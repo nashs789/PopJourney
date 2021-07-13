@@ -64,4 +64,34 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.travelDiaryList(params);
 	}
 
+	@Override
+	public int deleteJournal(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteJournal(params);
+	}
+
+	@Override
+	public int deleteJournalCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteJournalCmt(params);
+	}
+
+	@Override
+	public int deletePost(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deletePost(params);
+	}
+
+	@Override
+	public int deletePostCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deletePostCmt(params);
+	}
+
+	@Override
+	public int getReportCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getReportCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getReportList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getReportList(params);
+	}
+
 }
