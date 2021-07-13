@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>북마크</title>
+<title>마이페이지</title>
 <style type="text/css">
 /* #fcba03 노랑
-#2e3459 남색
-#f37321 주황
-#294a37 초록
+            #2e3459 남색
+            #f37321 주황
+            #294a37 초록
          */
 body {
 	margin: 0px;
@@ -80,7 +80,8 @@ body {
 
 .btns { /* .logins와 연동  */
 	display: inline-block;
-	position: relative; vertical-align : top;
+	position: relative;
+	vertical-align: top;
 	width: 470px;
 	height: 70px;
 	text-align: right;
@@ -137,37 +138,34 @@ body {
 	color: #fcba03;
 }
 
-.login {
-	float: right;
-	width: 100px;
-	height: 25px;
-	margin-top: 20px;
-	margin-left: 5px;
+#inputID, #inputPW {
+   float: right;
+   width: 100px;
+   height: 25px;
+   margin-top: 20px;
+   margin-left: 5px;
 }
-
-.login_btn {
-	float: right;
-	margin: 20px 20px 0px 5px;
-	width: 50px;
-	height: 30px;
-	background-color: #2e3459;
-	font-weight: bold;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 26px;
-	cursor: pointer;
+#loginBtn {
+   float: right;
+   margin: 20px 20px 0px 5px;
+   width: 50px;
+   height: 30px;
+   background-color: #2e3459;
+   font-weight: bold;
+   font-size: 12px;
+   color: #FFFFFF;
+   text-align: center;
+   line-height: 26px;
 }
-
-.login_btn:hover {
-	color: #FFFFFF;
-	background-color: #f37321;
+#loginBtn:hover{
+   color: #FFFFFF;
+   background-color: #f37321;
 }
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
+
 .timeline {
 	display: none;
 	/* display: inline-block; */
@@ -261,18 +259,13 @@ body {
 	margin-right: 100px;
 	line-height: 70px;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .menu ul li:hover {
 	color: #fcba03;
 }
 
-.menu ul li a {
-	display: inline-block;
-	height: 30px;
-	text-decoration: none;
-	color: white;
-}
 
 .search {
 	float: right;
@@ -295,21 +288,14 @@ body {
 	cursor: pointer;
 }
 
-input[type='text']:focus, input[type='password']:focus, select:focus,
-	textarea:focus {
+input[type='text']:focus, input[type='password']:focus, select:focus {
 	outline-color: #fcba03;
-}
-
-input[type='checkbox'] {
-	margin: 10px 10px 0 310px;
-	width: 20px;
-	height: 20px;
 }
 /* 여기까지 헤더 레이아웃 !!! */
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
+	height: 2500px;
 	margin: 0 auto;
 }
 
@@ -374,6 +360,7 @@ input[type='checkbox'] {
 	text-decoration: none;
 	color: #2e3459;
 }
+
 .menu_nav ul li:hover img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
@@ -387,42 +374,35 @@ input[type='checkbox'] {
 	border-radius: 100px;
 }
 
-#left_group {
+#left_menu {
 	display: inline-block;
 	position: relative;
 	height: 100%;
 	padding: 0 0 0 50px;
 }
 
-#left_group li {
+#left_menu li {
 	margin: 0px;
 }
 
-#left_group img {
+#left_menu img {
 	margin-left: 0;
 	margin-right: 0;
-	cursor: pointer;
 }
 
-.right_group {
+.right_menu {
 	padding-left: 0;
 	display: inline-block;
 	width: 58%;
 	height: 100%;
 }
-
-.right_group img{
-	cursor: pointer;
-}
-
-.right_group li:nth-child(1) img{
+#left_menu li:nth-child(1) img{
 	background-color: #f37321;
 }
-
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
-	height: 100%;
+	height: 2200px;
 	font-weight: 500;
 }
 
@@ -444,6 +424,10 @@ a {
 	padding-left: 20px;
 }
 
+#path_info {
+	text-decoration: none;
+	color: black;
+}
 
 .home_icon {
 	position: relative;
@@ -452,126 +436,22 @@ a {
 	height: 20px;
 }
 
-.folder_btn_list {
-	height: 65px;
-	margin: 0 0 20px 1070px;
-	float: right;
-}
-
-.folder_btn_list div span {
-	font-size: 18pt;
-}
-
-.edit_btn, .del_btn, .add_btn {
-	display: inline-block;
-	text-align: center;
-	width: 35px;
-	margin-left: 10px;
-	padding: 5px 10px;
-	border-radius: 20px;
-	font-size: 13px;
-	font-weight: bold;
-	color: #2e3459;
-	background-color: white;
-	border: 2px solid #2e3459;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	cursor: pointer;
-}
-.edit_btn span {
-	padding-left: 2px;
-}
-.add_btn:hover, .edit_btn:hover {
-	border: 2px solid #2e3459;
-	background-color: #2e3459;
-	color: white;
-}
-
-.del_btn:hover {
-	border: 2px solid #F1404B;
-	background-color: #F1404B;
-	color: white;
-}
-
-.more_btn {
-	text-align: center;
-	margin-top: 50px;
-	padding-bottom: 50px;
-}
-
-.more_btn input {
-	padding: 10px 30px;
-	border-radius: 20px;
-	font-size: 13px;
-	font-weight: bold;
-	color: #2e3459;
-	background-color: white;
-	border: 2px solid #2e3459;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	cursor: pointer;
-}
-
-.edit_btn input {
-	padding: 5px 10px;
-	border-radius: 20px;
-	font-size: 13px;
-	font-weight: bold;
-	color: white;
-	background-color: #2e3459;
-	border: 2px solid #2e3459;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	cursor: pointer;
-}
-
 .gallery {
-	margin-top: 30px;
 	padding: 30px 0 0 45px;
-	height: 1200px;
+	height: 2150px;
 }
 
-.post, .folder {
+.post {
 	float: left;
 	width: 340px;
-	cursor: pointer;
+	height: 390px;
 	margin: 0 0 40px 40px;
 	border: 1px solid #f1f1f1;
 	font-size: 10pt;
 	color: black;
 }
 
-.post {
-	height: 390px;
-}
-
-.folder {
-	height: 350px;
-}
-
-.folder_info {
-	width: 294px;
-	height: 100px;
-	position: relative;
-	display: inline-block;
-	padding: 0 23px 0 23px;
-}
-
-.folder_thumb {
-	text-align: center;
-	height: 200px;
-	display: block;
-	position: relative;
-}
-
-.folder_thumb img {
-	width: 200px;
-	height: 200px;
-}
-
-.folder_info p:nth-child(2) {
-	width: 294px;
-	height: 50px;
-}
-
-.folder:hover, .post:hover {
+.post:hover {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 }
 
@@ -610,11 +490,13 @@ a {
 }
 
 .post_profile img {
+	visibility: hidden;
 	width: 42px;
 	height: 42px;
 }
 
 .post_profile>span {
+	visibility: hidden;
 	position: absolute;
 	line-height: 42px;
 	margin-left: 8px;
@@ -642,6 +524,12 @@ a {
 	color: #F1404B;
 }
 
+.paging_wrap {
+	width: 100%;
+	height: 100px;
+	padding-top: 50px;
+}
+
 #footer {
 	display: block;
 	width: 100%;
@@ -658,244 +546,37 @@ a {
 	width: 600px;
 	height: 80px;
 }
-
-.popup {
-	display:none;
-	/* display: inline-block; */
-	width: 600px;
-	height: 500px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 250px);
-	left: calc(50% - 300px);
-	z-index: 500;
-	font-size: 12pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
-}
-
-.popup_contents_txt {
-	font-size: 11pt;
-	font-weight: bold;
-	width: 540px;
-	height: 390px;
-	margin: 30px auto 30px auto;
-}
-
-.popup_contents_txt>div>span {
-	margin-top: 12px;
-}
-
-.popup_contents_txt>div:first-child {
-	font-size: 18pt;
-	padding-bottom: 7px;
-	border-bottom: 2px solid #f37321;
-}
-
-.radio_title {
-	margin-top: 15px;
-}
-
-.folder_radio {
-	text-align: center;
-	margin: 15px 0;
-}
-.folder_radio_box {
-	display: inline-block;
-	border: 1px solid #ccc;
-	border-radius: 20px;
-	padding: 0 10px 5px 10px;
-	margin: 0 20px;
-}
-.folder_radio img {
-	width: 100px;
-	height: 100px;
-}
-.folder_radio input[type=radio]:checked+label {
-	color: #000;
-}
-
-.popup_contents_txt div:first-child  span {
-	float: right;
-	font-size: 10pt;
-}
-
-.pop_name {
-	margin-top: 10px;
-	margin-bottom: 20px;
-	width: 527px;
-}
-
-.pop_memo {
-	resize: none;
-	margin-top: 10px;
-	width: 530px;
-}
-
-.asterisk {
-	color: red;
-	font-weight: bold;
-	margin-right: 5px;
-	padding-top: 2px;
-}
-
-.btn_list a {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 270px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-}
-
-.btn_list a:first-child {
-	border-radius: 0 0 0 10px;
-}
-
-.btn_list a:last-child {
-	border-radius: 0 0 10px 0;
-}
-
-.btn_list a:hover, .alert_btn_list a:hover {
-	background-color: #f37321;
-	color: white;
-}
-
-.alert_popup {
-	display: none;
-	/* display: inline-block */;
-	width: 300px;
-	height: 150px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 75px);
-	left: calc(50% - 150px);
-	z-index: 500;
-	font-size: 16pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
-}
-
-.alert_popup_entity_txt {
-	font-size: 12pt;
-	font-weight: bold;
-	text-align: center;
-	line-height: 50px;
-	width: 265px;
-	height: 40px;
-	margin: 30px auto 30px auto;
-}
-
-.alert_btn_list a {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 270px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
-}
-
-.bg {
-	display: none;
-	/* display: inline-block; */
-	width: 100%;
-	height: 3070px;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	background-color: #000000;
-	z-index: 400;
-	opacity: 0.2;
-}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	if($("BMK_NO").val() =="1"){
-		$("#searchGbn").val("${param.searchGbn}");
-	}
-	 /* reloadList(); */
-});
 
-function reloadList() {
-	var params = $("#actionForm").serialize();
-	
-	$.ajax({
-		url:"MyPageBMKLists", 
-		type: "post",
-		dataType: "json",
-		data : params,
-		success: function(res){
-			drawList(res.list);
-			drawPaging(res.pb);
-		}, 
-		error: function (request, status, error) {
-			console.log(error);
-		}
-	});
-}
-// 폴더 추가
-function popup() {
-	var popup = document.getElementById("popup");
-	
-	console.log(popup.style.display);
-	
-	if(popup.style.display == "none") { 
-		popup.style.display = "inline-block"; 
-	} else {
-		popup.style.display = "none";
-	}
-}
-//
-function alert_popup() {
-	var popup = document.getElementById("alert_popup");
-	
-	console.log(popup.style.display);
-	
-	if(popup.style.display == "none") { 
-		popup.style.display = "inline-block"; 
-	} else {
-		popup.style.display = "none";
-	}
-}
-function more_btn() {
-	
-}
-//목록 그리기 
-/* function drawList(list) {
+//페이징 그리기
+function drawPaging(pb) {
 	var html = "";
 	
-	for(var d of list){
-		html += "<tr bno=\"" + d.B_NO + "\">";
-		html += "<td>" + d.B_NO + "</td>";
-		html += "<td>" + d.B_TITLE;
-		if(d.B_FILE != null){
-			html += "<img src=\"resources/images/attFile.png\" alt=\"첨부파일\" />";
+	html += "<div page=\"1\">처음</div>";
+	if($("#page").val() =="1"){
+		html += "<div page=\"1\">이전</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
+	}
+	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
+		if($("#page").val() == i){
+			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
+		} else {
+			html += "<div page=\"" + i + "\">" + i + "</div>";
 		}
-		html += "</td>";
-		html += "<td>" + d.B_WRITER + "</td>";
-		html += "<td>" + d.B_DT + "</td>";
-		html += "</tr>";
+	}
+	if($("#page").val() == pb.maxPcount){
+		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
 	}
 	
-	$(".list_wrap tbody").html(html); 
-} */
-
-
+	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	
+	$(".paging_wrap").html(html);
+}
 </script>
 </head>
 <body>
@@ -968,9 +649,11 @@ function more_btn() {
 					</div>
 					<div class="logins">
 						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
+							<form action="#" id="loginForm">
+								<input type="button" id="loginBtn" value="로그인" /> <input
+									type="password" id="inputPW" name="inputPW" placeholder="PW" />
+								<input type="text" id="inputID" name="inputID" placeholder="ID" />
+							</form>
 						</div>
 						<div class="sub_login2">
 							<span>회원가입</span> <span>ID/PW 찾기</span>
@@ -1008,11 +691,11 @@ function more_btn() {
 			<div class="board_list_wrap">
 				<div class="board_menu">
 					<nav class="menu_nav">
-						<ul id="left_group">
+						<ul id="left_menu">
 							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
 							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
-						<ul class="right_group">
+						<ul class="right_menu">
 							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
 							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
@@ -1025,168 +708,12 @@ function more_btn() {
 				<div id="path_info">
 					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
-					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 북마크 </span> &nbsp;>&nbsp;&nbsp;폴더1
-				</div>
-				<div class="folder_btn_list">
-						<div class="add_btn">
-							<span> &#43;</span> <br/>추  가
-						</div>
-						<div class="edit_btn">
-							<span>  ⚙️</span> <br/>수  정
-						</div>
-						<div class="del_btn">
-							<span> &#45;</span> <br/>삭  제
-						</div>
-				</div>
-				<div class="gallery">
-					<div class="folder">
-						<input type = "checkbox" id = "c1" /><label for = "c1"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack1.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-						</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c2" /><label for = "c2"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack2.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									폴더 메모
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack3.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c1" /><label for = "c1"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack1.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-						</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c2" /><label for = "c2"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack2.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									폴더 메모
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack3.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack3.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack3.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-					</div>
-					<div class="folder">
-						<input type = "checkbox" id = "c3" /><label for = "c3"></label>
-						<span class="folder_thumb"><img alt="썸네일"
-								src="./resources/images/backpack3.png"></span>
-							<div class="folder_info">
-								<p>
-									<strong>폴더명</strong>
-								</p>
-								<p>
-									웹 브라우저에서 사용자가 웹사이트의 URL를 등록하는 기능 또는 그렇게 등록한 URL의 목록을 가리킨다.
-								</p>
-							</div>
-					</div>
+					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span>
+					&nbsp;>&nbsp;&nbsp;썸네일
 				</div>
 				<div class="gallery">
 					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
+						<span class="thumb"><img alt="썸네일" src="./resources/images/a1.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1235,33 +762,8 @@ function more_btn() {
 							</div>
 					</div>
 					<div class="post">
-						<span class="thumb"><img alt="썸네일"
+						 <span class="thumb"><img alt="썸네일"
 								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1283,210 +785,6 @@ function more_btn() {
 									<span>2021-05-24</span>
 								</div>
 
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					
-				</div> 
-				<div class="gallery">
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
 							</div>
 					</div>
 					<div class="post">
@@ -1563,11 +861,188 @@ function more_btn() {
 									</div>
 									<span>2021-05-24</span>
 								</div>
+
 							</div>
 					</div>
 					<div class="post">
 						<span class="thumb"><img alt="썸네일"
 								src="./resources/images/a3.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a4.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a1.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a2.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a3.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a4.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a1.jpg"></span>
+							<div class="post_info">
+								<p>
+									<span>지역별 > 대구</span>
+								</p>
+								<p>
+									<strong>고북수진 당일치기</strong>
+								</p>
+								<p>
+									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+								</p>
+							</div>
+							<div class="post_profile">
+								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+								<div>
+									<div>
+										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+										<span class="cnt">100</span>
+									</div>
+									<span>2021-05-24</span>
+								</div>
+							</div>
+					</div>
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"
+								src="./resources/images/a2.jpg"></span>
 							<div class="post_info">
 								<p>
 									<span>지역별 > 대구</span>
@@ -1616,101 +1091,18 @@ function more_btn() {
 							</div>
 					</div>
 				</div>
-			</div>
-			<div class="more_btn">
-				<input type="button" value="더 보 기" onclick="setDivHeight()"/>
+				<div class="paging_wrap">
+					<div class="paging">
+					</div>
+				</div>
 			</div>
 		</div>
-
 	</div>
-
 	<div id="footer">
 		<p>
 			POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
 	</div>
-	
-	<div class="popup">
-		<div class="popup_contents_txt">
-			<div>
-				폴더 추가<span>필수 입력 사항 </span><span class= "asterisk">&#42;</span>
-			</div>
-			<div class="radio_title">
-				<span>폴더 선택</span> <span class= "asterisk">&#42;</span>
-			</div>
-			<div class="folder_radio">
-				<div class="folder_radio_box">
-					<input type="radio" id="folder_radio1" name="folder_img"><br/>
-			    	<label for="folder_radio1"><img src="./resources/images/backpack1.png"> </label>
-				</div>
-				<div class="folder_radio_box">
-					<input type="radio" id="folder_radio2" name="folder_img"><br/>
-			    	<label for="folder_radio2"><img src="./resources/images/backpack2.png"></label>
-				</div>
-			    <div class="folder_radio_box">
-				    <input type="radio" id="folder_radio3" name="folder_img"><br/>
-				    <label for="folder_radio3"><img src="./resources/images/backpack3.png"></label>
-			    </div>
-			</div>
-			<div>
-				폴더 이름 <span class= "asterisk">&#42;</span><br /> <input type="text" class="pop_name" required/><br />
-				폴더 메모<br /> <textarea class="pop_memo" rows="3" cols="73"  placeholder="폴더에 대해 간략히 설명해주십시오" ></textarea>
-			</div>
-		</div>
-		<div class="btn_list">
-			<span>추 가</span> <span>취 소</span>
-		</div>
-	</div>
-	<div class="popup">
-		<div class="popup_contents_txt">
-			<div>
-				폴더 수정<span>필수 입력 사항 </span><span class= "asterisk">&#42;</span>
-			</div>
-			<div class="radio_title">
-				<span>폴더 선택</span> <span class= "asterisk">&#42;</span>
-			</div>
-			<div class="folder_radio">
-				<div class="folder_radio_box">
-					<input type="radio" id="folder_radio1" name="folder_img"><br/>
-			    	<label for="folder_radio1"><img src="./resources/images/backpack1.png"> </label>
-				</div>
-				<div class="folder_radio_box">
-					<input type="radio" id="folder_radio2" name="folder_img"><br/>
-			    	<label for="folder_radio2"><img src="./resources/images/backpack2.png"></label>
-				</div>
-			    <div class="folder_radio_box">
-				    <input type="radio" id="folder_radio3" name="folder_img"><br/>
-				    <label for="folder_radio3"><img src="./resources/images/backpack3.png"></label>
-			    </div>
-			</div>
-			<div>
-				폴더 이름 <span class= "asterisk">&#42;</span><br /> <input type="text" class="pop_name"/><br />
-				폴더 메모<br /> <textarea class="pop_memo" rows="3" cols="73"  placeholder="폴더에 대해 간략히 설명해주십시오" ></textarea>
-			</div>
-		</div>
-		<div class="btn_list">
-			<span>수 정</span><span>취 소</span>
-		</div>
-	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">폴더를 하나만 선택하십시오</div>
-		<div class="alert_btn_list">
-			<span>확 인</span>
-		</div>
-	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">폴더를 선택하십시오</div>
-		<div class="alert_btn_list">
-			<span>확 인</span>
-		</div>
-	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">폴더 이름을 입력하십시오</div>
-		<div class="alert_btn_list">
-			<span>확 인</span>
-		</div>
-	</div>
-	<div class="bg"></div>
 </body>
 </html>
