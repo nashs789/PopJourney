@@ -64,6 +64,24 @@ body {
    margin-top: 15px;
    cursor: pointer;
 }
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
+}
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
+}
 #profilePhoto{
    width: 40px;
    margin-right: 20px;
@@ -426,7 +444,6 @@ svg{
      width: 600px;
      box-shadow: 0px 0px 1px 1px #444444;
      position: absolute;
-     margin-top: 72px;
      right: 10px;
      z-index: 300;
      font-size: 10pt;
@@ -519,11 +536,6 @@ svg{
 }
 .btns>ul>li {
 	margin-right: 10px;
-}
-/* ************************** */
-#tempImg{
-	width: 100px;
-	height: 150px;
 }
 </style>
 
@@ -896,17 +908,20 @@ function findBtnPopup()
 }
 function makeNotification(notification)
 {
-	var html = "";
+	var html = ""; //알림 표현용
+	var readCnt = 0;
+	var html1 = "";  //알림 개수 표현용
 	
 	for(noti of notification)
 	{
 		if(noti.READ == 1)
 		{
 			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+			readCnt++;
 		}
 		else
 		{
-			html += "<tr class=\"read\">";
+			html += "<tr class=\"read\" read=\"" + noti.NOTF_NO + "\">";
 		}
 		
 		var path ="";
@@ -969,6 +984,9 @@ function makeNotification(notification)
 		}
 	}
 	
+	html1 = "<div id=\"notificationTxt\">" + readCnt + "<div>";
+	
+	$("#cnt").prepend(html1);
 	$("#notification tbody").html(html);
 }
 function makeNoticeBoard(noticeData)
@@ -1135,6 +1153,9 @@ function makeRankBoard(yearData, monthData, weekData)
 </form>
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="GBN" name="GBN" value="1"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 </form>
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
@@ -1151,6 +1172,7 @@ function makeRankBoard(yearData, monthData, weekData)
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							<div id="cnt"></div>
 							<div id="notification">
 								<table border="1">
 									<colgroup>

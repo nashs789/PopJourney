@@ -48,4 +48,8 @@ public interface IPopJourneyDao {
 	List<HashMap<String, String>> notification(HashMap<String, String> params) throws Throwable;
 
 	int read(HashMap<String, String> params) throws Throwable;
+
+	void setProfile() throws Throwable;
+
+	HashMap<String, String> pageCnt(HashMap<String, String> params) throws Throwable;
 }

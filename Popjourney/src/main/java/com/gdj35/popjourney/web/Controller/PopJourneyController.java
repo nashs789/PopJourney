@@ -28,7 +28,9 @@ public class PopJourneyController {
 	// 메인페이지 - 이인복
 	@RequestMapping(value = "/main")
 	public ModelAndView main(ModelAndView mav) { 
+		int page = 1;
 		
+		mav.addObject("page", page);
 		mav.setViewName("LIB/main");
 
 		return mav;
@@ -40,12 +42,12 @@ public class PopJourneyController {
 	public String regionBoards(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
-	     List<HashMap<String, String>> yearData = ipjs.yearRank(params);
-		 List<HashMap<String, String>> monthData = ipjs.monthRank(params); 
-		 List<HashMap<String, String>> weekData = ipjs.weekRank(params); 
 	     
 	     try {
+	    	 List<HashMap<String, String>> yearData = ipjs.yearRank(params);
+			 List<HashMap<String, String>> monthData = ipjs.monthRank(params); 
+			 List<HashMap<String, String>> weekData = ipjs.weekRank(params); 
+	    	 
 	    	 modelMap.put("yearData", yearData);
 		     modelMap.put("monthData", monthData);
 		     modelMap.put("weekData", weekData);
@@ -210,6 +212,7 @@ public class PopJourneyController {
 		System.out.println(params);
 		try {
 			int cnt = ipjs.join(params);
+			ipjs.setProfile();
 
 			if (cnt != 0) {
 				modelMap.put("msg", "success");
@@ -407,8 +410,7 @@ public class PopJourneyController {
 	}
 
 	
-	  //프로필 수정 - 이 인복
-	  
+	  //프로필 수정 - 이 인복 
 	  @RequestMapping(value = "/editProfiles", 
 			  		method = RequestMethod.POST,
 			  		produces = "text/json;charset=UTF-8")
@@ -443,6 +445,12 @@ public class PopJourneyController {
 	// 알람 모아보기 - 이인복
 	@RequestMapping(value = "/notification")
 	public ModelAndView notification(ModelAndView mav) {
+		
+		int page = 0;
+		int firstPage = 1;
+	
+		mav.addObject("firstPage", firstPage);
+		mav.addObject("page", page);
 		mav.setViewName("LIB/notification");
 
 		return mav;
@@ -493,10 +501,25 @@ public class PopJourneyController {
 	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
-		List<HashMap<String, String>> notification  = ipjs.notification(params);
+		
+		if(params.get("GBN").equals("1"))
+		{
+			params.put("page", Integer.toString(Integer.parseInt(params.get("page")) * 10));
+		}
+		else
+		{
+			if(Integer.parseInt(params.get("pageCnt")) < Integer.parseInt(params.get("page"))*10)
+			{
+				modelMap.put("msg", "full");
+				return mapper.writeValueAsString(modelMap);
+			}		
+			params.put("page", Integer.toString((Integer.parseInt(params.get("page"))+1) * 10));
+		}
 		
 		try {
+			
+			List<HashMap<String, String>> notification  = ipjs.notification(params);
+			
 			if(notification != null)
 			{
 				SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
@@ -533,13 +556,13 @@ public class PopJourneyController {
 						{
 							msg = 60 - diff +"초 전";
 						}
-						else if(diff < 3600)
+						else if(60 <= diff && diff < 3600)
 						{
 							msg = (3600 - diff)/60 +"분 전";
 						}
 						else
 						{
-							msg = (86400 - diff)/3600 +"분 전";
+							msg = ((86400 - diff) / 3600) / 3600 +"시간 전";
 						}
 				   }
 				   notification.get(i).put("msg", msg);
@@ -547,8 +570,10 @@ public class PopJourneyController {
 				
 				modelMap.put("msg", "success");
 				modelMap.put("notification", notification);
+				modelMap.put("page", Integer.toString(Integer.parseInt(params.get("page")) / 10));
+				modelMap.put("firstPage", Integer.toString(Integer.parseInt(params.get("page"))));
 			}
-			else
+			else if(notification == null)
 			{
 				modelMap.put("msg", "failed");
 			}
@@ -560,14 +585,40 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	// 알림페이지 게시글 카운트 - 이인복
+	@RequestMapping(value = "/pageCnts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String pageCnts(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		 try {
+			 
+			 HashMap<String, String> pageCnt = ipjs.pageCnt(params);
+			 
+			 if(pageCnt != null)
+			 {
+				 modelMap.put("msg", "success");
+				 modelMap.put("pageCnt", String.valueOf(pageCnt.get("CNT")));
+			 }
+			 else
+			 {
+				 modelMap.put("msg", "failed");
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	// 알람 팝업창에 읽음표시 - 이인복
 	@RequestMapping(value = "/reads", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String reads(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
-		System.out.println(params);
 		 
 		 try {
 			 
@@ -587,6 +638,14 @@ public class PopJourneyController {
 			modelMap.put("msg", "error");
 		}
 		return mapper.writeValueAsString(modelMap);
+	}
+	
+	// 타임라인 페이지 - 이인복
+	@RequestMapping(value = "/timeline")
+	public ModelAndView timeline(ModelAndView mav) {
+		mav.setViewName("LIB/timeline");
+
+		return mav;
 	}
 	
 	// 메인화면 공지사항 - 이인복
