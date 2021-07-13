@@ -94,4 +94,9 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getReportList(params);
 	}
 
+	@Override
+	public int addMatterWrite(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addMatterWrite(params);
+	}
+
 }

@@ -38,4 +38,7 @@ public interface IJmPopjourneyDao {
 
 	public List<HashMap<String, String>> getReportList(HashMap<String, String> params) throws Throwable;
 
+	public int addMatterWrite(HashMap<String, String> params) throws Throwable;
+
+
 }

@@ -91,4 +91,10 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	public List<HashMap<String, String>> getReportList(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectList("JmPJ.getReportList", params);
 	}
+
+	@Override
+	public int addMatterWrite(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addMatterWrite", params);
+	}
+
 }

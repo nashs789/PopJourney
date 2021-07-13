@@ -393,6 +393,15 @@
 					location.href = "clientCenterMatter";
 				});
 				
+				//로그인 정보 유지
+				if("${sMEM_NO}" != "") {
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+				} else {
+					$(".logins").css("display", "inline-block");
+					$(".btns").css("display", "none");
+				}
+				
 			});
 			
 		</script>

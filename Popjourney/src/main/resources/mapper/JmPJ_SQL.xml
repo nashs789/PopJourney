@@ -353,4 +353,8 @@
 		      ) R
 		WHERE R.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
+	
+	<insert id="addMatterWrite" parameterType="hashmap">
+	
+	</insert>
 </mapper>
