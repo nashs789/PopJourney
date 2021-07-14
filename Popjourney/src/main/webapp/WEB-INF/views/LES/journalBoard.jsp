@@ -877,11 +877,11 @@ a {
 			</div>
 			<nav class="menu">
 				<ul>
-					<li>여행게시판</li>
-					<li>자유게시판</li>
-					<li>여행작가</li>
-					<li>고객센터</li>
-					<li>내부관리자</li>
+					<li id="journalBoard">여행게시판</li>
+					<li id="community">자유게시판</li>
+					<li id="travelWriter">여행작가</li>
+					<li id="clientCenter">고객센터</li>
+					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
 			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
