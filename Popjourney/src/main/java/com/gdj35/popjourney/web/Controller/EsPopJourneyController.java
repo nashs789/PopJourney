@@ -24,7 +24,7 @@ public class EsPopJourneyController {
 
 	@Autowired
 	public IPagingService iPagingService;
-	
+
 	// 마이페이지 썸네일
 	@RequestMapping(value = "/myPage")
 	public ModelAndView myPage(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
@@ -37,16 +37,108 @@ public class EsPopJourneyController {
 
 		return mav;
 	}
-	
-	//마이페이지 북마크
+
+	// 마이페이지 북마크
 	@RequestMapping(value = "/myPageBMK")
 	public ModelAndView myPageBMK(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		
+
 		mav.setViewName("LES/myPageBMK");
-		
+
 		return mav;
-	
+
+	}
+
+	// 마이페이지 팔로워
+	@RequestMapping(value = "/myPageFollower")
+	public ModelAndView myPageFollower(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/myPageFollower");
+
+		return mav;
+
+	}
+
+	// 마이페이지 팔로잉
+	@RequestMapping(value = "/myPageFollowing")
+	public ModelAndView myPageFollowing(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/myPageFollowing");
+
+		return mav;
+
 	}
 	
-	//
+	// 다른 사용자 페이지
+	@RequestMapping(value = "/userPage")
+	public ModelAndView userPage(@RequestParam HashMap<String, String> params, ModelAndView mav)
+			throws Throwable {
+
+		mav.setViewName("LES/userPage");
+
+		return mav;
+
+	}
+	
+	// 여행 게시판
+	@RequestMapping(value = "/journalBoard")
+	public ModelAndView journalBoard(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/journalBoard");
+
+		return mav;
+
+	}
+
+	// 여행 일지 상세페이지
+	@RequestMapping(value = "/journal")
+	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/journal");
+
+		return mav;
+
+	}
+
+	// 여행 일지 작성 페이지
+	@RequestMapping(value = "/journalWrite")
+	public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/journalWrite");
+
+		return mav;
+
+	}
+
+	// 자유게시판
+	@RequestMapping(value = "/community")
+	public ModelAndView community(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/community");
+
+		return mav;
+
+	}
+
+	// 게시글 상세페이지
+	@RequestMapping(value = "/post")
+	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/post");
+
+		return mav;
+
+	}
+
+	// 게시글 작성 페이지
+	@RequestMapping(value = "/postWrite")
+	public ModelAndView postWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		mav.setViewName("LES/postWrite");
+
+		return mav;
+
+		}
+	
+	
+
 }
