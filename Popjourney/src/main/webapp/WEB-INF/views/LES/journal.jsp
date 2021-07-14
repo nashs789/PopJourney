@@ -101,6 +101,7 @@ body {
 }
 
 .logins {
+	display: inline-block;
 	vertical-align: top;
 	width: 470px;
 	height: 70px;

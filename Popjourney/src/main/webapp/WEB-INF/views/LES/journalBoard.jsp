@@ -986,7 +986,7 @@ a {
 						<ul>
 							<li><img alt="작성자" src="./resources/images/all.png"><br />전체보기</li>
 							<li><img alt="작성자" src="./resources/images/writer.png"><br />여행작가</li>
-							<li><img alt="작성자" src="./resources/images/user.png"><br />여행꾼</li>
+							<li><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
 						</ul>
 					</nav>
 					<nav class="right_nav">
