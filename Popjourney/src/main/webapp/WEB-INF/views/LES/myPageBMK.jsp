@@ -79,8 +79,9 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: inline-block;
-	position: relative; vertical-align : top;
+	display: none;
+	position: relative;
+	vertical-align: top;
 	width: 470px;
 	height: 70px;
 	text-align: right;
@@ -100,7 +101,7 @@ body {
 }
 
 .logins {
-	display: none;
+	display:inline-block;
 	vertical-align: top;
 	width: 470px;
 	height: 70px;
@@ -168,6 +169,7 @@ body {
 	width: 100%;
 	height: 70px;
 }
+
 .timeline {
 	display: none;
 	/* display: inline-block; */
@@ -374,6 +376,7 @@ input[type='checkbox'] {
 	text-decoration: none;
 	color: #2e3459;
 }
+
 .menu_nav ul li:hover img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
@@ -411,11 +414,11 @@ input[type='checkbox'] {
 	height: 100%;
 }
 
-.right_group img{
+.right_group img {
 	cursor: pointer;
 }
 
-.right_group li:nth-child(1) img{
+.right_group li:nth-child(1) img {
 	background-color: #f37321;
 }
 
@@ -443,7 +446,6 @@ a {
 	padding-top: 10px;
 	padding-left: 20px;
 }
-
 
 .home_icon {
 	position: relative;
@@ -477,9 +479,11 @@ a {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
+
 .edit_btn span {
 	padding-left: 2px;
 }
+
 .add_btn:hover, .edit_btn:hover {
 	border: 2px solid #2e3459;
 	background-color: #2e3459;
@@ -660,8 +664,7 @@ a {
 }
 
 .popup {
-	display:none;
-	/* display: inline-block; */
+	display: none;
 	width: 600px;
 	height: 500px;
 	background-color: #fcfcfc;
@@ -698,10 +701,28 @@ a {
 	margin-top: 15px;
 }
 
+input[type='radio'], input[type='radio']:checked {
+	appearance: none;
+	width: 0.8rem;
+	height: 0.8rem;
+	border-radius: 100%;
+	margin-right: 0.1rem;
+}
+
+input[type="radio"] {
+	background-color: white;
+	border: 2px solid #f37321;
+}
+
+input[type="radio"]:checked {
+	background-color: #f37321;
+}
+
 .folder_radio {
 	text-align: center;
 	margin: 15px 0;
 }
+
 .folder_radio_box {
 	display: inline-block;
 	border: 1px solid #ccc;
@@ -709,10 +730,12 @@ a {
 	padding: 0 10px 5px 10px;
 	margin: 0 20px;
 }
+
 .folder_radio img {
 	width: 100px;
 	height: 100px;
 }
+
 .folder_radio input[type=radio]:checked+label {
 	color: #000;
 }
@@ -741,7 +764,7 @@ a {
 	padding-top: 2px;
 }
 
-.btn_list a {
+.btn_list span {
 	text-decoration: none;
 	display: inline-block;
 	text-align: center;
@@ -754,22 +777,22 @@ a {
 	line-height: 30px;
 }
 
-.btn_list a:first-child {
+.btn_list span:first-child, .alert_btn_list2 span:first-child {
 	border-radius: 0 0 0 10px;
 }
 
-.btn_list a:last-child {
+.btn_list span:last-child, alert_btn_list2 span:last-child {
 	border-radius: 0 0 10px 0;
 }
 
-.btn_list a:hover, .alert_btn_list a:hover {
+.btn_list span:hover, .alert_btn_list span:hover, .alert_btn_list2 span:hover
+	{
 	background-color: #f37321;
 	color: white;
 }
 
 .alert_popup {
 	display: none;
-	/* display: inline-block */;
 	width: 300px;
 	height: 150px;
 	background-color: #fcfcfc;
@@ -794,7 +817,7 @@ a {
 	margin: 30px auto 30px auto;
 }
 
-.alert_btn_list a {
+.alert_btn_list span {
 	text-decoration: none;
 	display: inline-block;
 	text-align: center;
@@ -808,17 +831,29 @@ a {
 	border-radius: 0 0 10px 10px;
 }
 
+.alert_btn_list2 span {
+	text-decoration: none;
+	display: inline-block;
+	text-align: center;
+	width: 120px;
+	height: 30px;
+	padding: 10px 15px 10px 15px;
+	font-size: 12pt;
+	color: #f37321;
+	font-weight: bold;
+	line-height: 30px;
+	border-radius: 0 0 10px 10px;
+}
+
 .bg {
-	display: none;
-	/* display: inline-block; */
-	width: 100%;
-	height: 3070px;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	background-color: #000000;
-	z-index: 400;
-	opacity: 0.2;
+	position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    background-color: #000000;
+    z-index: 400;
+    opacity: 0.2;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -851,25 +886,31 @@ function reloadList() {
 // 폴더 추가
 function popup() {
 	var popup = document.getElementById("popup");
+	var bg = document.getElementByClass("bg");
 	
 	console.log(popup.style.display);
 	
 	if(popup.style.display == "none") { 
-		popup.style.display = "inline-block"; 
+		popup.style.display = ""; 
+		bg.style.display = "";
 	} else {
 		popup.style.display = "none";
+		bg.style.display = "none";
 	}
 }
 //
 function alert_popup() {
 	var popup = document.getElementById("alert_popup");
+	var bg = document.getElementByClass("bg");
 	
 	console.log(popup.style.display);
 	
 	if(popup.style.display == "none") { 
 		popup.style.display = "inline-block"; 
+		bg.style.display = "inline-block";
 	} else {
 		popup.style.display = "none";
+		bg.style.display = "none";
 	}
 }
 function more_btn() {
@@ -1618,7 +1659,7 @@ function more_btn() {
 				</div>
 			</div>
 			<div class="more_btn">
-				<input type="button" value="더 보 기" onclick="setDivHeight()"/>
+				<input type="button" value="더 보 기"/>
 			</div>
 		</div>
 
@@ -1709,6 +1750,12 @@ function more_btn() {
 		<div class="alert_popup_entity_txt">폴더 이름을 입력하십시오</div>
 		<div class="alert_btn_list">
 			<span>확 인</span>
+		</div>
+	</div>
+	<div class="alert_popup">
+		<div class="alert_popup_entity_txt">삭제하시겠습니까?</div>
+		<div class="alert_btn_list2">
+			<span>확 인</span><span>취 소</span>
 		</div>
 	</div>
 	<div class="bg"></div>

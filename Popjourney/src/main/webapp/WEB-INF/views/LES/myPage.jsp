@@ -79,7 +79,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: inline-block;
+	display: none;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -101,7 +101,7 @@ body {
 }
 
 .logins {
-	display: none;
+	display:inline-block;
 	vertical-align: top;
 	width: 470px;
 	height: 70px;

@@ -79,7 +79,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: inline-block;
+	display: none;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -101,7 +101,7 @@ body {
 }
 
 .logins {
-	display: none;
+	display:inline-block;
 	vertical-align: top;
 	width: 470px;
 	height: 70px;
@@ -526,59 +526,17 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="logo.png" class="logo_photo"></a>
+						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
 						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="bell.png" class="bell_icon">
+							<li><img alt="bell" src="./resources/images/bell.png" class="./resources/images/bell_icon">
 								<div class="timeline">
-									<table border="1">
-										<colgroup>
-											<col width="70px">
-											<col width="331.6px">
-										</colgroup>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>2시간전 (오후)9:17분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:54분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:49분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:45분</th>
-										</tr>
-										<tfoot>
-											<tr>
-												<th colspan="2">...더보기</th>
-											</tr>
-										</tfoot>
-									</table>
 								</div></li>
-							<li><img alt="bookmark" src="bmk.png"></li>
-							<li><img alt="프로필" src="profile.png">
+							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png">
 								<ul id="dd">
 									<li>마이 페이지</li>
 									<li>프로필 수정</li>
@@ -609,7 +567,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 					<li>내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="search.png" class="search_icon" /> <input
+			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
 				type="text" class="search" placeholder="검색"> <select
 				class="filter">
 				<option value="0">통합검색</option>
@@ -620,7 +578,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="profile3.png" class="profile_img">
+				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
 				<div>닉네임</div>
 				<span>소개글</span>
 			</div>
@@ -644,14 +602,14 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 					</nav>
 				</div>
 				<div id="path_info">
-					<span> <img alt="메인페이지" src="home.png" class="home_icon">
+					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span> &nbsp;>&nbsp;&nbsp;지도
 				</div>
 				<div class="map_wrap">
-					<img alt="지도" src="ggmap.png">
+					<img alt="지도" src="./resources/images/ggmap.png">
 					<div class="map_pin">
-						<img alt="일지" src="a1.jpg">
+						<img alt="일지" src="./resources/images/a1.jpg">
 						<div class="pin_cnt">50</div>
 						<div c  lass="tri"></div>
 					</div>
