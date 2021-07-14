@@ -26,11 +26,13 @@
 	<select id="getMemList" parameterType="hashmap" resultType="hashmap">
 		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.GRADE_NAME, M.JOIN_DATE, M.LEAVE_DATE, M.ACC_CNT, M.RNUM
 		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL,
-		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, G.GRADE_NAME,
+		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, GC.GRADE_NAME,
 		             TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, NVL(TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD'), '-') AS LEAVE_DATE, M.ACC_CNT,
-		             ROW_NUMBER() OVER(ORDER BY MEM_NO DESC) AS RNUM
+		             ROW_NUMBER() OVER(ORDER BY M.MEM_NO DESC) AS RNUM
 		      FROM MEM M INNER JOIN GRADE G
-		                         ON M.GRADE_NO = G.GRADE_NO
+		                         ON M.MEM_NO = G.MEM_NO
+		                 INNER JOIN GRADE_CATEGORY GC
+		                 		 ON G.GRADE_NO = GC.GRADE_NO
 		                 INNER JOIN COMMON_CODE CC
 		                 		 ON M.SEX = CC.CODE_S AND CC.CODE_L = 1
 		      WHERE 1 = 1
@@ -73,14 +75,16 @@
 	
 	<select id="getTravelDiaryCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
-		FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, M.GRADE_NO, G.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME, M.LEAVE_DATE
+		FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, G.GRADE_NO, GC.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME, M.LEAVE_DATE
 		      FROM MEM M INNER JOIN JOURNAL J
 		                         ON M.MEM_NO = J.MEM_NO
 		                 INNER JOIN JOURNAL_CATEGORY JC
 		                         ON J.CATEGORY = JC.CATEGORY_NO
 		                        AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
 		                 INNER JOIN GRADE G
-		                         ON M.GRADE_NO = G.GRADE_NO
+		                         ON M.MEM_NO = G.MEM_NO
+		                 INNER JOIN GRADE_CATEGORY GC
+		                 		 ON G.GRADE_NO = GC.GRADE_NO
 		      WHERE M.LEAVE_DATE IS NULL) J INNER JOIN (SELECT CATEGORY_NO, SUB_CATEGORY_NO, SUB_CATEGORY_NAME AS CATEGORY_NAME
                                                         FROM JOURNAL_CATEGORY
                                                         WHERE CATEGORY_NO = 0) JC
@@ -114,17 +118,19 @@
 	</select>
 	
 	<select id="travelDiaryList" parameterType="hashmap" resultType="hashmap">
-		SELECT J.JOURNAL_NO, J.NIC, J.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, J.LIKE_CNT, J.RNUM
+		SELECT J.JOURNAL_NO, J.NIC, J.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, J.LIKE_CNT, J.RNUM, J.DEL
 		FROM (SELECT J.JOURNAL_NO, J.NIC, JC.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') AS JOURNAL_DATE, J.HIT, NVL(JL.LIKE_CNT, 0) AS LIKE_CNT,
-		             ROW_NUMBER() OVER(ORDER BY J.JOURNAL_NO DESC) AS RNUM
-		      FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, M.GRADE_NO, G.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME, M.LEAVE_DATE
+		             ROW_NUMBER() OVER(ORDER BY J.JOURNAL_NO DESC) AS RNUM, J.DEL
+		      FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, G.GRADE_NO, GC.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME, M.LEAVE_DATE, J.DEL
 		            FROM MEM M INNER JOIN JOURNAL J
 		                               ON M.MEM_NO = J.MEM_NO
 		                       INNER JOIN JOURNAL_CATEGORY JC
 		                               ON J.CATEGORY = JC.CATEGORY_NO
 		                              AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
 		                       INNER JOIN GRADE G
-		                               ON M.GRADE_NO = G.GRADE_NO
+		                               ON M.MEM_NO = G.MEM_NO
+		                       INNER JOIN GRADE_CATEGORY GC
+                        		       ON G.GRADE_NO = GC.GRADE_NO
 		            WHERE M.LEAVE_DATE IS NULL) J INNER JOIN (SELECT CATEGORY_NO, SUB_CATEGORY_NO, SUB_CATEGORY_NAME AS CATEGORY_NAME
                                                               FROM JOURNAL_CATEGORY
                                                               WHERE CATEGORY_NO = 0) JC
@@ -159,6 +165,15 @@
 		WHERE J.RNUM BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
+	<update id="deleteJournal" parameterType="hashmap">
+		UPDATE JOURNAL SET DEL = 0
+		WHERE JOURNAL_NO = #{journalNo}
+	</update>
+	<update id="deleteJournalCmt" parameterType="hashmap">
+		UPDATE JOURNAL_CMT SET DEL = 0
+		WHERE JOURNAL_NO = #{journalNo}
+	</update>
+	
 	<select id="getCommunityCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
 		FROM MEM M INNER JOIN BOARD B
@@ -185,16 +200,18 @@
 	</select>
 	
 	<select id="communityList" parameterType="hashmap" resultType="hashmap">
-		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM
+		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM, B.DEL
 		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT,
-			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
-		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT, M.LEAVE_DATE
+			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM, B.DEL
+		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, GC.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT, M.LEAVE_DATE, B.DEL
 		            FROM MEM M INNER JOIN BOARD B
 		                               ON M.MEM_NO = B.MEM_NO
 		                       INNER JOIN BOARD_CATEGORY BC
 		                               ON B.CATEGORY_NO = BC.CATEGORY_NO
 		                       INNER JOIN GRADE G
-		                               ON M.GRADE_NO = G.GRADE_NO
+		                               ON M.MEM_NO = G.MEM_NO
+		                       INNER JOIN GRADE_CATEGORY GC
+		                       		   ON G.GRADE_NO = GC.GRADE_NO
 		            WHERE BC.CATEGORY_NAME != '공지사항' AND M.LEAVE_DATE IS NULL) B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 					                                                                                FROM BOARD_LIKE
 					                                                                                GROUP BY POST_NO) BL
@@ -220,6 +237,15 @@
 		WHERE B.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
 	
+	<update id="deletePost" parameterType="hashmap">
+		UPDATE BOARD SET DEL = 0
+		WHERE POST_NO = #{postNo}
+	</update>
+	<update id="deletePostCmt" parameterType="hashmap">
+		UPDATE BOARD_CMT SET DEL = 0
+		WHERE POST_NO = #{postNo}
+	</update>
+	
 	<select id="getNoticeCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
 		FROM MEM M INNER JOIN BOARD B
@@ -233,16 +259,18 @@
 	</select>
 	
 	<select id="noticeList" parameterType="hashmap" resultType="hashmap">
-		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM
+		SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, B.BOARD_DATE, B.HIT, B.LIKE_CNT, B.RNUM, B.DEL
 		FROM (SELECT B.POST_NO, B.CATEGORY_NAME, B.TITLE, B.GRADE_NAME, B.NIC, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE, B.HIT, NVL(BL.LIKE_CNT, 0) AS LIKE_CNT,
-			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM
-		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, G.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT, M.LEAVE_DATE
+			  ROW_NUMBER() OVER(ORDER BY B.POST_NO DESC) AS RNUM, B.DEL
+		      FROM (SELECT B.POST_NO, BC.CATEGORY_NAME, B.TITLE, GC.GRADE_NAME, M.NIC, B.BOARD_DATE, B.HIT, M.LEAVE_DATE, B.DEL
 		            FROM MEM M INNER JOIN BOARD B
 		                               ON M.MEM_NO = B.MEM_NO
 		                       INNER JOIN BOARD_CATEGORY BC
 		                               ON B.CATEGORY_NO = BC.CATEGORY_NO
 		                       INNER JOIN GRADE G
-		                               ON M.GRADE_NO = G.GRADE_NO
+		                               ON M.MEM_NO = G.MEM_NO
+		                       INNER JOIN GRADE_CATEGORY GC
+		                       		   ON G.GRADE_NO = GC.GRADE_NO
 		            WHERE BC.CATEGORY_NAME = '공지사항' AND M.LEAVE_DATE IS NULL) B LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 						                                                                           FROM BOARD_LIKE
 						                                                                           GROUP BY POST_NO) BL
@@ -253,4 +281,80 @@
 		      ) B
 		WHERE B.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
+	
+	<select id="getReportCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM (SELECT R.REPORT_NO, R.REASON_NO, R.POST_NO, R.POST_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO,
+		             R.CONTENTS, R.STATUS_NO, TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
+		             RR.REASON_NAME, RR.DEL, M.MEM_NO, M.NIC AS REQUEST_NIC
+		      FROM REPORT R INNER JOIN REPORT_REASON RR
+		                            ON R.REASON_NO = RR.REASON_NO
+		                    INNER JOIN MEM M
+		                            ON M.MEM_NO = R.REQUEST_MEM_NO
+		      WHERE R.HANDLE_DATE IS NULL) R LEFT OUTER JOIN (SELECT M.MEM_NO, R.TARGET_MEM_NO AS REAL_TARGET_MEM_NO, M.NIC AS TARGET_NIC
+		                                                      FROM REPORT R INNER JOIN MEM M
+		                                                                            ON R.TARGET_MEM_NO = M.MEM_NO) A
+		                                                  ON R.TARGET_MEM_NO = A.REAL_TARGET_MEM_NO
+		WHERE 1 = 1
+		<if test="searchTxt != null and searchTxt != ''">
+			<choose>
+				<when test="searchFilter == 0">
+					AND (R.CONTENTS LIKE '%' || #{searchTxt} || '%' OR R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' OR A.TARGET_NIC LIKE '%' || #{searchTxt} || '%')
+					AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 1">
+					AND R.CONTENTS LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 2">
+					AND R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+				<when test="searchFilter == 3">
+					AND A.TARGET_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+				</when>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="getReportList" parameterType="hashmap" resultType="hashmap">
+		SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, R.TARGET_NIC, R.REPORT_DATE, R.HANDLE_DATE,
+		       R.POST_NO, R.POST_CMT_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.RNUM
+		FROM (SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, A.TARGET_NIC, R.REPORT_DATE, R.HANDLE_DATE,
+		             R.POST_NO, R.POST_CMT_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO, R.REQUEST_MEM_NO, A.REAL_TARGET_MEM_NO AS TARGET_MEM_NO,
+		             ROW_NUMBER() OVER(ORDER BY REPORT_NO DESC) AS RNUM
+		      FROM (SELECT R.REPORT_NO, R.REASON_NO, R.POST_NO, R.POST_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO,
+		                   R.CONTENTS, R.STATUS_NO, TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
+		                   RR.REASON_NAME, RR.DEL, M.MEM_NO, M.NIC AS REQUEST_NIC
+		            FROM REPORT R INNER JOIN REPORT_REASON RR
+		                                  ON R.REASON_NO = RR.REASON_NO
+		                          INNER JOIN MEM M
+		                                  ON M.MEM_NO = R.REQUEST_MEM_NO
+		            WHERE R.HANDLE_DATE IS NULL) R LEFT OUTER JOIN (SELECT M.MEM_NO, R.TARGET_MEM_NO AS REAL_TARGET_MEM_NO, M.NIC AS TARGET_NIC
+		                                                            FROM REPORT R INNER JOIN MEM M
+		                                                                                  ON R.TARGET_MEM_NO = M.MEM_NO) A
+		                                                        ON R.TARGET_MEM_NO = A.REAL_TARGET_MEM_NO
+		      WHERE 1 = 1
+		      <if test="searchTxt != null and searchTxt != ''">
+				  <choose>
+					  <when test="searchFilter == 0">
+						  AND (R.CONTENTS LIKE '%' || #{searchTxt} || '%' OR R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' OR A.TARGET_NIC LIKE '%' || #{searchTxt} || '%')
+						  AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+					  </when>
+					  <when test="searchFilter == 1">
+						  AND R.CONTENTS LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+					  </when>
+					  <when test="searchFilter == 2">
+					      AND R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+					  </when>
+					  <when test="searchFilter == 3">
+						  AND A.TARGET_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+					  </when>
+				  </choose>
+			  </if>
+		      ) R
+		WHERE R.RNUM BETWEEN ${startCnt} AND #{endCnt}
+	</select>
+	
+	<insert id="addMatterWrite" parameterType="hashmap">
+	
+	</insert>
 </mapper>

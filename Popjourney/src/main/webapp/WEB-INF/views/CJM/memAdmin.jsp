@@ -287,6 +287,68 @@
 				z-index: 400;
 				opacity: 0.2;
 			}
+			.bg_grade {
+				display: none;
+				width: 100%;
+				height: 1388px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			.popup_grade {
+				display: none;
+				width: 300px;
+				height: 150px;
+				background-color: #fcfcfc;
+			    box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			    position: fixed;
+			    top: calc(50% - 75px); 
+			    left: calc(50% - 150px); 
+			    z-index: 500;
+			    font-size: 16pt;
+			    border-radius: 10px;
+			    font-size: 0px;
+			    border: 0px;
+			}
+			.popup_entity_grade {
+				display: block;
+				width: 100%;
+				height: 110px;
+				margin: 20px auto;	
+			}
+			.popup_opt_grade {
+				display: block;
+				width: 268px;
+				height: 40px;	
+				margin: 30px auto 30px auto;
+				font-weight: bold;
+			}
+			.btn_list_grade span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list_grade span:first-child {
+			   border-radius: 0 0 0 10px; 
+			}
+			.btn_list_grade span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list_grade span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
 			
 			#container {
 				display: block;
@@ -450,6 +512,10 @@
 			.not_leave {
 				background-color: #f9f9f9;
 			}
+			.leave .grade_btn {
+				background-color: #d9d9d9;
+				border: 2px solid #2E3459;
+			}
 			
 			
 	        .paging { 
@@ -577,12 +643,12 @@
 				// 회원삭제
 				$("#delBtn").on("click", function() {
 					if($("tbody .ckbox:checked").length >= 1) {
-						$(".popupDel").css("display", "inline-block");
-						$(".bg").css("display", "inline-block");
+						$(".popupDel").show();
+						$(".bg").show();
 						
 						$(".popupDel .btn_list #cancel").on("click", function() {
-							$(".popupDel").css("display", "none");
-							$(".bg").css("display", "none");
+							$(".popupDel").hide();
+							$(".bg").hide();
 						});
 						
 						$(".popupDel .btn_list #ok").on("click", function() {
@@ -606,8 +672,8 @@
 										if(res.msg == "success") {
 											resetVal();
 											reloadList();
-											$(".popupDel").css("display", "none");
-											$(".bg").css("display", "none");
+											$(".popupDel").hide();
+											$(".bg").hide();
 										} else if(res.msg == "failed") {
 											alert("삭제에 실패하였습니다.");
 										} else {
@@ -621,16 +687,56 @@
 								
 						});
 					} else {
-						$(".popupDel2").css("display", "inline-block");
-						$(".bg2").css("display", "inline-block");
+						$(".popupDel2").show();
+						$(".bg2").show();
 						
 						$(".popupDel2 .btn_list #ok").on("click", function() {
-							$(".popupDel2").css("display", "none");
-							$(".bg2").css("display", "none");
+							$(".popupDel2").hide();
+							$(".bg2").hide();
 						});
 					}
 					
 				});
+				
+				$(".popupDel").on("click", function() {
+					popupDel();
+				});
+				
+				
+				// 등급설정 버튼
+				$("#list_wrap tbody").on("click", ".grade_btn", function() {
+					$(".bg_grade").show();
+					$(".popup_grade").show();
+				});
+				$(".popup_grade #cancel").on("click", function() {
+					$(".bg_grade").hide();
+					$(".popup_grade").hide();
+				});
+				
+				$("popup_grade #ok").on("click", function() {
+					var params = $("#gradeActionForm").serialize();
+					
+					$.ajax({
+						url: "memGrade",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				});
+				
+				/* // 회원프로필 이동
+				$("#list_wrap body").on("click", "tr", function() {
+					$("#memNo").val($(this).attr("mno"));
+					
+					$("#actionForm").attr("action", "주소");
+					$("#actionForm").submit();
+				}); */
 				
 				
 				// 성별 오/내림차순
@@ -646,17 +752,6 @@
 					}
 					reloadList();
 				});
-				
-				/* $("#delBtn").on("click", function() {
-					var array = new Array();
-					$(".ckbox:checked").each(function() {
-						array.push($(this).val());
-					});
-					$("#userNo").val(array);
-					
-					console.log(array);
-				}); */
-				
 				
 			}); // document ready end..
 		
@@ -694,7 +789,7 @@
 					} else {
 						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
 					}				
-					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.MEM_NO + "\"/></td>";
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
 					html += "<td>" + d.ID + "</td>";
 					html += "<td>" + d.NIC + "</td>";
@@ -756,18 +851,32 @@
 				$("#searchTxt").val("");
 			}
 			
-			function getCkboxValue() {
-				var obj = $("[name=ckMemNo]");
-				var array = new Array();
+			/* function popupDel() {
+				var html = "";
 				
-				$("input:checkbox[name=ckMemNo]:checked").each(function() {
-					array.push(this.value);
-				});
-				$("hiddenValue").val(array);
+				html += "<div class=\"popupDel\">                             "
+			   	html += "	<div class=\"popup_entity_txt\">삭제하시겠습니까?<\"/div>"
+			    html += "    <div class=\"btn_list\">                         "
+				html += "    	<span id=\"ok\">OK</span>                     "
+				html += "        <span id=\"cancel\">CANCEL</span>            "
+				html += "    </div>                                         "
+				html += "</div>                                             "
+				html += "<div class=\"bg\"></div>                             "
 				
-				alert($("#hiddenValue").val());
+				$("body").prepend(html);
 				
+				$(".bg").hide();
+				$(".popupDel").hide();
+				
+				$(".bg").fadeIn();
+				$(".popupDel").fadeIn();
+				
+				$("#ok").off("click");
 			}
+			
+			function closePopup() {
+				$()
+			} */
 			
 		</script>
 	</head>
@@ -785,8 +894,24 @@
 		    	<span id="ok">OK</span>
 		    </div>
 		</div>
+		<form action="#" id="gradeActionForm" method="post">
+	 		<div class="popup_grade">
+				<div class="popup_entity_grade">
+					<select class="popup_opt_grade" id="gradeSearchFilter" name="gradeSearchFilter">
+						<option value="0" selected="selected">등급설정</option>
+						<option value="1">여행꾼</option>
+						<option value="2">여행작가</option>
+					</select>
+					<div class="btn_list_grade">
+			           <span id="ok">확인</span>>
+			           <span id="cancel">취소</span>>
+			        </div>
+				</div>
+			</div>
+		</form>
  		<div class="bg"></div>
  		<div class="bg2"></div>
+ 		<div class="bg_grade"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -878,7 +1003,7 @@
 								<col width="100px" /> <!-- 게시글 -->
 								<col width="100px" /> <!-- 좋아요 -->
 								<col width="100px" /> <!-- 팔로워 -->
-								<col width="110px" /> <!-- 누적신고 -->
+								<col width="120px" /> <!-- 누적신고 -->
 								<col width="100px" /> <!-- 접속횟수 -->
 								<col width="100px" /> <!-- 승인대기 -->
 								<col width="90px" /> <!-- 등급설정 -->

@@ -176,6 +176,118 @@
 			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
+			.popupDel {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list span:first-child {
+			   border-radius: 0 0 0 10px;
+			}
+			.btn_list span:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			.popupDel2 {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popupDel2 .popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.popupDel2 .btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px;
+			}
+			.popupDel2 .btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg2 { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
 			#container {
 				display: block;
 				width: 1280px;
@@ -316,6 +428,17 @@
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
+			}
+			.not_del {
+				background-color: #f9f9f9;
+			}
+			.del {
+				background-color: #d9d9d9;
+				pointer-events: none;
+			}
+			.del .edit_btn {
+				background-color: #d9d9d9;
+				border: 2px solid #2E3459;
 			}
 			
 			
@@ -458,7 +581,74 @@
 					}
 				});
 				
-			});
+				// 일지삭제
+				$("#diaryDeleteBtn").on("click", function() {
+					if($("tbody .ckbox:checked").length >= 1) {
+						$(".popupDel").css("display", "inline-block");
+						$(".bg").css("display", "inline-block");
+						
+						$(".popupDel .btn_list #cancel").on("click", function() {
+							$(".popupDel").css("display", "none");
+							$(".bg").css("display", "none");
+						});
+						
+						$(".popupDel .btn_list #ok").on("click", function() {
+							
+							var array = new Array();
+							$(".ckbox:checked").each(function() {
+								array.push($(this).val());
+							});
+							$("#journalNo").val(array);
+							
+							console.log(array);
+							
+							var params = $("#actionForm").serialize();
+										
+								$.ajax({
+									url : "TravelDiaryAdminsDeletes",
+									type : "post",
+									dataType : "json",
+									data : params,
+									success : function(res) {
+										if(res.msg == "success") {
+											resetVal();
+											reloadList();
+											$(".popupDel").css("display", "none");
+											$(".bg").css("display", "none");
+										} else if(res.msg == "failed") {
+											alert("삭제에 실패하였습니다.");
+										} else {
+											alert("삭제중 문제가 발생하였습니다.");
+										}
+									},
+									error : function(request, status, error) {
+										console.log(error);
+									}
+								});
+								
+						});
+					} else {
+						$(".popupDel2").css("display", "inline-block");
+						$(".bg2").css("display", "inline-block");
+						
+						$(".popupDel2 .btn_list #ok").on("click", function() {
+							$(".popupDel2").css("display", "none");
+							$(".bg2").css("display", "none");
+						});
+					}
+					
+					
+				});
+				
+				/* // 여행일지 세부페이지 이동
+				$("#list_wrap tbody").on("click", "tr", function() {
+					$("#journalNoS").val($(this).attr("jno"));
+					
+					$("#actionForm").attr("action", "주소");
+					$("#actionForm").submit();
+				}); */
+				
+			}); // document ready end..
 			
 			function reloadList() {
 				var params = $("#actionForm").serialize();
@@ -487,8 +677,12 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<tr jno=\"" + d.JOURNAL_NO + "\">";
-					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckMemNo\" value=\"" + d.JOURNAL_NO + "\"/></td>";
+					if(d.DEL == 1) {
+						html += "<tr jno=\"" + d.JOURNAL_NO + "\" class=\"not_del\">";
+					} else {
+						html += "<tr jno=\"" + d.JOURNAL_NO + "\" class=\"del\">";
+					}
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.JOURNAL_NO + "\"/></td>";
 					html += "<td id=\"mNo\">" + d.JOURNAL_NO + "</td>";
 					html += "<td>" + d.NIC + "</td>";
 					html += "<td>" + d.CATEGORY_NAME + "</td>";
@@ -535,9 +729,30 @@
 				
 			}
 			
+			function resetVal() {
+				$("#page").val(1);
+				$("#searchFilter").val("0");
+				$("#searchTxt").val("");
+			}
+			
 		</script>
 	</head>
 	<body>
+		<div class="popupDel">
+	   		<div class="popup_entity_txt">삭제하시겠습니까?</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		        <span id="cancel">CANCEL</span>
+		    </div>
+		</div>
+		<div class="popupDel2">
+	   		<div class="popup_entity_txt">삭제할 일지가 없습니다.</div>
+	        <div class="btn_list">
+		    	<span id="ok">OK</span>
+		    </div>
+		</div>
+ 		<div class="bg"></div>
+ 		<div class="bg2"></div>
 		<div id="wrap">
 			<!-- header부분 고정 -->
 			<div id="header">
@@ -593,8 +808,10 @@
 					</div>
 					<div class="sub_search">
 						검색 :
+						<input type="hidden" id="journalNoS" name="journalNoS" />
 						<input type="hidden" id="page" name="page" value="${page}" />
 						<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+						<input type="hidden" id="journalNo" name="journalNo" value="" />
 						<select class="search_filter" id="searchFilter" name="searchFilter">
 								<option value="0" selected="selected">통합검색</option>
 								<option value="1">닉네임</option>
@@ -606,7 +823,7 @@
 						<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
 						<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" />
 						<input class="search_btn" type="button" value="검색" />
-						<input class="diary_delete_btn" type="button" value="일지삭제" />
+						<input class="diary_delete_btn" id="diaryDeleteBtn" type="button" value="일지삭제" />
 					</div>
 					<div id="list_wrap">
 						<table>

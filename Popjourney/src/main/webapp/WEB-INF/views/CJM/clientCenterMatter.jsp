@@ -15,7 +15,8 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -176,14 +177,67 @@
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			/* 컨테이너 레이아웃 */
+			
+			.popup_write {
+			   display: none; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_write .popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.popup_write .btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px;
+			}
+			.popup_write .btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg_write { /* 클릭 시 inline-block */
+				display: none;
+				width: 100%;
+				height: 1523px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
 			#container {
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
-			
-			
 			
 			.client_center_search {
 				display: block;
@@ -243,7 +297,7 @@
 				display: block;
 				width: 100%;
 				height: 100px;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 				border-bottom: 1px solid rgb(238, 238, 238);
 			}
 			.sidebar2 {
@@ -305,7 +359,7 @@
 				cursor: pointer;
 			}
 			tbody tr:hover {
-				background-color: rgb(250, 250, 250);
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;
@@ -347,17 +401,12 @@
 			}
 			
 			
-			.paging_wrap {
-            	width: 100%;
-            	height: 100px;
-            	padding-top: 50px;
-	        }
-	        .paging { 
+			.paging { 
 	            font-size: 0;
 	            text-align: center;
 	            margin: 40px 0px 60px 0px;
 	        }  
-	        .paging a {
+	        .paging div {
 	            display: inline-block;
 	            margin-left: 10px;
 	            padding: 5px 10px;
@@ -366,23 +415,24 @@
 	            font-weight: bold;
 	            text-decoration: none;
 	        }   
-	        .paging a.paging_btn {
+	        .paging_btn {
 	            background-color: none;
 	            color: #2e3459;
 	            letter-spacing:-5px;
 	            font-size: 12pt;
 	        }
-	        .paging a.num {           
+	        .paging div.num {           
 	            color: #2e3459;
 	        }
-	        .paging a:first-child {
+	        .paging div:first-child {
 	            margin-left: 0;
 	        } 
-	        .paging a.num:hover,
-	        .paging a.num.on,
-	        .paging a.paging_btn:hover  {
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
 	            color: #F1404B;
 	            text-decoration: underline;
+	            cursor: pointer;
 	        }
 			
 			
@@ -401,6 +451,11 @@
 				padding-left: 250px;
 				width: 600px;
 				height: 80px;
+			}
+			
+			#session {
+				font-size: 50pt;
+				color: black;
 			}
 		</style>
 		<script type="text/javascript"
@@ -425,8 +480,66 @@
 					location.href = "clientCenterMatter";
 				});
 				
-								
-			});
+				// 로그인 정보 유지
+				if("${sMEM_NO}" != "") {
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+				} else {
+					$(".logins").css("display", "inline-block");
+					$(".btns").css("display", "none");
+				}
+				
+				// 작성버튼 클릭 시
+				$("#writeBtn").on("click", function() {
+					if("${sMEM_NO}" != "") {
+						$("#actionForm").attr("action", "clientCenterMatterWrite");
+						$("#actionForm").submit();
+					} else {
+						makePopup("로그인이 필요합니다.", function() {
+							console.log("작성 팝업");
+						});
+					}
+				});
+				
+				
+			}); // document ready end..
+			
+			function makePopup(title, func) {
+				
+				var html = "";
+				
+				html += "<div class=\"popup_write\">"                                  
+			   	html += "	<div class=\"popup_entity_txt\">" + title + "</div>"
+			    html += "    <div class=\"btn_list\">"                               
+				html += "    	<span id=\"ok\">OK</span>"                           
+				html += "    </div>"                                               
+				html += "</div>"                                                   
+				html += "<div class=\"bg_write\"></div>" 
+				
+				$("body").prepend(html);
+				
+				$(".bg_write").hide();
+				$(".popup_write").hide();
+				$(".bg_write").fadeIn();
+				$(".popup_write").fadeIn();
+				
+				$(".popup_write #ok").off("click");
+				$(".popup_write #ok").on("click", function() {
+					if(func != null) {
+						func.call();
+					}
+					closePopup();
+				});
+			}
+			
+			function closePopup() {
+				$(".bg_write").fadeOut(function() {
+					$(".bg_write").remove();
+				});
+				$(".popup_write").fadeOut(function() {
+					$(".popup_write").remove();
+				});
+			}
 			
 		</script>
 	</head>
@@ -479,6 +592,11 @@
 				</select>
 			</div>
 			<div id="container">
+				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
+					<input type="hidden" id="nic" name="nic" value="${sNIC}" />
+					<input type="hidden" id="matterNo" name="matterNo" />
+				</form>
 				<div class="client_center_search">
 					<div class="client_center_name">
 						<div>고객센터</div>					
@@ -515,121 +633,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-						<tr>
+						<tr matterNo="d.MATTER_NO">
 							<td>1</td>
 							<td>닉네임</td>
 							<td class="matter_title">제목</td>
@@ -638,21 +642,9 @@
 					</tbody>
 				</table>	
 				<div class="matter_write_btn">
-					<input type="button" value="작성" />
+					<input type="button" id="writeBtn" value="작성" />
 				</div>
-				<div class="paging">
-	           		<a href="#" class=paging_btn><<</a>
-	           		<a href="#" class=paging_btn><</a>
-	           		<a href="#" class="num on">1</a>
-	           		<a href="#" class="num">2</a>
-	           		<a href="#" class="num">3</a>
-	           		<a href="#" class="num">4</a>
-	           		<a href="#" class="num">5</a>
-	           		<a href="#" class=paging_btn>></a>
-	           		<a href="#" class=paging_btn>>></a>
-	            </div>
-				
-				
+				<div class="paging"></div>
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>

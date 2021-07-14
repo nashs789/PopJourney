@@ -26,4 +26,17 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> travelDiaryList(HashMap<String, String> params) throws Throwable;
 
+	public int deleteJournal(HashMap<String, String> params) throws Throwable;
+
+	public int deleteJournalCmt(HashMap<String, String> params) throws Throwable;
+
+	public int deletePost(HashMap<String, String> params) throws Throwable;
+
+	public int deletePostCmt(HashMap<String, String> params) throws Throwable;
+
+	public int getReportCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getReportList(HashMap<String, String> params) throws Throwable;
+
+	public int addMatterWrite(HashMap<String, String> params) throws Throwable;
 }
