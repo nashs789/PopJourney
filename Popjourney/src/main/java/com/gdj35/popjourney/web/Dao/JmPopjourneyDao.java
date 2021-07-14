@@ -97,4 +97,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.insert("JmPJ.addMatterWrite", params);
 	}
 
+	@Override
+	public int getMatterCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getMatterCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMatterList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getMatterList", params);
+	}
+
+	@Override
+	public int getRankCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getRankCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getRankList", params);
+	}
+
 }

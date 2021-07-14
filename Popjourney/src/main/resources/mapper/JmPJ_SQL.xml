@@ -354,7 +354,32 @@
 		WHERE R.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
 	
-	<insert id="addMatterWrite" parameterType="hashmap">
+	<select id="getMatterCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM QNA
+		WHERE WRITER_NAME LIKE '%' || '우' || '%' OR TITLE LIKE '%' || '우' || '%' OR CONTENTS LIKE '%' || '우' || '%'
+	</select>
+
+	<select id="getMatterList" parameterType="hashmap" resultType="hashmap">
+		SELECT Q.QNA_NO, Q.WRITER_NAME, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.RNUM
+		FROM (SELECT QNA_NO, WRITER_NAME, TITLE, CONTENTS, QNA_DATE,
+		             ROW_NUMBER() OVER(ORDER BY QNA_NO DESC) AS RNUM
+		      FROM QNA
+		      WHERE WRITER_NAME LIKE '%' || '우' || '%' OR TITLE LIKE '%' || '우' || '%' OR CONTENTS LIKE '%' || '우' || '%') Q
+		WHERE Q.RNUM BETWEEN 1 AND 5
+	</select>
 	
+	<insert id="addMatterWrite" parameterType="hashmap">
+		INSERT INTO QNA(QNA_NO, WRITER_NAME, TITLE, CONTENTS)
+		VALUES (QNA_SEQ.NEXTVAL, #{nic}, #{matterTitle}, #{matterContents})
 	</insert>
+	
+	<select id="getRankCnt" parameterType="hashmap" resultType="Integer">
+		
+	</select>
+	
+	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
+		
+	</select>
+	
 </mapper>

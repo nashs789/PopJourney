@@ -38,6 +38,38 @@ public class JmPopJourneyController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value="/travelWriterRanks", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String travelWriterRanks(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getRankCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getRankList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		
+		System.out.println("MatterParams >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
 
 	// 고객센터-자주 묻는 질문
 	@RequestMapping(value = "/clientCenterQuestion")
@@ -60,11 +92,43 @@ public class JmPopJourneyController {
 		}
 		
 		mav.addObject("page", page);
-		
+	
 		mav.setViewName("CJM/clientCenterMatter");
 
 		return mav;
 		
+	}
+	
+	@RequestMapping(value="/clientCenterMatters", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatters(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getMatterCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getMatterList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		
+		System.out.println("MatterParams >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 	
 	// 고객센터-문의사항(작성)
@@ -126,7 +190,7 @@ public class JmPopJourneyController {
 		mav.addObject("page", page);
 		mav.addObject("sortGbn", sortGbn);
 		mav.addObject("sexGbn", sexGbn);
-
+		
 		mav.setViewName("CJM/memAdmin");
 
 		return mav;

@@ -39,4 +39,12 @@ public interface IJmPopjourneyService {
 	public List<HashMap<String, String>> getReportList(HashMap<String, String> params) throws Throwable;
 
 	public int addMatterWrite(HashMap<String, String> params) throws Throwable;
+
+	public int getMatterCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getMatterList(HashMap<String, String> params) throws Throwable;
+
+	public int getRankCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable;
 }

@@ -99,4 +99,24 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.addMatterWrite(params);
 	}
 
+	@Override
+	public int getMatterCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMatterCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMatterList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMatterList(params);
+	}
+
+	@Override
+	public int getRankCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getRankCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getRankList(params);
+	}
+
 }

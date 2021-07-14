@@ -110,7 +110,7 @@
 			</form>
 			<form action="#" id="addForm" method="post">
 				<div id="contents">
-					작성자 : ${param.NIC}<br/>
+					<span id="nic" name="nic" value="${param.NIC}">작성자 : ${param.NIC}</span><br/>
 					제목 : <input type="text" id="matterTitle" name="matterTitle" /><br/>
 					<textarea id="matterContents" name="matterContents"></textarea><br/>
 				</div>
