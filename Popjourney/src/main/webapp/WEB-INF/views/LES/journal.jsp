@@ -1188,59 +1188,17 @@ function popup() {
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="logo.png" class="logo_photo"></a>
+						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
 						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="bell.png" class="bell_icon">
+							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
 								<div class="timeline">
-									<table border="1">
-										<colgroup>
-											<col width="70px">
-											<col width="331.6px">
-										</colgroup>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>2시간전 (오후)9:17분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:54분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:49분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="profile.png"></th>
-											<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:45분</th>
-										</tr>
-										<tfoot>
-											<tr>
-												<th colspan="2">...더보기</th>
-											</tr>
-										</tfoot>
-									</table>
 								</div></li>
-							<li><img alt="bookmark" src="bmk.png"></li>
-							<li><img alt="프로필" src="profile.png">
+							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png">
 								<ul id="dd">
 									<li>마이 페이지</li>
 									<li>프로필 수정</li>
@@ -1271,7 +1229,7 @@ function popup() {
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="search.png" class="search_icon" /> <input
+			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
 				type="text" class="search" placeholder="검색"> <select
 				class="filter">
 				<option value="0">통합검색</option>
@@ -1281,7 +1239,7 @@ function popup() {
 			</select>
 		</div>
 		<div id="path_info">
-			<span><img alt="메인페이지" src="home.png" class="home_icon">
+			<span><img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span>여행일지
 			</span> &nbsp;>&nbsp;&nbsp;여행일지 제목
 		</div>
@@ -1298,7 +1256,7 @@ function popup() {
 			<div id="container">
 				<div class="schedule">
 					<nav class="date_nav">
-						<span class="left_arrow"><img alt="왼쪽" src="left_arrow.png"></span>
+						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
 							<ul>
 								<li>DAY 1</li>
 								<li>DAY 2</li>
@@ -1306,11 +1264,11 @@ function popup() {
 								<li>DAY 4</li>
 								<li>DAY 5</li>
 							</ul>
-						<span><img alt="오른쪽" src="right_arrow.png"></span>
+						<span><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
 					</nav>
 				</div>
 				<div class="map_wrap">
-					<img alt="지도" src="path.png">
+					<img alt="지도" src="./resources/images/path.png">
 				</div>
 				<div class="content_area">
 					<div class="img_nav">
@@ -1318,9 +1276,9 @@ function popup() {
 					</div>
 					<span>1/19</span>
 					<div class="img_slide">
-						<span class="left_arrow"><img alt="왼쪽" src="left_arrow.png"></span>
-							<img alt="사진" src="a1.jpg">
-						<span class="right_arrow"><img alt="오른쪽" src="right_arrow.png"></span>
+						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
+							<img alt="사진" src="./resources/images/a1.jpg">
+						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
 					</div>
 					<div class="txt_area">
 						<p>
@@ -1362,12 +1320,12 @@ function popup() {
 				<div class="sub_profile">
 					<div class="profile_info">
 						<div>
-							<img alt="profile" src="profile2.png" class="profile_img">
+							<img alt="profile" src="./resources/images/profile2.png" class="profile_img">
 						</div>
 						<div class="info">
 							<span>닉네임</span>
 							<div class="grade">
-								<img alt="icon" src="grade.png"> <span>여행작가</span>
+								<img alt="icon" src="./resources/images/grade.png"> <span>여행작가</span>
 							</div>
 							<div class="cnt">
 								<span>총 게시글 100</span> <span>총 댓글 100</span>
@@ -1481,8 +1439,8 @@ function popup() {
 				</div>
 				<div class="reaction">
 					<ul>
-						<li><img alt="좋아요" src="like.png"><br />좋아요</li>
-						<li><img alt="북마크" src="bmrk.png"><br />북마크</li>
+						<li><img alt="좋아요" src="./resources/images/like.png"><br />좋아요</li>
+						<li><img alt="북마크" src="./resources/images/bmrk.png"><br />북마크</li>
 					</ul>
 				</div>
 			</div>
@@ -1497,11 +1455,11 @@ function popup() {
 				<div class="cmt_list">
 					<div class="cmt_contents">
 						<div class="cmt_contents_left">
-							<img alt="프로필" src="profile2.png">
+							<img alt="프로필" src="./resources/images/profile2.png">
 						</div>
 						<div class="cmt_contents_right">
 							<strong>닉네임</strong><span class="cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="grade.png"> </span><span>여행작가</span>
+								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
 							<div class="cmt_txt">
 								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
 									있는가</p>
@@ -1517,11 +1475,11 @@ function popup() {
 					</div>
 					<div class="cmt_contents">
 						<div class="cmt_contents_left">
-							<img alt="프로필" src="profile2.png">
+							<img alt="프로필" src="./resources/images/profile2.png">
 						</div>
 						<div class="cmt_contents_right">
 							<strong>닉네임</strong><span class="cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="grade.png"> </span><span>여행작가</span>
+								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
 							<div class="cmt_txt">
 								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
 									있는가</p>
@@ -1536,11 +1494,11 @@ function popup() {
 					</div>
 					<div class="cmt_cmt_contents">
 						<div class="cmt_contents_left">
-							<img alt="프로필" src="profile2.png">
+							<img alt="프로필" src="./resources/images/profile2.png">
 						</div>
 						<div class="cmt_contents_right">
 							<strong>닉네임</strong><span class="cmt_cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="grade.png"> </span><span>여행작가</span>
+								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
 							<div class="cmt_txt">
 								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
 									있는가</p>

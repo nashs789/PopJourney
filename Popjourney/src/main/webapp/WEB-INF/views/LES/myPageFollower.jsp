@@ -641,7 +641,7 @@ hr {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="./resources/images/./resources/images/profile3.png" class="profile_img">
+				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
 				<div>닉네임</div>
 				<span>소개글</span>
 			</div>
@@ -683,7 +683,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -694,7 +694,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -705,7 +705,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -716,7 +716,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -727,7 +727,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -738,7 +738,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -749,7 +749,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -760,7 +760,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -771,7 +771,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -782,7 +782,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -793,7 +793,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
@@ -804,7 +804,7 @@ hr {
 						</div>
 					</div>
 					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/./resources/images/profile3.png"></span>
+						<span><img alt="profile" src="./resources/images/profile3.png"></span>
 						<div class="user_info">
 							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
 							<p>소개글</p>
