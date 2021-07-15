@@ -66,7 +66,7 @@
 				});
 				
 				$("#addBtn").on("click", function() {
-					var params = $("#addForm").serialize();
+					$("#matterContents").val(CKEDITOR.instances['matterContents'].getData());
 					
 					if($.trim($("#matterTitle").val()) == "") {
 						alert("제목을 입력해 주세요.");
@@ -74,26 +74,30 @@
 					} else if($.trim($("#matterContents").val()) == "") {
 						alert("내용을 입력해 주세요.");
 						$("#matterContents").focus();
+					} else {
+						var params = $("#addForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterMatterWrites",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								if(res.msg == "success") {
+									location.href = "clientCenterMatter";
+									//$("#writeMemNo").val(res.writeMemNo);
+								} else if(res.msg == "failed") {
+									alert("작성에 실패하였습니다.");
+								} else {
+									alert("작성중 문제가 발생하였습니다.");
+								}
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
 					}
 					
-					$.ajax({
-						url: "clientCenterMatterWrites",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							if(res.msg == "success") {
-								location.href = "clientCenterMatter";
-							} else if(res.msg == "failed") {
-								alert("작성에 실패하였습니다.");
-							} else {
-								alert("작성중 문제가 발생하였습니다.");
-							}
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
 				});
 				
 				
@@ -107,10 +111,12 @@
 				<input type="hidden" name="page" value="${param.page}" />
 				<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
 				<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+				<input type="hidden" id="writeMemNo" name="writeMemNo" />
 			</form>
 			<form action="#" id="addForm" method="post">
+				<input type="hidden" id="memNo" name="memNo" value="${param.memNo}" />
 				<div id="contents">
-					<span id="nic" name="nic" value="${param.NIC}">작성자 : ${param.NIC}</span><br/>
+					작성자 : ${sNIC}<br/>
 					제목 : <input type="text" id="matterTitle" name="matterTitle" /><br/>
 					<textarea id="matterContents" name="matterContents"></textarea><br/>
 				</div>

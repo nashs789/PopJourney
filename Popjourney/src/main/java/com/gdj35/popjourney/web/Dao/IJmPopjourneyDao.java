@@ -48,5 +48,11 @@ public interface IJmPopjourneyDao {
 
 	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getMatter(HashMap<String, String> params) throws Throwable;
+
+	public int writeCmt(HashMap<String, String> params) throws Throwable;
+
+	public int updateMatter(HashMap<String, String> params) throws Throwable;
+
 
 }

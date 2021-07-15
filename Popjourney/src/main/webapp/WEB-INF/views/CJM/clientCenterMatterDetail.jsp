@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>고객센터-문의사항</title>
+		<title>고객센터-문의사항-세부</title>
 		<style type="text/css">
 			/*  #fcba03 노랑
 				#2e3459 남색
@@ -58,7 +58,7 @@
 				margin-top: 18px;
 			}
 			.btns { /* .logins와 연동  */
-				display: none;
+				display: inline-block;
 			    vertical-align: top;
 			    width: 470px;
 			    height: 70px;
@@ -75,7 +75,7 @@
 				margin-left: 160px;
 			}
 			.logins {
-				display: inline-block;
+				display: none;
 				vertical-align: top;
 				width: 470px;
 				height: 70px;
@@ -177,68 +177,13 @@
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			/* 컨테이너 레이아웃 */
-			
-			.popup_write {
-			   display: none; /* 클릭 시 inline-block */
-			   width: 300px;
-			   height: 150px;
-			   background-color: #fcfcfc;
-			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-			   position: fixed;
-			   top: calc(50% - 75px); 
-			   left: calc(50% - 150px); 
-			   z-index: 500;
-			   font-size: 16pt;
-			   border-radius: 10px;
-			   font-size: 0px;
-			   border: 0px;
-			}
-			.popup_write .popup_entity_txt {
-			   font-size: 12pt;
-			   font-weight: bold;
-			   text-align: center;
-			   line-height: 50px;
-			   width: 265px;
-			   height:40px;
-			   margin: 30px auto 30px auto;
-			}
-			.popup_write .btn_list span{
-			   text-decoration: none;
-			   display:inline-block;
-			   text-align:center;
-			   width: 270px;
-			   height:30px;
-			   padding: 10px 15px 10px 15px;
-			   font-size: 12pt;
-			   color: #f37321;
-			   font-weight: bold;
-			   line-height: 30px;
-			   border-radius: 0 0 10px 10px;
-			}
-			.popup_write .btn_list span:hover {
-			   background-color: #f37321;
-			   color: white;
-			   cursor: pointer;
-			}
-			.bg_write { /* 클릭 시 inline-block */
-				display: none;
-				width: 100%;
-				height: 1523px;
-				position: absolute;
-				top: 0px;
-				left: 0px;
-				background-color: #000000;
-				z-index: 400;
-				opacity: 0.2;
-			}
-			
 			#container {
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
 				background-color: #f9f9f9;
+				height: 697px;
 			}
-			
 			.client_center_search {
 				display: block;
 				margin: 50px auto 0px auto;
@@ -297,8 +242,10 @@
 				display: block;
 				width: 100%;
 				height: 100px;
-				background-color: #f9f9f9;
+				background-color: #FFFFFF;
 				border-bottom: 1px solid rgb(238, 238, 238);
+				position: relative;
+				background-color: #f9f9f9;
 			}
 			.sidebar2 {
 				color: #f37321;
@@ -322,71 +269,42 @@
 				vertical-align: top;
 				font-size: 15pt;
 				font-weight: bold;
-				width: 250px;
+				width: calc(100% - 400px);
 				height: 100px;
-				text-align: center;
-				float: right;
+				text-align: right;
+				position: absolute;
+				right: 0px;
 			}
 			.sidebar3 p {
 				border-left: 1px solid rgb(238, 238, 238);
 				color: #fcba03;
-			}
-			
-			
-			
-			table {
-				border-collapse: collapse;
-				margin: 50px auto 0px auto;
-			}
-			thead tr {
-				background-color: #FFFFFF;
-				color: #000000;
-				height: 40px;
-				border-top: 2px solid #2e3459;
-				border-bottom: 1px solid #ccc;
-				text-align: center;
-			}
-			thead tr th {
-				padding: 0px 5px;
-				font-size: 10pt;
-				font-weight: bold;
-				text-align: center;
-			}
-			tbody tr{
-				border-bottom: 1px solid #ccc;
-				height: 40px;
-				text-align: center;
-				cursor: pointer;
-			}
-			tbody tr:hover {
-				background-color: #FFFFFF;
-			}
-			tbody tr td {
-				font-size: 9pt;
-				font-weight: 300;
-				text-align: center;
-			}
-			.article {
-				font-size: 13pt;
-			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #F37321;
-			}
-			.matter_title {
-				text-align: left;
-			}
-			.matter_write_btn {
-				width: 960px;
-				height: 40px;
-				margin: 20px auto;
-			}
-			.matter_write_btn input {
+				width: 200px;
 				float: right;
-				width: 90px;
+			}
+			
+			
+			.matter_detail_title {
+				width: 1280px;
 				height: 40px;
+				margin: 20px 0px 0px 0px;
+				border-bottom: 2px solid #2e3459;
+			}
+			.matter_detail_title span {
+		 		font-size: 10pt;
+		 		line-height: 40px;
+			}
+		    .matter_detail_title span:nth-child(2n) {
+		 		margin: 10px 15px 0 5px;
+		 		color: #f37321;
+		 	}
+		 	.matter_btns {
+		 		float: right;
+		 		width: 200px;
+		 	}
+		 	.matter_btns input {
+				float: right;
+				width: 60px;
+				height: 30px;
 				background-color: #FFFFFF;
 				font-size: 11pt;
 				font-weight: bold;
@@ -394,49 +312,135 @@
 				cursor: pointer;
 				border-radius: 20px;
 				border: 2px solid #2E3459;
+				margin-left: 10px;
 			}
-			.matter_write_btn input:hover {
+			.matter_btns .matter_edit_btn:hover, .matter_btns .matter_cmt_btn:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
 			}
-			.cmt_ok {
+			.matter_btns .matter_del_btn:hover {
+				background-color: #F1404B;
+				color: #FFFFFF;
+				border: 2px solid #F1404B;
+			}
+		 	.text_area {
+	         	width: 1280px;
+	         	margin: 0 auto;
+	         	color: black;
+	         	font-size: 12pt;
+	         	border-bottom: 2px solid #2e3459;
+         	}
+         	
+			.admin_matter_detail_title {
+				width: 1280px;
+				height: 40px;
+				margin: 20px 0px 0px 0px;
+				border-bottom: 2px solid #2e3459;
+			}
+			.admin_matter_detail_title span {
+		 		font-size: 10pt;
+		 		line-height: 40px;
+			}
+		    .admin_matter_detail_title span:nth-child(2n) {
+		 		margin: 10px 15px 0 5px;
+		 		color: #f37321;
+		 	}
+		 	.admin_text_area {
+	         	width: 1280px;
+	         	margin: 0 auto;
+	         	color: black;
+	         	font-size: 12pt;
+	         	border-bottom: 2px solid #2e3459;
+         	}
+         	
+			.matter_detail_btn {
+				width: 1280px;
+				height: 40px;
+				margin: 20px auto 5px auto;
+				display: block;
+			}
+			.matter_detail_btn input {
+				float: right;
+				width: 60px;
+				height: 30px;
+				background-color: #FFFFFF;
+				font-size: 11pt;
 				font-weight: bold;
+				color: #000000;
+				cursor: pointer;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+				margin-left: 10px;
+			}
+			/* .matter_cnt_btn {
+				display: none;
+			} */
+			.matter_edit_btn:hover, .matter_cmt_btn:hover {
+				background-color: #2e3459;
+				color: #FFFFFF;
+			}
+			.matter_del_btn:hover {
+				background-color: #F1404B;
+				color: #FFFFFF;
+				border: 2px solid #F1404B;
+			}
+			#adminMatterDetailTitle {
+				margin-bottom: 30px;
+				display: none;
+			}
+			.cmt_area {
+				display: none;
+				width: 1280px;
+				height: 200px;
+			}
+			.cmt_contents {
+				margin: 0px 0px 10px 0px;
+				width: 1270px;
+				height: 120px;
+			}
+			.cmt_area div input {
+				float: right;
+				width: 60px;
+				height: 30px;
+				background-color: #FFFFFF;
+				font-size: 11pt;
+				font-weight: bold;
+				color: #000000;
+				cursor: pointer;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+				margin-left: 10px;
+			}
+			.cmt_write:hover {
+				background-color: #2e3459;
+				color: #FFFFFF;
+			}
+			.cmt_cancel:hover {
+				background-color: #F1404B;
+				color: #FFFFFF;
+				border: 2px solid #F1404B;
+			}
+			/* .back_btn {
+				float: right;
+			} */
+			#backBtn {
+				float: right;
+				width: 90px;
+				height: 30px;
+				background-color: #FFFFFF;
+				font-size: 11pt;
+				font-weight: bold;
+				color: #000000;
+				cursor: pointer;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+				margin-left: 10px;
+			}
+			#backBtn:hover {
+				background-color: #2e3459;
+				color: #FFFFFF;
 			}
 			
-			
-			.paging { 
-	            font-size: 0;
-	            text-align: center;
-	            margin: 40px 0px 60px 0px;
-	        }  
-	        .paging div {
-	            display: inline-block;
-	            margin-left: 10px;
-	            padding: 5px 10px;
-	            border-radius: 20px;
-	            font-size: 12pt; 
-	            font-weight: bold;
-	            text-decoration: none;
-	        }   
-	        .paging_btn {
-	            background-color: none;
-	            color: #2e3459;
-	            letter-spacing:-5px;
-	            font-size: 12pt;
-	        }
-	        .paging div.num {           
-	            color: #2e3459;
-	        }
-	        .paging div:first-child {
-	            margin-left: 0;
-	        } 
-	        .paging div.num:hover,
-	        .paging div.num.on,
-	        .paging div.paging_btn:hover  {
-	            color: #F1404B;
-	            text-decoration: underline;
-	            cursor: pointer;
-	        }
 			
 			
 			/* 컨테이너 레이아웃 끝 */
@@ -455,18 +459,11 @@
 				width: 600px;
 				height: 80px;
 			}
-			
-			#session {
-				font-size: 50pt;
-				color: black;
-			}
 		</style>
 		<script type="text/javascript"
 				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
-				reloadList();
 				
 				$(".logo_photo").on("click", function() {
 					location.href = "main";
@@ -492,156 +489,95 @@
 				if("${sMEM_NO}" != "") {
 					$(".logins").css("display", "none");
 					$(".btns").css("display", "inline-block");
+					$(".back_btn").css("margin-top", "30px");
+					
+					// 답변있을 경우 답변창 보여주고 없을 경우 숨기기
+					if($("#cmtContents").val() != "") {
+						$("#adminMatterDetailTitle").css("display", "block");
+						$(".matter_detail_btn").css("display", "none");
+						//$("#matterBtns").hide();
+					} else {
+						$("#adminMatterDetailTitle").css("display", "none");
+					}
+					
+					// 매니저로 로그인 아닌 경우 답글버튼 히든
+					if("${sMEM_NO}" != 1) {
+						$(".matter_detail_btn").hide();
+						
+						// 회원번호와 작성번호가 같을 경우 수정/삭제 버튼 생성
+						if("${sMEM_NO}" == $("#writeMemNo").val()) {
+							$("#matterBtns").show();
+							if($("#cmtContents").val() != "") {
+								$("#matterBtns").hide();
+							}
+						} else {
+							$("#matterBtns").hide();
+						}
+					} else {
+						console.log("123");
+					}
 				} else {
 					$(".logins").css("display", "inline-block");
 					$(".btns").css("display", "none");
+					$(".matter_detail_btn").css("display", "none");
+					$("#matterDetailTitle").css("margin-bottom", "30px");
+					$("#matterBtns").hide();
 				}
 				
-				// 작성버튼 클릭 시
-				$("#writeBtn").on("click", function() {
-					if("${sMEM_NO}" != "") {
-						$("#actionForm").attr("action", "clientCenterMatterWrite");
-						$("#actionForm").submit();
+				$(".matter_cmt_btn").on("click", function() {
+					$(".cmt_area").css("display", "block");
+				});
+				$(".cmt_cancel").on("click", function() {
+					$(".cmt_area").css("display", "none");
+					$(".cmt_text").val("");
+				});
+				
+				// 답글작성
+				$(".cmt_write").on("click", function() {
+					if($.trim($(".cmt_contents").val()) == "") {
+						alert("내용을 넣어주세요.");
+						$(".cmt_contents").focus();
 					} else {
-						makePopup("로그인이 필요합니다.", function() {
-							console.log("작성 팝업");
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterMatterDetailCmt",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								redrawCmt(res);
+								$(".matter_detail_btn").hide();
+								$(".cmt_area").hide();
+								$("#adminMatterDetailTitle").css("display", "block");
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
 						});
 					}
 				});
 				
-				// 검색 처리
-				$("#searchIcon").on("click", "img", function() {
-					$("#page").val(1);
-					$("#searchOldTxt").val($("#searchTxt").val());
-					reloadList();
-				});
+				// 뒤로가기 버튼
+				$("#backBtn").on("click", function() {
+					location.href = "clientCenterMatter";
+				})
 				
-				// 페이징 처리
-				$(".paging").on("click", "div", function() {
-					$($("#page").val($(this).attr("page")));
-					$("#searchTxt").val($("#searchTxt").val());
-					$("#allCkbox").prop("checked", false);
-					reloadList();
-				});
+				// 매니저 답변 수정하기
 				
-				$("#list_wrap tbody").on("click", "tr", function() {
-					$("#qNo").val($(this).attr("qno"));
-					
-					$("#actionForm").attr("action", "clientCenterMatterDetail");
-					$("#actionForm").submit();
-					//console.log($("tr .writeMemNo").val());
-				});
+				
+				
 				
 			}); // document ready end..
 			
-			function makePopup(title, func) {
-				
+			function redrawCmt(res) {
 				var html = "";
 				
-				html += "<div class=\"popup_write\">"                                  
-			   	html += "	<div class=\"popup_entity_txt\">" + title + "</div>"
-			    html += "    <div class=\"btn_list\">"                               
-				html += "    	<span id=\"ok\">OK</span>"                           
-				html += "    </div>"                                               
-				html += "</div>"                                                   
-				html += "<div class=\"bg_write\"></div>" 
+				html = "<pre class=\"admin_text_areas\">" + res.cmt_contents + "</pre>"
 				
-				$("body").prepend(html);
-				
-				$(".bg_write").hide();
-				$(".popup_write").hide();
-				$(".bg_write").fadeIn();
-				$(".popup_write").fadeIn();
-				
-				$(".popup_write #ok").off("click");
-				$(".popup_write #ok").on("click", function() {
-					if(func != null) {
-						func.call();
-					}
-					closePopup();
-				});
+				$(".admin_text_area").html(html);
 			}
 			
-			function closePopup() {
-				$(".bg_write").fadeOut(function() {
-					$(".bg_write").remove();
-				});
-				$(".popup_write").fadeOut(function() {
-					$(".popup_write").remove();
-				});
-			}
-			
-			function reloadList() {
-				var params = $("#actionForm").serialize();
-				
-				$.ajax({
-					url: "clientCenterMatters",
-					type: "post",
-					dataType: "json",
-					data: params,
-					success: function(res) {
-						drawList(res.list);
-						drawPaging(res.pb);
-					},
-					error: function(request, status, error) {
-						console.log(request);
-						console.log(status);
-						console.log(error);
-					}
-				});
-			}
-			
-			function drawList(list) {
-				var html = "";
-				
-				for(d of list) {
-					html += "<tr qno=\"" + d.QNA_NO + "\">";
-					html += "<td id=\"qNo\">" + d.QNA_NO + "</td>";
-					html += "<td>" + d.NIC + "</td>";
-					html += "<td class=\"matter_title\">" + d.TITLE + "</td>";
-					html += "<td>" + d.QNA_DATE + "</td>";
-					if(d.CMT_OK == '답변대기') {
-						html += "<td>" + d.CMT_OK + "</td>";
-					} else {
-						html += "<td class=\"cmt_ok\">" + d.CMT_OK + "</td>";
-					}
-					html += "<input type=\"hidden\" class=\"writeMemNo\" name=\"writeMemNo\" value=" + d.MEM_NO + " />"
-					html += "</tr>";
-				}
-				
-				$("#list_wrap tbody").html(html);
-			}
-			
-			function drawPaging(pb) {
-				var html = "";
-				
-				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
-				
-				if($("#page").val() == "1") {
-					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
-				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
-				}
-				
-				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-					if($("#page").val() == i) {
-						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
-					} else {
-						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
-					}
-				}
-				
-				if($("#page").val() == pb.maxPcount) {
-					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
-				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
-				}
-				
-				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
-				
-				$(".paging").html(html);
-				
-			}
 			
 		</script>
 	</head>
@@ -695,23 +631,14 @@
 			</div>
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
-					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
-					<input type="hidden" id="nic" name="nic" value="${sNIC}" />
-					<input type="hidden" id="qNo" name="qNo" />
-					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="memNo" name="memNo" value="${param.memNo}" />
+					<input type="hidden" id="qNo" name="qNo" value="${param.qNo}" />
+					<input type="hidden" id="nic" name="nic" value="${param.nic}" />
+					<input type="hidden" id="page" name="page" value="${param.page}" />
 					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
-					<!-- <input type="hidden" id="writeMemNo" name=writeMemNo /> -->
-					<div class="client_center_search">
-						<div class="client_center_name">
-							<div>고객센터</div>					
-						</div>
-						<div class="question_search">
-							<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="문의사항 검색" />
-							<div><img alt="검색" src="./resources/images/search.png"></div>
-						</div>
-					</div>
+					<input type="hidden" id="writeMemNo" value="${data.MEM_NO}" />
 					<div class="sidebar">
-						<div class="sidebar1" id="question">자주 묻는 질문</div><div class="sidebar2" id="matter">문의사항</div>
+						<div class="sidebar1">자주 묻는 질문</div><div class="sidebar2">문의사항</div>
 						<div class="sidebar3">
 							<p>
 								고객센터 1577-8253<br/>
@@ -719,33 +646,52 @@
 							</p>
 						</div>
 					</div>
+					<div id="matterDetailTitle">
+						<div class="matter_detail_title">
+							<span>문의번호</span><span>${data.QNA_NO}</span>
+							<span>작성자</span><span>${data.NIC}</span>
+							<span>제목</span><span>${data.TITLE}</span>
+							<span>작성일</span><span>${data.QNA_DATE}</span>
+							<span id="matterBtns" class="matter_btns">
+								<input type="button" value="삭제" class="matter_del_btn"/>
+								<input type="button" value="수정" class="matter_edit_btn"/>
+							</span>
+						</div>
+						<div class="text_area">
+		       				<pre>${data.CONTENTS}</pre>
+		         		</div>
+					</div>
+	         		<div id="adminMatterDetailTitle">
+		         		<div class="admin_matter_detail_title">
+							<span>작성자</span><span>Manager</span>
+							<span>작성일</span><span>2021-07-02</span>
+							<span id="adminMatterBtns" class="matter_btns">
+								<input type="button" value="삭제" class="matter_del_btn"/>
+								<input type="button" value="수정" class="matter_edit_btn"/>
+							</span>
+						</div>
+						<div class="admin_text_area">
+							<pre class="admin_text_areas">${data.CMT_CONTENTS}</pre>
+							<input type="hidden" id="cmtContents" value="${data.CMT_CONTENTS}" />
+						</div>
+	         		</div>
 					
-					<div id="list_wrap">
-						<table>
-							<colgroup>
-								<col width="100px" /> <!-- 문의번호 -->
-								<col width="120px" /> <!-- 작성자(닉네임) -->
-								<col width="500px" /> <!-- 제목 -->
-								<col width="120px" /> <!-- 작성일 -->
-								<col width="120px" /> <!-- 답변유무 -->
-							</colgroup>
-							<thead>
-								<tr class="article">
-									<th>문의번호</th>
-									<th>작성자</th>
-									<th>제목</th>
-									<th class="click_article">작성일↕</th>
-									<th>답변유무</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>	
+					<div class="matter_detail_btn">
+						<input type="button" value="답변" class="matter_cmt_btn"/>
 					</div>
-					<div class="matter_write_btn">
-						<input type="button" id="writeBtn" value="작성" />
+					<div class="cmt_area">
+						<textarea class="cmt_contents" name="cmt_contents" cols="50" rows="20"></textarea>
+						<div>
+							<input type="button" value="취소" class="cmt_cancel"/>
+							<input type="button" value="작성" class="cmt_write"/>
+						</div>
 					</div>
-					<div class="paging"></div>
+					<div class="back_btn">
+						<input type="button" id="backBtn" value="뒤로가기" />
+					</div>
 				</form>
+				
+				
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>

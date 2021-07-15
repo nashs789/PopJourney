@@ -356,30 +356,64 @@
 	
 	<select id="getMatterCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
-		FROM QNA
-		WHERE WRITER_NAME LIKE '%' || '우' || '%' OR TITLE LIKE '%' || '우' || '%' OR CONTENTS LIKE '%' || '우' || '%'
+		FROM (SELECT Q.QNA_NO
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE M.NIC LIKE '%' || #{searchTxt} || '%' OR Q.TITLE LIKE '%' || #{searchTxt} || '%'
+		      ) Q
 	</select>
 
 	<select id="getMatterList" parameterType="hashmap" resultType="hashmap">
-		SELECT Q.QNA_NO, Q.WRITER_NAME, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.RNUM
-		FROM (SELECT QNA_NO, WRITER_NAME, TITLE, CONTENTS, QNA_DATE,
-		             ROW_NUMBER() OVER(ORDER BY QNA_NO DESC) AS RNUM
-		      FROM QNA
-		      WHERE WRITER_NAME LIKE '%' || '우' || '%' OR TITLE LIKE '%' || '우' || '%' OR CONTENTS LIKE '%' || '우' || '%') Q
-		WHERE Q.RNUM BETWEEN 1 AND 5
+		SELECT Q.QNA_NO, Q.NIC, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.DEL, Q.CMT_OK, Q.MEM_NO, Q.RNUM
+		FROM (SELECT Q.QNA_NO, M.NIC, Q.TITLE, Q.CONTENTS, TO_CHAR(Q.QNA_DATE, 'YYYY-MM-DD') AS QNA_DATE, Q.DEL, M.MEM_NO,
+					 CASE WHEN Q.CMT_OK = 1
+		                  THEN '답변대기'
+		                  WHEN Q.CMT_OK = 0
+		                  THEN '답변완료'
+		             END AS CMT_OK,
+		             ROW_NUMBER() OVER(ORDER BY Q.QNA_NO DESC) AS RNUM
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE M.NIC LIKE '%' || #{searchTxt} || '%' OR Q.TITLE LIKE '%' || #{searchTxt} || '%'
+		      ) Q
+		WHERE Q.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
 	
 	<insert id="addMatterWrite" parameterType="hashmap">
-		INSERT INTO QNA(QNA_NO, WRITER_NAME, TITLE, CONTENTS)
-		VALUES (QNA_SEQ.NEXTVAL, #{nic}, #{matterTitle}, #{matterContents})
+		INSERT INTO QNA(QNA_NO, MEM_NO, TITLE, CONTENTS)
+		VALUES (QNA_SEQ.NEXTVAL, #{memNo}, #{matterTitle}, #{matterContents})
 	</insert>
 	
-	<select id="getRankCnt" parameterType="hashmap" resultType="Integer">
+	<select id="getMatter" parameterType="hashmap" resultType="hashmap">
+		SELECT Q.QNA_NO, Q.NIC, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.MEM_NO, Q.CMT_OK, QC.CONTENTS AS CMT_CONTENTS, QC.CMT_DATE
+		FROM (SELECT Q.QNA_NO, M.NIC, Q.TITLE, Q.CONTENTS, TO_CHAR(Q.QNA_DATE, 'YYYY-MM-DD') AS QNA_DATE, M.MEM_NO,
+		             CASE WHEN Q.CMT_OK = 1
+		                  THEN '문의대기'
+		                  WHEN Q.CMT_OK = 0
+		                  THEN '문의완료'
+		             END AS CMT_OK
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE Q.QNA_NO = #{qNo}) Q LEFT OUTER JOIN QNA_CMT QC
+		                                              ON Q.QNA_NO = QC.QNA_NO
+	</select>
+	
+	<insert id="writeCmt" parameterType="hashmap">
+		INSERT INTO QNA_CMT(QNA_NO, CONTENTS)
+		VALUES (#{qNo}, #{cmt_contents})
+	</insert>
+	
+	<update id="updateMatter" parameterType="hashmap">
+		UPDATE QNA SET CMT_OK = 0
+		WHERE QNA_NO = #{qNo}
+	</update>
+	
+	<!-- <select id="getRankCnt" parameterType="hashmap" resultType="Integer">
 		
 	</select>
 	
 	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
 		
-	</select>
+	</select> -->
 	
 </mapper>
