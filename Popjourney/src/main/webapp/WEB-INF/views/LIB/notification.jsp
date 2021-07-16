@@ -543,7 +543,7 @@ function makeNotificationTable(notification, page)
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행일지</li>
+                  <li>여행게시판</li>
                   <li>자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>

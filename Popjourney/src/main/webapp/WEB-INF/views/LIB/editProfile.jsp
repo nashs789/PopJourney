@@ -620,7 +620,7 @@ function endPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행일지</li>
+                  <li>여행게시판</li>
                   <li>자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>

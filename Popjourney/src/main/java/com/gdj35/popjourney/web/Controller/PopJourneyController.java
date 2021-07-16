@@ -502,7 +502,7 @@ public class PopJourneyController {
 	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
+
 		if(params.get("GBN").equals("1"))
 		{
 			params.put("page", Integer.toString(Integer.parseInt(params.get("page")) * 10));
@@ -516,7 +516,6 @@ public class PopJourneyController {
 			}		
 			params.put("page", Integer.toString((Integer.parseInt(params.get("page"))+1) * 10));
 		}
-		
 		try {
 			
 			List<HashMap<String, String>> notification  = ipjs.notification(params);
@@ -524,7 +523,6 @@ public class PopJourneyController {
 			if(notification != null)
 			{
 				SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
-				
 				Date day1 = new Date();
 				Date day2;
 				
@@ -568,7 +566,6 @@ public class PopJourneyController {
 				   }
 				   notification.get(i).put("msg", msg);
 				}
-				
 				modelMap.put("msg", "success");
 				modelMap.put("notification", notification);
 				modelMap.put("page", Integer.toString(Integer.parseInt(params.get("page")) / 10));
@@ -644,9 +641,106 @@ public class PopJourneyController {
 	// 타임라인 페이지 - 이인복
 	@RequestMapping(value = "/timeline")
 	public ModelAndView timeline(ModelAndView mav) {
+		int page = 1;
+		
+		mav.addObject("page", page);
 		mav.setViewName("LIB/timeline");
 
 		return mav;
+	}
+	
+	// 타임라인 가져오기 - 이인복
+	@RequestMapping(value = "/timelines", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String timelines(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		List<HashMap<String, String>> timeline = ipjs.timeline(params);
+		
+		try {
+			if(timeline != null)
+			{
+				int firstPage = Integer.parseInt(params.get("firstPage"))+10;
+				int lastPage = Integer.parseInt(params.get("lastPage"))+10;
+				
+				if(Integer.parseInt(params.get("pageCnt")) <= lastPage)
+				{
+					modelMap.put("msg", "full");
+					return mapper.writeValueAsString(modelMap);
+				}
+				
+				modelMap.put("timeline", timeline);
+				modelMap.put("msg", "success");
+				modelMap.put("firstPage", firstPage);
+				modelMap.put("lastPage", lastPage);
+			}
+			else
+			{
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	// 타임라인 페이지 게시글 카운트 - 이인복
+		@RequestMapping(value = "/miniProfiles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String miniProfiles(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			 try {
+				 
+				 HashMap<String, String> mini = ipjs.miniProfile(params);
+				 System.out.println(mini);
+				 if(mini != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("mini", mini);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	// 타임라인 페이지 게시글 카운트 - 이인복
+	@RequestMapping(value = "/timelinePageCnts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String timelinePageCnts(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		 try {
+			 
+			 HashMap<String, String> pageCnt = ipjs.timelinePageCnt(params);
+			 
+			 if(pageCnt != null)
+			 {
+				 modelMap.put("msg", "success");
+				 modelMap.put("pageCnt", String.valueOf(pageCnt.get("CNT")));
+			 }
+			 else
+			 {
+				 modelMap.put("msg", "failed");
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
 	}
 	
 	// 메인화면 공지사항 - 이인복

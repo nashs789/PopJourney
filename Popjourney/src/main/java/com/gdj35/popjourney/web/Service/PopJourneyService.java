@@ -156,4 +156,22 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.pageCnt(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> timeline(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.timeline(params);
+	}
+
+	@Override
+	public HashMap<String, String> timelinePageCnt(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.timelinePageCnt(params);
+	}
+
+	@Override
+	public HashMap<String, String> miniProfile(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.miniProfile(params);
+	}
 }

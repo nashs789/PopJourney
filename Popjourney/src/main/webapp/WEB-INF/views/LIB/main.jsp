@@ -509,7 +509,6 @@ svg{
    	position: absolute;
    	padding: 0px;
    	right: 8px;
-   	height: 108px;
    	width: 122px;
    	margin-top: 10px;
 }
@@ -831,6 +830,10 @@ $(document).ready(function(){
   	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	}); //admin click end
+  	
+  	$("#timeline").on("click", function(){
+  		location.href = "timeline";
+  	}); //timeline click end
   	
   	$("#editProfile").on("click", function(){
   		location.href = "editProfile";
@@ -1195,6 +1198,7 @@ function makeRankBoard(yearData, monthData, weekData)
 							<li><img alt="프로필" src="" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>
+									<li id="timeline">타임라인</li>
 									<li id="editProfile">프로필 수정</li>
 									<li id="editInfo">회원정보 수정</li>
 									<li id="logoutBtn">로그아웃</li>
@@ -1219,7 +1223,7 @@ function makeRankBoard(yearData, monthData, weekData)
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행일지</li>
+                  <li>여행게시판</li>
                   <li>자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>

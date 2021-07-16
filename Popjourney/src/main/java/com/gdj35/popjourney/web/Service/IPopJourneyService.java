@@ -53,5 +53,11 @@ public interface IPopJourneyService {
 
 	HashMap<String, String> pageCnt(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> timeline(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> timelinePageCnt(HashMap<String, String> params) throws Throwable;
+
+	HashMap<String, String> miniProfile(HashMap<String, String> params)throws Throwable;
+
 
 }

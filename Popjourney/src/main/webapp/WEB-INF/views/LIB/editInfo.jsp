@@ -688,7 +688,7 @@ function resetPW() //비밀번호 조건이 안맞을 때 초기화
             <input type="text" id="search" placeholder="검색">
             <select id="filter">
 			   <option value="0" selected="selected">통합검색</option>
-			   <option value="1">여행일지</option>
+			   <option value="1">여행게시판</option>
 			   <option value="2">해시태그</option>
 			   <option value="3">자유게시판</option>
 			   <option value="4">닉네임</option>

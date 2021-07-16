@@ -52,13 +52,26 @@ body {
    margin-top: 18px;
 }
 .btns { 
-    display: none;
+    display: inline-block;
     vertical-align: top;
     position:relative;   
     width: 470px;
     height: 70px;
     text-align: right;
     background-color: #FFFFFF;
+}
+.btns ul li {
+    list-style: none;
+	float: left;
+	text-align: center;
+    color: #2e3459;
+	line-height: 25px;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: 900;
+}
+.btns>ul>li {
+	margin-right: 10px;
 }
 #bookmarkPhoto, #notificationPhoto {
    width: 40px;
@@ -73,67 +86,103 @@ body {
    cursor: pointer;
    border-radius: 50%;
 }
+#notification{
+ 	 display:none;
+     width: 600px;
+     box-shadow: 0px 0px 1px 1px #444444;
+     position: absolute;
+     right: 10px;
+     z-index: 300;
+     font-size: 10pt;
+}
+.read{
+    background-color: #d1d1e0;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+.notRead{
+	background-color: #a3a3c2;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
 #notificationPhoto {
    margin-left: 200px;
 }
-.logins {
-   display: inline-block;
-   vertical-align: top;
-   width: 470px;
-   height: 70px;
-   text-align: right;
-   background-color: #FFFFFF;
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
 }
-.sub_login1 {
-   display: block;
-   position: relative;
-   width: 100%;
-   height: 55px;
+#notification table{
+	border-collapse: collapse;
 }
-.sub_login2 {
-   display: block;
-    width: calc(100% - 75px);
-    height: 15px;
-    line-height: 10px;
-    text-align: right;
-    padding-right: 75px;
+
+#notification table tr th:first-child{
+	text-align: center;
 }
-.sub_login2 span {
-   position: relative;
-   width: 10px;
-   font-size: 12px;
-   font-weight: 600;
-   cursor: pointer;
-   margin-left: 10px;
+
+#notification tr th{
+	text-align: left;
 }
-.sub_login2 span:hover {
-   color: #fcba03;
+
+#notification tr th img{
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+    margin-top: 5px;
+    border-radius: 50%;
 }
-#inputID, #inputPW {
-   float: right;
-   width: 100px;
-   height: 25px;
-   margin-top: 20px;
-   margin-left: 5px;
+
+#notification tfoot tr{
+	background-color: #48486a;
+	color: white;
 }
-#loginBtn {
-   float: right;
-   margin: 20px 20px 0px 5px;
-   width: 50px;
-   height: 30px;
-   background-color: #2e3459;
-   font-weight: bold;
-   font-size: 12px;
-   color: #FFFFFF;
-   text-align: center;
-   line-height: 26px;
+   
+#notification tfoot tr th{
+	text-align: center;
+	cursor: pointer;
 }
-#loginBtn:hover{
-   color: #FFFFFF;
-   background-color: #f37321;
+
+#notification tfoot tr th:hover{
+	background-color: #a4a4c1;
 }
-input[type='text']:focus, input[type='password']:focus{
-	outline-color: #fcba03;
+
+#notification table tr th span{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#notification table tr th span:hover{
+	color: blue;
+}
+#profileSlidedown{
+	display: none;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+}
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
+}
+#profileSlidedown li:hover {
+	background-color: #f37321;
 }
 .banner {
    width: 100%;
@@ -188,7 +237,6 @@ input[type='text']:focus, input[type='password']:focus{
 #container{
 	width: 1280px;
 	margin: 0px auto;
-	text-align: center;
     background-color: #474e5d;
   	font-family: Helvetica, sans-serif;
 }
@@ -319,6 +367,104 @@ input[type='text']:focus, input[type='password']:focus{
 	padding: 5px;
 }
 
+.contents_area{
+
+}
+.date_area{
+	text-align: left;
+	font-size: 16pt;
+	font-weight: bold;
+}
+.img_area{
+	display:inline-block;
+	vertical-align: top;
+	height: 150px;
+	width: 460px;
+	margin-top: 10px;
+	display: block;
+}
+.fisrt{
+	display:inline-block;
+	vertical-align: top;
+	wdith: 200px;
+}
+.last{
+	display:inline-block;
+	vertical-align: top;
+	width: 260px;
+}
+.timeline img{
+	display:inline-block;
+	vertical-align: top;
+	height: 150px;
+	width: 170px;
+}
+.txt_area{
+	height: 30px;
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+}
+.timeline span{
+	cursor: pointer;
+    font-weight: bold;
+}
+.timeline span:hover{
+	text-decoration: underline;
+	color: blue;
+}
+#upIcon{
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	position: fixed;
+    bottom: 100px;
+    right: 20px;
+}
+#downIcon{
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+.popup {
+   width: 300px;
+   height: 450px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   z-index: 500;
+   font-size: 16pt;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+   position: fixed;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#miniPhoto{
+	width: 100%;
+	height: 150px;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0; 
+}
+#miniPhoto img{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	margin-top: 25px;
+}
+#miniNic{
+	width: 150px;
+	height: 50px;
+	margin: 0px auto;
+}
 /* Media queries - Responsive timeline on screens less than 600px wide */
 @media screen and (max-width: 600px) {
   /* Place the timelime to the left */
@@ -351,8 +497,417 @@ input[type='text']:focus, input[type='password']:focus{
   left: 0%;
   }
 </style>
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	var params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "notifications",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				makeNotification(result.notification);
+			}
+			else
+			{
+				alert("오류가 발생했습니다.");
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+
+	params = $("#memForm").serialize();
+	var flag = 1;
+	
+	$.ajax({
+		url: "timelinePageCnts",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				$("#pageCnt").val(result.pageCnt);
+
+				var params = $("#memForm").serialize();
+				
+				$.ajax({
+					url: "timelines",
+					data: params,
+					dataType: "json",
+					type: "post",
+					success: function(result){
+						if(result.msg == "success")
+						{
+							$("#firstPage").val(result.firstPage);
+							$("#lastPage").val(result.lastPage);
+							makeTimeline(result.timeline);
+						}
+						//result.msg에 실패시 failed 에러시 error들어가 있음
+					}, //success end
+					error: function(error){
+						console.log(error);
+					} //error end
+				}); // ajax end
+			} // if end
+			//result.msg에 실패시 failed 에러시 error들어가 있음
+		}, //success end
+		error: function(error){
+			console.log(error);
+		} //error end
+	}); // ajax end
+	
+	$("#upIcon").on("click", function(){
+		$("html").scrollTop(0);
+	}); //upIcon click end
+	
+	$("#downIcon").on("click", function(){
+		$("html").scrollTop($(document).height());
+	}); //upIcon click end
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#notificationPhoto").on("click", function(){
+		$("#profileSlidedown").css("display", "none");
+		if($("#notification").css("display") == "block")
+		{
+			$("#notification").css("display", "none");
+		}
+		else
+		{
+			$("#notification").css("display", "block");
+		}
+	}); //notificationPhoto click end
+	
+	/* $(".timeline").on("click", "span", function(){
+		console.log($(this).attr("class"));
+	}); //timeline span click end */
+	
+	$(".timeline").on("mouseover", ".nic", function(){
+		var x = event.clientX;
+	    var y = event.clientY; 
+	    
+		$("#memNo").val($(this).attr($(this).attr("class")));
+		var params = $("#memNoForm").serialize();
+		
+		$.ajax({
+			url:"miniProfiles",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					makeProfilePopup(result.mini, x, y);
+				}
+				else
+				{
+					alert("오류발생");
+				}
+			}, //success end
+			error: function(error){
+				console.log(error);
+			} //error end
+		}); //ajax end
+	}); //timeline nic mouseover end
+	
+	$(".timeline").on("mouseout", ".nic", function(){
+		$(".popup").remove();
+	}); //timeline nic mouseout end
+
+	$(window).on("scroll", function(){
+	    var $window = $(this);
+	    var scroll = $window.scrollTop();
+	    var wheigth = $window.height();
+	    var dheight = $(document).height();
+	   
+        if(scroll + wheigth + 200 > dheight && flag == 1)
+        {
+        	flag--;
+        	var params = $("#memForm").serialize();
+        	
+        	$.ajax({
+        		url: "timelines",
+        		data: params,
+        		dataType: "json",
+        		type: "post",
+        		success: function(result){
+        			if(result.msg == "success")
+        			{
+        				$("#firstPage").val(result.firstPage);
+        				$("#lastPage").val(result.lastPage);
+        				makeTimeline(result.timeline);
+        				flag ++;
+        			}
+        			else if(result.msg == "full")
+        			{
+        				alert("마지막 입니다");
+        			}
+        			//result.msg에 실패시 failed 에러시 error들어가 있음
+        		}, //success end
+        		error: function(error){
+        			console.log(error);
+        		} //error end
+        	}); // ajax end
+        } //if end
+	}); // window scroll end
+});//document ready end 
+function makeTimeline(timeline)
+{
+	var flag = 1;
+	var html = "";
+
+	for(time of timeline)
+	{
+		if(flag == 1)
+		{
+			html += " <div class=\"container left\">";
+			flag--;
+		}
+		else
+		{
+			html += " <div class=\"container right\">";
+			flag++;
+		}
+		
+		html += "   <div class=\"content\">";
+		html += "     <div class=\"date_area\">" + time.YEAR + time.MONTH + time.DAY + "("+time.CHA_DATE +")"+ "</div>";
+	 	html += "     <div class=\"contents_area\">";
+		html += "     	<div class=\"img_area\">";
+		html += "     		<div class=\"first\" style=\"display: inline-block\">";
+		
+		switch(time.GBN)
+		{
+		case 0:
+		 	html += "     			<img class=\"post\" post=\"" + time.POST_NO + "\" src=\"./resources/images/board.jpg\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span class=\"post\" post=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
+			html += "               <span class=\"post\" post=\"" + time.POST_NO + "\">" + time.CONTENTS + "</span>"
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 게시물을 포스트 하셨습니다. </div>";  
+			break;
+		case 1:
+			html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span class=\"journal\" journal=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
+			html += "               <span class=\"journal\" journal=\"" + time.POST_NO + "\">" + time.CONTENTS + "</span>"
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 여행 일지를 포스트 하셨습니다. </div>";  
+			break;
+		case 2:
+		 	html += "     			<img class=\"post\" post=\"" + time.POST_NO + "\" src=\"./resources/images/board.jpg\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span class=\"post\" post=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
+			html += "               [댓글]<span class=\"post\" post=\"" + time.POST_NO + "\"> " + time.CONTENTS + "</span> 라고 남기셨습니다."
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 게시물에 댓글을 남기셨습니다. </div>";  
+			break;
+		case 3:
+			html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span class=\"journal\" journal=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
+			html += "               [댓글]<span class=\"journal\" journal=\"" + time.POST_NO + "\"> " + time.CONTENTS + "</span> 라고 남기셨습니다."
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 여행 일지에 댓글을 남기셨습니다. </div>";
+			break;
+		case 4:
+			html += "     			<img src=\"./resources/images/birthday.jpg\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span></span><br>";
+			html += "               <span></span>"
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님의 생일 이였습니다. </div>";
+			break;
+		default:
+			console.log("흠");
+		}
+			
+		html += "     </div>";
+		html += "   </div>";
+		html += " </div>";
+	} // for문  end
+	
+	$(".timeline").append(html);
+}
+function makeNotification(notification)
+{
+	var html = ""; //알림 표현용
+	var readCnt = 0;
+	var html1 = "";  //알림 개수 표현용
+	
+	for(noti of notification)
+	{
+		if(noti.READ == 1)
+		{
+			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+			readCnt++;
+		}
+		else
+		{
+			html += "<tr class=\"read\" read=\"" + noti.NOTF_NO + "\">";
+		}
+		
+		var path ="";
+		
+		if(noti.PHOTO_PATH != null)
+		{
+			path = "resources/upload/"+noti.PHOTO_PATH;
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
+		}
+		
+		switch(noti.EVENT_NO)
+		{
+			case 0:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 1:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;	
+			case 2:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 3:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 4:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 5:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.JCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.JCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 6:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.BCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.BCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			default:
+				console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	html1 = "<div id=\"notificationTxt\">" + readCnt + "<div>";
+	
+	$("#cnt").prepend(html1);
+	$("#notification tbody").html(html);
+}
+function makeProfilePopup(mini, x, y)
+{
+	var html = "";
+	
+	html += "	<div class=\"popup\">";
+	html += "	<div class=\"popup_entity_txt\">";
+	html += "		<div id=\"miniPhoto\"><img src=\"resources/upload/" + mini.PHOTO_PATH + "\"></div>";
+	html += "		<div id=\"miniNic\">" + mini.NIC + " (" + mini.GRADE_NAME + ")</div>";
+	html += "		<table>";
+	html += "			<colgroup>";
+	html += "				<col width=\"150px\">";
+	html += "				<col width=\"150px\">";
+	html += "			</colgroup>";
+	html += "			<tbody>";
+	html += "				<tr>";
+	html += "					<td>방문일수</td>";
+	html += "					<td>" + mini.ACC_CNT + "</td>";
+	html += "				</tr>";
+	html += "				<tr>";
+	html += "					<td>팔로워</td>";
+	html += "					<td>" + mini.FOLLOWER_CNT + "</td>";
+	html += "				</tr>";
+	html += "				<tr>";
+	html += "					<td>게시글</td>";
+	html += "					<td>" + mini.POST_CNT + "</td>";
+	html += "				</tr>";
+	html += "				<tr>";
+	html += "					<td>여행일지</td>";
+	html += "					<td>" + mini.JOURNAL_CNT + "</td>";
+	html += "				</tr>";
+	html += "			</tbody>";
+	html += "		</table>";
+	html += "	</div>";
+	html += "</div>";
+	
+	$("body").append(html);
+	
+ 	if(y < 330)
+	{
+		$(".popup").css("top", y);
+	}
+	else if(y >= 330 && y <= 415)
+	{
+		y-= 200;
+		$(".popup").css("top", y);
+	}
+	else
+	{
+		y-= 445;
+		$(".popup").css("top", y);
+	}
+	
+	$(".popup").css("left", x);
+}                                                                  
+</script>
 </head>
 <body>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+	<input type="hidden" id="lastPage" name="lastPage" value="10"/>
+	<input type="hidden" id="pageCnt" name="pageCnt" value=""/>
+	<input type="hidden" id="GBN" name="GBN" value="1"/>
+	<input type="hidden" id="page" name="page" value="${page}"/>
+</form>
+<form action="#" id="memNoForm">
+	<input type="hidden" id="memNo" name="memNo"/>
+</form>
 	<div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -365,6 +920,7 @@ input[type='text']:focus, input[type='password']:focus{
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
                      <ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							<div id="cnt"></div>
 							<div id="notification">
 								<table border="1">
 									<colgroup>
@@ -384,9 +940,10 @@ input[type='text']:focus, input[type='password']:focus{
 								</table>
 							</div></li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
-							<li><img alt="프로필" src="" id="profilePhoto">
+							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
 									<li>마이 페이지</li>
+									<li id="timeline">타임라인</li>
 									<li id="editProfile">프로필 수정</li>
 									<li id="editInfo">회원정보 수정</li>
 									<li id="logoutBtn">로그아웃</li>
@@ -398,7 +955,7 @@ input[type='text']:focus, input[type='password']:focus{
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행일지</li>
+                  <li>여행게시판</li>
                   <li>자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>
@@ -418,46 +975,12 @@ input[type='text']:focus, input[type='password']:focus{
 		<div id="container">
 			<div class="space">[ T I M E L I N E ]</div>
 			<div class="timeline">
-			  <div class="container left">
-			    <div class="content">
-			      <h2>2017</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			  <div class="container right">
-			    <div class="content">
-			      <h2>2016</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			  <div class="container left">
-			    <div class="content">
-			      <h2>2015</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			  <div class="container right">
-			    <div class="content">
-			      <h2>2012</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			  <div class="container left">
-			    <div class="content">
-			      <h2>2011</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			  <div class="container right">
-			    <div class="content">
-			      <h2>2007</h2>
-			      <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-			    </div>
-			  </div>
-			</div>
+
+			</div> <!-- timeline end -->
 			<div class="space">[ E N D ]</div>
 		</div> <!-- container end -->
-		
+		<img src="./resources/images/up.png" id="upIcon">
+		<img src="./resources/images/down.png" id="downIcon">
 		<div id="footer">
             <p>
                POPJOURNEY<br/>

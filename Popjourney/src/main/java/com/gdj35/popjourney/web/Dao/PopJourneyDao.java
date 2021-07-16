@@ -155,4 +155,22 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.pageCnt", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> timeline(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.timeline", params);
+	}
+
+	@Override
+	public HashMap<String, String> timelinePageCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.timelinePageCnt", params);
+	}
+
+	@Override
+	public HashMap<String, String> miniProfile(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.miniProfile", params);
+	}
 }
