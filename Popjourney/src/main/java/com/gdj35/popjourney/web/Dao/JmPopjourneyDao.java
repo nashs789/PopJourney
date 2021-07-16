@@ -97,4 +97,74 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.insert("JmPJ.addMatterWrite", params);
 	}
 
+	@Override
+	public int getMatterCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getMatterCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMatterList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getMatterList", params);
+	}
+
+	@Override
+	public int getRankCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getRankCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getRankList", params);
+	}
+
+	@Override
+	public HashMap<String, String> getMatter(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getMatter", params);
+	}
+
+	@Override
+	public int writeCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.writeCmt", params);
+	}
+
+	@Override
+	public int updateMatter(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.updateMatter", params);
+	}
+
+	@Override
+	public int updateMatters(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.updateMatters", params);
+	}
+
+	@Override
+	public int deleteMatter(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.deleteMatter", params);
+	}
+
+	@Override
+	public int addMatterNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addMatterNotf", params);
+	}
+
+	@Override
+	public int updateCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.updateCmt", params);
+	}
+
+	@Override
+	public int addMatterNotf2(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addMatterNotf2", params);
+	}
+
+	@Override
+	public HashMap<String, String> getCmtDate(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getCmtDate", params);
+	}
+
+	@Override
+	public int deleteCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("JmPJ.deleteCmt", params);
+	}
+
 }

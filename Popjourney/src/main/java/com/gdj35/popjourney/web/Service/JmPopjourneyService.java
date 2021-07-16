@@ -99,4 +99,74 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.addMatterWrite(params);
 	}
 
+	@Override
+	public int getMatterCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMatterCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMatterList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMatterList(params);
+	}
+
+	@Override
+	public int getRankCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getRankCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRankList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getRankList(params);
+	}
+
+	@Override
+	public HashMap<String, String> getMatter(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMatter(params);
+	}
+
+	@Override
+	public int writeCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.writeCmt(params);
+	}
+
+	@Override
+	public int updateMatter(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.updateMatter(params);
+	}
+
+	@Override
+	public int updateMatters(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.updateMatters(params);
+	}
+
+	@Override
+	public int deleteMatter(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteMatter(params);
+	}
+
+	@Override
+	public int addMatterNotf(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addMatterNotf(params);
+	}
+
+	@Override
+	public int updateCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.updateCmt(params);
+	}
+
+	@Override
+	public int addMatterNotf2(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addMatterNotf2(params);
+	}
+
+	@Override
+	public HashMap<String, String> getCmtDate(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getCmtDate(params);
+	}
+
+	@Override
+	public int deleteCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteCmt(params);
+	}
+
 }

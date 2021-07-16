@@ -354,7 +354,104 @@
 		WHERE R.RNUM BETWEEN ${startCnt} AND #{endCnt}
 	</select>
 	
-	<insert id="addMatterWrite" parameterType="hashmap">
+	<select id="getMatterCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM (SELECT Q.QNA_NO
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE (M.NIC LIKE '%' || #{searchTxt} || '%' OR Q.TITLE LIKE '%' || #{searchTxt} || '%') 
+		      AND Q.DEL = 1
+		      ) Q
+	</select>
+
+	<select id="getMatterList" parameterType="hashmap" resultType="hashmap">
+		SELECT Q.QNA_NO, Q.NIC, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.DEL, Q.CMT_OK, Q.MEM_NO, Q.RNUM
+		FROM (SELECT Q.QNA_NO, M.NIC, Q.TITLE, Q.CONTENTS, TO_CHAR(Q.QNA_DATE, 'YYYY-MM-DD') AS QNA_DATE, Q.DEL, M.MEM_NO,
+					 CASE WHEN Q.CMT_OK = 1
+		                  THEN '답변대기'
+		                  WHEN Q.CMT_OK = 0
+		                  THEN '답변완료'
+		             END AS CMT_OK,
+		             ROW_NUMBER() OVER(ORDER BY Q.QNA_NO DESC) AS RNUM
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE (M.NIC LIKE '%' || #{searchTxt} || '%' OR Q.TITLE LIKE '%' || #{searchTxt} || '%')
+		      AND Q.DEL = 1
+		      ) Q
+		WHERE Q.RNUM BETWEEN ${startCnt} AND #{endCnt}
+	</select>
 	
+	<insert id="addMatterWrite" parameterType="hashmap">
+		INSERT INTO QNA(QNA_NO, MEM_NO, TITLE, CONTENTS)
+		VALUES (QNA_SEQ.NEXTVAL, #{memNo}, #{matterTitle}, #{matterContents})
 	</insert>
+	
+	<select id="getMatter" parameterType="hashmap" resultType="hashmap">
+		SELECT Q.QNA_NO, Q.NIC, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, Q.MEM_NO, Q.CMT_OK, QC.CONTENTS AS CMT_CONTENTS, QC.CMT_DATE
+		FROM (SELECT Q.QNA_NO, M.NIC, Q.TITLE, Q.CONTENTS, Q.QNA_DATE, M.MEM_NO,
+		             CASE WHEN Q.CMT_OK = 1
+		                  THEN '문의대기'
+		                  WHEN Q.CMT_OK = 0
+		                  THEN '문의완료'
+		             END AS CMT_OK
+		      FROM QNA Q INNER JOIN MEM M
+		                         ON Q.MEM_NO = M.MEM_NO
+		      WHERE Q.QNA_NO = #{qNo}) Q LEFT OUTER JOIN QNA_CMT QC
+		                                              ON Q.QNA_NO = QC.QNA_NO
+	</select>
+	
+	<insert id="writeCmt" parameterType="hashmap">
+		INSERT INTO QNA_CMT(QNA_NO, CONTENTS)
+		VALUES (#{qNo}, #{cmt_contents})
+	</insert>
+	
+	<update id="updateMatter" parameterType="hashmap">
+		UPDATE QNA SET CMT_OK = 0
+		WHERE QNA_NO = #{qNo}
+	</update>
+	
+	<insert id="addMatterNotf">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, 1, 5, #{writeMemNo}, #{qNo})
+	</insert>
+	
+	<update id="updateMatters" parameterType="hashmap">
+		UPDATE QNA SET TITLE = #{matterTitle}, CONTENTS = #{matterContents}
+		WHERE QNA_NO = #{qNo}
+	</update>
+	
+	<update id="deleteMatter" parameterType="hashmap">
+		UPDATE QNA SET DEL = 0
+		WHERE QNA_NO = #{qNo}
+	</update>
+	
+	<update id="updateCmt" parameterType="hashmap">
+		UPDATE QNA_CMT SET CONTENTS = #{cmt_contents}
+		WHERE QNA_NO = #{qNo}
+	</update>
+	
+	<update id="addMatterNotf2" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, 1, 6, #{writeMemNo}, #{qNo})
+	</update>
+	
+	<select id="getCmtDate" parameterType="hashmap" resultType="hashmap">
+		SELECT QNA_NO, CONTENTS, CMT_DATE
+		FROM QNA_CMT
+		WHERE QNA_NO = #{qNo}
+	</select>
+	
+	<delete id="deleteCmt" parameterType="hashmap">
+		DELETE FROM QNA_CMT
+		WHERE QNA_NO = #{qNo}
+	</delete>
+	
+	<!-- <select id="getRankCnt" parameterType="hashmap" resultType="Integer">
+		
+	</select>
+	
+	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
+		
+	</select> -->
+	
 </mapper>

@@ -15,7 +15,7 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -338,6 +338,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				reloadList();
+				
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -350,7 +352,94 @@
 				
 				
 				
-			});
+				
+				
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "travelWriterRanks",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+					}
+				});
+			}
+			
+			function drawList(list) {
+				var html = "";
+				
+				for(d of list) {
+					if(d.LEAVE_DATE == "-") {
+						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"not_leave\">";
+					} else {
+						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
+					}				
+					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
+					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
+					html += "<td>" + d.ID + "</td>";
+					html += "<td>" + d.NIC + "</td>";
+					html += "<td>" + d.NAME + "</td>";
+					html += "<td>" + d.SEX + "</td>";
+					html += "<td>" + d.AGE + "</td>";
+					html += "<td>" + d.EMAIL + "</td>";
+					html += "<td>" + d.PHONE + "</td>";
+					html += "<td>" + d.GRADE_NAME + "</td>";
+					html += "<td>" + d.JOIN_DATE + "</td>";
+					html += "<td>" + d.LEAVE_DATE + "</td>";
+					html += "<td></td>"; // 게시글수
+					html += "<td></td>"; // 좋아요수
+					html += "<td></td>"; // 팔로워수
+					html += "<td></td>"; // 누적신고수
+					html += "<td>" + d.ACC_CNT + "</td>";
+					html += "<td></td>"; // 등업신청유무
+					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					html += "</tr>";
+				}
+				
+				$("#list_wrap tbody").html(html);
+			}
+			
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+					}
+				}
+				
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+				
+			}
 			
 		</script>
 	</head>
@@ -598,17 +687,7 @@
 						<h4>※ 여행작가 점수 산정 방법</h4>
 						<h6>·여행일지 작성 : 5점 ·좋아요 : 1점 ·팔로워 :1점</h6>
 					</div>
-					<div class="paging">
-		           		<a href="#" class=paging_btn><<</a>
-		           		<a href="#" class=paging_btn><</a>
-		           		<a href="#" class="num on">1</a>
-		           		<a href="#" class="num">2</a>
-		           		<a href="#" class="num">3</a>
-		           		<a href="#" class="num">4</a>
-		           		<a href="#" class="num">5</a>
-		           		<a href="#" class=paging_btn>></a>
-		           		<a href="#" class=paging_btn>>></a>
-		            </div>
+					<div class="paging"></div>
 				</div>
 			</div>
 			<!-- 여기까지 랭킹 갖고온거 -->

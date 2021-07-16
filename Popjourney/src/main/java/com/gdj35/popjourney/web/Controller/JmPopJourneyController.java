@@ -38,6 +38,38 @@ public class JmPopJourneyController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value="/travelWriterRanks", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String travelWriterRanks(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getRankCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getRankList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		
+		System.out.println("MatterParams >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
 
 	// 고객센터-자주 묻는 질문
 	@RequestMapping(value = "/clientCenterQuestion")
@@ -60,11 +92,43 @@ public class JmPopJourneyController {
 		}
 		
 		mav.addObject("page", page);
-		
+	
 		mav.setViewName("CJM/clientCenterMatter");
 
 		return mav;
 		
+	}
+	
+	@RequestMapping(value="/clientCenterMatters", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatters(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getMatterCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getMatterList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		
+		System.out.println("MatterParams >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 	
 	// 고객센터-문의사항(작성)
@@ -80,7 +144,7 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/clientCenterMatterWrites", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String clientCenterMatterWrites(@RequestParam HashMap<String, String> params) throws Throwable {
-		
+		System.out.println("wParams >> " + params);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -90,6 +154,7 @@ public class JmPopJourneyController {
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
+				//modelMap.put("writeMemNo", params.get("memNo"));
 			} else {
 				modelMap.put("msg", "failed");
 			}
@@ -102,7 +167,172 @@ public class JmPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	// 고객센터(문의사항) - 세부
+	@RequestMapping(value = "/clientCenterMatterDetail")
+	public ModelAndView clientCenterMatterDetail(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		HashMap<String, String> data = iJmPopjourneyService.getMatter(params);
+		HashMap<String, String> cmtDate = iJmPopjourneyService.getCmtDate(params);
 
+		mav.addObject("data", data);
+		mav.addObject("cmtDate", cmtDate);
+		
+		System.out.println("matterDetailParams >> " + params);
+		System.out.println("matterDetailData >> " + data);
+		System.out.println("matterDetailCmtDate >> " + cmtDate);
+		
+	
+		mav.setViewName("CJM/clientCenterMatterDetail");
+		
+		return mav;
+	}
+	
+	// 고객센터(문의사항) - 답변
+	@RequestMapping(value = "/clientCenterMatterDetailCmt", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatterDetailCmt(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.writeCmt(params);
+			int cnt2 = iJmPopjourneyService.updateMatter(params);
+			int cnt3 = iJmPopjourneyService.addMatterNotf(params);
+			
+			System.out.println("CMTParams222 >> " + params);
+			
+			if(cnt > 0 || cnt2 > 0 || cnt3 > 0) {
+				modelMap.put("msg", "success");
+				modelMap.put("cmt_contents", params.get("cmt_contents"));
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	// 고객센터(문의사항) - 답변수정
+		@RequestMapping(value = "/clientCenterMatterDetailCmtUpdates", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String clientCenterMatterDetailCmtUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			try {
+				int cnt = iJmPopjourneyService.updateCmt(params);
+				//int cnt2 = iJmPopjourneyService.updateMatter(params);
+				int cnt2 = iJmPopjourneyService.addMatterNotf2(params);
+				
+				System.out.println("CMTParams >> " + params);
+				
+				if(cnt > 0 || cnt2 > 0) {
+					modelMap.put("msg", "success");
+					modelMap.put("cmt_contents", params.get("cmt_contents"));
+				} else {
+					modelMap.put("msg", "failed");
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	// 고객센터(문의사항) 회원작성글 수정
+	@RequestMapping(value = "/clientCenterMatterUpdate")
+	public ModelAndView clientCenterMatterUpdate(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		HashMap<String, String> data = iJmPopjourneyService.getMatter(params);
+		
+		mav.addObject("data", data);
+		
+		mav.setViewName("CJM/clientCenterMatterUpdate");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/clientCenterMatterUpdates", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatterUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+		try {
+			int cnt = iJmPopjourneyService.updateMatters(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+	
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/clientCenterMatterDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatterDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+		try {
+			int cnt = iJmPopjourneyService.deleteMatter(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+	
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	// 매니저 답변 삭제
+	@RequestMapping(value = "/clientCenterMatterDetailCmtDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterMatterDetailCmtDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.deleteCmt(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	// 내부관리자-회원관리
 	@RequestMapping(value = "/memAdmin")
 	public ModelAndView memAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
@@ -126,7 +356,7 @@ public class JmPopJourneyController {
 		mav.addObject("page", page);
 		mav.addObject("sortGbn", sortGbn);
 		mav.addObject("sexGbn", sexGbn);
-
+		
 		mav.setViewName("CJM/memAdmin");
 
 		return mav;

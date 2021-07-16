@@ -379,7 +379,7 @@
 				text-align: left;
 			}
 			.matter_write_btn {
-				width: 840px;
+				width: 960px;
 				height: 40px;
 				margin: 20px auto;
 			}
@@ -398,6 +398,9 @@
 			.matter_write_btn input:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
+			}
+			.cmt_ok {
+				font-weight: bold;
 			}
 			
 			
@@ -463,6 +466,11 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				reloadList();
+				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -501,6 +509,28 @@
 					}
 				});
 				
+				// 검색 처리
+				$("#searchIcon").on("click", "img", function() {
+					$("#page").val(1);
+					$("#searchOldTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					$("#allCkbox").prop("checked", false);
+					reloadList();
+				});
+				
+				$("#list_wrap tbody").on("click", "tr", function() {
+					$("#qNo").val($(this).attr("qno"));
+					
+					$("#actionForm").attr("action", "clientCenterMatterDetail");
+					$("#actionForm").submit();
+					//console.log($("tr .writeMemNo").val());
+				});
 				
 			}); // document ready end..
 			
@@ -541,6 +571,78 @@
 				});
 			}
 			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "clientCenterMatters",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+					}
+				});
+			}
+			
+			function drawList(list) {
+				var html = "";
+				
+				for(d of list) {
+					html += "<tr qno=\"" + d.QNA_NO + "\">";
+					html += "<td id=\"qNo\">" + d.QNA_NO + "</td>";
+					html += "<td>" + d.NIC + "</td>";
+					html += "<td class=\"matter_title\">" + d.TITLE + "</td>";
+					html += "<td>" + d.QNA_DATE + "</td>";
+					if(d.CMT_OK == '답변대기') {
+						html += "<td>" + d.CMT_OK + "</td>";
+					} else {
+						html += "<td class=\"cmt_ok\">" + d.CMT_OK + "</td>";
+					}
+					html += "<input type=\"hidden\" class=\"writeMemNo\" name=\"writeMemNo\" value=" + d.MEM_NO + " />"
+					html += "</tr>";
+				}
+				
+				$("#list_wrap tbody").html(html);
+			}
+			
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+					}
+				}
+				
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+				
+			}
+			
 		</script>
 	</head>
 	<body>
@@ -574,18 +676,18 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li>여행게시판</li>
 						<li>자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<img alt="search" src="./resources/images/search.png" class="search_icon" id="searchIcon" />
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행일지</option>
+					<option value="1">여행게시판</option>
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
@@ -595,56 +697,54 @@
 				<form action="#" id="actionForm" method="post">
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 					<input type="hidden" id="nic" name="nic" value="${sNIC}" />
-					<input type="hidden" id="matterNo" name="matterNo" />
+					<input type="hidden" id="qNo" name="qNo" />
+					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
+					<div class="client_center_search">
+						<div class="client_center_name">
+							<div>고객센터</div>					
+						</div>
+						<div class="question_search">
+							<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="문의사항 검색" />
+							<div><img alt="검색" src="./resources/images/search.png"></div>
+						</div>
+					</div>
+					<div class="sidebar">
+						<div class="sidebar1" id="question">자주 묻는 질문</div><div class="sidebar2" id="matter">문의사항</div>
+						<div class="sidebar3">
+							<p>
+								고객센터 1577-8253<br/>
+								365일, 24시간 운영
+							</p>
+						</div>
+					</div>
+					
+					<div id="list_wrap">
+						<table>
+							<colgroup>
+								<col width="100px" /> <!-- 문의번호 -->
+								<col width="120px" /> <!-- 작성자(닉네임) -->
+								<col width="500px" /> <!-- 제목 -->
+								<col width="120px" /> <!-- 작성일 -->
+								<col width="120px" /> <!-- 답변유무 -->
+							</colgroup>
+							<thead>
+								<tr class="article">
+									<th>문의번호</th>
+									<th>작성자</th>
+									<th>제목</th>
+									<th class="click_article">작성일↕</th>
+									<th>답변유무</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>	
+					</div>
+					<div class="matter_write_btn">
+						<input type="button" id="writeBtn" value="작성" />
+					</div>
+					<div class="paging"></div>
 				</form>
-				<div class="client_center_search">
-					<div class="client_center_name">
-						<div>고객센터</div>					
-					</div>
-					<div class="question_search">
-						<input type="text" placeholder="문의사항 검색" />
-						<div><img alt="검색" src="./resources/images/search.png"></div>
-					</div>
-				</div>
-				<div class="sidebar">
-					<div class="sidebar1" id="question">자주 묻는 질문</div><div class="sidebar2" id="matter">문의사항</div>
-					<div class="sidebar3">
-						<p>
-							고객센터 1577-8253<br/>
-							365일, 24시간 운영
-						</p>
-					</div>
-				</div>
-				
-				
-				<table>
-					<colgroup>
-						<col width="100px" /> <!-- 문의번호 -->
-						<col width="120px" /> <!-- 작성자(닉네임) -->
-						<col width="500px" /> <!-- 제목 -->
-						<col width="120px" /> <!-- 작성일 -->
-					</colgroup>
-					<thead>
-						<tr class="article">
-							<th>문의번호</th>
-							<th>작성자</th>
-							<th>제목</th>
-							<th class="click_article">작성일↕</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr matterNo="d.MATTER_NO">
-							<td>1</td>
-							<td>닉네임</td>
-							<td class="matter_title">제목</td>
-							<td>21-04-29</td>
-						</tr>
-					</tbody>
-				</table>	
-				<div class="matter_write_btn">
-					<input type="button" id="writeBtn" value="작성" />
-				</div>
-				<div class="paging"></div>
 			</div> <!-- container end -->
 			<div id="footer">
 				<p>

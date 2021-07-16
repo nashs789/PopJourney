@@ -25,7 +25,7 @@
 				font-size: 12pt;
 				color: black;
 			}
-			#addBtn, #backBtn {
+			#updateBtn, #backBtn {
 				width: 90px;
 				height: 40px;
 				background-color: #FFFFFF;
@@ -36,7 +36,7 @@
 				border-radius: 20px;
 				border: 2px solid #2E3459;
 			}
-			#addBtn:hover, #backBtn:hover {
+			#updateBtn:hover, #backBtn:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
 			}
@@ -68,7 +68,7 @@
 					}
 				});
 				
-				$("#addBtn").on("click", function() {
+				$("#updateBtn").on("click", function() {
 					$("#matterContents").val(CKEDITOR.instances['matterContents'].getData());
 					
 					if($.trim($("#matterTitle").val()) == "") {
@@ -78,21 +78,20 @@
 						alert("내용을 입력해 주세요.");
 						$("#matterContents").focus();
 					} else {
-						var params = $("#addForm").serialize();
+						var params = $("#updateForm").serialize();
 						
 						$.ajax({
-							url: "clientCenterMatterWrites",
+							url: "clientCenterMatterUpdates",
 							type: "post",
 							dataType: "json",
 							data: params,
 							success: function(res) {
 								if(res.msg == "success") {
 									location.href = "clientCenterMatter";
-									//$("#writeMemNo").val(res.writeMemNo);
 								} else if(res.msg == "failed") {
-									alert("작성에 실패하였습니다.");
+									alert("수정에 실패하였습니다.");
 								} else {
-									alert("작성중 문제가 발생하였습니다.");
+									alert("수정중 문제가 발생하였습니다.");
 								}
 							},
 							error: function(request, status, error) {
@@ -116,14 +115,19 @@
 				<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 				<input type="hidden" id="writeMemNo" name="writeMemNo" />
 			</form>
-			<form action="#" id="addForm" method="post">
+			<form action="#" id="updateForm" method="post">
 				<input type="hidden" id="memNo" name="memNo" value="${param.memNo}" />
+				<input type="hidden" id="qNo" name="qNo" value="${param.qNo}" />
+				<input type="hidden" id="nic" name="nic" value="${param.nic}" />
+				<input type="hidden" id="page" name="page" value="${param.page}" />
+				<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
+				<input type="hidden" id="writeMemNo" value="${data.MEM_NO}" />
 				<div id="contents">
 					작성자 : ${sNIC}<br/>
-					제목 : <input type="text" id="matterTitle" name="matterTitle" /><br/>
-					<textarea id="matterContents" name="matterContents"></textarea><br/>
+					제목 : <input type="text" id="matterTitle" name="matterTitle" value="${data.TITLE}" /><br/>
+					<textarea id="matterContents" name="matterContents">${data.CONTENTS}</textarea><br/>
 					<div id="btns">
-						<input type="button" value="등록" id="addBtn" />
+						<input type="button" value="수정" id="updateBtn" />
 						<input type="button" value="뒤로가기" id="backBtn" />
 					</div>
 				</div>

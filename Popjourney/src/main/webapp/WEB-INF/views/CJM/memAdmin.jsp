@@ -698,9 +698,9 @@
 					
 				});
 				
-				$(".popupDel").on("click", function() {
+				/* $(".popupDel").on("click", function() {
 					popupDel();
-				});
+				}); */
 				
 				
 				// 등급설정 버튼
