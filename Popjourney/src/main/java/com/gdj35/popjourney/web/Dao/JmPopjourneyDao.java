@@ -132,4 +132,39 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.update("JmPJ.updateMatter", params);
 	}
 
+	@Override
+	public int updateMatters(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.updateMatters", params);
+	}
+
+	@Override
+	public int deleteMatter(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.deleteMatter", params);
+	}
+
+	@Override
+	public int addMatterNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addMatterNotf", params);
+	}
+
+	@Override
+	public int updateCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.updateCmt", params);
+	}
+
+	@Override
+	public int addMatterNotf2(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addMatterNotf2", params);
+	}
+
+	@Override
+	public HashMap<String, String> getCmtDate(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getCmtDate", params);
+	}
+
+	@Override
+	public int deleteCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("JmPJ.deleteCmt", params);
+	}
+
 }

@@ -323,6 +323,32 @@
 				color: #FFFFFF;
 				border: 2px solid #F1404B;
 			}
+		 	.matter_btns2 {
+		 		float: right;
+		 		width: 200px;
+		 	}
+		 	.matter_btns2 input {
+				float: right;
+				width: 60px;
+				height: 30px;
+				background-color: #FFFFFF;
+				font-size: 11pt;
+				font-weight: bold;
+				color: #000000;
+				cursor: pointer;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+				margin-left: 10px;
+			}
+			.matter_btns2 .matter_edit_btn2:hover, .matter_btns .matter_cmt_btn:hover {
+				background-color: #2e3459;
+				color: #FFFFFF;
+			}
+			.matter_btns2 .matter_del_btn2:hover {
+				background-color: #F1404B;
+				color: #FFFFFF;
+				border: 2px solid #F1404B;
+			}
 		 	.text_area {
 	         	width: 1280px;
 	         	margin: 0 auto;
@@ -411,7 +437,7 @@
 				border: 2px solid #2E3459;
 				margin-left: 10px;
 			}
-			.cmt_write:hover {
+			.cmt_write:hover, .cmt_edit:hover {
 				background-color: #2e3459;
 				color: #FFFFFF;
 			}
@@ -503,18 +529,17 @@
 					// 매니저로 로그인 아닌 경우 답글버튼 히든
 					if("${sMEM_NO}" != 1) {
 						$(".matter_detail_btn").hide();
+						$("#adminMatterBtns").hide();
 						
 						// 회원번호와 작성번호가 같을 경우 수정/삭제 버튼 생성
 						if("${sMEM_NO}" == $("#writeMemNo").val()) {
 							$("#matterBtns").show();
 							if($("#cmtContents").val() != "") {
-								$("#matterBtns").hide();
+								$(".matter_edit_btn").hide();
 							}
 						} else {
 							$("#matterBtns").hide();
 						}
-					} else {
-						console.log("123");
 					}
 				} else {
 					$(".logins").css("display", "inline-block");
@@ -526,6 +551,7 @@
 				
 				$(".matter_cmt_btn").on("click", function() {
 					$(".cmt_area").css("display", "block");
+					$(".cmt_edit").hide();
 				});
 				$(".cmt_cancel").on("click", function() {
 					$(".cmt_area").css("display", "none");
@@ -563,8 +589,97 @@
 					location.href = "clientCenterMatter";
 				})
 				
-				// 매니저 답변 수정하기
+				// 회원이 작성한 글 수정하기
+				$(".matter_edit_btn").on("click", function() {
+					$("#actionForm").attr("action", "clientCenterMatterUpdate");
+					$("#actionForm").submit();
+				});
+				// 회원이 작성한 글 삭제하기
+				$(".matter_del_btn").on("click", function() {
+					if(confirm("삭제하시겠습니까?")) {
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterMatterDeletes",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								if(res.msg == "success") {
+									location.href = "clientCenterMatter";
+								} else if(res.msg == "failed") {
+									alert("삭제에 실패하였습니다.");
+								} else {
+									alert("삭제중 문제가 발생하였습니다.");
+								}
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					}
+				});
 				
+				// 매니저 답변 수정하기
+				$("#adminMatterEditBtn").on("click", function() {
+					$(".cmt_area").show();
+					$(".cmt_contents").val($("#cmtContents").val());
+					$(".cmt_write").hide();
+				});
+				$(".cmt_edit").on("click", function() {
+					
+					if($.trim($(".cmt_contents").val()) == "") {
+						alert("내용을 넣어주세요.");
+						$(".cmt_contents").focus();
+					} else {
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterMatterDetailCmtUpdates",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								redrawCmt(res);
+								$(".matter_detail_btn").hide();
+								$(".cmt_area").hide();
+								$("#adminMatterDetailTitle").css("display", "block");
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					}
+				});
+				
+				// 매니저 답변 삭제하기
+				$("#adminMatterDelBtn").on("click", function() {
+					if(confirm("삭제하시겠습니까?")) {
+						$("#obNo").val($(this).parent().parent().attr("name"));
+						
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url : "clientCenterMatterDetailCmtDeletes",
+							type : "post",
+							dataType : "json",
+							data : params,
+							success : function(res) {
+								if(res.msg == "success") {
+									$("#adminMatterDetailTitle").hide();
+									$(".matter_detail_btn").show();
+								} else if(res.msg == "failed") {
+									alert("삭제에 실패하였습니다.");
+								} else {
+									alert("삭제중 문제가 발생하였습니다.");
+								}
+							},
+							error : function(request, status, error) {
+								console.log(error);
+							}
+						});
+					}
+				});
 				
 				
 				
@@ -573,7 +688,7 @@
 			function redrawCmt(res) {
 				var html = "";
 				
-				html = "<pre class=\"admin_text_areas\">" + res.cmt_contents + "</pre>"
+				html = "<p class=\"admin_text_areas\">" + res.cmt_contents + "</p>"
 				
 				$(".admin_text_area").html(html);
 			}
@@ -636,7 +751,7 @@
 					<input type="hidden" id="nic" name="nic" value="${param.nic}" />
 					<input type="hidden" id="page" name="page" value="${param.page}" />
 					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
-					<input type="hidden" id="writeMemNo" value="${data.MEM_NO}" />
+					<input type="hidden" id="writeMemNo" name="writeMemNo" value="${data.MEM_NO}" />
 					<div class="sidebar">
 						<div class="sidebar1">자주 묻는 질문</div><div class="sidebar2">문의사항</div>
 						<div class="sidebar3">
@@ -658,20 +773,20 @@
 							</span>
 						</div>
 						<div class="text_area">
-		       				<pre>${data.CONTENTS}</pre>
+		       				<p>${data.CONTENTS}</p>
 		         		</div>
 					</div>
 	         		<div id="adminMatterDetailTitle">
 		         		<div class="admin_matter_detail_title">
 							<span>작성자</span><span>Manager</span>
-							<span>작성일</span><span>2021-07-02</span>
-							<span id="adminMatterBtns" class="matter_btns">
-								<input type="button" value="삭제" class="matter_del_btn"/>
-								<input type="button" value="수정" class="matter_edit_btn"/>
+							<span>작성일</span><span>${cmtDate.CMT_DATE}</span>
+							<span id="adminMatterBtns" class="matter_btns2">
+								<input type="button" value="삭제" id="adminMatterDelBtn" class="matter_del_btn2"/>
+								<input type="button" value="수정" id="adminMatterEditBtn" class="matter_edit_btn2"/>
 							</span>
 						</div>
 						<div class="admin_text_area">
-							<pre class="admin_text_areas">${data.CMT_CONTENTS}</pre>
+							<p class="admin_text_areas">${data.CMT_CONTENTS}</p>
 							<input type="hidden" id="cmtContents" value="${data.CMT_CONTENTS}" />
 						</div>
 	         		</div>
@@ -684,6 +799,7 @@
 						<div>
 							<input type="button" value="취소" class="cmt_cancel"/>
 							<input type="button" value="작성" class="cmt_write"/>
+							<input type="button" value="수정" class="cmt_edit"/>
 						</div>
 					</div>
 					<div class="back_btn">

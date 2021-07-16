@@ -54,5 +54,19 @@ public interface IJmPopjourneyDao {
 
 	public int updateMatter(HashMap<String, String> params) throws Throwable;
 
+	public int updateMatters(HashMap<String, String> params) throws Throwable;
+
+	public int deleteMatter(HashMap<String, String> params) throws Throwable;
+
+	public int addMatterNotf(HashMap<String, String> params) throws Throwable;
+
+	public int updateCmt(HashMap<String, String> params) throws Throwable;
+
+	public int addMatterNotf2(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getCmtDate(HashMap<String, String> params) throws Throwable;
+
+	public int deleteCmt(HashMap<String, String> params) throws Throwable;
+
 
 }

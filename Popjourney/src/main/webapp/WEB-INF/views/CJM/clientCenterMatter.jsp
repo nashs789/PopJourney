@@ -700,7 +700,6 @@
 					<input type="hidden" id="qNo" name="qNo" />
 					<input type="hidden" id="page" name="page" value="${page}" />
 					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
-					<!-- <input type="hidden" id="writeMemNo" name=writeMemNo /> -->
 					<div class="client_center_search">
 						<div class="client_center_name">
 							<div>고객센터</div>					

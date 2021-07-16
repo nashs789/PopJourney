@@ -134,4 +134,39 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.updateMatter(params);
 	}
 
+	@Override
+	public int updateMatters(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.updateMatters(params);
+	}
+
+	@Override
+	public int deleteMatter(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteMatter(params);
+	}
+
+	@Override
+	public int addMatterNotf(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addMatterNotf(params);
+	}
+
+	@Override
+	public int updateCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.updateCmt(params);
+	}
+
+	@Override
+	public int addMatterNotf2(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addMatterNotf2(params);
+	}
+
+	@Override
+	public HashMap<String, String> getCmtDate(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getCmtDate(params);
+	}
+
+	@Override
+	public int deleteCmt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteCmt(params);
+	}
+
 }
