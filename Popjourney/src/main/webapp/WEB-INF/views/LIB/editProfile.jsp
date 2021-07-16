@@ -322,10 +322,6 @@ $(document).ready(function(){
 			$("#admin").show();
 		}
 	}
-	else
-	{
-		location.href="main";
-	}
 	
 	var params = $("#form").serialize();
 	

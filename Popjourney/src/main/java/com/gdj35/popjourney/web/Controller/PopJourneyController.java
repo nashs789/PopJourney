@@ -496,6 +496,14 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	//로그인 안했을 경우 - 이인복
+	@RequestMapping(value = "/loginPlz")
+	public ModelAndView loginPlz(ModelAndView mav) { 
+		mav.setViewName("LIB/loginPlz");
+
+		return mav;
+	}
+	
 	// 알람 팝업 - 이인복
 	@RequestMapping(value = "/notifications", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody

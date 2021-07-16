@@ -344,10 +344,6 @@ $(document).ready(function(){
 			$("#admin").show();
 		}
 	}
-	else
-	{
-		location.href="main";
-	}
 
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
