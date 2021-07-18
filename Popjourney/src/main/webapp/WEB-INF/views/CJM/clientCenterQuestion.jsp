@@ -435,8 +435,6 @@
 			
 			$(document).ready(function() {
 				
-				//reloadList();
-				
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
@@ -470,60 +468,135 @@
 					$(".btns").css("display", "none");
 				}
 				
-				var params = $("#actionForm").serialize();
 				
-				$.ajax({
-					
-					url: "clientCenterFAQCnt",
-					type: "post",
-					dataType: "json",
-					data: params,
-					success: function(res) {
-						if(res.msg == "success") {
-							$("#FAQCnt").val(res.FAQCnt);
-							$("#firstCnt").val(res.firstCnt);
-							$("#lastCnt").val(res.lastCnt);
-							$("#addCnt").val(res.addCnt);
-							$(".more").click();
-							console.log("실행되나");
-						} else {
-							txt = "오류가 발생했습니다.";
-							commonPopup(txt);
-						}
-					},
-					error: function(request, status, error) {
-						console.log(error);
-					}
-				});
-				
-				$(".more").on("click", function() {
-					console.log("tq");
+				if($("#sidebarGbn").val() == "") {
 					var params = $("#actionForm").serialize();
 					
 					$.ajax({
-						url: "clientCenterFAQList",
+						
+						url: "clientCenterFAQCnt",
 						type: "post",
 						dataType: "json",
 						data: params,
 						success: function(res) {
+							if(res.msg == "success") {
+								$("#FAQCnt").val(res.FAQCnt);
 								$("#firstCnt").val(res.firstCnt);
 								$("#lastCnt").val(res.lastCnt);
-								drawFAQList(res.list);
-								$(function(){
-									$(".question_area .question").click(function(){
-										$(".answer").slideUp();
-										
-										if(!$(this).next().is(":visible")) {
-											$(this).next().slideDown();
-										}
-									})
-								});
+								$("#addCnt").val(res.addCnt);
+								$(".more").click();
+							} else {
+								txt = "오류가 발생했습니다.";
+								commonPopup(txt);
+							}
 						},
 						error: function(request, status, error) {
 							console.log(error);
 						}
 					});
-				});
+					
+					$(".more").on("click", function() {
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterFAQList",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+									$("#firstCnt").val(res.firstCnt);
+									$("#lastCnt").val(res.lastCnt);
+									drawFAQList(res.list);
+									if($("#FAQCnt").val() < 11 || $("#FAQCnt").val() < $("#firstCnt").val()) {
+										$(".more").hide();
+										$(".qna_list").css("margin-bottom", "50px");
+									}
+									$(function(){
+										$(".question_area .question").click(function(){
+											$(".answer").slideUp();
+											
+											if(!$(this).next().is(":visible")) {
+												$(this).next().slideDown();
+											}
+										})
+									});
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					});
+				} 
+				
+				/* $("#sidebarGbn1").on("click", function() {
+					$("#sidebarGbn").val($("#sidebarGbn1").val());
+					$(".qna_list").html("");
+					$("#firstCnt").val(1);
+					$("#lastCnt").val(10);
+					$("#searchTxt").val("");
+					console.log("123");
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						
+						url: "clientCenterFAQCnt",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							if(res.msg == "success") {
+								$("#FAQCnt").val(res.FAQCnt);
+								$("#firstCnt").val(res.firstCnt);
+								$("#lastCnt").val(res.lastCnt);
+								$("#addCnt").val(res.addCnt);
+								$(".more").click();
+							} else {
+								txt = "오류가 발생했습니다.";
+								commonPopup(txt);
+							}
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+					console.log("222");
+					$(".more").on("click", function() {
+						$("#firstCnt").val(1);
+						$("#lastCnt").val(10);
+						$("#searchTxt").val("");
+						var params = $("#actionForm").serialize();
+						
+						$.ajax({
+							url: "clientCenterFAQList",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+									$("#firstCnt").val(res.firstCnt);
+									$("#lastCnt").val(res.lastCnt);
+									drawFAQList(res.list);
+									if($("#FAQCnt").val() < 11 || $("#FAQCnt").val() < $("#firstCnt").val()) {
+										$(".more").hide();
+										$(".qna_list").css("margin-bottom", "50px");
+									}
+									$(function(){
+										$(".question_area .question").click(function(){
+											$(".answer").slideUp();
+											
+											if(!$(this).next().is(":visible")) {
+												$(this).next().slideDown();
+											}
+										})
+									});
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					});
+					console.log("333");
+					
+				}); // sidebarGbn1 click end */
 				
 				/* // 사이드바(회원서비스, 여행/자유게시판, 등급/랭킹, 신고) 클릭 시 리스트 다시 그리기
 				$("#sidebarGbn1").on("click", function() {
@@ -659,16 +732,16 @@
 					<input type="hidden" id="lastCnt" name="lastCnt" />
 					<input type="hidden" id="addCnt" name="addCnt" />
 					<input type="hidden" id="sidebarGbn" name="sidebarGbn" value="" />
-				</form>
 				<div class="client_center_search">
 					<div class="client_center_name">
 						<div>고객센터</div>					
 					</div>
 					<div class="question_search">
-						<input type="text" placeholder="자주 묻는 질문 검색" />
+						<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="자주 묻는 질문 검색" />
 						<div><img alt="검색" src="./resources/images/search.png"></div>
 					</div>
 				</div>
+				</form>
 				<div class="sidebar">
 					<div class="sidebar1" id="question">자주 묻는 질문</div><div class="sidebar2" id="matter">문의사항</div>
 					<div class="sidebar3">

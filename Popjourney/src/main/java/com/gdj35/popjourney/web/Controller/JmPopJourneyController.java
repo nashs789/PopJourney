@@ -88,6 +88,7 @@ public class JmPopJourneyController {
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
+		
 		try {
 			int FAQCnt = iJmPopjourneyService.FAQCnt(params);
 			
@@ -96,11 +97,11 @@ public class JmPopJourneyController {
 				int firstCnt = 1;
 				int lastCnt = 10;
 				int addCnt = 10;
-				modelMap.put("msg", "success");
-				modelMap.put("FAQCnt", FAQCnt);
 				modelMap.put("firstCnt", firstCnt);
 				modelMap.put("lastCnt", lastCnt);
 				modelMap.put("addCnt", addCnt);
+				modelMap.put("msg", "success");
+				modelMap.put("FAQCnt", FAQCnt);
 				
 				System.out.println("FAQCnt >> " + FAQCnt);
 				System.out.println("firstCnt >> " + firstCnt);
@@ -121,15 +122,16 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/clientCenterFAQList", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String clientCenterFAQList(@RequestParam HashMap<String, String> params) throws Throwable {
+		System.out.println("회원서비스클릭11111111 >> " + params);
 		System.out.println("FAQParams >> " + params);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
+			List<HashMap<String,String>> list = iJmPopjourneyService.FAQList(params);
 			modelMap.put("firstCnt", Integer.parseInt(params.get("firstCnt")) + Integer.parseInt(params.get("addCnt")));
 			modelMap.put("lastCnt", Integer.parseInt(params.get("lastCnt")) + Integer.parseInt(params.get("addCnt")));
-			List<HashMap<String,String>> list = iJmPopjourneyService.FAQList(params);
 			modelMap.put("list", list);
 			System.out.println("QList >> " + list);
 		}catch(Throwable e) {
