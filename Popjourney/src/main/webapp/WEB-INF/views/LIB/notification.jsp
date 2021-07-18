@@ -326,10 +326,6 @@ $(document).ready(function(){
 			} // error end
 		}); //ajax end 
 	}
-	else
-	{
-		location.href="main";
-	}
 	
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");

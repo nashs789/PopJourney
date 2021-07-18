@@ -1,6 +1,7 @@
 package com.gdj35.popjourney.common.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,8 +24,25 @@ public class CommonAOP {
 	 * .. -> 모든 경로
 	 * && -> 필터 추가
 	 */
-	@Pointcut("execution(* com.gdj35.popjourney..CalendarController.*(..))")
-	public void testAOP() {}
+	@Pointcut( "execution(* com.gdj35.popjourney..PopJourneyController.*editInfo(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*editProfile(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*notification(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*timeline(..))")
+	
+	/*+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPage(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMK(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageFollowing(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageFollower(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMap(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*postWrite(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*journalWrite(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*communityAdmin(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*memAdmin(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*noticeAdmin(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*reportAdmin(..))"
+	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*TravelWriterRank(..))")*/
+
+	public void loginCheck() {}
 	
 	//ProceedingJoinPoint -> 대상 적용 이벤트 필터
 	/*
@@ -34,8 +52,8 @@ public class CommonAOP {
 	 * @After-throwing -> 메소드 예외 발생 후
 	 * @Around -> 모든 동작시점
 	 */
-	@Around("testAOP()")
-	public ModelAndView testAOP(ProceedingJoinPoint joinPoint)
+	@Around("loginCheck()")
+	public ModelAndView loginCheck(ProceedingJoinPoint joinPoint)
 														throws Throwable {
 		ModelAndView mav = new ModelAndView();
 		
@@ -43,23 +61,18 @@ public class CommonAOP {
 		HttpServletRequest request
 		= ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		
-		mav = (ModelAndView) joinPoint.proceed(); //기존 이벤트 처리 행위를 이어서 진행
 		
-		System.out.println("------- testAOP 실행됨 ------");
+		HttpSession session = request.getSession();
+		
+		  if(session.getAttribute("sMEM_NO") != null) 
+		  {
+			  mav = (ModelAndView)joinPoint.proceed(); //기존 이벤트 처리 행위를 이어서 진행
+		  } 
+		  else 
+		  { 
+			  mav.setViewName("redirect:loginPlz"); 
+		  }	
 		
 		return mav;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
