@@ -73,13 +73,72 @@ public class JmPopJourneyController {
 
 	// 고객센터-자주 묻는 질문
 	@RequestMapping(value = "/clientCenterQuestion")
-	public ModelAndView clientCenterQuestion(@RequestParam HashMap<String, String> params, ModelAndView mav)
-			throws Throwable {
+	public ModelAndView clientCenterQuestion(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 
 		mav.setViewName("CJM/clientCenterQuestion");
 
 		return mav;
 	}
+	
+	@RequestMapping(value = "/clientCenterFAQCnt", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterFAQCnt(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int FAQCnt = iJmPopjourneyService.FAQCnt(params);
+			
+			if(FAQCnt > 0) {
+				
+				int firstCnt = 1;
+				int lastCnt = 10;
+				int addCnt = 10;
+				modelMap.put("msg", "success");
+				modelMap.put("FAQCnt", FAQCnt);
+				modelMap.put("firstCnt", firstCnt);
+				modelMap.put("lastCnt", lastCnt);
+				modelMap.put("addCnt", addCnt);
+				
+				System.out.println("FAQCnt >> " + FAQCnt);
+				System.out.println("firstCnt >> " + firstCnt);
+				System.out.println("lastCnt >> " + lastCnt);
+				System.out.println("addCnt >> " + addCnt);
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/clientCenterFAQList", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String clientCenterFAQList(@RequestParam HashMap<String, String> params) throws Throwable {
+		System.out.println("FAQParams >> " + params);
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			modelMap.put("firstCnt", Integer.parseInt(params.get("firstCnt")) + Integer.parseInt(params.get("addCnt")));
+			modelMap.put("lastCnt", Integer.parseInt(params.get("lastCnt")) + Integer.parseInt(params.get("addCnt")));
+			List<HashMap<String,String>> list = iJmPopjourneyService.FAQList(params);
+			modelMap.put("list", list);
+			System.out.println("QList >> " + list);
+		}catch(Throwable e) {
+			e.printStackTrace();
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 
 	// 고객센터-문의사항
 	@RequestMapping(value = "/clientCenterMatter")

@@ -174,6 +174,9 @@
 			input[type='text']:focus, input[type='password']:focus, input[type="date"], select:focus {
 				outline-color: #fcba03;
 			}
+			#admin {
+				display: none;
+			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			/* 컨테이너 레이아웃 */
@@ -492,6 +495,9 @@
 				if("${sMEM_NO}" != "") {
 					$(".logins").css("display", "none");
 					$(".btns").css("display", "inline-block");
+					if($("#memNo").val() == 1) {
+						$("#admin").show();
+					}
 				} else {
 					$(".logins").css("display", "inline-block");
 					$(".btns").css("display", "none");

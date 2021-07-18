@@ -412,7 +412,7 @@
 	
 	<insert id="addMatterNotf">
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
-		VALUES (NOTF_SEQ.NEXTVAL, 1, 5, #{writeMemNo}, #{qNo})
+		VALUES (NOTF_SEQ.NEXTVAL, 1, 7, #{writeMemNo}, #{qNo})
 	</insert>
 	
 	<update id="updateMatters" parameterType="hashmap">
@@ -432,7 +432,7 @@
 	
 	<update id="addMatterNotf2" parameterType="hashmap">
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
-		VALUES (NOTF_SEQ.NEXTVAL, 1, 6, #{writeMemNo}, #{qNo})
+		VALUES (NOTF_SEQ.NEXTVAL, 1, 8, #{writeMemNo}, #{qNo})
 	</update>
 	
 	<select id="getCmtDate" parameterType="hashmap" resultType="hashmap">
@@ -445,6 +445,101 @@
 		DELETE FROM QNA_CMT
 		WHERE QNA_NO = #{qNo}
 	</delete>
+	
+	<select id="getFAQCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM FAQ
+		WHERE 1 = 1
+ 		<if test="sidebarGbn != null and sidebarGbn != ''">
+	    	<choose>
+			    <when test="sidebarGbn == 1">
+					AND FAQ_EVENT_NO = 1			  
+			    </when>
+			    <when test="sidebarGbn == 2">
+					AND FAQ_EVENT_NO = 2			  
+			    </when>
+			    <when test="sidebarGbn == 3">
+					AND FAQ_EVENT_NO = 3			  
+			    </when>
+			    <when test="sidebarGbn == 4">
+					AND FAQ_EVENT_NO = 4			  
+			    </when>
+	    	</choose>
+	    </if>
+	</select>
+	
+	<select id="FAQCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM FAQ
+		WHERE 1 = 1
+ 		<if test="sidebarGbn != null and sidebarGbn != ''">
+	    	<choose>
+			    <when test="sidebarGbn == 1">
+					AND FAQ_EVENT_NO = 1			  
+			    </when>
+			    <when test="sidebarGbn == 2">
+					AND FAQ_EVENT_NO = 2			  
+			    </when>
+			    <when test="sidebarGbn == 3">
+					AND FAQ_EVENT_NO = 3			  
+			    </when>
+			    <when test="sidebarGbn == 4">
+					AND FAQ_EVENT_NO = 4			  
+			    </when>
+	    	</choose>
+	    </if>
+	</select>
+					 
+	<select id="getFAQList" parameterType="hashmap" resultType="hashmap">
+		SELECT F.FAQ_NO, FE.FAQ_EVENT_NAME, F.QUESTION, F.ANSWER, F.FAQ_EVENT_NO,
+		       ROW_NUMBER() OVER(ORDER BY FAQ_NO DESC) AS RNUM
+		FROM FAQ F INNER JOIN FAQ_EVENT FE
+		                   ON F.FAQ_EVENT_NO = FE.FAQ_EVENT_NO
+		WHERE 1 = 1
+		<if test="sidebarGbn != null and sidebarGbn != ''">
+	    	<choose>
+			    <when test="sidebarGbn == 1">
+					AND FAQ_EVENT_NO = 1			  
+			    </when>
+			    <when test="sidebarGbn == 2">
+					AND FAQ_EVENT_NO = 2			  
+			    </when>
+			    <when test="sidebarGbn == 3">
+					AND FAQ_EVENT_NO = 3			  
+			    </when>
+			    <when test="sidebarGbn == 4">
+					AND FAQ_EVENT_NO = 4			  
+			    </when>
+	    	</choose>
+	    </if>
+	</select>
+
+	<select id="FAQList" parameterType="hashmap" resultType="hashmap">
+		SELECT F.FAQ_NO, F.FAQ_EVENT_NAME, F.QUESTION, F.ANSWER, F.FAQ_EVENT_NO, F.RNUM
+		FROM (SELECT F.FAQ_NO, FE.FAQ_EVENT_NAME, F.QUESTION, F.ANSWER, F.FAQ_EVENT_NO,
+		             ROW_NUMBER() OVER(ORDER BY FAQ_NO DESC) AS RNUM
+		      FROM FAQ F INNER JOIN FAQ_EVENT FE
+		                         ON F.FAQ_EVENT_NO = FE.FAQ_EVENT_NO
+		      WHERE 1 = 1
+		      <if test="sidebarGbn != null and sidebarGbn != ''">
+			    	<choose>
+					    <when test="sidebarGbn == 1">
+							AND FAQ_EVENT_NO = 1			  
+					    </when>
+					    <when test="sidebarGbn == 2">
+							AND FAQ_EVENT_NO = 2			  
+					    </when>
+					    <when test="sidebarGbn == 3">
+							AND FAQ_EVENT_NO = 3			  
+					    </when>
+					    <when test="sidebarGbn == 4">
+							AND FAQ_EVENT_NO = 4			  
+					    </when>
+					</choose>
+			   </if>
+		      ) F
+		WHERE F.RNUM BETWEEN #{firstCnt} AND #{lastCnt}
+	</select>
 	
 	<!-- <select id="getRankCnt" parameterType="hashmap" resultType="Integer">
 		

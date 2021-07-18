@@ -174,9 +174,68 @@
 			input[type='text']:focus, input[type='password']:focus, input[type="date"], select:focus {
 				outline-color: #fcba03;
 			}
+			
+			#admin {
+				display: none;
+			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			/* 컨테이너 레이아웃 */
+			
+			.popup {
+			   display: inline-block; /* 클릭 시 inline-block */
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   font-size: 16pt;
+			   border-radius: 10px;
+			   font-size: 0px;
+			   border: 0px;
+			}
+			.popup_entity_txt {
+			   font-size: 12pt;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			.btn_list span{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px;
+			}
+			.btn_list span:hover {
+			   background-color: #f37321;
+			   color: white;
+			   cursor: pointer;
+			}
+			.bg { /* 클릭 시 inline-block */
+				display: inline-block;
+				width: 100%;
+				height: 1403px;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
+			
 			#container {
 				display: block;
 				width: 1280px;
@@ -328,7 +387,6 @@
 				display: none;
 				font-size: 14pt;
 				padding: 25px 34px;
-				cursor: pointer;
 				background-color: rgb(250, 250, 250);
 			}
 			.qna {
@@ -374,8 +432,12 @@
 		<script type="text/javascript"
 				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript">
+			
 			$(document).ready(function() {
 				
+				//reloadList();
+				
+				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -386,6 +448,8 @@
 			  		location.href = "memAdmin";
 			  	});
 				
+				
+				// 고객센터 (자주묻는질문, 문의사항) 이동
 				$("#question").on("click", function() {
 					location.href = "clientCenterQuestion";
 				});
@@ -397,12 +461,145 @@
 				if("${sMEM_NO}" != "") {
 					$(".logins").css("display", "none");
 					$(".btns").css("display", "inline-block");
+					if($("#memNo").val() == 1) {
+						$("#admin").show();
+					}
+					
 				} else {
 					$(".logins").css("display", "inline-block");
 					$(".btns").css("display", "none");
 				}
 				
-			});
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					
+					url: "clientCenterFAQCnt",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						if(res.msg == "success") {
+							$("#FAQCnt").val(res.FAQCnt);
+							$("#firstCnt").val(res.firstCnt);
+							$("#lastCnt").val(res.lastCnt);
+							$("#addCnt").val(res.addCnt);
+							$(".more").click();
+							console.log("실행되나");
+						} else {
+							txt = "오류가 발생했습니다.";
+							commonPopup(txt);
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+				
+				$(".more").on("click", function() {
+					console.log("tq");
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "clientCenterFAQList",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+								$("#firstCnt").val(res.firstCnt);
+								$("#lastCnt").val(res.lastCnt);
+								drawFAQList(res.list);
+								$(function(){
+									$(".question_area .question").click(function(){
+										$(".answer").slideUp();
+										
+										if(!$(this).next().is(":visible")) {
+											$(this).next().slideDown();
+										}
+									})
+								});
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				});
+				
+				/* // 사이드바(회원서비스, 여행/자유게시판, 등급/랭킹, 신고) 클릭 시 리스트 다시 그리기
+				$("#sidebarGbn1").on("click", function() {
+					$("#sidebarGbn").val($("#sidebarGbn1").val());
+				}); */
+				
+				
+			}); // document ready end..
+			
+			function commonPopup(txt) {
+				var html = "";
+				                                                          
+				html += "<div class=\"popup\">"
+		   		html += "<div class=\"popup_entity_txt\">" + txt + "</div>"
+		        html += "<div class=\"btn_list\">"
+			    html += "<span id=\"ok\">OK</span>"
+			    html += "</div>"
+				html += "</div>"
+				html += "<div class=\"bg\"></div>"
+				
+				$("body").prepend(html);
+				
+				$("#ok").on("click", function() {
+					$(".popup").remove();
+					$(".bg").remove();
+				});
+			}
+			
+			/* function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "clientCenterQuestions",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						drawList(res.list);
+						$(function(){
+							$(".question_area .question").click(function(){
+								$(".answer").slideUp();
+								
+								if(!$(this).next().is(":visible")) {
+									$(this).next().slideDown();
+								}
+							})
+						});
+					},
+					error: function(request, status, error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+					}
+				});
+			} */
+			
+			
+			var html = "";
+			function drawFAQList(list) {
+				
+				for(d of list) {
+					html += "<li class=\"qna_data\">"
+					html += "<div class=\"question\">"
+					html += "<span class=\"qna\">Q</span>"
+					html += "<span class=\"entity\">[" + d.FAQ_EVENT_NAME + "] " + d.QUESTION + "</span>"
+					html += "<img alt=\"답변\" src=\"./resources/images/under.png\">"
+					html += "</div>"
+					html += "<div class=\"answer\">"
+					html += "<span class=\"qna\">A</span>"
+					html += "<span class=\"entity\">" + d.ANSWER + "</span>"
+					html += "</div>"
+					html += "</li>"
+				}
+				
+				$(".qna_list").html(html);
+			}
 			
 		</script>
 	</head>
@@ -437,7 +634,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li>여행게시판</li>
 						<li>자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -448,13 +645,21 @@
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행일지</option>
+					<option value="1">여행게시판</option>
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
 				</select>
 			</div>
 			<div id="container">
+				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
+					<input type="hidden" id="FAQCnt" name="FAQCnt" />
+					<input type="hidden" id="firstCnt" name="firstCnt" />
+					<input type="hidden" id="lastCnt" name="lastCnt" />
+					<input type="hidden" id="addCnt" name="addCnt" />
+					<input type="hidden" id="sidebarGbn" name="sidebarGbn" value="" />
+				</form>
 				<div class="client_center_search">
 					<div class="client_center_name">
 						<div>고객센터</div>					
@@ -475,125 +680,14 @@
 				</div>
 				<div class="question_sidebar">
 					<ul>
-						<li>회원서비스</li>
-						<li>여행일지</li>
-						<li>등급/랭킹</li>
-						<li>신고</li>
+						<li id="sidebarGbn1" value="1">회원서비스</li>
+						<li id="sidebarGbn2" value="2">여행/자유게시판</li>
+						<li id="sidebarGbn3" value="3">등급/랭킹</li>
+						<li id="sidebarGbn4" value="4">신고</li>
 					</ul>
 				</div>
 				<div class="question_area">
-					<ul>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[회원서비스] 회원가입은 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[회원서비스] 회원탈퇴는 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[여행일지] 일지작성은 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[신고] 신고를 받게 되면 어떤 제재가 있나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[등급/랭킹] 여행작가가 되기 위한 조건은 어떻게 되나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[여행일지] 여행일지 경로추가는 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[등급/랭킹] 랭킹은 어떻게 산정 되나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[회원서비스] 회원탈퇴는 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[회원서비스] 회원탈퇴는 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-						<li>
-							<div class="question">
-								<span class="qna">Q</span>
-								<span class="entity">[회원서비스] 회원탈퇴는 어떻게 하나요?</span>
-								<img alt="답변" src="./resources/images/under.png">
-							</div>
-							<div class="answer">
-								<span class="qna">A</span>
-								<span class="entity">내용</span>
-							</div>
-						</li>
-					</ul>
+					<ul class="qna_list"></ul>
 					<div class="more">
 						더보기 <img alt="더보기" src="./resources/images/under_y.png">
 					</div>

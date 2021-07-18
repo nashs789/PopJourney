@@ -68,4 +68,12 @@ public interface IJmPopjourneyService {
 
 	public int deleteCmt(HashMap<String, String> params) throws Throwable;
 
+	public int getFAQCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable;
+
+	public int FAQCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> FAQList(HashMap<String, String> params) throws Throwable;
+
 }

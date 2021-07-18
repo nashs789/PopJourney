@@ -169,4 +169,24 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.deleteCmt(params);
 	}
 
+	@Override
+	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getFAQCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getFAQList(params);
+	}
+
+	@Override
+	public int FAQCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.FAQCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> FAQList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.FAQList(params);
+	}
+
 }

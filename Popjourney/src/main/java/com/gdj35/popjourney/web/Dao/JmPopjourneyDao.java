@@ -167,4 +167,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.delete("JmPJ.deleteCmt", params);
 	}
 
+	@Override
+	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getFAQCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getFAQList", params);
+	}
+
+	@Override
+	public int FAQCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.FAQCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> FAQList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.FAQList", params);
+	}
+
 }

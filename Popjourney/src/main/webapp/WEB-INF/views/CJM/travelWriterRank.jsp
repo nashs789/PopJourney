@@ -178,6 +178,9 @@
 			input[type='text']:focus, input[type='password']:focus, select:focus {
 				outline-color: #fcba03;
 			}
+			#admin {
+				display: none;
+			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			#container {
@@ -350,6 +353,17 @@
 			  		location.href = "memAdmin";
 			  	});
 				
+				// 로그인 정보 유지
+				if("${sMEM_NO}" != "") {
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+					if($("#memNo").val() == 1) {
+						$("#admin").show();
+					}
+				} else {
+					$(".logins").css("display", "inline-block");
+					$(".btns").css("display", "none");
+				}
 				
 				
 				
@@ -474,7 +488,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li>여행게시판</li>
 						<li>자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -485,7 +499,7 @@
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행일지</option>
+					<option value="1">여행게시판</option>
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
@@ -493,6 +507,9 @@
 			</div>
 			<div id="container">
 				<!-- 여기서 부터 랭킹 -->
+				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
+				</form>
 				<div class="rank_area">
 					<div class="nic_search">
 						검색 :
@@ -504,7 +521,7 @@
 							<colgroup>
 								<col width="80px" /> <!-- 랭킹 -->
 								<col width="120px" /> <!-- 닉네임 -->
-								<col width="100px" /> <!-- 여행일지 -->
+								<col width="100px" /> <!-- 여행게시판 -->
 								<col width="100px" /> <!-- 좋아요 -->
 								<col width="100px" /> <!-- 팔로워 -->
 								<col width="150px" /> <!-- 여행작가 점수 -->
@@ -513,7 +530,7 @@
 								<tr class="article">
 									<th class="click_article">랭킹</th>
 									<th>닉네임</th>
-									<th class="click_article">여행일지</th>
+									<th class="click_article">여행게시판</th>
 									<th class="click_article">좋아요</th>
 									<th class="click_article">팔로워</th>
 									<th class="click_article">여행작가 점수</th>
@@ -685,7 +702,7 @@
 					</div>
 					<div class="travel_writer_score">
 						<h4>※ 여행작가 점수 산정 방법</h4>
-						<h6>·여행일지 작성 : 5점 ·좋아요 : 1점 ·팔로워 :1점</h6>
+						<h6>·여행게시판 작성 : 5점 ·좋아요 : 1점 ·팔로워 :1점</h6>
 					</div>
 					<div class="paging"></div>
 				</div>
