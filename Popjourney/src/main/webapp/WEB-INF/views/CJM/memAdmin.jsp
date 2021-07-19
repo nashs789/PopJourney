@@ -753,6 +753,12 @@
 					reloadList();
 				});
 				
+				// 메인검색창 넘어가는 부분(동기)
+				$(".search_icon").on("click", function() {
+					$("#goSearch").attr("action", "search");
+					$("#goSearch").submit();
+				});
+				
 			}); // document ready end..
 		
 			function reloadList() {
@@ -949,15 +955,17 @@
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
-				<input type="text" class="search" placeholder="검색">
-				<select class="filter">
-					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행일지</option>
-					<option value="2">해시태그</option>
-					<option value="3">자유게시판</option>
-					<option value="4">닉네임</option>
-				</select>
+				<form action="#" id="goSearch" method="post" >
+					<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+					<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+					<select class="filter" id="mainSearchFilter" name="mainSearchGbn" >
+						<option value="0" selected="selected">통합검색</option>
+						<option value="1">여행일지</option>
+						<option value="2">해시태그</option>
+						<option value="3">자유게시판</option>
+						<option value="4">닉네임</option>
+					</select>
+				</form>
 			</div>
 			<div id="container">
 				<div class="mem_admin_area">

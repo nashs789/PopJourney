@@ -885,5 +885,17 @@ public class JmPopJourneyController {
 	
 	}
 	
+	
+	// 통합검색처리
+	@RequestMapping(value = "/search")
+	public ModelAndView search(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		
+		
+		mav.setViewName("CJM/search");
+		
+		return mav;
+	}
+	
 
 }
