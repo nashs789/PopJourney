@@ -367,9 +367,6 @@ body {
 	padding: 5px;
 }
 
-.contents_area{
-
-}
 .date_area{
 	text-align: left;
 	font-size: 16pt;
@@ -382,6 +379,7 @@ body {
 	width: 460px;
 	margin-top: 10px;
 	display: block;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 }
 .fisrt{
 	display:inline-block;

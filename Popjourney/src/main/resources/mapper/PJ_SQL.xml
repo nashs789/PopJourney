@@ -226,11 +226,14 @@
 	
 	<select id="notification" parameterType="hashmap" resultType="hashmap">
 		SELECT READ, PHOTO_PATH, NOTF_NO, EVENT_NO, NOTF_MEM_NO, REQUEST, MEM_NO, GBN_NO, NOTF_DATE, JOURNAL_NO, JTITLE, JCONTENTS, POST_NO, BTITLE, BCONTENTS, JCJOURNAL_NO, JCTITLE,
-		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, SYSDATE  
+		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, QTITLE, SYSDATE  
 		FROM(SELECT READ, NOTF_NO, NF.EVENT_NO, NF.NOTF_MEM_NO, M.NIC AS REQUEST, NF.MEM_NO, NF.GBN_NO, TO_CHAR(NOTF_DATE, 'YYYY-MM-DD') AS NOTF_DATE, JCMT.JOURNAL_NO, JCMT.JTITLE,  
 		     JCMT.JCONTENTS, BCMT.POST_NO, BCMT.BTITLE, BCMT.BCONTENTS, JCCMT.JCJOURNAL_NO, JCCMT.JCTITLE, JCCMT.JUP_CONTENTS, BCCMT.BCPOST_NO,
 		     BCCMT.BCTITLE, BCCMT.BUP_CONTENTS, JCCMT2.UPJCONTENTS, JCCMT2.JCCMEM_NO, JCCMT2.DOWNJCONTENTS, JCCMT2.CCJOURNAL_NO, BCCMT2.UPBCONTENTS, BCCMT2.BCCMEM_NO, 
-		     BCCMT2.DOWNBCONTENTS, BCCMT2.CCPOST_NO, NOTF_DATE AS NOTF_DATE2, SYSDATE, M.PHOTO_PATH,
+		     BCCMT2.DOWNBCONTENTS, BCCMT2.CCPOST_NO, NOTF_DATE AS NOTF_DATE2, SYSDATE, M.PHOTO_PATH, CASE WHEN LENGTH(Q.TITLE) > 25
+		                                                                                                  THEN SUBSTR(Q.TITLE, 1, 25) || '...'
+		                                                                                                  ELSE Q.TITLE || '...'
+		                                                                                             END AS QTITLE, 
 		     RANK() OVER(PARTITION BY NF.MEM_NO ORDER BY TO_CHAR(NF.NOTF_DATE, 'YYYY-MM-DD HH:MMI:SS')DESC) AS RK
 		     FROM NOTF NF INNER JOIN MEM M --알람주체
 		                          ON NF.NOTF_MEM_NO = M.MEM_NO
@@ -316,9 +319,12 @@
 		                                                               ON BC.POST_NO = B.POST_NO) BCCMT2
 		                               ON NF.GBN_NO = BCCMT2.POST_CMT_NO
 		                               AND NF.EVENT_NO = 6
+			               LEFT OUTER JOIN QNA Q
+		                                ON NF.GBN_NO = Q.QNA_NO
+		                                AND (NF.EVENT_NO = 7 OR NF.EVENT_NO = 8)
 		      WHERE NF.NOTF_MEM_NO != NF.MEM_NO)
 		WHERE MEM_NO = #{MEM_NO}
-		AND RK BETWEEN #{firstPage} AND #{page}    
+		AND RK BETWEEN #{firstPage} AND #{page}   
 	</select>
 	
 	<update id="read" parameterType="hashmap">
@@ -342,12 +348,8 @@
 	<![CDATA[
 		SELECT MEM_NO, NIC, PHOTO_PATH, POST_NO, TITLE, TO_CHAR(POSTING_DATE, 'YYYY')||'년' AS YEAR, TO_CHAR(POSTING_DATE, 'MM')||'월' AS MONTH,
         TO_CHAR(POSTING_DATE, 'DD')||'일' AS DAY, CHA_DATE, GBN, THUMB_PHOTO_PATH, CONTENTS
-		FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*, CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 < 60
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 24 * 60 *60 || '초 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60  < 3600
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60 || '분 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *24 *60 *60  < 86400
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 || '시간 전'
+		FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*, CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD') = TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))
+                                                                                    THEN '오늘'
 		                                                                            WHEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) >= 1
 		                                                                            THEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) || '년 전'
                                                                                     WHEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) >= 1

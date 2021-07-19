@@ -554,24 +554,8 @@ public class PopJourneyController {
 					}
 					else if(day1.getDate() == day2.getDate())
 					{
-						long SYSDATE = day1.getTime(); //스크립트는 var라서 형변환 필요 없을듯
-						long date = day2.getTime(); // day2는 가져온값 넣기
-						
-						long diff = SYSDATE - date;
-						
-						if(diff < 60)
-						{
-							msg = 60 - diff +"초 전";
-						}
-						else if(60 <= diff && diff < 3600)
-						{
-							msg = (3600 - diff)/60 +"분 전";
-						}
-						else
-						{
-							msg = ((86400 - diff) / 3600) / 3600 +"시간 전";
-						}
-				   }
+						msg = "오늘";
+				    }
 				   notification.get(i).put("msg", msg);
 				}
 				modelMap.put("msg", "success");
