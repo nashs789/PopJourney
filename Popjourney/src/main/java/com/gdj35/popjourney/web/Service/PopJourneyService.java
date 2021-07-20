@@ -174,4 +174,58 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.miniProfile(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> myPageJournal(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.myPageJournal(params);
+	}
+
+	@Override
+	public int journalCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.journalCnt(params);
+	}
+
+	@Override
+	public HashMap<String, String> myPageProfile(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.myPageProfile(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> myPageFollower(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.myPageFollower(params);
+	}
+
+	@Override
+	public int followerCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.followerCnt(params);
+	}
+
+	@Override
+	public int followingCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.followingCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> myPageFollowing(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.myPageFollowing(params);
+	}
+
+	@Override
+	public HashMap<String, String> followingMemo(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.followingMemo(params);
+	}
+
+	@Override
+	public int updateMemo(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.updateMemo(params);
+	}
 }

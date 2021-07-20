@@ -58,4 +58,22 @@ public interface IPopJourneyDao {
 	HashMap<String, String> timelinePageCnt(HashMap<String, String> params) throws Throwable;
 
 	HashMap<String, String> miniProfile(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> myPageJournal(HashMap<String, String> params)throws Throwable;
+
+	int journalCnt(HashMap<String, String> params)throws Throwable;
+
+	HashMap<String, String> myPageProfile(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> myPageFollower(HashMap<String, String> params)throws Throwable;
+
+	int followerCnt(HashMap<String, String> params)throws Throwable;
+
+	int followingCnt(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> myPageFollowing(HashMap<String, String> params)throws Throwable;
+
+	HashMap<String, String> followingMemo(HashMap<String, String> params)throws Throwable;
+
+	int updateMemo(HashMap<String, String> params)throws Throwable;
 }

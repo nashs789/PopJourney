@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdj35.popjourney.common.bean.PagingBean;
+import com.gdj35.popjourney.common.service.IPagingService;
 import com.gdj35.popjourney.web.Service.IPopJourneyService;
 
 @Controller
@@ -24,6 +26,9 @@ public class PopJourneyController {
 
 	@Autowired
 	public IPopJourneyService ipjs;
+	
+	@Autowired
+	public IPagingService ips;
 
 	// 메인페이지 - 이인복
 	@RequestMapping(value = "/main")
@@ -802,4 +807,209 @@ public class PopJourneyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+		//마이 페이지 일지 가져오기
+		@RequestMapping(value = "/myPageProfiles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String myPageProfiles(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			 try {
+				 
+				HashMap<String, String> myProfile = ipjs.myPageProfile(params);
+
+				 if(myProfile != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("myProfile", myProfile);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	//마이 페이지 일지 가져오기
+	@RequestMapping(value = "/myPageJournals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String myPageJournals(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		int page = Integer.parseInt(params.get("page"));
+		int cnt = ipjs.journalCnt(params);
+		
+		PagingBean pb = ips.getPagingBean(page, cnt, 15, 5);
+
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+
+		 try {
+			 
+			 List<HashMap<String, String>> myPage = ipjs.myPageJournal(params);
+
+			 if(myPage != null)
+			 {
+				 modelMap.put("msg", "success");
+				 modelMap.put("myPage", myPage);
+				 modelMap.put("pb", pb);
+			 }
+			 else
+			 {
+				 modelMap.put("msg", "failed");
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+		//마이 페이지 일지 가져오기
+		@RequestMapping(value = "/myFollowers", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String myFollowers(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			int cnt = ipjs.followerCnt(params);
+			
+			if(Integer.parseInt(params.get("firstPage")) > cnt)
+			{
+				modelMap.put("msg", "full");
+				return mapper.writeValueAsString(modelMap);
+			}
+			
+			 try {
+				 
+				 List<HashMap<String, String>> myFollower = ipjs.myPageFollower(params);
+
+				 if(myFollower != null)
+				 {
+					 modelMap.put("firstPage", Integer.toString(Integer.parseInt(params.get("firstPage")) + 15));
+					 modelMap.put("lastPage", Integer.toString(Integer.parseInt(params.get("lastPage")) + 15));
+					
+					 modelMap.put("msg", "success");
+					 modelMap.put("myFollower", myFollower);
+					 modelMap.put("cnt", cnt);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//마이 페이지 팔로잉 한 사람 가져오기
+		@RequestMapping(value = "/myFollowings", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String myFollowings(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			int cnt = ipjs.followingCnt(params);
+			
+			if(Integer.parseInt(params.get("firstPage")) > cnt)
+			{
+				modelMap.put("msg", "full");
+				return mapper.writeValueAsString(modelMap);
+			}
+			 try {
+				 
+				 List<HashMap<String, String>> myFollowing = ipjs.myPageFollowing(params);
+
+				 if(myFollowing != null)
+				 {
+					 modelMap.put("firstPage", Integer.toString(Integer.parseInt(params.get("firstPage")) + 15));
+					 modelMap.put("lastPage", Integer.toString(Integer.parseInt(params.get("lastPage")) + 15));
+
+					 modelMap.put("msg", "success");
+					 modelMap.put("myFollowing", myFollowing);
+					 modelMap.put("cnt", cnt);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//마이 페이지 팔로잉 한 사람 메모 가져오기
+		@RequestMapping(value = "/followingMemos", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String followingMemos(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 HashMap<String, String> followingMemo = ipjs.followingMemo(params);
+
+				 if(followingMemo != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("followingMemo", followingMemo);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//마이 페이지 팔로잉 한 사람 가져오기
+		@RequestMapping(value = "/updateMemos", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String updateMemos(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.updateMemo(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
 }
