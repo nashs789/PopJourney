@@ -226,13 +226,14 @@
 			.bg { /* 클릭 시 inline-block */
 				display: none;
 				width: 100%;
-				height: 1403px;
+				height: 100%;
 				position: absolute;
 				top: 0px;
 				left: 0px;
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.popupDel2 {
 			   display: none; /* 클릭 시 inline-block */
@@ -279,13 +280,14 @@
 			.bg2 { /* 클릭 시 inline-block */
 				display: none;
 				width: 100%;
-				height: 1403px;
+				height: 100%;
 				position: absolute;
 				top: 0px;
 				left: 0px;
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.bg_grade {
 				display: none;
@@ -657,7 +659,7 @@
 							$(".ckbox:checked").each(function() {
 								array.push($(this).val());
 							});
-							$("#userNo").val(array);
+							$("#userNos").val(array);
 							
 							console.log(array);
 							
@@ -730,13 +732,13 @@
 					});
 				});
 				
-				/* // 회원프로필 이동
+				// 회원프로필 이동
 				$("#list_wrap body").on("click", "tr", function() {
-					$("#memNo").val($(this).attr("mno"));
+					$("#userNo").val($(this).attr("mno"));
 					
-					$("#actionForm").attr("action", "주소");
+					$("#actionForm").attr("action", "userPage");
 					$("#actionForm").submit();
-				}); */
+				});
 				
 				
 				// 성별 오/내림차순
@@ -809,10 +811,10 @@
 					html += "<td>" + d.GRADE_NAME + "</td>";
 					html += "<td>" + d.JOIN_DATE + "</td>";
 					html += "<td>" + d.LEAVE_DATE + "</td>";
-					html += "<td></td>"; // 게시글수
-					html += "<td></td>"; // 좋아요수
-					html += "<td></td>"; // 팔로워수
-					html += "<td></td>"; // 누적신고수
+					html += "<td>" + d.POST_SUM + "</td>"; // 게시글수
+					html += "<td>" + d.LIKE_SUM + "</td>"; // 좋아요수
+					html += "<td>" + d.FOLLOW_SUM + "</td>"; // 팔로워수
+					html += "<td>" + d.REPORT_CNT +"</td>"; // 누적신고수
 					html += "<td>" + d.ACC_CNT + "</td>";
 					html += "<td></td>"; // 등업신청유무
 					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
@@ -977,12 +979,13 @@
 					<form action="#" id="actionForm" method="post">
 					<div class="sub_search">
 						검색 :
-							<input type="hidden" id="memNo" name="memNo" />
 							<input type="hidden" id="page" name="page" value="${page}" />
 							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
 							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
-							<input type="hidden" id="userNo" name="userNo" value="" />
+							<input type="hidden" id="userNos" name="userNos" value="" /> <!-- 체크박스용  -->
+							<input type="hidden" id="userNo" name="userNo" /> <!-- 프로필페이지용 -->
+							
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">아이디</option>
