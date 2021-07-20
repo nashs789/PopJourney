@@ -24,17 +24,52 @@
 	</select>
 	
 	<select id="getMemList" parameterType="hashmap" resultType="hashmap">
-		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.GRADE_NAME, M.JOIN_DATE, M.LEAVE_DATE, M.ACC_CNT, M.RNUM
+		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.GRADE_NAME, M.JOIN_DATE, M.LEAVE_DATE, NVL(M.JB_SUM, 0) AS POST_SUM, 
+		       NVL(M.LIKE_SUM, 0) AS LIKE_SUM, NVL(M.F_CNT, 0) AS FOLLOW_SUM, NVL(M.REPORT_CNT, 0) AS REPORT_CNT, M.ACC_CNT, M.RNUM
 		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL,
 		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, GC.GRADE_NAME,
-		             TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, NVL(TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD'), '-') AS LEAVE_DATE, M.ACC_CNT,
-		             ROW_NUMBER() OVER(ORDER BY M.MEM_NO DESC) AS RNUM
+		             TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, NVL(TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD'), '-') AS LEAVE_DATE, 
+		             JB_CNT.JB_SUM, LIKE_CNT.LIKE_SUM, CNT.F_CNT, R.REPORT_CNT, M.ACC_CNT, ROW_NUMBER() OVER(ORDER BY M.MEM_NO DESC) AS RNUM
 		      FROM MEM M INNER JOIN GRADE G
 		                         ON M.MEM_NO = G.MEM_NO
 		                 INNER JOIN GRADE_CATEGORY GC
-		                 		 ON G.GRADE_NO = GC.GRADE_NO
+		                         ON G.GRADE_NO = GC.GRADE_NO
 		                 INNER JOIN COMMON_CODE CC
-		                 		 ON M.SEX = CC.CODE_S AND CC.CODE_L = 1
+		                         ON M.SEX = CC.CODE_S AND CC.CODE_L = 1
+		            LEFT OUTER JOIN (SELECT JB.MEM_NO, SUM(JOURNAL_CNT) AS JB_SUM
+		                               FROM (SELECT MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                     FROM JOURNAL
+		                                     GROUP BY MEM_NO
+		                                     UNION
+		                                     SELECT MEM_NO, COUNT(*) AS BOARD_CNT
+		                                     FROM BOARD
+		                                     GROUP BY MEM_NO) JB
+		                               GROUP BY JB.MEM_NO) JB_CNT
+		                        ON M.MEM_NO = JB_CNT.MEM_NO
+		           LEFT OUTER JOIN (SELECT LIKE_CNT.MEM_NO, SUM(LIKE_CNT.JOURNAL_LIKE_SUM) AS LIKE_SUM
+		                            FROM (SELECT J.MEM_NO, SUM(JL.JOURNAL_LIKE_CNT) AS JOURNAL_LIKE_SUM
+		                                  FROM JOURNAL J INNER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
+		                                                             FROM JOURNAL_LIKE
+		                                                             GROUP BY JOURNAL_NO) JL
+		                                                         ON J.JOURNAL_NO = JL.JOURNAL_NO
+		                                  GROUP BY J.MEM_NO
+		                                  UNION
+		                                  SELECT B.MEM_NO, SUM(BL.BOARD_LIKE_CNT) AS BOARD_LIKE_CNT
+		                                  FROM BOARD B INNER JOIN (SELECT POST_NO, COUNT(*) AS BOARD_LIKE_CNT
+		                                                           FROM BOARD_LIKE
+		                                                           GROUP BY POST_NO) BL
+		                                                       ON B.POST_NO = BL.POST_NO
+		                                  GROUP BY B.MEM_NO) LIKE_CNT
+		                            GROUP BY LIKE_CNT.MEM_NO) LIKE_CNT
+		                        ON M.MEM_NO = LIKE_CNT.MEM_NO
+		           LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS F_CNT
+		                            FROM FOLLOW
+		                            GROUP BY TARGET_MEM_NO) CNT
+		                        ON M.MEM_NO = CNT.TARGET_MEM_NO
+		           LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS REPORT_CNT
+		                            FROM REPORT
+		                            GROUP BY TARGET_MEM_NO) R
+		                        ON M.MEM_NO = R.TARGET_MEM_NO
 		      WHERE 1 = 1
 		      <if test="searchTxt != null and searchTxt != ''">
 		      	<choose>
@@ -65,12 +100,12 @@
 	      			</otherwise>
 	      		</choose>
 	      	</when>
-	      </choose>
+	    </choose>
 	</select>
 	
 	<update id="deleteMem" parameterType="hashmap">
 		UPDATE MEM SET LEAVE_DATE = SYSDATE
-		WHERE MEM_NO = #{userNo}
+		WHERE MEM_NO = #{userNos}
 	</update>
 	
 	<select id="getTravelDiaryCnt" parameterType="hashmap" resultType="Integer">
@@ -118,7 +153,7 @@
 	</select>
 	
 	<select id="travelDiaryList" parameterType="hashmap" resultType="hashmap">
-		SELECT J.JOURNAL_NO, J.NIC, J.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, J.LIKE_CNT, J.RNUM, J.DEL
+		SELECT J.JOURNAL_NO, J.NIC, J.CATEGORY_NAME, J.SUB_CATEGORY_NAME, SUBSTR(J.TITLE, 1, 32) AS TITLE, J.GRADE_NAME, J.JOURNAL_DATE, J.HIT, J.LIKE_CNT, J.RNUM, J.DEL
 		FROM (SELECT J.JOURNAL_NO, J.NIC, JC.CATEGORY_NAME, J.SUB_CATEGORY_NAME, J.TITLE, J.GRADE_NAME, TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') AS JOURNAL_DATE, J.HIT, NVL(JL.LIKE_CNT, 0) AS LIKE_CNT,
 		             ROW_NUMBER() OVER(ORDER BY J.JOURNAL_NO DESC) AS RNUM, J.DEL
 		      FROM (SELECT J.JOURNAL_NO, M.NIC, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, G.GRADE_NO, GC.GRADE_NAME, J.JOURNAL_DATE, J.HIT, M.MEM_NO, JC.SUB_CATEGORY_NAME, M.LEAVE_DATE, J.DEL

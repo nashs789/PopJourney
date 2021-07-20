@@ -259,7 +259,7 @@
 			/* 여기부터 여행게시판 css*/
 			.gallery {
 				padding: 30px 0 0 45px;
-				height: 1270px;
+				display: table;
 			}
 			.post {
 				float: left;
@@ -651,7 +651,7 @@
 				$("#journalCnt").html("");
 				var html = "";
 				
-				html = ${journalCnt} + "개의 여행게시판이 검색되었습니다.";
+				html = journalCnt + "개의 여행게시판이 검색되었습니다.";
 				
 				$("#journalCnt").html(html);
 			}
@@ -659,6 +659,7 @@
 				
 				$("#journalGallery").html("");
 				var html = "";
+				
 				
 				for(d of journalList) {
 					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
@@ -697,7 +698,7 @@
 				$("#hashCnt").html("");
 				var html = "";
 				
-				html = ${hashCnt} + "개의 여행게시판이 검색되었습니다.";
+				html = hashCnt + "개의 여행게시판이 검색되었습니다.";
 				
 				$("#hashCnt").html(html);
 				
@@ -743,7 +744,7 @@
 				$("#boardCnt").html("");
 				var html = "";
 				
-				html = ${boardCnt} + "개의 자유게시글이 검색되었습니다.";
+				html = boardCnt + "개의 자유게시글이 검색되었습니다.";
 				
 				$("#boardCnt").html(html);
 			}
@@ -772,7 +773,7 @@
 				$("#nicCnt").html("");
 				var html = "";
 				
-				html = ${nicCnt} + "개의 닉네임이 검색되었습니다.";
+				html = nicCnt + "개의 닉네임이 검색되었습니다.";
 				
 				$("#nicCnt").html(html);
 			}
@@ -868,154 +869,186 @@
 					<div class="search_category_cnt" id="journalCnt">${journalCnt}개의 여행게시판이 검색되었습니다.</div>
 					<!-- 여행게시판 검색결과 시작 -->
 					<div class="gallery" id="journalGallery">
-						<c:forEach var="data" items="${journalList}">
-							<div class="post" journalNo="${data.JOURNAL_NO}">
-								<span class="thumb"><img alt="썸네일"
-										src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
-								<div class="post_info">
-									<p>
-										<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
-									</p>
-									<p>
-										<strong>${data.TITLE}</strong>
-									</p>
-									<p>
-										<em>${data.HASH}</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
-											<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
+						<c:choose>
+							<c:when test="${journalCnt > 0}">
+								<c:forEach var="data" items="${journalList}">
+									<div class="post" journalNo="${data.JOURNAL_NO}">
+										<span class="thumb"><img alt="썸네일"
+												src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
+										<div class="post_info">
+											<p>
+												<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
+											</p>
+											<p>
+												<strong>${data.TITLE}</strong>
+											</p>
+											<p>
+												<em>${data.HASH}</em>
+											</p>
 										</div>
-										<span>${data.JOURNAL_DATE}</span>
+										<div class="post_profile">
+											<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+											<div>
+												<div>
+													<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
+													<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
+												</div>
+												<span>${data.JOURNAL_DATE}</span>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						</c:forEach>
+								</c:forEach>
+							</c:when>
+						</c:choose>
 					</div>
-					<div class="more_entity">여행게시판 더보기</div>
+					<c:choose>
+						<c:when test="${journalCnt > 10}">
+							<div class="more_entity">여행게시판 더보기</div>
+						</c:when>
+					</c:choose>
 					<!-- 여행게시판 검색결과 끝  -->
 					<!-- 해시태그 검색결과 시작 -->	
 					<div class="line"></div>		
 					<div class="search_category" id="hashTxt">#${mainSearchTxt}</div>
 					<div class="search_category_cnt" id="hashCnt">${hashCnt}개의 여행게시판이 검색되었습니다.</div>
 					<div class="gallery" id="HashGallery">
-						<c:forEach var="data" items="${hashList}">
-							<div class="post" journalHNo="${data.JOURNAL_NO}">
-								<span class="thumb"><img alt="썸네일"
-										src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
-								<div class="post_info">
-									<p>
-										<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
-									</p>
-									<p>
-										<strong>${data.TITLE}</strong>
-									</p>
-									<p>
-										<em>${data.HASH}</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
-											<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
+						<c:choose>
+							<c:when test="${hashCnt > 0}">
+								<c:forEach var="data" items="${hashList}">
+									<div class="post" journalHNo="${data.JOURNAL_NO}">
+										<span class="thumb"><img alt="썸네일"
+												src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
+										<div class="post_info">
+											<p>
+												<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
+											</p>
+											<p>
+												<strong>${data.TITLE}</strong>
+											</p>
+											<p>
+												<em>${data.HASH}</em>
+											</p>
 										</div>
-										<span>${data.JOURNAL_DATE}</span>
+										<div class="post_profile">
+											<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+											<div>
+												<div>
+													<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
+													<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
+												</div>
+												<span>${data.JOURNAL_DATE}</span>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						</c:forEach>
+								</c:forEach>
+							</c:when>
+						</c:choose>
 					</div>
-					<div class="more_entity" id="moreHash">#${mainSearchTxt} 더보기</div>				
+					<c:choose>
+						<c:when test="${hashCnt > 10}">
+							<div class="more_entity" id="moreHash">#${mainSearchTxt} 더보기</div>				
+						</c:when>
+					</c:choose>
 					<!-- 해시태그 검색결과 끝 -->	
 						
 					<!-- 자유게시판 검색결과 시작 -->	
 					<div class="line"></div>
 					<div class="search_category">자유게시판</div>
 					<div class="search_category_cnt" id="boardCnt">${boardCnt}개의 자유게시글이 검색되었습니다.</div>
-					<table class="board_list">
-	            		<caption>게시판 목록</caption>
-	            		<colgroup>
-								<col width="106px" /> <!-- 글번호 -->
-								<col width="124px" /> <!-- 카테고리 -->
-								<col width="430px" /> <!-- 제목 -->
-								<col width="124px" /> <!-- 등급 -->
-								<col width="101px" /> <!-- 닉네임 -->
-								<col width="161px" /> <!-- 작성일 -->
-								<col width="92px" /> <!-- 조회 -->
-								<col width="102px" /> <!-- 좋아요 -->
-						</colgroup>
-	            		<thead>
-	            			<tr>
-	            				<th>글번호</th>
-	            				<th>카테고리</th>
-	            				<th>제목</th>
-	            				<th>등급</th>
-	            				<th>닉네임</th>
-	            				<th>작성일</th>
-	            				<th>조회</th>
-	            				<th>좋아요</th>
-	            			</tr>
-	            		</thead>
-	            		<tbody id="boardGallery">
-	            			<c:forEach var="data" items="${boardList}">
-		            			<tr class="board_data" postNo="${data.POST_NO}">
-		            				<td>${data.POST_NO}</td>
-		            				<td>${data.CATEGORY_NAME}</td>
-		            				<td class="board_title">${data.TITLE}</td>
-		            				<td>${data.GRADE_NAME}</td>
-		            				<td>${data.NIC}</td>
-		            				<td>${data.BOARD_DATE}</td>
-		            				<td>${data.HIT}</td>
-		            				<td>${data.POST_LIKE_CNT}</td>
-		            			</tr>
-	            			</c:forEach>
-	            		</tbody>
-            		</table>
-            		<div class="more_entity">자유게시판 더보기</div>					
+					<c:choose>
+						<c:when test="${boardCnt > 0}">
+							<table class="board_list">
+			            		<caption>게시판 목록</caption>
+			            		<colgroup>
+										<col width="106px" /> <!-- 글번호 -->
+										<col width="124px" /> <!-- 카테고리 -->
+										<col width="430px" /> <!-- 제목 -->
+										<col width="124px" /> <!-- 등급 -->
+										<col width="101px" /> <!-- 닉네임 -->
+										<col width="161px" /> <!-- 작성일 -->
+										<col width="92px" /> <!-- 조회 -->
+										<col width="102px" /> <!-- 좋아요 -->
+								</colgroup>
+			            		<thead>
+			            			<tr>
+			            				<th>글번호</th>
+			            				<th>카테고리</th>
+			            				<th>제목</th>
+			            				<th>등급</th>
+			            				<th>닉네임</th>
+			            				<th>작성일</th>
+			            				<th>조회</th>
+			            				<th>좋아요</th>
+			            			</tr>
+			            		</thead>
+			            		<tbody id="boardGallery">
+			            			<c:forEach var="data" items="${boardList}">
+				            			<tr class="board_data" postNo="${data.POST_NO}">
+				            				<td>${data.POST_NO}</td>
+				            				<td>${data.CATEGORY_NAME}</td>
+				            				<td class="board_title">${data.TITLE}</td>
+				            				<td>${data.GRADE_NAME}</td>
+				            				<td>${data.NIC}</td>
+				            				<td>${data.BOARD_DATE}</td>
+				            				<td>${data.HIT}</td>
+				            				<td>${data.POST_LIKE_CNT}</td>
+				            			</tr>
+			            			</c:forEach>
+			            		</tbody>
+		            		</table>
+						</c:when>
+					</c:choose>
+					<c:choose>
+						<c:when test="${boardCnt > 10}">
+		            		<div class="more_entity">자유게시판 더보기</div>					
+						</c:when>
+					</c:choose>
 					<!-- 자유게시판 검색결과 끝 -->		
 					
 					<!-- 닉네임 검색결과 시작 -->		
 					<div class="line"></div>		
 					<div class="search_category">닉네임</div>
 					<div class="search_category_cnt" id="nicCnt">${nicCnt}개의 닉네임이 검색되었습니다.</div>
-					<div class="search_nic">
-						<table>
-							<colgroup>
-								<col width="120px" /> <!-- 닉네임 -->
-								<col width="100px" /> <!-- 등급 -->
-								<col width="120px" /> <!-- 여행게시판 -->
-								<col width="100px" /> <!-- 좋아요 -->
-								<col width="100px" /> <!-- 팔로워 -->
-							</colgroup>
-							<thead>
-								<tr class="article">
-									<th>닉네임</th>
-									<th>등급</th>
-									<th>여행게시판</th>
-									<th>좋아요</th>
-									<th>팔로워</th>
-								</tr>
-							</thead>
-							<tbody id="nicGallery">
-								<c:forEach var="data" items="${nicList}">
-									<tr class="nic" memNo="${data.MEM_NO}">
-										<td>${data.NIC}</td>
-										<td>${data.GRADE_NAME}</td>
-										<td>${data.JOURNAL_CNT}</td>
-										<td>${data.LIKE_SUM}</td>
-										<td>${data.FOLLOW_CNT}</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-					<div class="more_entity">닉네임 더보기</div>
+					<c:choose>
+						<c:when test="${nicCnt > 0}">
+							<div class="search_nic">
+								<table>
+									<colgroup>
+										<col width="120px" /> <!-- 닉네임 -->
+										<col width="100px" /> <!-- 등급 -->
+										<col width="120px" /> <!-- 여행게시판 -->
+										<col width="100px" /> <!-- 좋아요 -->
+										<col width="100px" /> <!-- 팔로워 -->
+									</colgroup>
+									<thead>
+										<tr class="article">
+											<th>닉네임</th>
+											<th>등급</th>
+											<th>여행게시판</th>
+											<th>좋아요</th>
+											<th>팔로워</th>
+										</tr>
+									</thead>
+									<tbody id="nicGallery">
+										<c:forEach var="data" items="${nicList}">
+											<tr class="nic" memNo="${data.MEM_NO}">
+												<td>${data.NIC}</td>
+												<td>${data.GRADE_NAME}</td>
+												<td>${data.JOURNAL_CNT}</td>
+												<td>${data.LIKE_SUM}</td>
+												<td>${data.FOLLOW_CNT}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</c:when>
+					</c:choose>
+					<c:choose>
+						<c:when test="${nicCnt > 10}">
+							<div class="more_entity">닉네임 더보기</div>
+						</c:when>
+					</c:choose>
 					<!-- 닉네임 검색결과 끝 -->		
 				</div> <!-- search area end -->
 			</div>

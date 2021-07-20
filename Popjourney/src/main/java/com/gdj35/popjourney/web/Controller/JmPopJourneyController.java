@@ -485,11 +485,11 @@ public class JmPopJourneyController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			String userNo = (params.get("userNo"));
-			String[] arrayUserNo = userNo.split(",");
-			for(int i = 0 ; i < arrayUserNo.length ; i++) {
-				System.out.println("arrayUserNo[i] >> " + arrayUserNo[i]);
-				params.put("userNo", arrayUserNo[i]);
+			String userNos = (params.get("userNos"));
+			String[] arrayUserNos = userNos.split(",");
+			for(int i = 0 ; i < arrayUserNos.length ; i++) {
+				System.out.println("arrayUserNos[i] >> " + arrayUserNos[i]);
+				params.put("userNos", arrayUserNos[i]);
 				// 탈퇴일
 				int cnt = iJmPopjourneyService.deleteMem(params);
 				
@@ -513,8 +513,6 @@ public class JmPopJourneyController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		//System.out.println("userNo >> " + userNo);
-		//System.out.println("arrayUserNo >> " + Arrays.toString(arrayUserNo));
 		
 		System.out.println("delParams >> " + params);
 		return mapper.writeValueAsString(modelMap);
