@@ -73,9 +73,7 @@ public class EsPopJourneyController {
 	public ModelAndView userPage(@RequestParam HashMap<String, String> params, ModelAndView mav)
 			throws Throwable {
 		int page = 1;
-		if (params.get("page") != null) {
-			page = Integer.parseInt(params.get("page"));
-		}
+
 		mav.addObject("page", page);
 		
 		mav.addObject("userNo", params.get("userNo"));
