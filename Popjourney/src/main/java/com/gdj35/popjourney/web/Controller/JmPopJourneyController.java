@@ -949,6 +949,13 @@ public class JmPopJourneyController {
 				modelMap.put("hashList", hashList);
 				modelMap.put("boardList", boardList);
 				modelMap.put("nicList", nicList);
+				
+				String txt = params.get("mainSearchTxt");
+				String filter = params.get("mainSearchFilter");
+				modelMap.put("txt", txt);
+				modelMap.put("filter", filter);
+				System.out.println("tttttxt >> " + txt);
+				System.out.println("ttttfilter >> " + filter);
 			} else if(Integer.parseInt(params.get("mainSearchFilter")) == 1) {
 				List<HashMap<String, String>> journalList = iJmPopjourneyService.getJournalList(params);
 				modelMap.put("msg", "Filter1");
