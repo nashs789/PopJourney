@@ -733,7 +733,7 @@
 				});
 				
 				// 회원프로필 이동
-				$("#list_wrap body").on("click", "tr", function() {
+				$("#list_wrap tbody").on("click", "tr", function() {
 					$("#userNo").val($(this).attr("mno"));
 					
 					$("#actionForm").attr("action", "userPage");
