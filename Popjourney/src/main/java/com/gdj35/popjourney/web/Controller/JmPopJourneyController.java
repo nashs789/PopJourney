@@ -889,12 +889,96 @@ public class JmPopJourneyController {
 	// 통합검색처리
 	@RequestMapping(value = "/search")
 	public ModelAndView search(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		System.out.println("searchParam >> " + params);
 		
+		int journalCnt = iJmPopjourneyService.getJournalCnt(params);
+		int hashCnt = iJmPopjourneyService.getHashCnt(params);
+		int boardCnt = iJmPopjourneyService.getBoardCnt(params);
+		int nicCnt = iJmPopjourneyService.getNicCnt(params);
+		List<HashMap<String, String>> journalList = iJmPopjourneyService.getJournalList(params);
+		List<HashMap<String, String>> hashList = iJmPopjourneyService.getHashList(params);
+		List<HashMap<String, String>> boardList = iJmPopjourneyService.getBoardList(params);
+		List<HashMap<String, String>> nicList = iJmPopjourneyService.getNicList(params);
 		
+		mav.addObject("journalCnt", journalCnt);
+		mav.addObject("hashCnt", hashCnt);
+		mav.addObject("boardCnt", boardCnt);
+		mav.addObject("nicCnt", nicCnt);
+		mav.addObject("journalList", journalList);
+		mav.addObject("hashList", hashList);
+		mav.addObject("boardList", boardList);
+		mav.addObject("nicList", nicList);
+		
+		System.out.println("journalList >> " + journalList);
+		System.out.println("hashList >> " + hashList);
+		System.out.println("boardList >> " + boardList);
+		System.out.println("nicList >> " + nicList);
+		System.out.println("journalCnt >> " + journalCnt);
+		System.out.println("hashCnt >> " + hashCnt);
+		System.out.println("boardCnt >> " + boardCnt);
+		System.out.println("nicCnt >> " + nicCnt);
 		
 		mav.setViewName("CJM/search");
 		
 		return mav;
+	}
+	
+	@RequestMapping(value="/searchs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String searchs(@RequestParam HashMap<String, String>	params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			if(Integer.parseInt(params.get("mainSearchFilter")) == 0) {
+				int journalCnt = iJmPopjourneyService.getJournalCnt(params);
+				int hashCnt = iJmPopjourneyService.getHashCnt(params);
+				int boardCnt = iJmPopjourneyService.getBoardCnt(params);
+				int nicCnt = iJmPopjourneyService.getNicCnt(params);
+				List<HashMap<String, String>> journalList = iJmPopjourneyService.getJournalList(params);
+				List<HashMap<String, String>> hashList = iJmPopjourneyService.getHashList(params);
+				List<HashMap<String, String>> boardList = iJmPopjourneyService.getBoardList(params);
+				List<HashMap<String, String>> nicList = iJmPopjourneyService.getNicList(params);
+				modelMap.put("msg", "Filter0");
+				
+				modelMap.put("journalCnt", journalCnt);
+				modelMap.put("hashCnt", hashCnt);
+				modelMap.put("boardCnt", boardCnt);
+				modelMap.put("nicCnt", nicCnt);
+				
+				modelMap.put("journalList", journalList);
+				modelMap.put("hashList", hashList);
+				modelMap.put("boardList", boardList);
+				modelMap.put("nicList", nicList);
+			} else if(Integer.parseInt(params.get("mainSearchFilter")) == 1) {
+				List<HashMap<String, String>> journalList = iJmPopjourneyService.getJournalList(params);
+				modelMap.put("msg", "Filter1");
+				modelMap.put("journalList", journalList);
+			} else if(Integer.parseInt(params.get("mainSearchFilter")) == 2) {
+				List<HashMap<String, String>> hashList = iJmPopjourneyService.getHashList(params);
+				modelMap.put("msg", "Filter2");
+				modelMap.put("hashList", hashList);
+			} else if(Integer.parseInt(params.get("mainSearchFilter")) == 3) {
+				List<HashMap<String, String>> boardList = iJmPopjourneyService.getBoardList(params);
+				modelMap.put("msg", "Filter3");
+				modelMap.put("boardList", boardList);
+			} else if(Integer.parseInt(params.get("mainSearchFilter")) == 4) {
+				List<HashMap<String, String>> nicList = iJmPopjourneyService.getNicList(params);
+				modelMap.put("msg", "Filter4");
+				modelMap.put("nicList", nicList);
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		System.out.println("ajaxParams >> " + params);
+		
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 	
 

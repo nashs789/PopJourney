@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -537,6 +538,11 @@
 			  		location.href = "memAdmin";
 			  	});
 				
+				// 셀렉터 옵션 유지
+				if("${param.searchFilter}" != "") {
+					$("#searchFilter").val("${param.searchFilter}");
+				}
+				
 				// 로그인 정보 유지
 				if("${sMEM_NO}" != "") {
 					$(".logins").css("display", "none");
@@ -549,24 +555,244 @@
 					$(".btns").css("display", "none");
 				}
 				
-				$(".search_icon").on("click", function() {
-					
-					var params = $("#actionForm").serialize();
-					
-					$.ajax({
-						url: "search",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
+				$(".search_btn").on("click", function() {
+					reloadList();
 				});
-			});
+				
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "searchs",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						if(res.msg = "Filter0") {
+							drawList1(res.journalList);
+							drawList2(res.hashList);
+							drawList3(res.boardList);
+							drawList4(res.nicList);
+							
+							journalCnt(res.journalCnt);
+							hashCnt(res.hashCnt);
+							boardCnt(res.boardCnt);
+							nicCnt(res.nicCnt);
+							
+							console.log(res.journalCnt);
+							console.log(res.hashCnt);
+							console.log(res.boardCnt);
+							console.log(res.nicCnt);
+							
+							
+							/* $("#hashTxt").val("");
+							$("#moreHash").val("");
+							$("#hashTxt").val($("#mainSearchTxt").val());
+							$("#moreHash").val($("#mainSearchTxt").val()); */
+							
+							//console.log(res.journalCnt);
+							/* if(res.journalCnt < 10) {
+								$("#j .more_entity").hide();
+								if(res.journalCnt == 0) {
+									$("#j").hide();
+								}
+							} else {
+								$("#j .more_entity").show();
+							}
+							if(res.hashCnt < 10) {
+								$("#h .more_entity").hide();
+								if(res.journalCnt == 0) {
+									$("#h").hide();
+								}
+							} else {
+								$("#h .more_entity").show();
+							}
+							if(res.boardCnt < 11) {
+								$("#b .more_entity").hide();
+								if(res.journalCnt == 0) {
+									$("#b").hide();
+								}
+							} else {
+								$("#b .more_entity").show();
+							}
+							if(res.nicCnt < 11) {
+								$("#n .more_entity").hide();
+								if(res.journalCnt == 0) {
+									$("#n").hide();
+								}
+							} else {
+								$("#n .more_entity").show();
+							} */
+								
+							
+						} else if(res.msg == "Filter1") {
+							
+						} else if(res.msg == "Filter2") {
+							
+						} else if(res.msg == "Filter3") {
+							
+						} else if(res.msg == "Filter4") {
+							
+						} else if(res.msg == "failed") {
+							alert("검색에 실패했습니다.");
+						} else {
+							alert("검색중 문제가 발생하였습니다.");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+			function journalCnt(journalCnt) {
+				
+				$("#journalCnt").html("");
+				var html = "";
+				
+				html = ${journalCnt} + "개의 여행게시판이 검색되었습니다.";
+				
+				$("#journalCnt").html(html);
+			}
+			function drawList1(journalList) {
+				
+				$("#journalGallery").html("");
+				var html = "";
+				
+				for(d of journalList) {
+					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
+					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
+					html += "	<div class=\"post_info\">";
+					html += "		<p>";
+					html += "			<span>" + d.CATEGORY_NAME + " > " + d.SUB_CATEGORY_NAME + "(" + d.REGION_NAME + ")</span>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<strong>" + d.TITLE + "</strong>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<em>" + d.HASH + "</em>";
+					html += "		</p>";
+					html += "	</div>";
+					html += "	<div class=\"post_profile\">";
+					html += "		<img alt=\"작성자\" src=\"./resources/upload/" + d.MEM_PHOTO_PATH + "\"> <span>" + d.NIC + "</span>";
+					html += "		<div>";
+					html += "			<div>";
+					html += "				<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>";
+					html += "				<span class=\"cnt\">" + d.JOURNAL_LIKE_CNT + "</span>";
+					html += "			</div>";
+					html += "			<span>" + d.JOURNAL_DATE + "</span>";
+					html += "		</div>";
+					html += "	</div>";
+					html += "</div>";
+				}
+				
+				$("#journalGallery").html(html);
+				
+			} //  function drawList(journalList) end..
+			
+			function hashCnt(hashCnt) {
+				
+				$("#hashCnt").html("");
+				var html = "";
+				
+				html = ${hashCnt} + "개의 여행게시판이 검색되었습니다.";
+				
+				$("#hashCnt").html(html);
+				
+			}
+			function drawList2(hashList) {
+				
+				$("#HashGallery").html("");
+				var html = "";
+				
+				for(d of hashList) {
+					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
+					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
+					html += "	<div class=\"post_info\">";
+					html += "		<p>";
+					html += "			<span>" + d.CATEGORY_NAME + " > " + d.SUB_CATEGORY_NAME + "(" + d.REGION_NAME + ")</span>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<strong>" + d.TITLE + "</strong>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<em>" + d.HASH + "</em>";
+					html += "		</p>";
+					html += "	</div>";
+					html += "	<div class=\"post_profile\">";
+					html += "		<img alt=\"작성자\" src=\"./resources/upload/" + d.MEM_PHOTO_PATH + "\"> <span>" + d.NIC + "</span>";
+					html += "		<div>";
+					html += "			<div>";
+					html += "				<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>";
+					html += "				<span class=\"cnt\">" + d.JOURNAL_LIKE_CNT + "</span>";
+					html += "			</div>";
+					html += "			<span>" + d.JOURNAL_DATE + "</span>";
+					html += "		</div>";
+					html += "	</div>";
+					html += "</div>";                                                                                    
+				}
+				
+				$("#HashGallery").html(html);
+				
+			} // function drawList(hashList) end..
+			function boardCnt(boardCnt) {
+				
+				$("#boardCnt").html("");
+				var html = "";
+				
+				html = ${boardCnt} + "개의 자유게시글이 검색되었습니다.";
+				
+				$("#boardCnt").html(html);
+			}
+			function drawList3(boardList) {
+				$("#boardGallery").html("");
+				var html = "";
+				
+				for(d of boardList) {
+					html += "<tr class=\"board_data\" postNo=\"" + d.POST_NO + "\">";
+	    			html += "	<td>" + d.POST_NO + "</td>";
+	    			html += "	<td>" + d.CATEGORY_NAME + "</td>";
+	    			html += "	<td class=\"board_title\">" + d.TITLE + "</td>";
+	    			html += "	<td>" + d.GRADE_NAME + "</td>";
+	    			html += "	<td>" + d.NIC + "</td>";
+	    			html += "	<td>" + d.BOARD_DATE + "</td>";
+	    			html += "	<td>" + d.HIT + "</td>";
+	    			html += "	<td>" + d.POST_LIKE_CNT + "</td>";
+	    			html += "</tr>";
+				}
+				
+				$("#boardGallery").html(html);
+				
+			} // function drawList(boardList) end..
+			
+			function nicCnt(nicCnt) {
+				$("#nicCnt").html("");
+				var html = "";
+				
+				html = ${nicCnt} + "개의 닉네임이 검색되었습니다.";
+				
+				$("#nicCnt").html(html);
+			}
+			function drawList4(nicList) {
+				$("#nicGallery").html("");
+				var html = "";
+				
+				for(d of nicList) {
+					html += "<tr class=\"nic\" memNo=\"" + d.MEM_NO + "\">";
+					html += "	<td>" + d.MEM_NO + "</td>";
+					html += "	<td>" + d.GRADE_NAME + "</td>";
+					html += "	<td>" + d.JOURNAL_CNT + "</td>";
+					html += "	<td>" + d.LIKE_SUM + "</td>";
+					html += "	<td>" + d.FOLLOW_CNT + "</td>";
+					html += "</tr>";
+				}
+				
+				$("#nicGallery").html(html);
+				
+			} // function drawList(nicList) end..
 		</script>
 	</head>
 	<body>
@@ -607,524 +833,115 @@
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
-				<input type="text" class="search" placeholder="검색">
-				<select class="filter">
+				<%-- <img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+				<select class="filter" id="mainSearchFilter" name="mainSearchFilter">
 					<option value="0" selected="selected">통합검색</option>
 					<option value="1">여행게시판</option>
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
-				</select>
+				</select> --%>
 			</div>
-			
 			<div id="container">
+				<form action="#" id="hidden" method="post">
+					<input type="hidden" id="sTxt" value="${param.mainSearchTxt}" />
+					<input type="hidden" id="sFilter" value="${param.mainSearchFilter}" />
+				</form>
 				<div class="search_area">
-					<div class="sub_search">
-						검색 :
-						<select class="search_filter">
-								<option value="0" selected="selected">통합검색</option>
-								<option value="1">여행게시판</option>
-								<option value="2">해시태그</option>
-								<option value="3">자유게시판</option>
-								<option value="4">닉네임</option>
-						</select>
-						<input class="search_txt" type="text" />
-						<input class="search_btn" type="button" value="검색" />
-					</div>
+					<form action="#" id="actionForm" method="post">
+						<div class="sub_search">
+							검색 :
+							<select class="search_filter" id="mainSearchFilter" name="mainSearchFilter">
+									<option value="0" selected="selected">통합검색</option>
+									<option value="1">여행게시판</option>
+									<option value="2">해시태그</option>
+									<option value="3">자유게시판</option>
+									<option value="4">닉네임</option>
+							</select>
+							<input class="search_txt" type="text" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" />
+							<input class="search_btn" type="button" value="검색" />
+						</div>
+					</form>
 					<div class="line"></div>
 					<div class="search_category">여행게시판</div>
-					<div class="search_category_cnt">300개의 여행게시판이 검색되었습니다.</div>
-					
+					<div class="search_category_cnt" id="journalCnt">${journalCnt}개의 여행게시판이 검색되었습니다.</div>
 					<!-- 여행게시판 검색결과 시작 -->
-					<div class="gallery">
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
+					<div class="gallery" id="journalGallery">
+						<c:forEach var="data" items="${journalList}">
+							<div class="post" journalNo="${data.JOURNAL_NO}">
+								<span class="thumb"><img alt="썸네일"
+										src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
 								<div class="post_info">
 									<p>
-										<span>지역별 > 대구</span>
+										<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
 									</p>
 									<p>
-										<strong>고북수진 당일치기</strong>
+										<strong>${data.TITLE}</strong>
 									</p>
 									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+										<em>${data.HASH}</em>
 									</p>
 								</div>
 								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+									<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
 									<div>
 										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
+											<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
+											<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
 										</div>
-										<span>2021-05-24</span>
+										<span>${data.JOURNAL_DATE}</span>
 									</div>
-	
 								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a2.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a3.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a4.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a2.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a3.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a4.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
-								<div class="post_info">
-									<p>
-										<span>지역별 > 대구</span>
-									</p>
-									<p>
-										<strong>고북수진 당일치기</strong>
-									</p>
-									<p>
-										<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-									</p>
-								</div>
-								<div class="post_profile">
-									<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-									<div>
-										<div>
-											<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-											<span class="cnt">100</span>
-										</div>
-										<span>2021-05-24</span>
-									</div>
-	
-								</div>
-						</div>
+							</div>
+						</c:forEach>
 					</div>
-					
-					
 					<div class="more_entity">여행게시판 더보기</div>
 					<!-- 여행게시판 검색결과 끝  -->
-					
-					<!-- 해시태그 검색결과 시작 -->		
+					<!-- 해시태그 검색결과 시작 -->	
 					<div class="line"></div>		
-					<div class="search_category">#여수</div>
-					<div class="search_category_cnt">100개의 여행게시판이 검색되었습니다.</div>
-					
-					<div class="gallery">
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
+					<div class="search_category" id="hashTxt">#${mainSearchTxt}</div>
+					<div class="search_category_cnt" id="hashCnt">${hashCnt}개의 여행게시판이 검색되었습니다.</div>
+					<div class="gallery" id="HashGallery">
+						<c:forEach var="data" items="${hashList}">
+							<div class="post" journalHNo="${data.JOURNAL_NO}">
+								<span class="thumb"><img alt="썸네일"
+										src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
+								<div class="post_info">
+									<p>
+										<span>${data.CATEGORY_NAME} > ${data.SUB_CATEGORY_NAME}(${data.REGION_NAME})</span>
+									</p>
+									<p>
+										<strong>${data.TITLE}</strong>
+									</p>
+									<p>
+										<em>${data.HASH}</em>
+									</p>
+								</div>
+								<div class="post_profile">
+									<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
 									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
+										<div>
+											<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
+											<span class="cnt">${data.JOURNAL_LIKE_CNT}</span>
+										</div>
+										<span>${data.JOURNAL_DATE}</span>
 									</div>
-									<span>2021-05-24</span>
 								</div>
 							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
-						<div class="post">
-							<span class="thumb"><img alt="썸네일"
-									src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-						</div>
+						</c:forEach>
 					</div>
-					
-						
-					<div class="more_entity">#여수 더보기</div>				
+					<div class="more_entity" id="moreHash">#${mainSearchTxt} 더보기</div>				
 					<!-- 해시태그 검색결과 끝 -->	
 						
-					<!-- 자유게시판 검색결과 시작 -->		
-					<div class="line"></div>		
+					<!-- 자유게시판 검색결과 시작 -->	
+					<div class="line"></div>
 					<div class="search_category">자유게시판</div>
-					<div class="search_category_cnt">200개의 자유게시글이 검색되었습니다.</div>
-					
+					<div class="search_category_cnt" id="boardCnt">${boardCnt}개의 자유게시글이 검색되었습니다.</div>
 					<table class="board_list">
 	            		<caption>게시판 목록</caption>
 	            		<colgroup>
-								<col width="106px" /> <!-- No -->
+								<col width="106px" /> <!-- 글번호 -->
 								<col width="124px" /> <!-- 카테고리 -->
 								<col width="430px" /> <!-- 제목 -->
 								<col width="124px" /> <!-- 등급 -->
@@ -1135,7 +952,7 @@
 						</colgroup>
 	            		<thead>
 	            			<tr>
-	            				<th>No</th>
+	            				<th>글번호</th>
 	            				<th>카테고리</th>
 	            				<th>제목</th>
 	            				<th>등급</th>
@@ -1145,107 +962,19 @@
 	            				<th>좋아요</th>
 	            			</tr>
 	            		</thead>
-	            		<tbody>
-	            			<tr class="board_data">
-	            				<td>1</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>2</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>3</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>4</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>5</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>6</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>7</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>8</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>9</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr class="board_data">
-	            				<td>10</td>
-	            				<td>여행꿀팁</td>
-	            				<td class="board_title">제목</td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
+	            		<tbody id="boardGallery">
+	            			<c:forEach var="data" items="${boardList}">
+		            			<tr class="board_data" postNo="${data.POST_NO}">
+		            				<td>${data.POST_NO}</td>
+		            				<td>${data.CATEGORY_NAME}</td>
+		            				<td class="board_title">${data.TITLE}</td>
+		            				<td>${data.GRADE_NAME}</td>
+		            				<td>${data.NIC}</td>
+		            				<td>${data.BOARD_DATE}</td>
+		            				<td>${data.HIT}</td>
+		            				<td>${data.POST_LIKE_CNT}</td>
+		            			</tr>
+	            			</c:forEach>
 	            		</tbody>
             		</table>
             		<div class="more_entity">자유게시판 더보기</div>					
@@ -1254,10 +983,7 @@
 					<!-- 닉네임 검색결과 시작 -->		
 					<div class="line"></div>		
 					<div class="search_category">닉네임</div>
-					<div class="search_category_cnt">50개의 닉네임이 검색되었습니다.</div>
-					
-					
-					
+					<div class="search_category_cnt" id="nicCnt">${nicCnt}개의 닉네임이 검색되었습니다.</div>
 					<div class="search_nic">
 						<table>
 							<colgroup>
@@ -1276,77 +1002,16 @@
 									<th>팔로워</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr class="nic">
-									<td>닉네임</td>
-									<td>100</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
-								<tr class="nic">
-									<td>100</td>
-									<td>닉네임</td>
-									<td>여행작가</td>
-									<td>100</td>
-									<td>20</td>
-								</tr>
+							<tbody id="nicGallery">
+								<c:forEach var="data" items="${nicList}">
+									<tr class="nic" memNo="${data.MEM_NO}">
+										<td>${data.NIC}</td>
+										<td>${data.GRADE_NAME}</td>
+										<td>${data.JOURNAL_CNT}</td>
+										<td>${data.LIKE_SUM}</td>
+										<td>${data.FOLLOW_CNT}</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

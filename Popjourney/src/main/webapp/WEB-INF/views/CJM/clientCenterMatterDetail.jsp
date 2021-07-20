@@ -576,6 +576,7 @@
 								$(".matter_detail_btn").hide();
 								$(".cmt_area").hide();
 								$("#adminMatterDetailTitle").css("display", "block");
+								location.reload();
 							},
 							error: function(request, status, error) {
 								console.log(error);

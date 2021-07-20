@@ -755,8 +755,10 @@
 				
 				// 메인검색창 넘어가는 부분(동기)
 				$(".search_icon").on("click", function() {
-					$("#goSearch").attr("action", "search");
-					$("#goSearch").submit();
+					if($("#mainSearchFilter").val() == 0) {
+						$("#goSearch").attr("action", "search");
+						$("#goSearch").submit();
+					}
 				});
 				
 			}); // document ready end..
@@ -958,7 +960,7 @@
 				<form action="#" id="goSearch" method="post" >
 					<img alt="search" src="./resources/images/search.png" class="search_icon"/>
 					<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
-					<select class="filter" id="mainSearchFilter" name="mainSearchGbn" >
+					<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
 						<option value="0" selected="selected">통합검색</option>
 						<option value="1">여행일지</option>
 						<option value="2">해시태그</option>
