@@ -78,8 +78,8 @@ body {
 	margin-top: 18px;
 }
 
-.btns { /* .logins와 연동  */
-	display: none;
+.btns { 
+	display: inline-block;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -88,166 +88,70 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
-.logins {
-	display:inline-block;
-	vertical-align: top;
-	width: 470px;
-	height: 70px;
-	text-align: right;
-	background-color: #FFFFFF;
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
 }
-
-.sub_login1 {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 55px;
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
 }
-
-.sub_login2 {
-	display: block;
-	width: calc(100% - 75px);
-	height: 15px;
-	line-height: 10px;
-	text-align: right;
-	padding-right: 75px;
+#notificationPhoto {
+   margin-left: 200px;
 }
-
-.sub_login2 span {
-	position: relative;
-	width: 10px;
-	font-size: 12px;
-	font-weight: 600;
-	cursor: pointer;
-	margin-left: 10px;
-}
-
-.sub_login2 span:hover {
-	color: #fcba03;
-}
-
-.login {
-	float: right;
-	width: 100px;
-	height: 25px;
-	margin-top: 20px;
-	margin-left: 5px;
-}
-
-.login_btn {
-	float: right;
-	margin: 20px 20px 0px 5px;
-	width: 50px;
-	height: 30px;
-	background-color: #2e3459;
-	font-weight: bold;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 26px;
-	cursor: pointer;
-}
-
-.login_btn:hover {
-	color: #FFFFFF;
-	background-color: #f37321;
-}
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
-
-.timeline {
+#profileSlidedown{
 	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+   	z-index: 300;
 }
-
-.timeline tr {
-	height: 50px;
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
 }
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
-}
-
-#dd {
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid #fcba03;
-	background-color: white;
-	position: absolute;
-	margin-top: 10px;
-	padding: 0px;
-	right: 8px;
-	height: 108px;
-	width: 122px;
-	display: none;
-}
-
-#dd li {
-	display: inline-block;
-	border: 1px solid rgb(250, 250, 250);
-	font-size: 12pt;
-	width: 120px;
-	text-align: center;
-}
-
-#dd li:hover {
+#profileSlidedown li:hover {
 	background-color: #f37321;
 }
-
+#myPage{
+	background-color: #f37321;
+}
 .menu {
 	position: absolute;
 	height: 70px;
@@ -305,7 +209,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
 	margin: 0 auto;
 }
 
@@ -451,11 +354,10 @@ a {
 .follow_list {
 	margin-top: 30px;
 	padding: 30px 0 0 45px;
-	height: 2150px;
 }
 
 .user_area {
-	float: left;
+	display: inline-block;
 	width: 340px;
 	height: 360px;
 	margin: 0 0 40px 40px;
@@ -569,7 +471,6 @@ hr {
 	color: #FFFFFF;
 	font-size: 15px;
 }
-
 #footer p {
 	margin: 0px auto;
 	padding-top: 20px;
@@ -577,49 +478,211 @@ hr {
 	width: 600px;
 	height: 80px;
 }
+#moreBtn:hover{
+	background-color: #2e3459; 
+	color: white;
+}
+#admin{
+	display: none;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	var path = "";
+	
+	if("${sPHOTO_PATH}" != "")
+	{
+		path = "resources/upload/" + "${sPHOTO_PATH}";
+		
+		$("#profilePhoto").attr("src", path);
+	}
+	else
+	{
+		path = "./resources/images/profile.png";
+
+		$("#profilePhoto").attr("src", path);
+	}
+	
+	if("${sGRADE_NO}" == "0")
+	{
+		$("#admin").show();
+	}
+	
+	var params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myPageProfiles",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				var html = "";  
+				
+				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
+				html += "<div>" + result.myProfile.NIC + "</div>";
+				html += "<span>" + result.myProfile.INTRO + "</span>"; 
+				
+				$(".info").html(html);
+			}                                                                                      
+			else
+			{
+				alert("오류 발생");
+			}
+		},//success end
+		error: function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end 
+	
+	params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myFollowers",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				$("#firstPage").val(result.firstPage);
+				$("#lastPage").val(result.lastPage);
+				makeFollower(result.myFollower);
+			}
+			else
+			{
+				alert("오류 발생");
+			}
+		},//success end
+		error: function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end 
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end	
+	
+	$("#moreBtn").on("click", function(){
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "myFollowers",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					$("#firstPage").val(result.firstPage);
+					$("#lastPage").val(result.lastPage);
+					makeFollower(result.myFollower);
+				}
+				else if(result.msg == "full")
+				{
+					alert("마지막 입니다.");
+				}
+				else
+				{
+					alert("오류 발생");
+				}
+			},//success end
+			error: function(error){
+				console.log(error);
+			}//error end
+		}); //ajax end 
+	}); //moreBtn click end
+	
+	$("#journal").on("click", function(){
+		location.href = "myPage";
+	}); //journal click end
+	
+	$("#following").on("click", function(){
+		location.href = "myPageFollowing";
+	}); //following click end
+	
+	$("#myPageImg").on("click", function(){
+		location.href = "myPage";
+	}); //myPageImg click end
+}); //document ready end
+function makeFollower(myFollower)
+{
+	var html = "";
+
+	for(data of myFollower)
+	{ 
+		html += "   	<div class=\"user_area\">";
+		if(data.PHOTO_PATH != null)
+		{
+			html += "   		<span><img alt=\"profile\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+		}
+		else
+		{
+			html += "   		<span><img alt=\"profile\" src=\"./resources/images/profile.png\"></span>";
+		}
+		html += "   		<div class=\"user_info\">";
+		html += "   			<span class=\"nic\" nic=\"" + data.REQUEST_MEM_NO + "\">" + data.NIC + "</span> <span class=\"memo\">" + data.REQUEST_DATE+ ""; 
+		if(data.CHA == 0)
+		{
+			html += "(오늘)</span><hr>";
+		}
+		else
+		{
+			html += "(" + data.CHA + "일)</span><hr>";
+		}
+		html += "   			<p>" + data.INTRO + "</p>";      
+		html += "   		</div>";
+		html += "   		<div class=\"follow_btn_area\">";
+		html += "   			<input type=\"button\" value=\"여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;\"/>";
+		html += "   		</div>";
+		html += "   	</div>";
+	}
+	
+	$(".follow_list").append(html);
+}
 </script>
 </head>
 <body>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+	<input type="hidden" id="lastPage" name="lastPage" value="15"/>
+</form>
 	<div id="wrap">
-		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-								<div class="timeline">
-								</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
-								<ul id="dd">
-									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
-									<li>로그아웃</li>
+							<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							
+							</li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
 								</ul></li>
 						</ul>
-					</div>
-					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
-						<div class="sub_login2">
-							<span>회원가입</span> <span>ID/PW 찾기</span>
-						</div>
-					</div>
+					</div> <!-- btns end -->
 				</div>
-				<!-- 호버시 메뉴 생성 -->
 			</div>
 			<nav class="menu">
 				<ul>
@@ -641,26 +704,23 @@ hr {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-				<div>닉네임</div>
-				<span>소개글</span>
+
 			</div>
 		</div>
 		<div id="container">
-
 			<div class="board_list_wrap">
 				<div class="board_menu">
-					<nav class="menu_nav">
+						<nav class="menu_nav">
 						<ul id="left_group">
-							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
 						<ul class="right_group">
-							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
+							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
-							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
+							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
 									100</li>
-							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
+							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
 									100</li>
 						</ul>
 					</nav>
@@ -671,175 +731,11 @@ hr {
 					&nbsp;>&nbsp;&nbsp;팔로워
 				</div>
 				<div class="follow_list">
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/a1.jpg"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>원대하고 그들은 피가 더운지라 실현에 대한 자신과 용기가 있다 그러므로 그들은 이상의 보배를 능히 품으며 그들의 이상은 아름답고 소담스러운 열매를 맺어 우리 인생을 풍부하게 하는 것이다 보라 청춘을 ! 그들의 몸이 얼마나</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-					<div class="user_area">
-						<span><img alt="profile" src="./resources/images/profile3.png"></span>
-						<div class="user_info">
-							<span class="nic">닉네임</span> <span class="memo">YYYY-MM-DD</span><hr>
-							<p>소개글</p>
-						</div>
-						<div class="follow_btn_area">
-							<input type="button"
-								value="여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;" />
-						</div>
-					</div>
-				</div>
+					
+				</div> <!-- follow_list end -->
 			</div>
 			<div class="more_btn">
-				<input type="button" value="더 보 기" />
+				<input type="button" id="moreBtn" value="더 보 기" />
 			</div>
 		</div>
 	<div id="footer">

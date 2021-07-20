@@ -830,6 +830,10 @@ $(document).ready(function(){
   		location.href = "memAdmin";
   	}); //admin click end
   	
+  	$("#myPage").on("click", function(){
+  		location.href = "myPage";
+	}); //find click endmyPage
+  	
   	$("#timeline").on("click", function(){
   		location.href = "timeline";
   	}); //timeline click end
@@ -1208,7 +1212,7 @@ function makeRankBoard(yearData, monthData, weekData)
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="" id="profilePhoto">
 								<ul id="profileSlidedown">
-									<li>마이 페이지</li>
+									<li id="myPage">마이 페이지</li>
 									<li id="timeline">타임라인</li>
 									<li id="editProfile">프로필 수정</li>
 									<li id="editInfo">회원정보 수정</li>

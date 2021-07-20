@@ -79,7 +79,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: none;
+	display: inline-block;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -88,162 +88,70 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
-.logins {
-	display:inline-block;
-	vertical-align: top;
-	width: 470px;
-	height: 70px;
-	text-align: right;
-	background-color: #FFFFFF;
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
 }
-
-.sub_login1 {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 55px;
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
 }
-
-.sub_login2 {
-	display: block;
-	width: calc(100% - 75px);
-	height: 15px;
-	line-height: 10px;
-	text-align: right;
-	padding-right: 75px;
-}
-
-.sub_login2 span {
-	position: relative;
-	width: 10px;
-	font-size: 12px;
-	font-weight: 600;
-	cursor: pointer;
-	margin-left: 10px;
-}
-
-.sub_login2 span:hover {
-	color: #fcba03;
-}
-
-#inputID, #inputPW {
-   float: right;
-   width: 100px;
-   height: 25px;
-   margin-top: 20px;
-   margin-left: 5px;
-}
-#loginBtn {
-   float: right;
-   margin: 20px 20px 0px 5px;
-   width: 50px;
-   height: 30px;
-   background-color: #2e3459;
-   font-weight: bold;
-   font-size: 12px;
-   color: #FFFFFF;
-   text-align: center;
-   line-height: 26px;
-}
-#loginBtn:hover{
-   color: #FFFFFF;
-   background-color: #f37321;
+#notificationPhoto {
+   margin-left: 200px;
 }
 .banner {
 	width: 100%;
 	height: 70px;
 }
-
-.timeline {
+#profileSlidedown{
 	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+   	z-index: 300;
 }
-
-.timeline tr {
-	height: 50px;
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
 }
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
-}
-
-#dd {
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid #fcba03;
-	background-color: white;
-	position: absolute;
-	margin-top: 10px;
-	padding: 0px;
-	right: 8px;
-	height: 108px;
-	width: 122px;
-	display: none;
-}
-
-#dd li {
-	display: inline-block;
-	border: 1px solid rgb(250, 250, 250);
-	font-size: 12pt;
-	width: 120px;
-	text-align: center;
-}
-
-#dd li:hover {
+#profileSlidedown li:hover {
 	background-color: #f37321;
 }
-
+#myPage{
+	background-color: #f37321;
+}
 .menu {
 	position: absolute;
 	height: 70px;
@@ -295,7 +203,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 #container {
 	display: block;
 	width: 1280px;
-	height: 2500px;
 	margin: 0 auto;
 }
 
@@ -372,6 +279,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 30px;
 	background-color: #2e3459;
 	border-radius: 100px;
+	cursor: pointer;
 }
 
 #left_menu {
@@ -402,7 +310,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
-	height: 2200px;
 	font-weight: 500;
 }
 
@@ -438,7 +345,6 @@ a {
 
 .gallery {
 	padding: 30px 0 0 45px;
-	height: 2150px;
 }
 
 .post {
@@ -528,8 +434,19 @@ a {
 	width: 100%;
 	height: 100px;
 	padding-top: 50px;
+	font-size: 18pt;
+	text-align: center;
+	display: inline-block;
 }
-
+.paging_wrap span{
+	margin-left: 15px;
+	cursor: pointer;
+}
+.on{
+	font-weight: bold;
+	color: red;
+	text-decoration: underline;
+}
 #footer {
 	display: block;
 	width: 100%;
@@ -546,121 +463,248 @@ a {
 	width: 600px;
 	height: 80px;
 }
+.journal, .thumb{
+	cursor:pointer;
+}
+#admin{
+	display: none;	
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	var path = "";
+	
+	if("${sPHOTO_PATH}" != "")
+	{
+		path = "resources/upload/" + "${sPHOTO_PATH}";
+		
+		$("#profilePhoto").attr("src", path);
+	}
+	else
+	{
+		path = "./resources/images/profile.png";
 
-//페이징 그리기
-function drawPaging(pb) {
+		$("#profilePhoto").attr("src", path);
+	}
+	
+	if("${sGRADE_NO}" == "0")
+	{
+		$("#admin").show();
+	}
+	
+	var params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myPageProfiles",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				var html = "";  
+				
+				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
+				html += "<div>" + result.myProfile.NIC + "</div>";
+				html += "<span>" + result.myProfile.INTRO + "</span>"; 
+				
+				$(".info").html(html);
+			}                                                                                      
+			else
+			{
+				alert("오류 발생");
+			}
+		},//success end
+		error: function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end 
+	
+ 	params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myPageJournals",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				makeGallery(result.myPage);
+				makePage(result.pb);
+			}
+			else
+			{
+				alert("오류 발생");
+			}
+		},//success end
+		error: function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end 
+	
+	$(".paging_wrap").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "myPageJournals",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					makeGallery(result.myPage);
+					makePage(result.pb);
+					$("html").scrollTop(300);
+				}
+				else
+				{
+					alert("오류 발생");
+				}
+			},//success end
+			error: function(error){
+				console.log(error);
+			}//error end
+		}); //ajax end 
+	}); //paging_wrap click end
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$(".gallery").on("click", "span, strong", function(){
+		console.log($(this).attr($(this).attr("class")));
+	}); //post click span end
+	
+	$("#follower").on("click", function(){
+		location.href = "myPageFollower";
+	}); //follower click end
+	
+	$("#following").on("click", function(){
+		location.href = "myPageFollowing";
+	}); //following click end
+	
+}); //document ready end
+function makeGallery(myPage)
+{
 	var html = "";
 	
-	html += "<div page=\"1\">처음</div>";
-	if($("#page").val() =="1"){
-		html += "<div page=\"1\">이전</div>";
-	} else {
-		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
-	}
-	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
-		if($("#page").val() == i){
-			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
-		} else {
-			html += "<div page=\"" + i + "\">" + i + "</div>";
+	for(data of myPage)
+	{ 
+		html += "   <div class=\"post\">";
+		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+		html += "   	<div class=\"post_info\">";
+		html += "   		<p>";
+		html += "   			<span>" + data.CATEGORY + " > " + data.SUB_CATEGORY + "(" + data.REGION + ") </span>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<strong class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</strong>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<em>";
+		if(data.PATH != null)
+		{
+			var hashTag = data.PATH;
+			var arr =[];
+			arr = hashTag.split(",");
+			
+			if(arr.length != 0)
+			{
+				for(var i = 0; i < arr.length; i++)
+				{
+					 html += "#" + arr[i]+ " "; 
+				}
+			}
 		}
+		html += "</em>"; 
+		html += "   		</p>";
+		html += "   	</div>";
+		html += "   	<div class=\"post_profile\">";
+		html += "   		<div>";
+		html += "   			<div>";
+		html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
+		html += "   				<span class=\"cnt\">" + data.LIKE_CNT + "</span>";
+		html += "   			</div>";
+		html += "   			<span>" + data.JOURNAL_DATE + "</span>";
+		html += "   		</div>";
+		html += "   	</div>";
+		html += "   </div>";
 	}
-	if($("#page").val() == pb.maxPcount){
-		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
+	$(".gallery").html(html);
+}
+function makePage(pb)
+{
+	var html = "<span name=\"1\"><<</span>";
+	
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\"><</span>";
 	} else {
-		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
 	}
 	
-	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#page").val() == i) {
+			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
+		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPcount) {
+		html += "<span name=\"" + pb.maxPcount + "\">></span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+	}
+	
+	html += "<span name=\"" + pb.maxPcount + "\">>></span>";
 	
 	$(".paging_wrap").html(html);
 }
 </script>
 </head>
 <body>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+	<input type="hidden" id="page" name="page" value="${page}"/>
+</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-								<div class="timeline">
-									<table border="1">
-										<colgroup>
-											<col width="70px">
-											<col width="331.6px">
-										</colgroup>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>홍길동님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>2시간전 (오후)9:17분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-											<th>[여행일지]이 오늘도.... 에 <span>해리포터님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:54분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-											<th>[여행일지]오늘도....에 <span>말포이님</span>이 댓글을 다셨습니다
-											</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:49분</th>
-										</tr>
-										<tr>
-											<th rowspan="2"><img alt="프로필" src="./resources/images/profile.png"></th>
-											<th><span>사우론님</span>이회원님을 팔로우 하셨습니다</th>
-										</tr>
-										<tr>
-											<th>3시간전 (오후)8:45분</th>
-										</tr>
-										<tfoot>
-											<tr>
-												<th colspan="2">...더보기</th>
-											</tr>
-										</tfoot>
-									</table>
-								</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
-								<ul id="dd">
-									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
-									<li>로그아웃</li>
+							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
+							
+							</li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
 								</ul></li>
 						</ul>
-					</div>
-					<div class="logins">
-						<div class="sub_login1">
-							<form action="#" id="loginForm">
-								<input type="button" id="loginBtn" value="로그인" /> <input
-									type="password" id="inputPW" name="inputPW" placeholder="PW" />
-								<input type="text" id="inputID" name="inputID" placeholder="ID" />
-							</form>
-						</div>
-						<div class="sub_login2">
-							<span>회원가입</span> <span>ID/PW 찾기</span>
-						</div>
-					</div>
+					</div> <!-- btns end -->
 				</div>
-				<!-- 호버시 메뉴 생성 -->
 			</div>
 			<nav class="menu">
 				<ul>
@@ -682,9 +726,7 @@ function drawPaging(pb) {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-				<div>닉네임</div>
-				<span>소개글</span>
+				
 			</div>
 		</div>
 		<div id="container">
@@ -692,410 +734,32 @@ function drawPaging(pb) {
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_menu">
-							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
 						<ul class="right_menu">
-							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
+							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
-							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
+							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
 									100</li>
-							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
+							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
 									100</li>
 						</ul>
 					</nav>
-				</div>
+				</div> <!-- board_menu end -->
 				<div id="path_info">
 					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span>
 					&nbsp;>&nbsp;&nbsp;썸네일
-				</div>
+				</div> <!-- path_info end -->
 				<div class="gallery">
-					<div class="post">
-						<span class="thumb"><img alt="썸네일" src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						 <span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
-				</div>
+					
+				</div><!-- gallery end -->
 				<div class="paging_wrap">
-					<div class="paging">
-					</div>
-				</div>
-			</div>
+				
+				</div> <!-- paging_wrap end -->
+			</div> <!-- board_list_wrap end -->
 		</div>
 	</div>
 	<div id="footer">
