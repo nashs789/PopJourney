@@ -493,33 +493,15 @@ $(document).ready(function(){
 		$("#admin").show();
 	}
 	
-	var params = $("#memForm").serialize();
+
+	var html = "";  
 	
-	$.ajax({
-		url: "myPageProfiles",
-		data: params,
-		dataType: "json",
-		type: "post",
-		success: function(result){
-			if(result.msg == "success")
-			{
-				var html = "";  
-				
-				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
-				html += "<div>" + result.myProfile.NIC + "</div>";
-				html += "<span>" + result.myProfile.INTRO + "</span>"; 
-				
-				$(".info").html(html);
-			}                                                                                      
-			else
-			{
-				alert("오류 발생");
-			}
-		},//success end
-		error: function(error){
-			console.log(error);
-		}//error end
-	}); //ajax end 
+	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
+	html += "<div>${sNIC}</div>";
+	html += "<span>${sINTRO}</span>"; 
+	
+	$(".info").html(html);
+
 	
  	params = $("#memForm").serialize();
 	

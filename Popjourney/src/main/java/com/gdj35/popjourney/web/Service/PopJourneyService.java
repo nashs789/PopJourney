@@ -228,4 +228,28 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.updateMemo(params);
 	}
+
+	@Override
+	public int followStatus(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.followStatus(params);
+	}
+
+	@Override
+	public int unfollow(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.unfollow(params);
+	}
+
+	@Override
+	public int follow(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.follow(params);
+	}
+
+	@Override
+	public int followNotf(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.followNotf(params);
+	}
 }

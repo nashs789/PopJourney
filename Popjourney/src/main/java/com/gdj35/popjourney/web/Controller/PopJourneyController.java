@@ -487,6 +487,7 @@ public class PopJourneyController {
 				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
 				session.setAttribute("sNIC", loginInfo.get("NIC"));
 				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
+				session.setAttribute("sINTRO", loginInfo.get("INTRO"));
 
 				//modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
 				//modelMap.put("NIC", loginInfo.get("NIC")); 필요없는거 같아서 주석해놈
@@ -684,7 +685,7 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-	// 타임라인 페이지 게시글 카운트 - 이인복
+		// 타임라인 페이지 게시글 카운트 - 이인복
 		@RequestMapping(value = "/miniProfiles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 		@ResponseBody
 		public String miniProfiles(@RequestParam HashMap<String, String> params) throws Throwable {
@@ -808,7 +809,7 @@ public class PopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-		//마이 페이지 일지 가져오기
+		//프로필 가져오기
 		@RequestMapping(value = "/myPageProfiles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 		@ResponseBody
 		public String myPageProfiles(@RequestParam HashMap<String, String> params) throws Throwable {
@@ -818,7 +819,7 @@ public class PopJourneyController {
 			 try {
 				 
 				HashMap<String, String> myProfile = ipjs.myPageProfile(params);
-
+				
 				 if(myProfile != null)
 				 {
 					 modelMap.put("msg", "success");
@@ -985,7 +986,7 @@ public class PopJourneyController {
 			return mapper.writeValueAsString(modelMap);
 		}
 		
-		//마이 페이지 팔로잉 한 사람 가져오기
+		//팔로우 메모 업데이트
 		@RequestMapping(value = "/updateMemos", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 		@ResponseBody
 		public String updateMemos(@RequestParam HashMap<String, String> params) throws Throwable {
@@ -1010,6 +1011,91 @@ public class PopJourneyController {
 				modelMap.put("msg", "error");
 			}
 			
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//팔로우 했는지 안했는지 체크
+		@RequestMapping(value = "/followStatus", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String followStatus(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.followStatus(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//언팔로우
+		@RequestMapping(value = "/unfollows", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String unfollows(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.unfollow(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+				}
+				
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//팔로우
+		@RequestMapping(value = "/follows", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String follows(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.follow(params);
+				 int cnt2 = ipjs.followNotf(params);
+
+				 if(cnt > 0 && cnt2 > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+				}
+				
 			return mapper.writeValueAsString(modelMap);
 		}
 }

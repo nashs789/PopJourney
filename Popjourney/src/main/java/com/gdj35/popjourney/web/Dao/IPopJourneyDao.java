@@ -76,4 +76,12 @@ public interface IPopJourneyDao {
 	HashMap<String, String> followingMemo(HashMap<String, String> params)throws Throwable;
 
 	int updateMemo(HashMap<String, String> params)throws Throwable;
+
+	int followStatus(HashMap<String, String> params)throws Throwable;
+
+	int unfollow(HashMap<String, String> params)throws Throwable;
+
+	int follow(HashMap<String, String> params)throws Throwable;
+
+	int followNotf(HashMap<String, String> params)throws Throwable;
 }

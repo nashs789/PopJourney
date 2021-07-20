@@ -616,22 +616,7 @@ $(document).ready(function(){
 	}); //ajax end 
 	
 	$("#notification tbody").on("click", "span, tr, img", function(){
-		if($(this).attr("class") == "user")
-		{
-			console.log("user");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else if($(this).attr("class") == "journal")
-		{
-			console.log("journal");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else if($(this).attr("class") == "post")
-		{
-			console.log("post");
-			console.log($(this).attr($(this).attr("class")));
-		}
-		else if($(this).attr("class") == "notRead")
+		if($(this).attr("class") == "notRead")
 		{
 			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
 	
@@ -649,7 +634,23 @@ $(document).ready(function(){
 					console.log(error);
 				} // error end
 			}); //ajax end  
-		} //if ~ else end
+		} //if end
+		
+		if($(this).attr("class") == "user")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			console.log("journal");
+			console.log($(this).attr($(this).attr("class")));
+		}
+		else if($(this).attr("class") == "post")
+		{
+			console.log("post");
+			console.log($(this).attr($(this).attr("class")));
+		}
 	}); //notification tbody span tr click end
 	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
@@ -1178,6 +1179,9 @@ function makeRankBoard(yearData, monthData, weekData)
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
 </form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>
 	<div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -1187,7 +1191,7 @@ function makeRankBoard(yearData, monthData, weekData)
                      <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
-                  <div class="btns"> <!-- 밑에 logins와 연동 -->
+                  <div class="btns">
                      <ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
 							<div id="cnt"></div>

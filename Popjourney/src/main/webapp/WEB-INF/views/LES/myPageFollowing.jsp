@@ -607,6 +607,9 @@ hr {
     z-index: 400;
     opacity: 0.2;
 }
+#yes, #no{
+	cursor: pointer;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -634,31 +637,13 @@ $(document).ready(function(){
 	
 	var params = $("#memForm").serialize();
 	
-	$.ajax({
-		url: "myPageProfiles",
-		data: params,
-		dataType: "json",
-		type: "post",
-		success: function(result){
-			if(result.msg == "success")
-			{
-				var html = "";  
-				
-				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
-				html += "<div>" + result.myProfile.NIC + "</div>";
-				html += "<span>" + result.myProfile.INTRO + "</span>"; 
-				
-				$(".info").html(html);
-			}                                                                                      
-			else
-			{
-				alert("오류 발생");
-			}
-		},//success end
-		error: function(error){
-			console.log(error);
-		}//error end
-	}); //ajax end 
+var html = "";  
+	
+	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
+	html += "<div>${sNIC}</div>";
+	html += "<span>${sINTRO}</span>"; 
+	
+	$(".info").html(html);
 	
 	params = $("#memForm").serialize();
 	
@@ -892,7 +877,6 @@ function makeMemo(followingMemo)
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
 						<ul>
 							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">	
 							</li>

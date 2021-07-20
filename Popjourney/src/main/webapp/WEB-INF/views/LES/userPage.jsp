@@ -87,18 +87,63 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
+}
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
+}
+#notificationPhoto {
+   margin-left: 200px;
+}
+#profileSlidedown{
+	display: none;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+   	z-index: 300;
+}
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
+}
+#profileSlidedown li:hover {
+	background-color: #f37321;
+}
 .logins {
 	display:inline-block;
 	vertical-align: top;
@@ -163,64 +208,10 @@ body {
 	color: #FFFFFF;
 	background-color: #f37321;
 }
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
-.timeline {
-	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
-}
-
-.timeline tr {
-	height: 50px;
-}
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
-}
-
 #dd {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	border: 2px solid #fcba03;
@@ -302,7 +293,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
 	margin: 0 auto;
 }
 
@@ -370,7 +360,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 .menu_nav ul li:hover img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
-
+#myPageImg{
+	background-color: #f37321;
+}
 .menu_nav ul li img {
 	margin: 10px 20px 0px 20px;
 	padding: 4px;
@@ -438,7 +430,6 @@ a {
 
 .gallery {
 	padding: 30px 0 0 45px;
-	height: 1250px;
 }
 
 .post {
@@ -490,7 +481,6 @@ a {
 }
 
 .post_profile img {
-	visibility: hidden;
 	width: 42px;
 	height: 42px;
 }
@@ -530,42 +520,26 @@ a {
 	padding-top: 50px;
 }
 
-.paging {
-	font-size: 0;
+.paging_wrap {
+	width: 100%;
+	height: 100px;
+	padding-top: 50px;
+	font-size: 18pt;
 	text-align: center;
-}
-
-.paging a {
 	display: inline-block;
-	margin-left: 10px;
-	padding: 5px 10px;
-	border-radius: 5px;
-	font-size: 12pt;
+}
+.paging_wrap span{
+	margin-left: 15px;
+	cursor: pointer;
+}
+.on{
 	font-weight: bold;
-}
-
-.paging a.paging_btn {
-	background-color: none;
-	color: #2e3459;
-	letter-spacing: -5px;
-	font-size: 12pt;
-}
-
-.paging a.num {
-	color: #2e3459;
-}
-
-.paging a:first-child {
-	margin-left: 0;
-}
-
-.paging a.num:hover, .paging a.num.on, .paging a.paging_btn:hover {
-	color: #F1404B;
+	color: red;
 	text-decoration: underline;
 }
 
 #footer {
-	display: block;
+	display: inline-block;;
 	width: 100%;
 	height: 100px;
 	background-color: #2e3459;
@@ -580,9 +554,21 @@ a {
 	width: 600px;
 	height: 80px;
 }
-.alert_popup {
-   display: none;
-	/* display: inline-block */;
+.bg {
+	position: fixed;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    background-color: #000000;
+    z-index: 400;
+    opacity: 0.2;
+}
+#admin{
+	display: none;
+}
+.popup {
+   display: inline-block;
    width: 300px;
    height: 150px;
    background-color: #fcfcfc;
@@ -591,12 +577,11 @@ a {
    top: calc(50% - 75px); 
    left: calc(50% - 150px); 
    z-index: 500;
-   font-size: 16pt;
    border-radius: 10px;
    font-size: 0px;
    border: 0px;
 }
-.alert_popup_entity_txt {
+.popup_entity_txt {
    font-size: 12pt;
    font-weight: bold;
    text-align: center;
@@ -605,7 +590,7 @@ a {
    height:40px;
    margin: 30px auto 30px auto;
 }
-.alert_btn_list span{
+#yesBtn{
    text-decoration: none;
    display:inline-block;
    text-align:center;
@@ -616,9 +601,13 @@ a {
    color: #f37321;
    font-weight: bold;
    line-height: 30px;
-   border-radius: 0 0 10px 10px;
+   border-radius: 0 0 10px 10px; 
 }
-.alert_btn_list2 span{
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list a{
    text-decoration: none;
    display:inline-block;
    text-align:center;
@@ -630,33 +619,373 @@ a {
    font-weight: bold;
    line-height: 30px;
 }
-.alert_btn_list2 span:first-child {
+.btn_list a:first-child {
    border-radius: 0 0 0 10px; 
 }
-.alert_btn_list2 span:last-child {
+.btn_list a:last-child {
    border-radius: 0 0 10px 0; 
 }
-.alert_btn_list span:hover,
-.alert_btn_list2 span:hover {
-	background-color: #f37321;
-	color: white;
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
 }
-.bg {
-	position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    background-color: #000000;
-    z-index: 400;
-    opacity: 0.2;
+#following{
+	background-color: #f37321;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	if("${sMEM_NO}" != "")
+	{
+		$(".logins").css("display", "none");
+		$(".btns").css("display", "inline-block");
+		
+		var path = "";
+		
+		if("${sPHOTO_PATH}" != "")
+		{
+			path = "resources/upload/" + "${sPHOTO_PATH}";
+			
+			$("#profilePhoto").attr("src", path);
+		}
+		else
+		{
+			console.log("null");
+			path = "./resources/images/profile.png";
 
+			$("#profilePhoto").attr("src", path);
+		}
+		
+		if("${sGRADE_NO}" == "0")
+		{
+			$("#admin").show();
+		}
+		
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "followStatus",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				var html = "";
+				
+				if(result.msg == "success")
+				{
+					html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우</li>";
+				}
+				else if(result.msg == "failed")
+				{
+					html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
+				}
+				
+				$(".right_group").html(html);
+			},//success end
+			error: function(error){
+				console.log(error);
+			} //error end
+		});//ajax end
+	}
+	else
+	{
+		var html = "";
+		html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
+		$(".right_group").html(html);
+	}
+	
+	
+	var params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myPageProfiles",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			var html = ""; 
+
+			html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
+			html += "<div>" + result.myProfile.NIC + "</div>";
+			html += "<span>" + result.myProfile.INTRO + "</span>"; 
+			
+			$(".info").html(html);
+		},//success end
+		error: function(error){
+			console.log(error);
+		} //error end
+	});//ajax end
+	
+	params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "myPageJournals",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				makeGallery(result.myPage);
+				makePage(result.pb);
+			}
+			else
+			{
+				alert("오류 발생");
+			}
+		},//success end
+		error: function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end 
+	
+	$(".right_group").on("click", "#follow, #following", function(){
+		if("${sMEM_NO}" == "")
+		{
+			popupText = "로그인이 필요한 서비스입니다.";
+			commonPopup(popupText);
+		}
+		else if($(this).attr("id") == "following")
+		{
+			var params = $("#memForm").serialize();
+			
+			$.ajax({
+				url: "unfollows",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success: function(result){
+					location.reload();
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
+		}
+		else
+		{
+			var params = $("#memForm").serialize();
+			
+			$.ajax({
+				url: "follows",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success: function(result){
+					location.reload();		
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
+		}//if ~ else end
+	}); //right_group click end
+	
+	$(".paging_wrap").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "myPageJournals",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					makeGallery(result.myPage);
+					makePage(result.pb);
+					$("html").scrollTop(300);
+				}
+				else
+				{
+					alert("오류 발생");
+				}
+			},//success end
+			error: function(error){
+				console.log(error);
+			}//error end
+		}); //ajax end 
+	}); //paging_wrap click end
+	
+	$(".login_btn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "failed")
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
+					else
+					{
+						location.reload();
+					}
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
+
+	$("#inputPW, #inputID").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
+}); //document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}
+function makeGallery(myPage)
+{
+	var html = "";
+	
+	for(data of myPage)
+	{ 
+		html += "   <div class=\"post\">";
+		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+		html += "   	<div class=\"post_info\">";
+		html += "   		<p>";
+		html += "   			<span>" + data.CATEGORY + " > " + data.SUB_CATEGORY + "(" + data.REGION + ") </span>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<strong class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</strong>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<em>";
+		if(data.PATH != null)
+		{
+			var hashTag = data.PATH;
+			var arr =[];
+			arr = hashTag.split(",");
+			
+			if(arr.length != 0)
+			{
+				for(var i = 0; i < arr.length; i++)
+				{
+					 html += "#" + arr[i]+ " "; 
+				}
+			}
+		}
+		html += "</em>"; 
+		html += "   		</p>";
+		html += "   	</div>";
+		html += "   	<div class=\"post_profile\">";
+		html += "   		<div>";
+		html += "   			<div>";
+		html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
+		html += "   				<span class=\"cnt\">" + data.LIKE_CNT + "</span>";
+		html += "   			</div>";
+		html += "   			<span>" + data.JOURNAL_DATE + "</span>";
+		html += "   		</div>";
+		html += "   	</div>";
+		html += "   </div>";
+	}
+	$(".gallery").html(html);
+}
+function makePage(pb)
+{
+	var html = "<span name=\"1\"><<</span>";
+	
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\"><</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
+	}
+	
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#page").val() == i) {
+			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
+		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPcount) {
+		html += "<span name=\"" + pb.maxPcount + "\">></span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+	}
+	
+	html += "<span name=\"" + pb.maxPcount + "\">>></span>";
+	
+	$(".paging_wrap").html(html);
+}
 </script>
 </head>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${userNo}"/> <!-- 쿼리랑 이름 맞춰야 해서 변경  -->
+	<input type="hidden" id="loginMem" name="loginMem" value="${sMEM_NO}"/> <!-- 로그인 한 사람의 아이디 -->
+	<input type="hidden" id="page" name="page" value="${page}"/>
+</form>
+
 <body>
 	<div id="wrap">
 		<!-- header부분 고정 -->
@@ -664,31 +993,32 @@ a {
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-								<div class="timeline">
-								</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
-								<ul id="dd">
-									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
-									<li>로그아웃</li>
+							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">	
+							</li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
 								</ul></li>
 						</ul>
 					</div>
 					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
+						<form action="#" id="loginForm">
+							<div class="sub_login1">
+								<input type="button" class="login_btn" value="로그인" /> <input
+									type="password" class="login" name="inputPW" id="inputPW" placeholder="PW" /> <input
+									type="text" name="inputID" class="login" id="inputID" placeholder="ID" />
+							</div>
+						</form>
 						<div class="sub_login2">
 							<span>회원가입</span> <span>ID/PW 찾기</span>
 						</div>
@@ -716,9 +1046,7 @@ a {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-				<div>닉네임</div>
-				<span>소개글</span>
+
 			</div>
 		</div>
 		<div id="container">
@@ -726,11 +1054,11 @@ a {
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_group">
-							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
 						<ul class="right_group">
-							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로우</li>
+
 						</ul>
 					</nav>
 				</div>
@@ -741,31 +1069,7 @@ a {
 					&nbsp;>&nbsp;&nbsp;썸네일
 				</div>
 				<div class="gallery">
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="count">100</span> <span>좋아요</span>
-										<span class="count">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-							</div>
-					</div>
+
 				</div>
 				<div class="paging_wrap">
 				</div>
@@ -790,6 +1094,5 @@ a {
 			<span>확 인</span><span>취  소</span>
 		</div>
 	</div>
-   <div class="bg"></div>  
 </body>
 </html>

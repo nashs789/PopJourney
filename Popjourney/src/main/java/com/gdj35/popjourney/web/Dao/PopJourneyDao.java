@@ -227,4 +227,28 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.update("PJ.updateMemo", params);
 	}
+
+	@Override
+	public int followStatus(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.followStatus", params);
+	}
+
+	@Override
+	public int unfollow(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.delete("PJ.unfollow", params);
+	}
+
+	@Override
+	public int follow(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.follow", params);
+	}
+
+	@Override
+	public int followNotf(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.followNotf", params);
+	}
 }
