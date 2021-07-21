@@ -763,6 +763,15 @@
 					} else if($("#mainSearchFilter").val() == 1) {
 						$("#goSearch").attr("action", "searchTravelDiary");
 						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#goSearch").attr("action", "searchHashtag");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#goSearch").attr("action", "searchCommunity");
+						$("#goSearch").submit();
+					} else {
+						$("#goSearch").attr("action", "searchNic");
+						$("#goSearch").submit();
 					}
 				});
 				

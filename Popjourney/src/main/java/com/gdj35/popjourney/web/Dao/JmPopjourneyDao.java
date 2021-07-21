@@ -227,4 +227,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectOne("JmPJ.getNicCnt", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getJournalDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getHashDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getBoardDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getNicDetailList", params);
+	}
+
 }

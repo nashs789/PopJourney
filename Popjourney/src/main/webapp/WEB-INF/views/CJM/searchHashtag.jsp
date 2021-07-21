@@ -179,6 +179,9 @@
 			input[type='text']:focus, input[type='password']:focus, select:focus {
 				outline-color: #fcba03;
 			}
+			#admin {
+				display: none;
+			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			#container {
@@ -220,37 +223,25 @@
 			.search_btn {
 				width: 90px;
 				height: 40px;
-				background-color: #2e3459;
+				background-color: #FFFFFF;
 				font-size: 11pt;
 				font-weight: bold;
-				color: #FFFFFF;
+				color: #000000;
 				cursor: pointer;
-				border-radius: 5px;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
 			}
 			.search_btn:hover {
-				background-color: #294a37;
+				background-color: #2e3459;
+				color: #FFFFFF;
 			}
-			.pop_search {
-				display: block;
-				font-size: 12pt;
-				font-weight: 600;
-				width: 480px;
-				margin: 0px auto;
-			}
-			.pop_search span {
-				cursor: pointer;
-			}
-			.pop_search span:hover {
-				color: #fcba03;
-			}
-			
 			
 			
 			.line {
 				width: 100%;
 				height: 5px;
 				margin: 30px auto 15px auto;
-				border-bottom: 5px solid #fcba03;
+				border-bottom: 2px solid #2e3459;
 			}
 			.search_category {
 				font-size: 18pt;
@@ -262,174 +253,126 @@
 				margin: 5px 0px 20px 0px;
 			}
 			
-			
-			
-			
-			.travel_diary {
-				display: block;
-				width: calc(100% - 30px);
-				margin-bottom: 20px;
-				background-color: #fdfdfd;
-				padding: 15px;
+			/* 여기부터 여행게시판 css*/
+			.gallery {
+				padding: 30px 0 0 45px;
+				display: table;
 			}
-			.travel_diary_thumbnail {
+			.post {
+				float: left;
+				width: 340px;
+				height: 390px;
+				margin: 0 0 40px 40px;
+				border: 1px solid #f1f1f1;
+				font-size: 10pt;
+				color: black;
+				cursor: pointer;
+			}
+			.post:hover {
+				box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			}
+			.thumb {
+				height: 210px;
+				display: block;
+				position: relative;
+			}
+			
+			.thumb img {
+				width: 292px;
+				height: 170px;
+				margin: 23px;
+			}
+			
+			.post_info {
+				height: 110px;
+				position: relative;
 				display: inline-block;
-				vertical-align: top;
-				width: 300px;
-				height: 250px;
-				margin-right: 50px;
-			}
-			.travel_diary_thumbnail_photo {
-				display: block;
-				width: 300px;
-				height: 220px;
-				text-align: center;
-			}
-			.thumbnail_photo {
-				cursor: pointer;
-				margin: 0px auto;
-				max-width: 300px;
-				max-height: 220px;
-			}
-			.travel_diary_thumbnail_title {
-				display: block;
-				width: 300px;
-				height: 30px;
-				font-size: 12pt;
-				font-weight: bold;
-				text-align: center;
-				line-height: 40px;
-				cursor: pointer;
-			}
-			.travel_diary_thumbnail_title:hover {
-				color: #fcba03;
-			}
-			.travel_diary_profile {
-				display: inline-block;
-				vertical-align: top;
-				width: 250px;
-				height: 250px;
-				margin-right: 50px;
-			}
-			.travel_diary_profile_1 {
-				display: block;
-				width: 250px;
-				height: 60px;
-				margin-bottom: 30px;
-			}
-			.user_photo {
-				width: 60px;
-				height: 60px;
-				cursor: pointer;
-			}
-			.user_nic {
-				display: inline-block;
-				vertical-align: top;
-				font-size: 15pt;
-				font-weight: bold;
-				width: 170px;
-				height: 60px;
-				line-height: 60px;
-				margin-left: 20px;
-				cursor: pointer;				
-			}
-			.user_nic:hover {
-				color: #fcba03;
-			}
-			.travel_diary_profile_2 {
-				display: block;
-				width: 230px;
-				height: 160px;
-				font-size: 12pt;
-				font-weight: 600;
-			}
-			.travel_diary_profile_2_entity {
-				margin: 5px 0px 5px 0px;
-			}
-			.hash {
-				cursor: pointer;
-				margin: 0px;
-			}
-			.hash:hover {
-				color: #fcba03;
-			}
-			.travel_diary_entity {
-				display: inline-block;
-				vertical-align: top;
-				width: 560px;
-				height: 250px;
-				font-size: 12pt;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-			.travel_diary_entity p {
-				margin: 5px 0px 5px 0px;
-			}
-			.more_entity {
-				font-size: 12pt;
-				font-weight: bold;
-				color: #FFFFFF;
-				text-align: center;
-				background-color: #2e3459;
-				margin: 50px 0px 50px 0px;
-				width: 100%;
-				height: 30px;
-				line-height: 30px;
-				cursor: pointer;
-			}
-			.more_entity:hover {
-				background-color: #294a37;
+				padding: 0 23px 0 23px;
 			}
 			
+			.post_info p:first-child {
+				margin-top: 0;
+			}
 			
-			.paging {
-	         	margin: 50px auto 50px auto; 
-	         	text-align: center;
+			.post_info strong {
+				font-size: 12pt;
+			}
+			
+			.post_profile {
+				position: absolute;
+				width: 317px;
+				height: 50px;
+				margin: 10px 0 0 23px;
+			}
+			
+			.post_profile img {
+				width: 42px;
+				height: 42px;
+			}
+			
+			.post_profile>span {
+				position: absolute;
+				line-height: 42px;
+				margin-left: 8px;
+			}
+			
+			.post_profile>div {
+				float: right;
+				margin-top: 5px;
+			}
+			
+			.post_profile>div>span {
+				float: right;
+				margin-right: 23px;
+			}
+			
+			.post_profile>div>div {
+				margin-right: 23px;
+			}
+			
+			.post_profile>div span {
+				margin-top: 5px;
+			}
+			
+			.post_profile>div>div .cnt {
+				color: #F1404B;
+			}
+			/* 여기까지 여행게시판 css*/
+			
+			
+			.paging { 
+	            font-size: 0;
+	            text-align: center;
+	            margin: 40px 0px 60px 0px;
 	        }  
-	        .paging a {
-	         	display: inline-block;
-	         	margin-left: 10px;
-	         	padding: 5px 10px;
-	         	border-radius: 5px;
-	         	font-size: 12pt; 
+	        .paging div {
+	            display: inline-block;
+	            margin-left: 10px;
+	            padding: 5px 10px;
+	            border-radius: 20px;
+	            font-size: 12pt; 
+	            font-weight: bold;
+	            text-decoration: none;
 	        }   
-	        .paging a.paging_btn {
-	         	background-color: none;
-	         	color: #2e3459;
-	         	letter-spacing:-5px;
-	         	font-size: 15pt;
-	         	font-weight: bold;
-	         	text-decoration: none;
+	        .paging_btn {
+	            background-color: none;
+	            color: #2e3459;
+	            letter-spacing:-5px;
+	            font-size: 12pt;
 	        }
-	        .paging a.num {        	
-	         	border: 1px solid #2e3459;
-	         	background-color: #2e3459;
-	         	color: white;
-	         	font-weight: bold;
-	         	text-decoration: none;
+	        .paging div.num {           
+	            color: #2e3459;
 	        }
-	        .paging a:first-child {
-	         	margin-left: 0;
+	        .paging div:first-child {
+	            margin-left: 0;
 	        } 
-	        .paging a.num:hover {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
+	            color: #F1404B;
+	            text-decoration: underline;
+	            cursor: pointer;
 	        }
-	        .paging a.paging_btn:hover {
-	         	color: #fcba03;
-	        }
-	        .paging a.num.on {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
-	        }
-			
-			
-			
-			
-			
 			
 			
 			#footer {
@@ -448,6 +391,168 @@
 				height: 80px;
 			}
 		</style>
+		<script type="text/javascript"
+				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				reloadList();
+				
+				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#travelWriter").on("click", function() {
+			  		location.href = "travelWriterRank";
+			  	});
+				$("#clientCenter").on("click", function() {
+			  		location.href = "clientCenterQuestion";
+			  	});
+				$("#admin").on("click", function() {
+			  		location.href = "memAdmin";
+			  	});
+				
+				// 로그인 정보 유지
+				if("${sMEM_NO}" != "") {
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+					if($("#memNo").val() == 1) {
+						$("#admin").show();
+					}
+				} else {
+					$(".logins").css("display", "inline-block");
+					$(".btns").css("display", "none");
+				}
+				
+				// 셀렉터 옵션 유지
+				if("${param.mainSearchFilter}" != "") {
+					$("#mainSearchFilter").val("${param.mainSearchFilter}");
+				}
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					$("#allCkbox").prop("checked", false);
+					reloadList();
+				});
+				
+				// 검색처리
+				$(".search_btn").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						$("#actionForm").attr("action", "search");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#actionForm").attr("action", "searchTravelDiary");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#page").val(1);
+						$("#mainSearchOldTxt").val($("#mainSearchTxt").val());
+						reloadList();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#actionForm").attr("action", "searchCommunity");
+						$("#actionForm").submit();
+					} else {
+						$("#actionForm").attr("action", "searchNic");
+						$("#actionForm").submit();
+					}
+				});
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "searchHashtags",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						hashCnt(res.hashCnt);
+						drawList(res.list);
+						drawPaging(res.pb);
+						
+						$("#hashTxt").html("");
+						$("#hashTxt").html("#" + res.txt);
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				}); // ajax end..
+			} // reloadList() end..
+			function hashCnt(hashCnt) {
+				console.log(hashCnt);
+				if(hashCnt > 0) {
+					$(".paging").show();
+				} else if(hashCnt == 0) {
+					$(".paging").hide();
+				}
+				$("#hashCnt").html("");
+				var html = "";
+				html = hashCnt + "개의 여행게시판이 검색되었습니다.";
+				$("#hashCnt").html(html);
+			}
+			function drawList(list) {
+				$("#HashGallery").html("");
+				var html = "";
+				
+				for(d of list) {
+					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
+					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
+					html += "	<div class=\"post_info\">";
+					html += "		<p>";
+					html += "			<span>" + d.CATEGORY_NAME + " > " + d.SUB_CATEGORY_NAME + "(" + d.REGION_NAME + ")</span>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<strong>" + d.TITLE + "</strong>";
+					html += "		</p>";
+					html += "		<p>";
+					html += "			<em>" + d.HASH + "</em>";
+					html += "		</p>";
+					html += "	</div>";
+					html += "	<div class=\"post_profile\">";
+					html += "		<img alt=\"작성자\" src=\"./resources/upload/" + d.MEM_PHOTO_PATH + "\"> <span>" + d.NIC + "</span>";
+					html += "		<div>";
+					html += "			<div>";
+					html += "				<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>";
+					html += "				<span class=\"cnt\">" + d.JOURNAL_LIKE_CNT + "</span>";
+					html += "			</div>";
+					html += "			<span>" + d.JOURNAL_DATE + "</span>";
+					html += "		</div>";
+					html += "	</div>";
+					html += "</div>";
+				}
+				
+				$("#HashGallery").html(html);
+			}
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+					}
+				}
+				
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+			}
+		</script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -456,13 +561,13 @@
 				<div class="banner">
 					<div class="top">
 						<div class="logo_area">
-							<a href="#"><img alt="로고" src="./img/logo.png" class="logo_photo"></a>
+							<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 							<div class="site_name">우리들의 여행일지</div>
 						</div>
 						<div class="btns"> <!-- 밑에 logins와 연동 -->
-							<img alt="bell" src="./img/bell.png" class="bell_icon">
-							<img alt="bookmark" src="./img/bmk.png">
-							<img alt="프로필" src="./img/profile.png">
+							<img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+							<img alt="bookmark" src="./resources/images/bmk.png">
+							<img alt="프로필" src="./resources/images/profile.png">
 						</div>
 						<div class="logins">
 							<div class="sub_login1">
@@ -480,13 +585,14 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li>여행게시판</li>
 						<li>자유게시판</li>
-						<li>여행작가</li>
-						<li>내부관리자</li>
+						<li id="travelWriter">여행작가</li>
+						<li id="clientCenter">고객센터</li>
+						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./img/search.png" class="search_icon"/>
+				<!-- <img alt="search" src="./resources/images/search.png" class="search_icon"/>
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
@@ -494,220 +600,40 @@
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
-				</select>
+				</select> -->
 			</div>
 			
 			<div id="container">
+				<form action="#" id="hidden" method="post">
+					<input type="hidden" id="sTxt" value="${param.mainSearchTxt}" />
+					<input type="hidden" id="sFilter" value="${param.mainSearchFilter}" />
+				</form>
 				<div class="search_area">
+				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="mainSearchOldTxt" value="${param.mainSearchTxt}" />
+					<input type="hidden" id="journalNo" name="journalNo" />
 					<div class="sub_search">
 						검색 :
-						<select class="search_filter">
+						<select class="search_filter" id="mainSearchFilter" name="mainSearchFilter">
 								<option value="0" selected="selected">통합검색</option>
 								<option value="1">여행일지</option>
 								<option value="2">해시태그</option>
 								<option value="3">자유게시판</option>
 								<option value="4">닉네임</option>
 						</select>
-						<input class="search_txt" type="text" />
+						<input class="search_txt" type="text" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" />
 						<input class="search_btn" type="button" value="검색" />
 					</div>
-					<div class="pop_search">
-						인기검색어 : <span>국내여행</span>, <span>한적한 곳</span>, <span>기차여행</span>, <span>도보여행</span>, <span>자전거여행</span>
-					</div>
+				</form>
 					<div class="line"></div>
-					<div class="search_category">#여수</div>
-					<div class="search_category_cnt">100개의 여행일지가 검색되었습니다.</div>
+					<div class="search_category" id="hashTxt">#${param.mainSearchTxt}</div>
+					<div class="search_category_cnt" id="hashCnt">${hashCnt}개의 여행일지가 검색되었습니다.</div>
 					
 					<!-- 여행일지 검색결과 시작 -->
-					<div class="travel_diary"> 
-						<div class="travel_diary_thumbnail">
-							<div class="travel_diary_thumbnail_photo">
-								<img alt="photo" src="./img/thumb.jpg" class="thumbnail_photo"/>
-							</div>
-							<div class="travel_diary_thumbnail_title">바다여행</div>
-						</div>					
-						<div class="travel_diary_profile">
-							<div class="travel_diary_profile_1">
-								<img alt="user" src="./img/user.png" class="user_photo" />
-								<span class="user_nic">닉네임</span>
-							</div>
-							<div class="travel_diary_profile_2">
-								<p class="travel_diary_profile_2_entity">2021-04-29</p>
-								<p class="travel_diary_profile_2_entity">여행작가</p>
-								<p class="travel_diary_profile_2_entity">조회수 : 200</p>
-								<p class="travel_diary_profile_2_entity">좋아요 : 33개</p>
-								<p class="travel_diary_profile_2_entity">댓글 : 5개</p>
-								<p class="travel_diary_profile_2_entity"><span class="hash">#여수</span> <span class="hash">#여행작가</span></p>
-							</div>
-						</div>					
-						<div class="travel_diary_entity">
-							<p>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지 여행일지 웹페이지 여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다. 글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								여행일지 웹페이지여행일지 웹페이지여행일지 웹페이지여행일웹페이지여행일dsads
-							</p>
-						</div>					
-					</div>  
-							
-					<div class="travel_diary">
-						<div class="travel_diary_thumbnail">
-							<div class="travel_diary_thumbnail_photo">
-								<img alt="photo" src="./img/thumb2.jpg" class="thumbnail_photo"/>
-							</div>
-							<div class="travel_diary_thumbnail_title">남산타워 코스 추천</div>
-						</div>					
-						<div class="travel_diary_profile">
-							<div class="travel_diary_profile_1">
-								<img alt="user" src="./img/user.png" class="user_photo" />
-								<span class="user_nic">닉네임</span>
-							</div>
-							<div class="travel_diary_profile_2">
-								<p class="travel_diary_profile_2_entity">2021-04-29</p>
-								<p class="travel_diary_profile_2_entity">여행작가</p>
-								<p class="travel_diary_profile_2_entity">조회수 : 200</p>
-								<p class="travel_diary_profile_2_entity">좋아요 : 33개</p>
-								<p class="travel_diary_profile_2_entity">댓글 : 5개</p>
-								<p class="travel_diary_profile_2_entity"><span class="hash">#여수</span> <span class="hash">#여행작가</span></p>
-							</div>
-						</div>					
-						<div class="travel_diary_entity">
-							<p>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지 여행일지 웹페이지 여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다. 글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								여행일지 웹페이지<br/>
-							</p>
-						</div>					
-					</div>	
-					
-					<div class="travel_diary">
-						<div class="travel_diary_thumbnail">
-							<div class="travel_diary_thumbnail_photo">
-								<img alt="photo" src="./img/thumb3.jpg" class="thumbnail_photo"/>
-							</div>
-							<div class="travel_diary_thumbnail_title">응봉산 팔각정 데이트</div>
-						</div>					
-						<div class="travel_diary_profile">
-							<div class="travel_diary_profile_1">
-								<img alt="user" src="./img/user.png" class="user_photo" />
-								<span class="user_nic">닉네임</span>
-							</div>
-							<div class="travel_diary_profile_2">
-								<p class="travel_diary_profile_2_entity">2021-04-29</p>
-								<p class="travel_diary_profile_2_entity">여행작가</p>
-								<p class="travel_diary_profile_2_entity">조회수 : 200</p>
-								<p class="travel_diary_profile_2_entity">좋아요 : 33개</p>
-								<p class="travel_diary_profile_2_entity">댓글 : 5개</p>
-								<p class="travel_diary_profile_2_entity"><span class="hash">#여수</span> <span class="hash">#여행작가</span></p>
-							</div>
-						</div>					
-						<div class="travel_diary_entity">
-							<p>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지 여행일지 웹페이지 여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다. 글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								여행일지 웹페이지<br/>
-							</p>
-						</div>					
-					</div>	
-					<div class="travel_diary"> 
-						<div class="travel_diary_thumbnail">
-							<div class="travel_diary_thumbnail_photo">
-								<img alt="photo" src="./img/thumb.jpg" class="thumbnail_photo"/>
-							</div>
-							<div class="travel_diary_thumbnail_title">바다여행</div>
-						</div>					
-						<div class="travel_diary_profile">
-							<div class="travel_diary_profile_1">
-								<img alt="user" src="./img/user.png" class="user_photo" />
-								<span class="user_nic">닉네임</span>
-							</div>
-							<div class="travel_diary_profile_2">
-								<p class="travel_diary_profile_2_entity">2021-04-29</p>
-								<p class="travel_diary_profile_2_entity">여행작가</p>
-								<p class="travel_diary_profile_2_entity">조회수 : 200</p>
-								<p class="travel_diary_profile_2_entity">좋아요 : 33개</p>
-								<p class="travel_diary_profile_2_entity">댓글 : 5개</p>
-								<p class="travel_diary_profile_2_entity"><span class="hash">#여수</span> <span class="hash">#여행작가</span></p>
-							</div>
-						</div>					
-						<div class="travel_diary_entity">
-							<p>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지 여행일지 웹페이지 여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다. 글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								여행일지 웹페이지여행일지 웹페이지여행일지 웹페이지여행일웹페이지여행일dsads
-							</p>
-						</div>					
-					</div>	
-					<div class="travel_diary">
-						<div class="travel_diary_thumbnail">
-							<div class="travel_diary_thumbnail_photo">
-								<img alt="photo" src="./img/thumb3.jpg" class="thumbnail_photo"/>
-							</div>
-							<div class="travel_diary_thumbnail_title">응봉산 팔각정 데이트</div>
-						</div>					
-						<div class="travel_diary_profile">
-							<div class="travel_diary_profile_1">
-								<img alt="user" src="./img/user.png" class="user_photo" />
-								<span class="user_nic">닉네임</span>
-							</div>
-							<div class="travel_diary_profile_2">
-								<p class="travel_diary_profile_2_entity">2021-04-29</p>
-								<p class="travel_diary_profile_2_entity">여행작가</p>
-								<p class="travel_diary_profile_2_entity">조회수 : 200</p>
-								<p class="travel_diary_profile_2_entity">좋아요 : 33개</p>
-								<p class="travel_diary_profile_2_entity">댓글 : 5개</p>
-								<p class="travel_diary_profile_2_entity"><span class="hash">#여수</span> <span class="hash">#여행작가</span></p>
-							</div>
-						</div>					
-						<div class="travel_diary_entity">
-							<p>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지 여행일지 웹페이지 여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								글의 내용이 들어갈 자리 입니다.<br/>
-								글의 내용은 이렇습니다. 글의 내용은 이렇습니다.<br/>
-								여행일지 웹페이지<br/>
-								여행작가와 일반사용자가 있습니다.<br/><br/>
-								여행일지 웹페이지<br/>
-							</p>
-						</div>
-					</div>	
+					<div class="gallery" id="HashGallery"></div>
 					<!-- 여행일지 검색결과 끝  -->
-					<div class="paging">
-	            		<a href="#" class=paging_btn><<</a>
-	            		<a href="#" class=paging_btn><</a>
-	            		<a href="#" class="num on">1</a>
-	            		<a href="#" class="num">2</a>
-	            		<a href="#" class="num">3</a>
-	            		<a href="#" class="num">4</a>
-	            		<a href="#" class="num">5</a>
-	            		<a href="#" class=paging_btn>></a>
-	            		<a href="#" class=paging_btn>>></a>
-	            	</div>
+					<div class="paging"></div>
 				</div> <!-- search area end -->
 			</div>
 			

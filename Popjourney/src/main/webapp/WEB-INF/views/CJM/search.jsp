@@ -244,7 +244,7 @@
 				width: 100%;
 				height: 5px;
 				margin: 30px auto 15px auto;
-				border-bottom: 5px solid #fcba03;
+				border-bottom: 2px solid #2e3459;
 			}
 			.search_category {
 				font-size: 18pt;
@@ -369,7 +369,7 @@
 	       }
 	       .board_list {
 	         	width: 100%;
-	         	border-top: 2px solid #2e3459;
+	         	border-top: 1px solid #2e3459;
 	         	margin-top: 30px;
 	       }
 	       .board_list_off {
@@ -562,15 +562,51 @@
 					$(".btns").css("display", "none");
 				}
 				
-				$(".search_btn").on("click", function() {
-					reloadList();
-				});
-				
 				// 셀렉터 옵션 유지
 				if("${param.mainSearchFilter}" != "") {
 					$("#mainSearchFilter").val("${param.mainSearchFilter}");
 				}
 				$("#mainSearchTxt").val("${param.mainSearchTxt}");
+				
+				// 검색처리
+				$(".search_btn").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						reloadList();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#actionForm").attr("action", "searchTravelDiary");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#actionForm").attr("action", "searchHashtag");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#actionForm").attr("action", "searchCommunity");
+						$("#actionForm").submit();
+					} else {
+						$("#actionForm").attr("action", "searchNic");
+						$("#actionForm").submit();
+					}
+				});
+				
+				// 더보기 처리
+				$("#journalMore").on("click", function() {
+					$("#actionForm").attr("action", "searchTravelDiary");
+					$("#actionForm").submit();
+				});
+				$("#hashMore").on("click", function() {
+					$("#actionForm").attr("action", "searchHashtag");
+					$("#actionForm").submit();
+				});
+				$("#boardMore").on("click", function() {
+					$("#actionForm").attr("action", "searchCommunity");
+					$("#actionForm").submit();
+				});
+				$("#nicMore").on("click", function() {
+					$("#actionForm").attr("action", "searchNic");
+					$("#actionForm").submit();
+				});
+			
+				
+	
 			}); // document ready end..
 			
 			function reloadList() {
@@ -614,8 +650,8 @@
 					error: function(request, status, error) {
 						console.log(error);
 					}
-				});
-			}
+				}); // ajax end..
+			} // reloadList() end..
 			function journalCnt(journalCnt) {
 				$("#journalCnt").html("");
 				var html = "";

@@ -15,7 +15,8 @@
 				margin: 0px;
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
-				min-width: 1280px;
+				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -179,13 +180,16 @@
 			input[type='text']:focus, input[type='password']:focus, select:focus {
 				outline-color: #fcba03;
 			}
+			#admin {
+				display: none;
+			}
 			/* 여기까지 헤더 레이아웃 !!! */
 			
 			#container {
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
 			.search_area {
 				display: block;
@@ -220,37 +224,24 @@
 			.search_btn {
 				width: 90px;
 				height: 40px;
-				background-color: #2e3459;
+				background-color: #FFFFFF;
 				font-size: 11pt;
 				font-weight: bold;
-				color: #FFFFFF;
+				color: #000000;
 				cursor: pointer;
-				border-radius: 5px;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
 			}
 			.search_btn:hover {
-				background-color: #294a37;
+				background-color: #2e3459;
+				color: #FFFFFF;
 			}
-			.pop_search {
-				display: block;
-				font-size: 12pt;
-				font-weight: 600;
-				width: 480px;
-				margin: 0px auto;
-			}
-			.pop_search span {
-				cursor: pointer;
-			}
-			.pop_search span:hover {
-				color: #fcba03;
-			}
-			
-			
 			
 			.line {
 				width: 100%;
 				height: 5px;
 				margin: 30px auto 15px auto;
-				border-bottom: 5px solid #fcba03;
+				border-bottom: 2px solid #2e3459;
 			}
 			.search_category {
 				font-size: 18pt;
@@ -262,42 +253,20 @@
 				margin: 5px 0px 20px 0px;
 			}
 			
-			
-			.more_entity {
-				font-size: 12pt;
-				font-weight: bold;
-				color: #FFFFFF;
-				text-align: center;
-				background-color: #2e3459;
-				margin: 50px 0px 50px 0px;
-				width: 100%;
-				height: 30px;
-				line-height: 30px;
-				cursor: pointer;
-			}
-			.more_entity:hover {
-				background-color: #294a37;
-			}
-			
-			
-			
 		   table {
 	         	border-collapse: collapse;
 	       } 
 	       caption {
 	         	display: none;
 	       }
-	       a {
-	         	text-decoration: none;
-	         	color: inherit;
-	       }
 	       .board_list {
 	         	width: 100%;
-	         	border-top: 2px solid #2e3459;
+	         	border-top: 1px solid #2e3459;
 	         	margin-top: 30px;
 	       }
 	       .board_list tr {
 	         	border-bottom: 1px solid #ccc;
+	         	background-color: #FFFFFF;
 	       }
 	       .board_list th,
 	       .board_list td{
@@ -306,7 +275,14 @@
 	       }
 	       .board_list td{
 	         	text-align: center;
-	       }        
+	       } 
+	       .board_list tbody tr {
+	       		background-color: #f9f9f9;
+	       		cursor: pointer;
+	       }
+	       .board_list tbody tr:hover {
+	       		background-color: #FFFFFF;
+	       }       
 	       .board_list tbody tr td:nth-child(2) {
 	          	font-weight:550;
 	         	color: rgb(128, 0, 255);
@@ -330,96 +306,53 @@
 	          	background-color: #2e3459;
 	          	color: white; 
 	       }
+	       .board_title {
+	       		text-decoration: none;
+	       }
+	       a {
+	       		text-decoration: none;
+	       }
 	       .click_article {
 				cursor: pointer;
 			}
 			.click_article:hover {
 				color: #fcba03;
 			}
-	       .paging {
-	         	margin-top: 30px; 
-	         	font-size: 0;
-	         	text-align: center;
-	       }  
-	       .paging a {
-	         	display: inline-block;
-	         	margin-left: 10px;
-	         	padding: 5px 10px;
-	         	border-radius: 5px;
-	         	font-size: 12pt; 
-	       }   
-	       .paging a.paging_btn {
-	         	background-color: none;
-	         	color: #2e3459;
-	         	letter-spacing:-5px;
-	         	font-size: 15pt;
-	         	font-weight: bold;
-	         	text-decoration: none;
-	       }
-	       .paging a.num {        	
-	         	border: 1px solid #2e3459;
-	         	background-color: #2e3459;
-	         	color: white;
-	         	font-weight: bold;
-	         	text-decoration: none;
-	       }
-	       .paging a:first-child {
-	         	margin-left: 0;
-	       } 
-	       .paging a.num:hover {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
-	       }
-	       .paging a.paging_btn:hover {
-	         	color: #fcba03;
-	       }
-	       .paging a.num.on {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
-	       }
-		
-		   .paging {
-	         	margin: 50px auto 50px auto; 
-	         	text-align: center;
-	       }  
-	       .paging a {
-	         	display: inline-block;
-	         	margin-left: 10px;
-	         	padding: 5px 10px;
-	         	border-radius: 5px;
-	         	font-size: 12pt; 
-	       }   
-	       .paging a.paging_btn {
-	         	background-color: none;
-	         	color: #2e3459;
-	         	letter-spacing:-5px;
-	         	font-size: 15pt;
-	         	font-weight: bold;
-	       }
-	       .paging a.num {        	
-	         	border: 1px solid #2e3459;
-	         	background-color: #2e3459;
-	         	color: white;
-	         	font-weight: bold;
-	       }
-	       .paging a:first-child {
-	         	margin-left: 0;
-	       } 
-	       .paging a.num:hover {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
-	       }
-	       .paging a.paging_btn:hover {
-	         	color: #fcba03;
-	       }
-	       .paging a.num.on {
-	         	border-color:#fcba03;
-	         	background-color: #fcba03;
-	         	color: #2e3459;
-	       }
+			
+			
+	       .paging { 
+	            font-size: 0;
+	            text-align: center;
+	            margin: 40px 0px 60px 0px;
+	        }  
+	        .paging div {
+	            display: inline-block;
+	            margin-left: 10px;
+	            padding: 5px 10px;
+	            border-radius: 20px;
+	            font-size: 12pt; 
+	            font-weight: bold;
+	            text-decoration: none;
+	        }   
+	        .paging_btn {
+	            background-color: none;
+	            color: #2e3459;
+	            letter-spacing:-5px;
+	            font-size: 12pt;
+	        }
+	        .paging div.num {           
+	            color: #2e3459;
+	        }
+	        .paging div:first-child {
+	            margin-left: 0;
+	        } 
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
+	            color: #F1404B;
+	            text-decoration: underline;
+	            cursor: pointer;
+	        }
 			
 			
 			#footer {
@@ -438,6 +371,150 @@
 				height: 80px;
 			}
 		</style>
+		<script type="text/javascript"
+				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				reloadList();
+				
+				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#travelWriter").on("click", function() {
+			  		location.href = "travelWriterRank";
+			  	});
+				$("#clientCenter").on("click", function() {
+			  		location.href = "clientCenterQuestion";
+			  	});
+				$("#admin").on("click", function() {
+			  		location.href = "memAdmin";
+			  	});
+				
+				// 로그인 정보 유지
+				if("${sMEM_NO}" != "") {
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+					if($("#memNo").val() == 1) {
+						$("#admin").show();
+					}
+				} else {
+					$(".logins").css("display", "inline-block");
+					$(".btns").css("display", "none");
+				}
+				
+				// 셀렉터 옵션 유지
+				if("${param.mainSearchFilter}" != "") {
+					$("#mainSearchFilter").val("${param.mainSearchFilter}");
+				}
+				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					$("#allCkbox").prop("checked", false);
+					reloadList();
+				});
+				
+				// 검색처리
+				$(".search_btn").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						$("#actionForm").attr("action", "search");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#actionForm").attr("action", "searchTravelDiary");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#actionForm").attr("action", "searchHashtag");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#page").val(1);
+						$("#mainSearchOldTxt").val($("#mainSearchTxt").val());
+						reloadList();
+					} else {
+						$("#actionForm").attr("action", "searchNic");
+						$("#actionForm").submit();
+					}
+				});
+			}); // document ready end..
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "searchCommunitys",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						boardCnt(res.boardCnt);
+						drawList(res.list);
+						drawPaging(res.pb);
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				}); // ajax end..
+			} // reloadList() end..
+			function boardCnt(boardCnt) {
+				console.log(boardCnt);
+				if(boardCnt > 0) {
+					$(".paging").show();
+				} else if(boardCnt == 0) {
+					$(".paging").hide();
+				}
+				$("#boardCnt").html("");
+				var html = "";
+				html = boardCnt + "개의 자유게시판이 검색되었습니다.";
+				$("#boardCnt").html(html);
+			}
+			function drawList(list) {
+				$("#boardGallery").html("");
+				var html = "";
+				
+				for(d of list) {
+					html += "<tr class=\"board_data\" postNo=\"" + d.POST_NO + "\">";
+	    			html += "	<td>" + d.POST_NO + "</td>";
+	    			html += "	<td>" + d.CATEGORY_NAME + "</td>";
+	    			html += "	<td class=\"board_title\">" + d.TITLE + "</td>";
+	    			html += "	<td>" + d.GRADE_NAME + "</td>";
+	    			html += "	<td>" + d.NIC + "</td>";
+	    			html += "	<td>" + d.BOARD_DATE + "</td>";
+	    			html += "	<td>" + d.HIT + "</td>";
+	    			html += "	<td>" + d.POST_LIKE_CNT + "</td>";
+	    			html += "</tr>";
+				}
+				
+				$("#boardGallery").html(html);
+			}
+			function drawPaging(pb) {
+				var html = "";
+				
+				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				
+				if($("#page").val() == "1") {
+					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+				}
+				
+				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+					if($("#page").val() == i) {
+						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					} else {
+						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+					}
+				}
+				
+				if($("#page").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				} else {
+					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+				}
+				
+				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				
+				$(".paging").html(html);
+			}
+		</script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -446,13 +523,13 @@
 				<div class="banner">
 					<div class="top">
 						<div class="logo_area">
-							<a href="#"><img alt="로고" src="./img/logo.png" class="logo_photo"></a>
+							<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 							<div class="site_name">우리들의 여행일지</div>
 						</div>
 						<div class="btns"> <!-- 밑에 logins와 연동 -->
-							<img alt="bell" src="./img/bell.png" class="bell_icon">
-							<img alt="bookmark" src="./img/bmk.png">
-							<img alt="프로필" src="./img/profile.png">
+							<img alt="bell" src="./resources/images/bell.png" class="bell_icon">
+							<img alt="bookmark" src="./resources/images/bmk.png">
+							<img alt="프로필" src="./resources/images/profile.png">
 						</div>
 						<div class="logins">
 							<div class="sub_login1">
@@ -470,13 +547,14 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li>여행게시판</li>
 						<li>자유게시판</li>
-						<li>여행작가</li>
-						<li>내부관리자</li>
+						<li id="travelWriter">여행작가</li>
+						<li id="clientCenter">고객센터</li>
+						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./img/search.png" class="search_icon"/>
+				<!-- <img alt="search" src="./resources/images/search.png" class="search_icon"/>
 				<input type="text" class="search" placeholder="검색">
 				<select class="filter">
 					<option value="0" selected="selected">통합검색</option>
@@ -484,31 +562,37 @@
 					<option value="2">해시태그</option>
 					<option value="3">자유게시판</option>
 					<option value="4">닉네임</option>
-				</select>
+				</select> -->
 			</div>
 			
 			<div id="container">
+				<form action="#" id="hidden" method="post">
+					<input type="hidden" id="sTxt" value="${param.mainSearchTxt}" />
+					<input type="hidden" id="sFilter" value="${param.mainSearchFilter}" />
+				</form>
 				<div class="search_area">
+				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="mainSearchOldTxt" value="${param.mainSearchTxt}" />
+					<input type="hidden" id="postNo" name="postNo" />
 					<div class="sub_search">
 						검색 :
-						<select class="search_filter">
+						<select class="search_filter" id="mainSearchFilter" name="mainSearchFilter">
 								<option value="0" selected="selected">통합검색</option>
 								<option value="1">여행일지</option>
 								<option value="2">해시태그</option>
 								<option value="3">자유게시판</option>
 								<option value="4">닉네임</option>
 						</select>
-						<input class="search_txt" type="text" />
+						<input class="search_txt" type="text" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" />
 						<input class="search_btn" type="button" value="검색" />
 					</div>
-					<div class="pop_search">
-						인기검색어 : <span>국내여행</span>, <span>한적한 곳</span>, <span>기차여행</span>, <span>도보여행</span>, <span>자전거여행</span>
-					</div>
+				</form>
 					
 					<!-- 자유게시판 검색결과 시작 -->		
 					<div class="line"></div>		
 					<div class="search_category">자유게시판</div>
-					<div class="search_category_cnt">200개의 자유게시글이 검색되었습니다.</div>
+					<div class="search_category_cnt" id="boardCnt">${boardCnt}개의 자유게시글이 검색되었습니다.</div>
 					
 					<table class="board_list">
 	            		<caption>게시판 목록</caption>
@@ -534,221 +618,10 @@
 	            				<th class="click_article">좋아요</th>
 	            			</tr>
 	            		</thead>
-	            		<tbody>
-	            			<tr>
-	            				<td>1</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>2</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>3</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>4</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>5</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>6</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>7</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>8</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>9</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>10</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>11</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>12</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>13</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>14</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>15</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>16</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>17</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>18</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>19</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            			<tr>
-	            				<td>20</td>
-	            				<td>여행꿀팁</td>
-	            				<td><a href="#"></a></td>
-	            				<td>여행작가</td>
-	            				<td>abc</td>
-	            				<td>2021-05-26</td>
-	            				<td>145</td>
-	            				<td>50</td>
-	            			</tr>
-	            		</tbody>
+	            		<tbody id="boardGallery"></tbody>
             		</table>
 					<!-- 자유게시판 검색결과 끝 -->
-					<div class="paging">
-	            		<a href="#" class=paging_btn><<</a>
-	            		<a href="#" class=paging_btn><</a>
-	            		<a href="#" class="num on">1</a>
-	            		<a href="#" class="num">2</a>
-	            		<a href="#" class="num">3</a>
-	            		<a href="#" class="num">4</a>
-	            		<a href="#" class="num">5</a>
-	            		<a href="#" class=paging_btn>></a>
-	            		<a href="#" class=paging_btn>>></a>
-	            	</div>		
+					<div class="paging"></div>		
 				</div> <!-- search area end -->
 			</div>
 			
