@@ -678,29 +678,6 @@ a {
 <script type="text/javascript">
 $(document).ready(function() {
 	reloadList();
-	$(".login_btn").on("click", function () {
-		if($.trim($("#inputID").val())==""){
-			alert("아이디를 입력해 주세요.");
-			$("#inputID").focus();
-		} else if ($.trim($("#inputPW").val())=="") {
-			alert("비밀번호를 입력해 주세요.");
-			$("#inputPW").focus();
-		} else {
-			var params = $("#loginForm").serialize();
-			$.ajax({
-				url:"logins", 
-				type: "post", 
-				dataType: "json", 
-				data : params, 
-				success: function(res){
-						location.reload();
-				}, 
-				error: function (request, status, error) {
-					console.log(error);
-				}
-			});
-		}
-	});//login_btn end
 	
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
@@ -730,82 +707,12 @@ $(document).ready(function() {
 		$("#actionForm").attr("action", "post");
 		$("#actionForm").submit();
 	});
-	
-	//로그인
-	if("${sMEM_NO}" != "") { // 로그인 상태
-		$(".btns, .sub_profile").show();
-		$(".logins, .sub_area").hide();
-	} else { // 비 로그인 상태
-		$(".logins, .sub_area").show();
-		$(".btns, .sub_profile").hide();
-	}
-	if("${param.searchFilter}" != ""){
-		$("#searchFilter").val("${param.searchFilter}");
-	} 
-	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
-		if($.trim($("#inputID").val()) == "")
-		{
-			popupText = "아이디를 입력하세요.";
-			commonPopup(popupText);
-		}
-		else if($.trim($("#inputPW").val()) == "")
-		{
-			popupText = "비밀번호를 입력하세요.";
-			commonPopup(popupText);
-		}
-		else
-		{
-			var params = $("#loginForm").serialize();
-			
-			$.ajax({
-				url: "logins",
-				data: params,
-				dataType: "json",
-				type: "post",
-				success:function(result)
-				{
-					if(result.msg == "failed")
-					{
-						popupText = "ID와 PW가 일치하지 않습니다.";
-						commonPopup(popupText);
-						$("#inputID").val("");
-						$("#inputPW").val("");
-					}
-					else
-					{
-						location.reload();
-					}
-				}, //success end
-				error: function(request, status, error) {
-					console.log(error);
-				} // error end
-			}); //ajax end 
-		}// if ~ else end
-	}); //loginBtn click end
-	
 }); //document ready end
-//기본, 전체보기
-function reloadList() {
-	var params = $("#actionForm").serialize();
-	
-	$.ajax({
-		url:"communityLists", 
-		type: "post",
-		dataType: "json",
-		data : params,
-		success: function(res){
-			drawList(res.list);
-			drawPaging(res.pb);
-		}, 
-		error: function (request, status, error) {
-			console.log(error);
-		}
-	});
-}
 // 카테고리별, 작성자별(등급, 내가 쓴 글)
 function reloadList() {
-	var params = $("#actionForm").serialize();
+	var params = $("#BoardForm").serialize();
 	
+	console.log(params);
 	$.ajax({
 		url:"communityLists", 
 		type: "post",
@@ -813,7 +720,6 @@ function reloadList() {
 		data : params,
 		success: function(res){
 			drawList(res.list);
-			drawPaging(res.pb);
 		}, 
 		error: function (request, status, error) {
 			console.log(error);
@@ -867,36 +773,15 @@ function drawList(list) {
 	
 	$(".board_list tbody").html(html); 
 }
-
-function drawPaging(pb) {
-	var html = "";
-	
-	html += "<div page=\"1\">처음</div>";
-	if($("#page").val() =="1"){
-		html += "<div page=\"1\">이전</div>";
-	} else {
-		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
-	}
-	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
-		if($("#page").val() == i){
-			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
-		} else {
-			html += "<div page=\"" + i + "\">" + i + "</div>";
-		}
-	}
-	if($("#page").val() == pb.maxPcount){
-		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
-	} else {
-		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
-	}
-	
-	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
-	
-	$(".paging").html(html);
-}
 </script>
 </head>
 <body>
+<form action="#" id="BoardForm">
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="lastPage" name="lastPage" value="15"/>
+</form>
+				
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1013,15 +898,12 @@ function drawPaging(pb) {
 			</nav>
 		</div>
 			<div class="board_list_wrap">
-				<form action="#" id="actionForm" method="post">
-				<input type="hidden" id="postNo" name="postNo"/>
-				<input type="hidden" id="page" name="page" value="${page}">
 				<div class="board_menu">
 					<nav class="left_nav">
 						<ul>
-							<li id="postAll" name="postAll"><img alt="bookmark" src="./resources/images/all.png"><br />전체보기</li>
-							<li id="postGrade2" name="postGrade2"><img alt="bookmark" src="./resources/images/writer.png"><br />여행작가</li>
-							<li id="postGrade1" name="postGrade1"><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
+							<li id="postAll"><img alt="bookmark" src="./resources/images/all.png"><br />전체보기</li>
+							<li id="postGrade2"><img alt="bookmark" src="./resources/images/writer.png"><br />여행작가</li>
+							<li id="postGrade1"><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
 						</ul>
 					</nav>
 					<nav class="right_nav">
@@ -1072,7 +954,6 @@ function drawPaging(pb) {
 						</select>
 					</div>
 				</div>
-				</form>
 			</div>
 		</div>
 	</div>
