@@ -403,7 +403,6 @@ a {
 	color: black;
 	text-align: center;
 	background-color: white;
-	cursor: pointer; 
 }
 
 .user_area img {
@@ -637,7 +636,7 @@ $(document).ready(function(){
 	
 	var params = $("#memForm").serialize();
 	
-var html = "";  
+	var html = "";  
 	
 	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
 	html += "<div>${sNIC}</div>";
@@ -680,6 +679,11 @@ var html = "";
 			$("#profileSlidedown").css("display", "block");
 		}
 	}); //profilePhoto click end
+	
+	$(".follow_list").on("click", "input[type='button']", function(){
+		$("#userNo").val($(this).attr($(this).attr("class")));
+		$("#userForm").submit();
+	}); //follow_list click button end
 	
 	$("#moreBtn").on("click", function(){
 		var params = $("#memForm").serialize();
@@ -791,7 +795,7 @@ function makeFollowing(myFollowing)
 		html += "			<p>" + data.MEMO + "</p>";  
 		html += "		</div>";
 		html += "		<div class=\"follow_btn_area\">";
-		html += "			<input type=\"button\"";
+		html += "			<input type=\"button\" class=\"user\" user=\"" + data.MEM_NO + "\"";
 		html += "				value=\"여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&#62;\" /> ";
 		html += "		</div>";
 		html += "	</div>";
@@ -866,6 +870,9 @@ function makeMemo(followingMemo)
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 	<input type="hidden" id="box" name="box" value=""/>
 	<input type="hidden" id="memo" name="memo"/>
+</form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
 	<div id="wrap">
 		<!-- header부분 고정 -->

@@ -651,7 +651,6 @@ $(document).ready(function(){
 		}
 		else
 		{
-			console.log("null");
 			path = "./resources/images/profile.png";
 
 			$("#profilePhoto").attr("src", path);
@@ -695,7 +694,6 @@ $(document).ready(function(){
 		$(".right_group").html(html);
 	}
 	
-	
 	var params = $("#memForm").serialize();
 	
 	$.ajax({
@@ -706,7 +704,14 @@ $(document).ready(function(){
 		success: function(result){
 			var html = ""; 
 
-			html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
+			if(result.myProfile.PHOTO_PATH != null)
+			{
+				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
+			}
+			else
+			{
+				html += "<img alt=\"profile\" src=\"./resources/images/profile3.png\"class=\"profile_img\">";
+			}
 			html += "<div>" + result.myProfile.NIC + "</div>";
 			html += "<span>" + result.myProfile.INTRO + "</span>"; 
 			
@@ -1081,18 +1086,6 @@ function makePage(pb)
 			POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
-	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">로그인이 필요한 서비스입니다.</div>
-		<div class="alert_btn_list">
-			<span>확 인</span>
-		</div>
-	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">팔로우를 취소하시겠습니까?</div>
-		<div class="alert_btn_list2">
-			<span>확 인</span><span>취  소</span>
-		</div>
 	</div>
 </body>
 </html>

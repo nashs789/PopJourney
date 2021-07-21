@@ -367,7 +367,6 @@ a {
 	text-align: center;
 	padding-top: 25px;
 	background-color: white;
-	cursor: pointer;
 }
 
 .user_area img {
@@ -553,6 +552,11 @@ $(document).ready(function(){
 		}
 	}); //profilePhoto click end	
 	
+	$(".follow_list").on("click", "input[type='button']", function(){
+		$("#userNo").val($(this).attr($(this).attr("class")));
+		$("#userForm").submit();
+	}); //follow_list click button end
+	
 	$("#moreBtn").on("click", function(){
 		var params = $("#memForm").serialize();
 		
@@ -611,7 +615,7 @@ function makeFollower(myFollower)
 			html += "   		<span><img alt=\"profile\" src=\"./resources/images/profile.png\"></span>";
 		}
 		html += "   		<div class=\"user_info\">";
-		html += "   			<span class=\"nic\" nic=\"" + data.REQUEST_MEM_NO + "\">" + data.NIC + "</span> <span class=\"memo\">" + data.REQUEST_DATE+ ""; 
+		html += "   			<span class=\"nic\">" + data.NIC + "</span> <span class=\"memo\">" + data.REQUEST_DATE+ ""; 
 		if(data.CHA == 0)
 		{
 			html += "(오늘)</span><hr>";
@@ -623,7 +627,7 @@ function makeFollower(myFollower)
 		html += "   			<p>" + data.INTRO + "</p>";      
 		html += "   		</div>";
 		html += "   		<div class=\"follow_btn_area\">";
-		html += "   			<input type=\"button\" value=\"여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;\"/>";
+		html += "   			<input type=\"button\" class=\"user\" user=\"" + data.REQUEST_MEM_NO + "\" value=\"여 행 일 지&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;\"/>";
 		html += "   		</div>";
 		html += "   	</div>";
 	}
@@ -637,6 +641,9 @@ function makeFollower(myFollower)
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	<input type="hidden" id="lastPage" name="lastPage" value="15"/>
+</form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
 	<div id="wrap">
 		<div id="header">

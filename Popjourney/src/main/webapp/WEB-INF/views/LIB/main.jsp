@@ -536,6 +536,11 @@ svg{
 .btns>ul>li {
 	margin-right: 10px;
 }
+#regionName{
+	margin-top: 30px;
+	font-size: 18pt;
+	font-weight: bold;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
@@ -558,7 +563,6 @@ $(document).ready(function(){
 		}
 		else
 		{
-			console.log("null");
 			path = "./resources/images/profile.png";
 
 			$("#profilePhoto").attr("src", path);
@@ -814,9 +818,21 @@ $(document).ready(function(){
 		}); //ajax end
     }); //svg .TEXT click end
     
-    $("#boardWrap").on("click", "tr ", function(){
+    $("#boardWrap").on("click", "tr td", function(){
     	$("#journalNo").val($(this).attr("no"));
-    	console.log($("#journalNo").val());
+    	
+    /* 	console.log($(this).attr("class"));
+    	console.log($(this).attr($(this).attr("class"))); */
+    	
+    	if($(this).attr("class") == "user")
+    	{
+    		$("#userNo").val($(this).attr($(this).attr("class")));
+    		$("#userForm").submit();
+    	}
+    	else if($(this).attr("class") == "journal")
+    	{
+    		console.log("일지");
+    	}
     }); // 상세보기 페이지 구현하면 만들기
   
    	$("#travelWriter").on("click", function() {
@@ -1053,6 +1069,7 @@ function makeRankBoard(yearData, monthData, weekData)
 {
 	var html = "";
 	
+	html +="<div id=\"regionName\"><" + yearData[0].REGION_NAME + "></div>";
 	html +=" <div id=\"yearBoard\">";
 	html +=" <div class=\"title\">[" + yearData[0].JOURNAL_DATE.substring(0, 4) + "년 랭킹]</div>";
 	html +=" <table>";
@@ -1076,10 +1093,10 @@ function makeRankBoard(yearData, monthData, weekData)
 	for(var data of yearData)
 	{
 		html +=" 	<tbody>";
-		html +=" 		<tr no=\"" + data.JOURNAL_NO + "\">";
+		html +=" 		<tr>";
 		html +=" 			<td>" + data.JOURNAL_NO + "</td>";
-		html +=" 			<td>" + data.TITLE + "</td>";
-		html +=" 			<td>" + data.NIC + "</td>";
+		html +=" 			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
+		html +=" 			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
 		html +=" 			<td>" + data.HIT + "</td>";
 		html +=" 			<td>" + data.JOURNAL_DATE + "</td>";
 		html +=" 		</tr>";
@@ -1111,10 +1128,10 @@ function makeRankBoard(yearData, monthData, weekData)
 	for(data of monthData)
 	{ 
 		html +="	<tbody>";
-		html +="		<tr no=\"" + data.JOURNAL_NO + "\">";
+		html +="		<tr>";
 		html +="			<td>" + data.JOURNAL_NO + "</td>";
-		html +="			<td>" + data.TITLE + "</td>";
-		html +="			<td>" + data.NIC + "</td>";
+		html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
+		html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
 		html +="			<td>" + data.HIT + "</td>";
 		html +="			<td>" + data.JOURNAL_DATE + "</td>";
 		html +="		</tr>";
@@ -1146,10 +1163,10 @@ function makeRankBoard(yearData, monthData, weekData)
 	for(data of weekData)
 	{ 
 		html +="	<tbody>";
-		html +="		<tr no=\"" + data.JOURNAL_NO + "\">";
+		html +="		<tr>";
 		html +="			<td>" + data.JOURNAL_NO + "</td>";
-		html +="			<td>" + data.TITLE + "</td>";
-		html +="			<td>" + data.NIC + "</td>";
+		html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
+		html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
 		html +="			<td>" + data.HIT + "</td>";
 		html +="			<td>" + data.JOURNAL_DATE + "</td>";
 		html +="		</tr>";

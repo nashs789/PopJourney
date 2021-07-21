@@ -84,4 +84,18 @@ public interface IPopJourneyDao {
 	int follow(HashMap<String, String> params)throws Throwable;
 
 	int followNotf(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> myBMK(HashMap<String, String> params)throws Throwable;
+
+	HashMap<String, String> BMKDetail(HashMap<String, String> params)throws Throwable;
+
+	int myBMKCnt(HashMap<String, String> params)throws Throwable;
+
+	int addBMK(HashMap<String, String> params)throws Throwable;
+
+	int delBMK(HashMap<String, String> params)throws Throwable;
+
+	int delBMK2(HashMap<String, String> params)throws Throwable;
+
+	int updateBMK(HashMap<String, String> params)throws Throwable;
 }
