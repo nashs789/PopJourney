@@ -1,5 +1,7 @@
 package com.gdj35.popjourney.common.service;
 
+import java.util.HashMap;
+
 import com.gdj35.popjourney.common.bean.PagingBean;
 
 public interface IPagingService {
@@ -41,5 +43,6 @@ public interface IPagingService {
 
 	// 빈형식으로 취득
 	public PagingBean getPagingBean(int page, int maxCount, int viewCnt, int pageCnt);
+
 
 }

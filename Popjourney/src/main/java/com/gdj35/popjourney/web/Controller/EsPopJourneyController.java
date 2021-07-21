@@ -72,7 +72,11 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/userPage")
 	public ModelAndView userPage(@RequestParam HashMap<String, String> params, ModelAndView mav)
 			throws Throwable {
+		int page = 1;
 
+		mav.addObject("page", page);
+		
+		mav.addObject("userNo", params.get("userNo"));
 		mav.setViewName("LES/userPage");
 
 		return mav;

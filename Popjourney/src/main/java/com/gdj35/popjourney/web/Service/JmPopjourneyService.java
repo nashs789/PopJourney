@@ -189,4 +189,44 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.FAQList(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getJournalList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getHashList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBoardList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNicList(params);
+	}
+
+	@Override
+	public int getJournalCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalCnt(params);
+	}
+
+	@Override
+	public int getHashCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getHashCnt(params);
+	}
+
+	@Override
+	public int getBoardCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBoardCnt(params);
+	}
+
+	@Override
+	public int getNicCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNicCnt(params);
+	}
+
 }

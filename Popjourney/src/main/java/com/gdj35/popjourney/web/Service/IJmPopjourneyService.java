@@ -76,4 +76,20 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> FAQList(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getJournalList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getHashList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBoardList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getNicList(HashMap<String, String> params) throws Throwable;
+
+	public int getJournalCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getHashCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getBoardCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getNicCnt(HashMap<String, String> params) throws Throwable;
+
 }

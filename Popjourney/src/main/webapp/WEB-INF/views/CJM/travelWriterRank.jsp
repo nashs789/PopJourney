@@ -149,7 +149,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #fcba03;
+				color: #F37321;
 			}
 			.menu ul li a {
 				display: inline-block;
@@ -213,17 +213,19 @@
 				border: 1px solid black;
 			}
 			.nic_btn {
-				width: 90px;
+			width: 90px;
 				height: 40px;
-				background-color: #2e3459;
-				font-size: 12pt;
+				background-color: #FFFFFF;
+				font-size: 11pt;
 				font-weight: bold;
-				color: #FFFFFF;
+				color: #000000;
 				cursor: pointer;
-				border-radius: 5px;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
 			}
 			.nic_btn:hover {
-				background-color: #294a37;
+				background-color: #2e3459;
+				color: #FFFFFF;
 			}
 			table {
 				border-collapse: collapse;

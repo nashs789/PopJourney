@@ -226,13 +226,14 @@
 			.bg { /* 클릭 시 inline-block */
 				display: none;
 				width: 100%;
-				height: 1403px;
+				height: 100%;
 				position: absolute;
 				top: 0px;
 				left: 0px;
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.popupDel2 {
 			   display: none; /* 클릭 시 inline-block */
@@ -279,13 +280,14 @@
 			.bg2 { /* 클릭 시 inline-block */
 				display: none;
 				width: 100%;
-				height: 1403px;
+				height: 100%;
 				position: absolute;
 				top: 0px;
 				left: 0px;
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.bg_grade {
 				display: none;
@@ -657,7 +659,7 @@
 							$(".ckbox:checked").each(function() {
 								array.push($(this).val());
 							});
-							$("#userNo").val(array);
+							$("#userNos").val(array);
 							
 							console.log(array);
 							
@@ -730,13 +732,13 @@
 					});
 				});
 				
-				/* // 회원프로필 이동
-				$("#list_wrap body").on("click", "tr", function() {
-					$("#memNo").val($(this).attr("mno"));
+				// 회원프로필 이동
+				$("#list_wrap tbody").on("click", "tr", function() {
+					$("#userNo").val($(this).attr("mno"));
 					
-					$("#actionForm").attr("action", "주소");
+					$("#actionForm").attr("action", "userPage");
 					$("#actionForm").submit();
-				}); */
+				});
 				
 				
 				// 성별 오/내림차순
@@ -751,6 +753,17 @@
 						$("#sexGbn").val(1);
 					}
 					reloadList();
+				});
+				
+				// 메인검색창 넘어가는 부분(동기)
+				$(".search_icon").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						$("#goSearch").attr("action", "search");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
+					}
 				});
 				
 			}); // document ready end..
@@ -801,10 +814,10 @@
 					html += "<td>" + d.GRADE_NAME + "</td>";
 					html += "<td>" + d.JOIN_DATE + "</td>";
 					html += "<td>" + d.LEAVE_DATE + "</td>";
-					html += "<td></td>"; // 게시글수
-					html += "<td></td>"; // 좋아요수
-					html += "<td></td>"; // 팔로워수
-					html += "<td></td>"; // 누적신고수
+					html += "<td>" + d.POST_SUM + "</td>"; // 게시글수
+					html += "<td>" + d.LIKE_SUM + "</td>"; // 좋아요수
+					html += "<td>" + d.FOLLOW_SUM + "</td>"; // 팔로워수
+					html += "<td>" + d.REPORT_CNT +"</td>"; // 누적신고수
 					html += "<td>" + d.ACC_CNT + "</td>";
 					html += "<td></td>"; // 등업신청유무
 					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
@@ -949,15 +962,17 @@
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
-				<input type="text" class="search" placeholder="검색">
-				<select class="filter">
-					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행일지</option>
-					<option value="2">해시태그</option>
-					<option value="3">자유게시판</option>
-					<option value="4">닉네임</option>
-				</select>
+				<form action="#" id="goSearch" method="post" >
+					<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+					<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+					<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+						<option value="0" selected="selected">통합검색</option>
+						<option value="1">여행일지</option>
+						<option value="2">해시태그</option>
+						<option value="3">자유게시판</option>
+						<option value="4">닉네임</option>
+					</select>
+				</form>
 			</div>
 			<div id="container">
 				<div class="mem_admin_area">
@@ -967,12 +982,13 @@
 					<form action="#" id="actionForm" method="post">
 					<div class="sub_search">
 						검색 :
-							<input type="hidden" id="memNo" name="memNo" />
 							<input type="hidden" id="page" name="page" value="${page}" />
 							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
 							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
-							<input type="hidden" id="userNo" name="userNo" value="" />
+							<input type="hidden" id="userNos" name="userNos" value="" /> <!-- 체크박스용  -->
+							<input type="hidden" id="userNo" name="userNo" /> <!-- 프로필페이지용 -->
+							
 							<select class="search_filter" id="searchFilter" name="searchFilter">
 									<option value="0" selected="selected">통합검색</option>
 									<option value="1">아이디</option>

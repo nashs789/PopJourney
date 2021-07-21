@@ -187,4 +187,44 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectList("JmPJ.FAQList", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getJournalList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getJournalList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getHashList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getBoardList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getNicList", params);
+	}
+
+	@Override
+	public int getJournalCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getJournalCnt", params);
+	}
+
+	@Override
+	public int getHashCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getHashCnt", params);
+	}
+
+	@Override
+	public int getBoardCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getBoardCnt", params);
+	}
+
+	@Override
+	public int getNicCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getNicCnt", params);
+	}
+
 }

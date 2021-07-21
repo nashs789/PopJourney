@@ -173,4 +173,82 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.miniProfile", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> myPageJournal(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.myPageJournal", params);
+	}
+
+	@Override
+	public int journalCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.journalCnt", params);
+	}
+
+	@Override
+	public HashMap<String, String> myPageProfile(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.myPageProfile", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> myPageFollower(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.myPageFollower", params);
+	}
+
+	@Override
+	public int followerCnt(HashMap<String, String> params) throws Throwable
+	{
+		return sql.selectOne("PJ.followerCnt", params);
+	}
+
+	@Override
+	public int followingCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.followingCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> myPageFollowing(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.myPageFollowing", params);
+	}
+
+	@Override
+	public HashMap<String, String> followingMemo(HashMap<String, String> params) throws Throwable
+{
+		return sql.selectOne("PJ.followingMemo", params);
+	}
+
+	@Override
+	public int updateMemo(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.update("PJ.updateMemo", params);
+	}
+
+	@Override
+	public int followStatus(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.followStatus", params);
+	}
+
+	@Override
+	public int unfollow(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.delete("PJ.unfollow", params);
+	}
+
+	@Override
+	public int follow(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.follow", params);
+	}
+
+	@Override
+	public int followNotf(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.followNotf", params);
+	}
 }
