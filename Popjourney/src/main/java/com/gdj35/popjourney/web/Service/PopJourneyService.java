@@ -252,4 +252,46 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.followNotf(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> myBMK(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.myBMK(params);
+	}
+
+	@Override
+	public HashMap<String, String> BMKDetail(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.BMKDetail(params);
+	}
+
+	@Override
+	public int myBMKCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.myBMKCnt(params);
+	}
+
+	@Override
+	public int addBMK(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.addBMK(params);
+	}
+
+	@Override
+	public int delBMK(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.delBMK(params);
+	}
+
+	@Override
+	public int delBMK2(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.delBMK2(params);
+	}
+
+	@Override
+	public int updateBMK(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.updateBMK(params);
+	}
 }

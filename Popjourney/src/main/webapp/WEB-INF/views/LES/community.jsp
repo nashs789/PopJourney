@@ -80,7 +80,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: inline-block;
+	display: none;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -169,60 +169,6 @@ body {
 .banner {
 	width: 100%;
 	height: 70px;
-}
-
-.timeline {
-	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
-}
-
-.timeline tr {
-	height: 50px;
-}
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
 }
 
 #dd {
@@ -637,13 +583,13 @@ a {
 
 .paging_wrap {
 	width: 100%;
-	height: 100px;
+	height: 200px;
 	padding-top: 50px;
 	text-align: center;
 }
 
 .paging_wrap div {
-    display: inline-block;
+    display: block;
     padding: 5px;
     margin-left: 3px;
     margin-right: 3px;
@@ -673,34 +619,29 @@ a {
 	width: 600px;
 	height: 80px;
 }
+
+.paging_wrap {
+	width: 100%;
+	height: 100px;
+	padding-top: 50px;
+	font-size: 18pt;
+	text-align: center;
+	display: inline-block;
+}
+.paging_wrap span{
+	margin-left: 15px;
+	cursor: pointer;
+}
+.on{
+	font-weight: bold;
+	color: red;
+	text-decoration: underline;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	reloadList();
-	$(".login_btn").on("click", function () {
-		if($.trim($("#inputID").val())==""){
-			alert("아이디를 입력해 주세요.");
-			$("#inputID").focus();
-		} else if ($.trim($("#inputPW").val())=="") {
-			alert("비밀번호를 입력해 주세요.");
-			$("#inputPW").focus();
-		} else {
-			var params = $("#loginForm").serialize();
-			$.ajax({
-				url:"logins", 
-				type: "post", 
-				dataType: "json", 
-				data : params, 
-				success: function(res){
-						location.reload();
-				}, 
-				error: function (request, status, error) {
-					console.log(error);
-				}
-			});
-		}
-	});//login_btn end
 	
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
@@ -717,94 +658,38 @@ $(document).ready(function() {
 	$("#newPost").on("click", function() {
   		location.href = "postWrite";
   	});
+	
 	$(".search_btn").on("click", function () {
 		$("#page").val(1);
 		reloadList();
 	});
-	$(".paging_wrap").on("click", "div", function () {
-		$("#page").val($(this).attr("page"));
+	
+	$(".paging").on("click", "span", function () {
+		$("#page").val($(this).attr("name"));
 		reloadList();
 	});	
+	
 	$(".post").on("click", function () {
 		$("#postNo").val($(this).attr("postno"));
 		$("#actionForm").attr("action", "post");
 		$("#actionForm").submit();
 	});
 	
-	//로그인
-	if("${sMEM_NO}" != "") { // 로그인 상태
-		$(".btns, .sub_profile").show();
-		$(".logins, .sub_area").hide();
-	} else { // 비 로그인 상태
-		$(".logins, .sub_area").show();
-		$(".btns, .sub_profile").hide();
-	}
-	if("${param.searchFilter}" != ""){
-		$("#searchFilter").val("${param.searchFilter}");
-	} 
-	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
-		if($.trim($("#inputID").val()) == "")
+	$(".board_list").on("click", "td", function(){
+		if($(this).attr("class") == "user")
 		{
-			popupText = "아이디를 입력하세요.";
-			commonPopup(popupText);
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
 		}
-		else if($.trim($("#inputPW").val()) == "")
-		{
-			popupText = "비밀번호를 입력하세요.";
-			commonPopup(popupText);
-		}
-		else
-		{
-			var params = $("#loginForm").serialize();
-			
-			$.ajax({
-				url: "logins",
-				data: params,
-				dataType: "json",
-				type: "post",
-				success:function(result)
-				{
-					if(result.msg == "failed")
-					{
-						popupText = "ID와 PW가 일치하지 않습니다.";
-						commonPopup(popupText);
-						$("#inputID").val("");
-						$("#inputPW").val("");
-					}
-					else
-					{
-						location.reload();
-					}
-				}, //success end
-				error: function(request, status, error) {
-					console.log(error);
-				} // error end
-			}); //ajax end 
-		}// if ~ else end
-	}); //loginBtn click end
+	}); //board_list click td end
 	
+	$(".left_nav").on("click", "span", function(){
+		console.log($(this).attr($(this).attr("class")));
+	}); //left_nav span click end
 }); //document ready end
-//기본, 전체보기
-function reloadList() {
-	var params = $("#actionForm").serialize();
-	
-	$.ajax({
-		url:"communityLists", 
-		type: "post",
-		dataType: "json",
-		data : params,
-		success: function(res){
-			drawList(res.list);
-			drawPaging(res.pb);
-		}, 
-		error: function (request, status, error) {
-			console.log(error);
-		}
-	});
-}
 // 카테고리별, 작성자별(등급, 내가 쓴 글)
 function reloadList() {
-	var params = $("#actionForm").serialize();
+	var params = $("#BoardForm").serialize();
 	
 	$.ajax({
 		url:"communityLists", 
@@ -813,7 +698,7 @@ function reloadList() {
 		data : params,
 		success: function(res){
 			drawList(res.list);
-			drawPaging(res.pb);
+			makePage(res.pb);
 		}, 
 		error: function (request, status, error) {
 			console.log(error);
@@ -824,7 +709,7 @@ function drawList(list) {
 	var html = "";
 	
 	for(var d of list){
-		html += "<tr postno=\"" + d.POST_NO + "\">";
+		html += "<tr>";
 		html += "<td>" + d.POST_NO + "</td>";
 		switch(d.CATEGORY_NO)
 		{
@@ -843,7 +728,7 @@ function drawList(list) {
 			default:
 				console.log(d.CATEGORY_NO);
 		}
-		html += "<td>" + d.TITLE + d.CMT_CNT +"</td>";
+		html += "<td class=\"title\" title=\"" + d.POST_NO + "\">" + d.TITLE +"</td>";
 		switch(d.GRADE_NO)
 		{
 			case 0:
@@ -858,7 +743,7 @@ function drawList(list) {
 			default:
 				console.log(d.GRADE_NO);
 		}
-		html += "<td>" + d.NIC + "</td>";
+		html += "<td class=\"user\" user=\"" + d.MEM_NO + "\">" + d.NIC + "</td>";
 		html += "<td>" + d.BOARD_DATE + "</td>";
 		html += "<td>" + d.HIT + "</td>";
 		html += "<td>" + d.LIKE_CNT + "</td>";
@@ -867,36 +752,45 @@ function drawList(list) {
 	
 	$(".board_list tbody").html(html); 
 }
-
-function drawPaging(pb) {
-	var html = "";
+function makePage(pb)
+{
+	var html = "<span name=\"1\"><<</span>";
 	
-	html += "<div page=\"1\">처음</div>";
-	if($("#page").val() =="1"){
-		html += "<div page=\"1\">이전</div>";
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\"><</span>";
 	} else {
-		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
 	}
-	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
-		if($("#page").val() == i){
-			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
+	
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#page").val() == i) {
+			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
 		} else {
-			html += "<div page=\"" + i + "\">" + i + "</div>";
+			html += "<span name=\"" + i + "\">" + i + "</span>";
 		}
 	}
-	if($("#page").val() == pb.maxPcount){
-		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
+	
+	if($("#page").val() == pb.maxPcount) {
+		html += "<span name=\"" + pb.maxPcount + "\">></span>";
 	} else {
-		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
 	}
 	
-	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	html += "<span name=\"" + pb.maxPcount + "\">>></span>";
 	
 	$(".paging").html(html);
 }
 </script>
 </head>
 <body>
+<form action="#" id="BoardForm">
+	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="nfirstPage" name="nfirstPage" value="1"/> <!-- n이 붙은건 공지 페이지 -->
+	<input type="hidden" id="nlastPage" name="nlastPage" value="5"/>
+</form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>			
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1013,15 +907,12 @@ function drawPaging(pb) {
 			</nav>
 		</div>
 			<div class="board_list_wrap">
-				<form action="#" id="actionForm" method="post">
-				<input type="hidden" id="postNo" name="postNo"/>
-				<input type="hidden" id="page" name="page" value="${page}">
 				<div class="board_menu">
 					<nav class="left_nav">
 						<ul>
-							<li id="postAll" name="postAll"><img alt="bookmark" src="./resources/images/all.png"><br />전체보기</li>
-							<li id="postGrade2" name="postGrade2"><img alt="bookmark" src="./resources/images/writer.png"><br />여행작가</li>
-							<li id="postGrade1" name="postGrade1"><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
+							<li id="postAll"><span class="gradeNo" gradeNo="0"><img alt="bookmark" src="./resources/images/all.png"></span><br />전체보기</li>
+							<li id="postGrade2"><span class="gradeNo" gradeNo="2"><img alt="bookmark" src="./resources/images/writer.png"></span><br />여행작가</li>
+							<li id="postGrade1"><span class="gradeNo" gradeNo="1"><img alt="작성자" src="./resources/images/user2.png"></span><br />여행꾼</li>
 						</ul>
 					</nav>
 					<nav class="right_nav">
@@ -1065,14 +956,11 @@ function drawPaging(pb) {
 						<img alt="search" src="./resources/images/search.png" class="search_icon" /> 
 						<input type="text" class="search" name="searchTxt" placeholder="검색" value="${param.searchTxt}"> 
 						<select class="filter" id="selectFilter" name="selectFilter">
-							<option value="0">제목+내용</option>
 							<option value="1">제목</option>
 							<option value="2">닉네임</option>
-							<option value="3">글번호</option>
 						</select>
 					</div>
-				</div>
-				</form>
+				</div> <!-- PAGING_WRAP END -->
 			</div>
 		</div>
 	</div>

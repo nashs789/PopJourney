@@ -6,39 +6,30 @@
 <meta charset="UTF-8">
 <title>북마크</title>
 <style type="text/css">
-/* #fcba03 노랑
-#2e3459 남색
-#f37321 주황
-#294a37 초록
-         */
+
 body {
 	margin: 0px;
 	font-size: 0px;
 	font-family: 'Black Han Sans', sans-serif;
 	min-width: 1480px;
 }
-
-/* 여기서부터 헤더 레이아웃 */
 #wrap {
 	width: 100%;
 	height: 100%;
 	background-color: #f9f9f9;
 }
-
 #header {
 	width: 100%;
 	height: 140px;
 	background-color: #2e3459;
 	position: relative;
 }
-
 .top {
 	display: block;
 	width: 100%;
 	height: 70px;
 	background-color: #FFFFFF;
 }
-
 .site_name {
 	display: inline-block;
 	vertical-align: top;
@@ -78,8 +69,8 @@ body {
 	margin-top: 18px;
 }
 
-.btns { 
-	display: inline-block;
+.btns { /* .logins와 연동  */
+	display: none;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -88,67 +79,166 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-#bookmarkPhoto, #notificationPhoto {
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
+
+.btns img {
+	width: 40px;
+	margin-right: 20px;
+	margin-top: 15px;
+	cursor: pointer;
 }
-#notificationPhoto{
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   position: relative;
+
+.bell_icon {
+	margin-left: 200px;
 }
-#notificationTxt{
-	line-height: 17px;
-	width: 20px;
-	height: 20px;
-	background-color: red;
-	position: absolute;
-	top: 10px;
-	right: 190px;
-	border-radius: 50%;
-	color: white;
+
+.logins {
+	display:inline-block;
+	vertical-align: top;
+	width: 470px;
+	height: 70px;
+	text-align: right;
+	background-color: #FFFFFF;
 }
-#profilePhoto{
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   border-radius: 50%;
+
+.sub_login1 {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 55px;
 }
-#notificationPhoto {
-   margin-left: 200px;
+
+.sub_login2 {
+	display: block;
+	width: calc(100% - 75px);
+	height: 15px;
+	line-height: 10px;
+	text-align: right;
+	padding-right: 75px;
 }
+
+.sub_login2 span {
+	position: relative;
+	width: 10px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.sub_login2 span:hover {
+	color: #fcba03;
+}
+
+.login {
+	float: right;
+	width: 100px;
+	height: 25px;
+	margin-top: 20px;
+	margin-left: 5px;
+}
+
+.login_btn {
+	float: right;
+	margin: 20px 20px 0px 5px;
+	width: 50px;
+	height: 30px;
+	background-color: #2e3459;
+	font-weight: bold;
+	font-size: 12px;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 26px;
+	cursor: pointer;
+}
+
+.login_btn:hover {
+	color: #FFFFFF;
+	background-color: #f37321;
+}
+
 .banner {
 	width: 100%;
 	height: 70px;
 }
-#profileSlidedown{
+
+.timeline {
 	display: none;
-   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-   	border: 2px solid #fcba03;
-   	background-color: white;
-   	position: absolute;
-   	padding: 0px;
-   	right: 8px;
-   	width: 122px;
-   	margin-top: 10px;
-   	z-index: 300;
+	/* display: inline-block; */
+	width: 400px;
+	background-color: #EAEAEA;
+	box-shadow: 0px 0px 1px 1px #444444;
+	position: absolute;
+	margin-top: 72px;
+	right: 10px;
+	z-index: 300;
 }
-#profileSlidedown li {
-   	display: inline-block;
-   	border: 1px solid rgb(250,250,250);
-   	font-size: 12pt;
-   	width: 120px;
-   	text-align: center;
-   	cursor: pointer;
+
+.timeline tr {
+	height: 50px;
 }
-#profileSlidedown li:hover {
+
+.timeline table {
+	border-collapse: collapse;
+}
+
+.timeline table tr th:first-child {
+	text-align: center;
+}
+
+.timeline tr th {
+	text-align: left;
+}
+
+.timeline tr th img {
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline tfoot tr {
+	background-color: #939597;
+}
+
+.timeline tfoot tr th {
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline table tr th span {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.timeline table tr th span:hover {
+	color: blue;
+}
+
+#dd {
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	border: 2px solid #fcba03;
+	background-color: white;
+	position: absolute;
+	margin-top: 10px;
+	padding: 0px;
+	right: 8px;
+	height: 108px;
+	width: 122px;
+	display: none;
+}
+
+#dd li {
+	display: inline-block;
+	border: 1px solid rgb(250, 250, 250);
+	font-size: 12pt;
+	width: 120px;
+	text-align: center;
+}
+
+#dd li:hover {
 	background-color: #f37321;
 }
+
 .menu {
 	position: absolute;
 	height: 70px;
@@ -212,6 +302,7 @@ input[type='checkbox'] {
 #container {
 	display: block;
 	width: 1280px;
+	height: 100%;
 	margin: 0 auto;
 }
 
@@ -325,6 +416,7 @@ input[type='checkbox'] {
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
+	height: 100%;
 	font-weight: 500;
 }
 
@@ -394,6 +486,25 @@ a {
 	background-color: #F1404B;
 	color: white;
 }
+
+.more_btn {
+	text-align: center;
+	margin-top: 50px;
+	padding-bottom: 50px;
+}
+
+.more_btn input {
+	padding: 10px 30px;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #2e3459;
+	background-color: white;
+	border: 2px solid #2e3459;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	cursor: pointer;
+}
+
 .edit_btn input {
 	padding: 5px 10px;
 	border-radius: 20px;
@@ -405,10 +516,11 @@ a {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
+
 .gallery {
 	margin-top: 30px;
 	padding: 30px 0 0 45px;
-	display: inline-block;
+	height: 1200px;
 }
 
 .post, .folder {
@@ -543,7 +655,7 @@ a {
 }
 
 .popup {
-	display: inline-block;
+	display: none;
 	width: 600px;
 	height: 500px;
 	background-color: #fcfcfc;
@@ -709,6 +821,7 @@ input[type="radio"]:checked {
 	line-height: 30px;
 	border-radius: 0 0 10px 10px;
 }
+
 .alert_btn_list2 span {
 	text-decoration: none;
 	display: inline-block;
@@ -722,18 +835,16 @@ input[type="radio"]:checked {
 	line-height: 30px;
 	border-radius: 0 0 10px 10px;
 }
+
 .bg {
 	position: fixed;
-    display: inline-block;
+    display: none;
     width: 100%;
     height: 100%;
     top: 0px;
     background-color: #000000;
     z-index: 400;
     opacity: 0.2;
-}
-#admin{
-	display: none;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -758,6 +869,7 @@ $(document).ready(function(){
 	{
 		$("#admin").show();
 	}
+	
 
 	var html = "";  
 	
@@ -766,353 +878,10 @@ $(document).ready(function(){
 	html += "<span>${sINTRO}</span>"; 
 	
 	$(".info").html(html);
-	
-	var params = $("#memForm").serialize();
-	
-	$.ajax({
-		url:"myBMKs",
-		data:params,
-		dataType:"json",
-		type:"post",
-		success:function(result){
-			if(result.msg == "success")
-			{
-				makeBMK(result.BMK);	
-			}
-			else
-			{
-				alert("실패");
-			}
-		},//success end
-		error:function(error){
-			console.log(error);
-		}//error end
-	}); //ajax end
-	
-	params = $("#memForm").serialize();
-	
-	$.ajax({
-		url:"myBMKCnts",
-		data:params,
-		dataType:"json",
-		type:"post",
-		success:function(result){
-			if(result.msg == "success")
-			{
-				$("#BMKCnt").val(result.cnt);
-			}
-		},//success end
-		error:function(error){
-			console.log(error);
-		}//error end
-	}); //ajax end
-	
-	$("#profilePhoto").on("click", function(){
-		$("#notification").css("display", "none");
-		if($("#profileSlidedown").css("display") == "block")
-		{
-			$("#profileSlidedown").css("display", "none");
-		}
-		else
-		{
-			$("#profileSlidedown").css("display", "block");
-		}
-	}); //profilePhoto click end
-	
-	$(".gallery").on("change", "input:checkbox", function(){
-		$("input:checkbox").prop("checked", false);
-		$(this).prop("checked", true);
-		$("#box").val($(this).attr($(this).attr("class")));
-	}); //follow_list input:checkbox changed end
-	
-	$(".edit_btn").on("click", function(){
-		if($("input[type='checkbox']").filter(':checked').size() == 0)
-		{
-			alert("하나라도 선택 ㄱㄱ");
-		}
-		else
-		{
-			editBMK();
-		}
-	}); //edit_btn click end
-	
-	$(".add_btn").on("click", function(){
-		if($("#BMKCnt").val() == 9)
-		{
-			alert("생성 가능한 최대수 도달");
-		}
-		else
-		{
-			makeAddPopup();
-		}
-	}); //add_btn click end
-	
-	$(".del_btn").on("click", function(){
-		var params = $("#BMKForm").serialize();
-		
-		$.ajax({
-			url:"delBMKs",
-			data:params,
-			dataType:"json",
-			type:"post",
-			success:function(result){
-					alert("삭제성공");
-					location.reload();
-			},//success end
-			error:function(error){
-				console.log(error);
-			}//error end
-		}); //ajax end
-	}); //del_btn click end
-	
- 	$(".gallery").on("click", ".folder_thumb, .folder_info", function(){
-		$("#BMKNo").val($(this).parent().attr($(this).parent().attr("class")));
-
-		$("#detailForm").submit();
-	});//gallery folder click end 
-	
-	$("#follower").on("click", function(){
-		location.href = "myPageFollower";
-	}); //follower click end
-	
-	$("#following").on("click", function(){
-		location.href = "myPageFollowing";
-	}); //following click end
-	
-	$("#myPageImg").on("click", function(){
-		location.href = "myPage";
-	}); //myPage click end
 }); //document ready end
-function makeBMK(BMK)
-{
-	var html = "";
-	
-	for(data of BMK)
-	{
-		html += "	<div class=\"folder\" folder=\"" + data.BMK_NO + "\">";
-		html += "		<input type = \"checkbox\" class=\"ck\" ck=\"" + data.BMK_NO + "\"/></label>";
-		switch(data.FOLDER_IMG)
-		{
-		case 1:
-			html += "		<span class=\"folder_thumb\"><img alt=\"썸네일\" src=\"./resources/images/backpack1.png\"></span>";
-			break;
-		case 2:
-			html += "		<span class=\"folder_thumb\"><img alt=\"썸네일\" src=\"./resources/images/backpack2.png\"></span>";
-			break;
-		case 3:
-			html += "		<span class=\"folder_thumb\"><img alt=\"썸네일\" src=\"./resources/images/backpack3.png\"></span>";
-			break;
-		}
-		html += "		<div class=\"folder_info\">";
-		html += "			<p>";
-		html += "				<strong>" + data.FOLDER_NAME + "</strong>";
-		html += "			</p>";
-		html += "			<p>";
-		html += "				" + data.FOLDER_MEMO + "";            
-		html += "			</p>";
-		html += "		</div>";
-		html += "	</div>";
-	}
-	
-	$(".gallery").html(html);
-}
-function makeAddPopup()
-{
-	var html = "";
-	
-	html += "    <div class=\"popup\">";
-	html += "    	<div class=\"popup_contents_txt\">";
-	html += "    		<div>";
-	html += "    			폴더 수정<span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
-	html += "    		</div>";
-	html += "    		<div class=\"radio_title\">";
-	html += "    			<span>폴더 선택</span> <span class=\"asterisk\">&#42;</span>";
-	html += "    		</div>";
-	html += "    		<div class=\"folder_radio\">";
-	html += "    			<div class=\"folder_radio_box\">";
-	html += "    				<input type=\"radio\" id=\"folder_radio1\" value=\"1\" name=\"folder_img\"><br/>";
-	html += "    		    	<label for=\"folder_radio1\"><img src=\"./resources/images/backpack1.png\"> </label>";
-	html += "    			</div>";
-	html += "    			<div class=\"folder_radio_box\">";
-	html += "    				<input type=\"radio\" id=\"folder_radio2\" value=\"2\" name=\"folder_img\"><br/>";
-	html += "    		    	<label for=\folder_radio2\"><img src=\"./resources/images/backpack2.png\"></label>";
-	html += "    			</div>";
-	html += "    		    <div class=\"folder_radio_box\">";
-	html += "    			    <input type=\"radio\" id=\"folder_radio3\" value=\"3\" name=\"folder_img\"><br/>";
-	html += "    			    <label for=\"folder_radio3\"><img src=\"./resources/images/backpack3.png\"></label>";
-	html += "    		    </div>";
-	html += "    		</div>";
-	html += "    		<div>";
-	html += "    			폴더 이름 <span class=\"asterisk\">&#42;</span><br /> <input type=\"text\" class=\"pop_name\" name=\"pop_name\" required/><br />";                    
-	html += "    			폴더 메모<br /> <textarea class=\"pop_memo\" name=\"pop_memo\" rows=\"3\" cols=\"73\"  placeholder=\"폴더에 대해 간략히 설명해주십시오\" ></textarea>";                
-	html += "    		</div>";
-	html += "    	</div>";
-	html += "    	<div class=\"btn_list\">";
-	html += "    		<span id=\"add\">추 가</span> <span id=\"no\">취 소</span>";
-	html += "    	</div>";
-	html += "    </div>";
-	html += "<div class=\"bg\"></div>"
-	
-	$("#wrap").append(html);
-	
-	$("#no").on("click", function(){
-		$(".popup").remove();
-		$(".bg").remove();
-	}); //no click end
-	
-	$("#add").on("click", function(){
-		if(isNaN($(":radio[name='folder_img']:checked").val())) 
-		{
-			alert("이용할 폴더 이미지를 선택하세요");
-		}
-		else if($.trim($(".pop_name").val()) == "")
-		{
-			alert("이름을 입력하세요.");
-		}
-		else
-		{
-			var params = $("#editForm").serialize();
-			
-			$.ajax({
-				url:"addBMKs",
-				data:params,
-				dataType:"json",
-				type:"post",
-				success:function(result){
-					if(result.msg == "success")
-					{
-						$(".popup").remove();
-						$(".bg").remove();
-						location.reload();
-					}
-					else
-					{
-						alert("실패");
-					}
-				},//success end
-				error:function(error){
-					console.log(error);
-				}//error end
-			}); //ajax end
-		}//if ~ else end
-	}); //yes click end
-} 
-function editBMK()
-{
-	var html = "";
-	
-	html += "    <div class=\"popup\">";
-	html += "    	<div class=\"popup_contents_txt\">";
-	html += "    		<div>";
-	html += "    			폴더 수정<span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
-	html += "    		</div>";
-	html += "    		<div class=\"radio_title\">";
-	html += "    			<span>폴더 선택</span> <span class=\"asterisk\">&#42;</span>";
-	html += "    		</div>";
-	html += "    		<div class=\"folder_radio\">";
-	html += "    			<div class=\"folder_radio_box\">";
-	html += "    				<input type=\"radio\" id=\"folder_radio1\" value=\"1\" name=\"folder_img\"><br/>";
-	html += "    		    	<label for=\"folder_radio1\"><img src=\"./resources/images/backpack1.png\"> </label>";
-	html += "    			</div>";
-	html += "    			<div class=\"folder_radio_box\">";
-	html += "    				<input type=\"radio\" id=\"folder_radio2\" value=\"2\" name=\"folder_img\"><br/>";
-	html += "    		    	<label for=\folder_radio2\"><img src=\"./resources/images/backpack2.png\"></label>";
-	html += "    			</div>";
-	html += "    		    <div class=\"folder_radio_box\">";
-	html += "    			    <input type=\"radio\" id=\"folder_radio3\" value=\"3\" name=\"folder_img\"><br/>";
-	html += "    			    <label for=\"folder_radio3\"><img src=\"./resources/images/backpack3.png\"></label>";
-	html += "    		    </div>";
-	html += "    		</div>";
-	html += "    		<div>";
-	html += "    			폴더 이름 <span class=\"asterisk\">&#42;</span><br /> <input type=\"text\" class=\"pop_name\" name=\"pop_name\"/><br />";
-	html += "    			폴더 메모<br /> <textarea class=\"pop_memo\" name=\"pop_memo\" rows=\"3\" cols=\"73\"  placeholder=\"폴더에 대해 간략히 설명해주십시오\"></textarea>";
-	html += "    		</div>";
-	html += "    	</div>";
-	html += "    	<div class=\"btn_list\">";
-	html += "    		<span id=\"yes\">수 정</span><span id=\"no\">취 소</span>";               
-	html += "    	</div>";
-	html += "    </div>";
-	html += "<div class=\"bg\"></div>"
-	
-	$("#wrap").append(html);
-
- 	var params = $("#BMKForm").serialize();
-
- 	$.ajax({
-		url:"editBMKs",
-		data:params,
-		dataType:"json",
-		type:"post",
-		success:function(result){
-			if(result.msg == "success")
-			{
-				if(result.BMK.FOLDER_IMG == 1)
-				{
-					$("#folder_radio1").prop("checked", true)
-				}
-				else if(result.BMK.FOLDER_IMG == 2)
-				{
-					$("#folder_radio2").prop("checked", true)
-				}
-				else
-				{
-					$("#folder_radio3").prop("checked", true)
-				}
-				$(".pop_name").val(result.BMK.FOLDER_NAME);		
-				$(".pop_memo").val(result.BMK.FOLDER_MEMO);
-			}
-			else
-			{
-				alert("실패");
-			}
-		},//success end
-		error:function(error){
-			console.log(error);
-		}//error end
-	}); //ajax end  
-	
-	$("#no").on("click", function(){
-		$(".popup").remove();
-		$(".bg").remove();
-	}); //no click end
-	
-	$("#yes").on("click", function(){
-		$("#BMKNO").val($("#box").val());
-		var params = $("#editForm").serialize();
-		console.log(params);
-		$.ajax({
-			url:"updateBMKs",
-			data:params,
-			dataType:"json",
-			type:"post",
-			success:function(result){
-				alert("수정 성공");
-				location.reload();
-			},//success end
-			error:function(error){
-				console.log(error);
-			}//error end
-		}); //ajax end
-	}); //yes click end
-} //function end
 </script>
 </head>
 <body>
-<form action="myPageBMKDetail" id="detailForm" method="post">
-	<input type="hidden" id="BMKNo" name="BMKNo" value=""/>
-</form>
-<form action="#" id="memForm">
-	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="BMKCnt" name="BMKCnt" value=""/>
-</form>
-<form action="#" id="BMKForm">
-	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="box" name="box" value=""/>
-	<input type="hidden" id="memo" name="memo"/>
-</form>
-<form action="#" id="editForm">
-	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="BMKNO" name="BMKNO" value=""/>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1137,8 +906,19 @@ function editBMK()
 									<li id="logoutBtn">로그아웃</li>
 								</ul></li>
 						</ul>
-					</div> <!-- btns end -->
+					</div>
+					<div class="logins">
+						<div class="sub_login1">
+							<input type="button" class="login_btn" value="로그인" /> <input
+								type="password" class="login" placeholder="PW" /> <input
+								type="text" class="login" placeholder="ID" />
+						</div>
+						<div class="sub_login2">
+							<span>회원가입</span> <span>ID/PW 찾기</span>
+						</div>
+					</div>
 				</div>
+				<!-- 호버시 메뉴 생성 -->
 			</div>
 			<nav class="menu">
 				<ul>
@@ -1160,18 +940,18 @@ function editBMK()
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				
+
 			</div>
 		</div>
 		<div id="container">
 			<div class="board_list_wrap">
 				<div class="board_menu">
 					<nav class="menu_nav">
-						<ul id="left_group">
+						<ul id="left_menu">
 							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
-						<ul class="right_group">
+						<ul class="right_menu">
 							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
 							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
@@ -1180,7 +960,7 @@ function editBMK()
 									100</li>
 						</ul>
 					</nav>
-				</div>
+				</div> <!-- board_menu end -->
 				<div id="path_info">
 					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
@@ -1198,17 +978,42 @@ function editBMK()
 						</div>
 				</div>
 				<div class="gallery">
-
-				</div><!-- gallery end -->
+					<div class="post">
+						<span class="thumb"><img alt="썸네일"	src="./resources/images/a4.jpg"></span>
+						<div class="post_info">
+							<p>
+								<span>지역별 > 대구</span>
+							</p>
+							<p>
+								<strong>고북수진 당일치기</strong>
+							</p>
+							<p>
+								<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
+							</p>
+						</div>
+						<div class="post_profile">
+							<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
+							<div>
+								<div>
+									<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
+									<span class="cnt">100</span>
+								</div>
+								<span>2021-05-24</span>
+							</div>
+						</div>
+					</div>
+				</div> <!-- gallery end -->
+			<div class="paging_wrap">
 			</div>
-		</div>
-	</div>
+		</div> <!-- board_list_wrap end -->
+	</div> <!-- container end -->
+
 	<div id="footer">
 		<p>
 			POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
 	</div>
-</form>
+</div>
 </body>
 </html>
