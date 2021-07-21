@@ -805,6 +805,7 @@ a {
 	color: #f37321;
 	font-weight: bold;
 	line-height: 30px;
+	cursor: pointer;
 }
 
 .btn_list span:first-child {
@@ -833,6 +834,119 @@ a {
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
+	if("${param.searchGbn}" != ""){
+		$("#searchGbn").val("${param.searchGbn}");
+	}
+	reloadList();
+	$("#searchBtn").on("click", function () {
+		$("#page").val(1);
+		reloadList();
+	});
+	$(".paging_wrap").on("click", "div", function () {
+		$("#page").val($(this).attr("page"));
+		reloadList();
+	});	
+	$(".journal").on("click", function () {
+		$("#journalNo").val($(this).attr("journalno"));
+		
+		$("#actionForm").attr("action", "journal");
+		$("#actionForm").submit();
+	});
+});
+ 
+function reloadList() {
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url:"journalBoards", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			drawList(res.list);
+			drawPaging(res.pb);
+		}, 
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+// 목록 그리기 
+function drawList(list) {
+	var html = "";
+	
+	for(var d of list){
+		for (var i = 1 ; i < 16 ; i++ ) {
+			html +="<div class=\"post\">"
+			html +="<span class=\"thumb\"><img alt=\"썸네일\""
+			html +=		"src=\"./resources/images/a1.jpg"></span>"
+			html +="<div class=\"post_info\">"
+			html +="<p>"
+			html +="<span>지역별 > " + d.CTG + "</span>"
+			html +="</p>"
+			html +="<p>"
+			html +="<strong>" + d.TITLE + "</strong>"
+			html +="</p>"
+			html +="<p>"
+			html +="<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>"
+			html +="</p>"
+			html +="</div>"
+			html +="<div class=\"post_profile\">"
+			html +="<img alt=\"작성자\" src=\"./resources/images/profile3.png\"> <span>" + d.NIC + "</span>"
+			html +="<div>"
+			html +="<div>"
+			html +="<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>"
+			html +="<span class=\"cnt\">" + d.LIKE + "</span>"
+			html +="</div>"
+			html +="<span>" + d.JOURNAL_DATE + "</span>"
+			html +="</div>"
+			html +="</div>"
+			html +="</div>"
+	}
+	$(".gallery").html(html); 
+	}
+	}
+
+function drawPaging(pb) {
+	var html = "";
+	
+	html += "<div page=\"1\">처음</div>";
+	if($("#page").val() =="1"){
+		html += "<div page=\"1\">이전</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
+	}
+	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
+		if($("#page").val() == i){
+			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
+		} else {
+			html += "<div page=\"" + i + "\">" + i + "</div>";
+		}
+	}
+	if($("#page").val() == pb.maxPcount){
+		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
+	}
+	
+	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	
+	$(".paging_wrap").html(html);
+}
 </script>
 </head>
 <body>
@@ -859,7 +973,6 @@ a {
 									<li>회원정보 수정</li>
 									<li>로그아웃</li>
 								</ul></li>
-
 						</ul>
 					</div>
 					<div class="logins">
@@ -894,11 +1007,11 @@ a {
 			</select>
 		</div>
 		<div id="path_info">
-					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
-					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행게시판 </span>
-					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 지역별 </span>
-					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 대구
-						&nbsp;&nbsp;>&nbsp;&nbsp; </span> 여행작가
+			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
+			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행게시판 </span>
+			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 지역별 </span>
+			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 대구 &nbsp;&nbsp;>&nbsp;&nbsp;
+			</span> 여행작가
 		</div>
 		<div class="sub_area">
 			<span>여행게시판</span>
@@ -1400,7 +1513,7 @@ a {
 					</div>
 					<div class="board_search">
 						<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-							type="text" class="search" placeholder="검색"> <select
+							type="text" class="search" name="journal_search"  placeholder="검색"> <select
 							class="filter">
 							<option value="0">제목+내용</option>
 							<option value="1">해시태그</option>

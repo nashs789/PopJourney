@@ -654,7 +654,25 @@ a {
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$("#journalBoard").on("click", function() {
+  		location.href = "journalBoard";
+  	});
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
 
+});
 </script>
 </head>
 <body>

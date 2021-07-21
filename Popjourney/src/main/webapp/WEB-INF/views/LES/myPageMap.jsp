@@ -515,7 +515,23 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-
+$(document).ready(function() {
+	$("#journalBoard").on("click", function() {
+  		location.href = "journalBoard";
+  	});
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
+});
 
 </script>
 </head>

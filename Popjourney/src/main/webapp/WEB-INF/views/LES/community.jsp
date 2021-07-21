@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,7 +80,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: none;
+	display: inline-block;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -110,14 +111,14 @@ body {
 }
 
 .sub_login1 {
-	display: block;
+	display: inline-block;
 	position: relative;
 	width: 100%;
 	height: 55px;
 }
 
 .sub_login2 {
-	display: block;
+	display: inline-block;
 	width: calc(100% - 75px);
 	height: 15px;
 	line-height: 10px;
@@ -213,6 +214,7 @@ body {
 	text-align: center;
 	cursor: pointer;
 }
+
 
 .timeline table tr th span {
 	text-decoration: underline;
@@ -320,27 +322,26 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 150px;
 	border-radius: 20px;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	border: 2px solid;
 }
 
-.sub_area {
-	display: block; 
-	/* display:none; */
+.sub_area, .top_msg {
 	font-size: 18px;
 	font-weight: bold;
 	color: black;
 	text-align: center;
 }
 
-.sub_area span {
+.top_msg span {
 	display: block;
 	margin-bottom: 20px;
 }
 
-.sub_area span:first-child {
+.top_msg span:first-child {
 	font-size: 18pt;
 }
 
-.sub_area span:nth-child(2) {
+.top_msg span:nth-child(2) {
 	font-weight: normal;
 	font-size: 11pt;
 }
@@ -376,7 +377,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 }
 
 .info span {
-	font-size: 18pt;
+	font-size: 17pt;
 }
 
 .grade {
@@ -536,6 +537,22 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 table {
 	border-collapse: collapse;
 }
+/* 공지 */
+.td_n {
+	color: #f1404b;
+}
+/* 여행꿀팁 */
+.td_t {
+	color: #8000ff;
+}
+/* QnA */
+.td_q {
+	color: #4d94ff;
+}
+/* 잡담 */
+.td_c {
+	 color: #00592d;
+}
 
 caption {
 	display: none;
@@ -565,8 +582,7 @@ a {
 }
 
 .board_list tbody tr td:nth-child(2) {
-	font-weight: 550;
-	color: rgb(128, 0, 255);
+	font-weight: bold;
 }
 
 .board_list tbody tr td:nth-child(3) {
@@ -623,41 +639,18 @@ a {
 	width: 100%;
 	height: 100px;
 	padding-top: 50px;
-}
-
-.paging {
-	font-size: 0;
 	text-align: center;
 }
 
-.paging a {
-	display: inline-block;
-	margin-left: 10px;
-	padding: 5px 10px;
-	border-radius: 5px;
-	font-size: 12pt;
-	font-weight: bold;
-}
-
-.paging a.paging_btn {
-	background-color: none;
-	color: #2e3459;
-	letter-spacing: -5px;
-	font-size: 12pt;
-}
-
-.paging a.num {
-	color: #2e3459;
-}
-
-.paging a:first-child {
-	margin-left: 0;
-}
-
-.paging a.num:hover, .paging a.num.on, .paging a.paging_btn:hover {
-	color: #F1404B;
-	text-decoration: underline;
-}
+.paging_wrap div {
+    display: inline-block;
+    padding: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    cursor: pointer;
+    text-align: center;
+    color: #2e3459;
+    }
 
 #footer {
 	display: block;
@@ -666,6 +659,11 @@ a {
 	background-color: #2e3459;
 	color: #FFFFFF;
 	font-size: 15px;
+}
+.paging_wrap div:active, .paging_wrap .on  {
+	color: #F1404B;
+    text-decoration: underline;
+
 }
 
 #footer p {
@@ -679,6 +677,31 @@ a {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	reloadList();
+	$(".login_btn").on("click", function () {
+		if($.trim($("#inputID").val())==""){
+			alert("아이디를 입력해 주세요.");
+			$("#inputID").focus();
+		} else if ($.trim($("#inputPW").val())=="") {
+			alert("비밀번호를 입력해 주세요.");
+			$("#inputPW").focus();
+		} else {
+			var params = $("#loginForm").serialize();
+			$.ajax({
+				url:"logins", 
+				type: "post", 
+				dataType: "json", 
+				data : params, 
+				success: function(res){
+						location.reload();
+				}, 
+				error: function (request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});//login_btn end
+	
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   	});
@@ -691,8 +714,186 @@ $(document).ready(function() {
 	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	});
-});
+	$("#newPost").on("click", function() {
+  		location.href = "postWrite";
+  	});
+	$(".search_btn").on("click", function () {
+		$("#page").val(1);
+		reloadList();
+	});
+	$(".paging_wrap").on("click", "div", function () {
+		$("#page").val($(this).attr("page"));
+		reloadList();
+	});	
+	$(".post").on("click", function () {
+		$("#postNo").val($(this).attr("postno"));
+		$("#actionForm").attr("action", "post");
+		$("#actionForm").submit();
+	});
+	
+	//로그인
+	if("${sMEM_NO}" != "") { // 로그인 상태
+		$(".btns, .sub_profile").show();
+		$(".logins, .sub_area").hide();
+	} else { // 비 로그인 상태
+		$(".logins, .sub_area").show();
+		$(".btns, .sub_profile").hide();
+	}
+	if("${param.searchFilter}" != ""){
+		$("#searchFilter").val("${param.searchFilter}");
+	} 
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "failed")
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
+					else
+					{
+						location.reload();
+					}
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
+	
+}); //document ready end
+//기본, 전체보기
+function reloadList() {
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url:"communityLists", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			drawList(res.list);
+			drawPaging(res.pb);
+		}, 
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+// 카테고리별, 작성자별(등급, 내가 쓴 글)
+function reloadList() {
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url:"communityLists", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			drawList(res.list);
+			drawPaging(res.pb);
+		}, 
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+function drawList(list) {
+	var html = "";
+	
+	for(var d of list){
+		html += "<tr postno=\"" + d.POST_NO + "\">";
+		html += "<td>" + d.POST_NO + "</td>";
+		switch(d.CATEGORY_NO)
+		{
+			case 1:
+				html +=	"<td class=\"td_n\">공지사항 </td>";
+				break;
+			case 2:
+				html +=	"<td class=\"td_t\">여행꿀팁 </td>";
+				break;
+			case 3:
+				html +=	"<td class=\"td_q\"> Q & A </td>";
+				break;
+			case 4:
+				html +=	"<td class=\"td_c\">잡&nbsp;&nbsp;&nbsp;담 </td>";
+				break;
+			default:
+				console.log(d.CATEGORY_NO);
+		}
+		html += "<td>" + d.TITLE + d.CMT_CNT +"</td>";
+		switch(d.GRADE_NO)
+		{
+			case 0:
+				html +=	"<td>관리자 </td>";
+				break;
+			case 1:
+				html +=	"<td>여행꾼</td>";
+				break;
+			case 2:
+				html +=	"<td>여행작가 </td>";
+				break;
+			default:
+				console.log(d.GRADE_NO);
+		}
+		html += "<td>" + d.NIC + "</td>";
+		html += "<td>" + d.BOARD_DATE + "</td>";
+		html += "<td>" + d.HIT + "</td>";
+		html += "<td>" + d.LIKE_CNT + "</td>";
+		html += "</tr>";
+	}
+	
+	$(".board_list tbody").html(html); 
+}
 
+function drawPaging(pb) {
+	var html = "";
+	
+	html += "<div page=\"1\">처음</div>";
+	if($("#page").val() =="1"){
+		html += "<div page=\"1\">이전</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
+	}
+	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
+		if($("#page").val() == i){
+			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
+		} else {
+			html += "<div page=\"" + i + "\">" + i + "</div>";
+		}
+	}
+	if($("#page").val() == pb.maxPcount){
+		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
+	} else {
+		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
+	}
+	
+	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	
+	$(".paging").html(html);
+}
 </script>
 </head>
 <body>
@@ -722,16 +923,20 @@ $(document).ready(function() {
 								</ul></li>
 						</ul>
 					</div>
-					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
+						<div class="logins">
+							<div class="sub_login1">
+								<form action="#" id="loginForm" method="post">
+									<input type="button" class="login_btn" value="로그인" /> 
+									<input type="password" class="login" id="inputPW" name="inputPW" placeholder="PW" /> 
+									<input type="text" class="login" id="inputID" name="inputID" placeholder="ID" />
+								</form>
+							</div>
+						
 						<div class="sub_login2">
 							<span>회원가입</span> <span>ID/PW 찾기</span>
 						</div>
 					</div>
+					
 				</div>
 				<!-- 호버시 메뉴 생성 -->
 			</div>
@@ -745,8 +950,8 @@ $(document).ready(function() {
 				</ul>
 			</nav>
 			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-				type="text" class="search" placeholder="검색"> <select
-				class="filter">
+				type="text" class="search" placeholder="검색">
+				<select class="filter">
 				<option value="0">통합검색</option>
 				<option value="1">여행일지</option>
 				<option value="2">자유게시판</option>
@@ -759,12 +964,44 @@ $(document).ready(function() {
 			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행꿀팁
 				&nbsp;&nbsp;>&nbsp;&nbsp; </span> 여행작가
 		</div>
-		<div class="sub_area">
+		<div class= "top_msg">
 			<span>자유게시판</span>
 			<span>다른 사용자들과 의견을 나누세요.</span>
-					<img src="./resources/images/board2.png">
 		</div>
-		<div class="category_nav">
+		<div class="sub_area">
+			
+			<img src="./resources/images/board2.png">
+		</div>
+		
+		<div id="container">
+			<div class="top_area">
+				<div class="sub_profile">
+					<div>
+						<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
+					</div>
+					<div class="info">
+						<span>${sNIC}</span>
+						<div class="grade">
+							<img alt="icon" src="./resources/images/grade.png"> 
+							<c:choose>
+							<c:when test="${sGRADE_NO eq 0}">
+							<span>관리자</span>
+							</c:when>
+							<c:when test="${sGRADE_NO eq 1}">
+							<span>여행꾼</span>
+							</c:when>
+							<c:when test="${sGRADE_NO eq 2}">
+							<span>여행작가</span>
+							</c:when>
+							</c:choose>
+						</div>
+						<div class="cnt">
+							<span>총 게시글 100</span> <span>총 댓글 100</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="category_nav">
 			<nav class="order_list">
 				<ul>
 					<li>전체보기</li>
@@ -775,41 +1012,36 @@ $(document).ready(function() {
 				</ul>
 			</nav>
 		</div>
-		<div id="container">
-			<div class="top_area">
-				<div class="sub_profile">
-					<div>
-						<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-					</div>
-					<div class="info">
-						<span>닉네임</span>
-						<div class="grade">
-							<img alt="icon" src="./resources/images/grade.png"> <span>여행작가</span>
-						</div>
-						<div class="cnt">
-							<span>총 게시글 100</span> <span>총 댓글 100</span>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="board_list_wrap">
+				<form action="#" id="actionForm" method="post">
 				<div class="board_menu">
 					<nav class="left_nav">
 						<ul>
-							<li><img alt="bookmark" src="./resources/images/all.png"><br />전체보기</li>
-							<li><img alt="bookmark" src="./resources/images/writer.png"><br />여행작가</li>
-							<li><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
+							<li id="postAll" name="postAll"><img alt="bookmark" src="./resources/images/all.png"><br />전체보기</li>
+							<li id="postGrade2" name="postGrade2"><img alt="bookmark" src="./resources/images/writer.png"><br />여행작가</li>
+							<li id="postGrade1" name="postGrade1"><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
 						</ul>
 					</nav>
 					<nav class="right_nav">
 						<ul>
 							<li><img alt="bookmark" src="./resources/images/doc.png"><br />내가 쓴 글</li>
 							<li><img alt="bookmark" src="./resources/images/comment.png"><br />댓글 쓴 글</li>
-							<li><img alt="bookmark" src="./resources/images/pen.png"><br />글쓰기</li>
+							<li id="newPost"><img alt="bookmark" src="./resources/images/pen.png"><br />글쓰기</li>
 						</ul>
 					</nav>
 				</div>
+				</form>
 				<table class="board_list">
+					<colgroup>
+						<col width="5%" /> <!-- 글번호 -->
+						<col width="10%" /> <!-- 카테고리 -->
+						<col width="30%" /> <!-- 제목 -->
+						<col width="10%" /> <!-- 등급 -->
+						<col width="10%" /> <!-- 닉네임 -->
+						<col width="10%" /> <!-- 작성일 -->
+						<col width="5%" /> <!-- 조회 -->
+						<col width="5%" /> <!-- 좋아요 -->
+					</colgroup>
 					<caption>게시판 목록</caption>
 					<thead>
 						<tr>
@@ -823,231 +1055,29 @@ $(document).ready(function() {
 							<th>좋아요</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="notice_board">
-							<td><span>공지</span></td>
-							<td>공지사항</td>
-							<td>2021년 5월 3주차 콘텐츠 링크 모아보기!</td>
-							<td>매니저</td>
-							<td>admin</td>
-							<td>2021-05-24</td>
-							<td>4,163</td>
-							<td>500</td>
-						</tr>
-						<tr class="notice_board">
-							<td><span>공지</span></td>
-							<td>공지사항</td>
-							<td> &Star;[여행작가]를 찾습니다 + 여행작가 소개</td>
-							<td>매니저</td>
-							<td>admin</td>
-							<td>2021-05-09</td>
-							<td>4,163</td>
-							<td>500</td>
-						</tr>
-						<tr class="notice_board">
-							<td><span>공지</span></td>
-							<td>공지사항</td>
-							<td>PopJourney 200% 활용 꿀팁!</td>
-							<td>매니저</td>
-							<td>admin</td>
-							<td>2021-04-25</td>
-							<td>4,163</td>
-							<td>500</td>
-						</tr>
-						<tr class="notice_board">
-							<td><span>공지</span></td>
-							<td>공지사항</td>
-							<td>커뮤니티 규칙</td>
-							<td>매니저</td>
-							<td>admin</td>
-							<td>2021-01-02</td>
-							<td>4,163</td>
-							<td>500</td>
-						</tr>
-						<tr class="notice_board">
-							<td><span>공지</span></td>
-							<td>공지사항</td>
-							<td>통합 운영정책 (2021.05.26 개정)</td>
-							<td>매니저</td>
-							<td>admin</td>
-							<td>2020-12-25</td>
-							<td>4,163</td>
-							<td>500</td>
-						</tr>
-						<tr>
-							<td>6</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>7</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>8</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>9</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>10</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>11</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>12</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>13</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>14</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>15</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>16</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>17</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>18</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>19</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-						<tr>
-							<td>20</td>
-							<td>여행꿀팁</td>
-							<td> </td>
-							<td>여행작가</td>
-							<td>abc</td>
-							<td>2021-05-26</td>
-							<td>145</td>
-							<td>50</td>
-						</tr>
-					</tbody>
+					<tbody></tbody>
 				</table>
 				<div class="paging_wrap">
 					<div class="paging"></div>
 					<div class="board_search">
-						<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-							type="text" class="search" placeholder="검색"> <select
-							class="filter">
+						<img alt="search" src="./resources/images/search.png" class="search_icon" /> 
+						<input type="text" class="search" name="searchTxt" placeholder="검색" value="${param.searchTxt}"> 
+						<select class="filter" id="selectFilter" name="selectFilter">
 							<option value="0">제목+내용</option>
 							<option value="1">제목</option>
 							<option value="2">닉네임</option>
 							<option value="3">글번호</option>
-							<option value="4">댓글작성자</option>
 						</select>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="footer">
+	</div>
+	<div id="footer">
 			<p>
 				POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />
 				Copyright© POPJOURNEY. All Rights Reserved.
 			</p>
 		</div>
-	</div>
 </body>
 </html>

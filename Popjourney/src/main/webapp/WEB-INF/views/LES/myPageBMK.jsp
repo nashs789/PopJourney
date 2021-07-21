@@ -15,7 +15,7 @@ body {
 	margin: 0px;
 	font-size: 0px;
 	font-family: 'Black Han Sans', sans-serif;
-	min-width: 1480px;
+	min-width: 1480px; 
 }
 
 /* 여기서부터 헤더 레이아웃 */
@@ -913,9 +913,9 @@ function alert_popup() {
 		bg.style.display = "none";
 	}
 }
-function more_btn() {
+/* function more_btn() {
 	
-}
+} */
 //목록 그리기 
 /* function drawList(list) {
 	var html = "";
