@@ -229,11 +229,32 @@ public class EsPopJourneyController {
 		System.out.println(params);
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
+		
+		int page = Integer.parseInt(params.get("page"));
+		
 		int cnt = iEsPopjourneyService.getPostCnt(params);
 		
-		List<HashMap<String,String>> list = iEsPopjourneyService.getPostList(params);
-		modelMap.put("list",list);
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		try {
+			List<HashMap<String,String>> list = iEsPopjourneyService.getPostList(params);
+			
+			if(list != null)
+			{
+				modelMap.put("msg", "success");
+				modelMap.put("list",list);
+				modelMap.put("pb", pb);
+			}
+			else
+			{
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
 		
 		return mapper.writeValueAsString(modelMap);
 	}
