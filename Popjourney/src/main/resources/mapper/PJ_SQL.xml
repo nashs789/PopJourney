@@ -780,4 +780,43 @@
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO)
 		VALUES(NOTF_SEQ.NEXTVAL, #{loginMem}, 0, #{MEM_NO})	
 	</insert>
+	
+	<select id="myBMK" parameterType="hashmap" resultType="hashmap">
+		SELECT BMK_NO, FOLDER_NAME, FOLDER_MEMO, FOLDER_IMG
+		FROM BMK_FOLDER
+		WHERE MEM_NO = #{MEM_NO}
+	</select>
+	
+	<select id="BMKDetail" parameterType="hashmap" resultType="hashmap">
+		SELECT BMK_NO, FOLDER_NAME, FOLDER_MEMO, FOLDER_IMG
+		FROM BMK_FOLDER
+		WHERE BMK_NO = #{box}
+	</select>
+	
+	<select id="myBMKCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM BMK_FOLDER
+		WHERE MEM_NO = #{MEM_NO}
+		GROUP BY MEM_NO 
+	</select>
+	
+	<insert id="addBMK" parameterType="hashmap">
+		INSERT INTO BMK_FOLDER(BMK_NO, MEM_NO, FOLDER_NAME, FOLDER_MEMO, FOLDER_IMG)
+		VALUES(BMK_SEQ.NEXTVAL, #{MEM_NO}, #{pop_name}, #{pop_memo},  #{folder_img})
+	</insert>
+	
+	<delete id="delBMK" parameterType="hashmap">
+		DELETE FROM BMK
+		WHERE BMK_NO = #{MEM_NO}
+	</delete>
+	
+	<delete id="delBMK2" parameterType="hashmap">
+		DELETE FROM BMK_FOLDER
+		WHERE MEM_NO = #{MEM_NO} AND BMK_NO = #{box}
+	</delete>
+	
+	<update id="updateBMK" parameterType="hashmap">
+		UPDATE BMK_FOLDER SET FOLDER_NAME = #{pop_name}, FOLDER_MEMO = #{pop_memo}, FOLDER_IMG = #{folder_img}
+		WHERE BMK_NO = #{BMKNO}	
+	</update>
 </mapper>

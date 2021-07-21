@@ -1098,4 +1098,172 @@ public class PopJourneyController {
 				
 			return mapper.writeValueAsString(modelMap);
 		}
+		
+		//내 북마크 가져오기
+		@RequestMapping(value = "/myBMKs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String myBMKs(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 List<HashMap<String, String>>BMK = ipjs.myBMK(params);
+
+				 if(BMK != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("BMK", BMK);
+
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//내 북마크 수정하기
+		@RequestMapping(value = "/editBMKs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String editBMKs(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 HashMap<String, String>BMK = ipjs.BMKDetail(params);
+
+				 if(BMK != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("BMK", BMK);
+
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//내 북마크 갯수 카운트
+		@RequestMapping(value = "/myBMKCnts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String myBMKCnts(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.myBMKCnt(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("cnt", cnt);
+
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//북마크 추가
+		@RequestMapping(value = "/addBMKs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String addBMKs(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.addBMK(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("cnt", cnt);
+
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//북마크 상세보기
+		@RequestMapping(value = "/myPageBMKDetail")
+		public ModelAndView myPageBMKDetail(@RequestParam HashMap<String, String> params, ModelAndView mav)
+		{
+			mav.setViewName("LIB/myPageBMKDetail");
+
+			return mav;
+		}
+		
+		//북마크 삭제하기
+		@RequestMapping(value = "/delBMKs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String delBMKs(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.delBMK(params);
+				 int cnt2 = ipjs.delBMK2(params);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+
+		//북마크 수정하기
+		@RequestMapping(value = "/updateBMKs", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String updateBMKs(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.updateBMK(params);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
 }

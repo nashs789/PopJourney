@@ -578,7 +578,7 @@ $(document).ready(function(){
 	$("#following").on("click", function(){
 		location.href = "myPageFollowing";
 	}); //following click end
-	
+
 }); //document ready end
 function makeGallery(myPage)
 {
@@ -663,7 +663,6 @@ function makePage(pb)
 	<input type="hidden" id="page" name="page" value="${page}"/>
 </form>
 	<div id="wrap">
-		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
