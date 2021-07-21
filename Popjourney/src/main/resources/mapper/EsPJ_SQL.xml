@@ -1,14 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="EsPJ">
-	<select id="getBMKCnt" parameterType="hashmap" resultType="Integer">
-		SELECT  COUNT(*) AS CNT
-		FROM B
+	<select id="getPostCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*)
+		FROM (SELECT *                           
+		FROM(SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT, BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+				FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT, BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+					  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, HIT, CMT_CNT, BOARD_DATE, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+						                                                                                         END LIKE_CNT
+							FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, BC.MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+						                                                                                     END CMT_CNT
+						      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+						            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+						                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+						                                                                                FROM BOARD_CMT
+						                                                                                GROUP BY POST_NO)CMT 
+						                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+						                                                                                                                        FROM BOARD_LIKE
+						                                                                                                                        GROUP BY POST_NO)L
+				                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+		 ON bccl.mem_no = G.MEM_NO WHERE CATEGORY_NO = 1 )BCCLG LEFT JOIN MEM M
+		                                        ON BCCLG.MEM_NO = M.MEM_NO 
+		 WHERE RNUM BETWEEN #{startCnt} AND #{endCnt} 
+		UNION
+		SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+				FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+					  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, BOARD_DATE, HIT, CMT_CNT, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+						                                                                                         END LIKE_CNT
+							FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+						                                                                                     END CMT_CNT
+						      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+						            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+						                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+						                                                                                FROM BOARD_CMT
+						                                                                                GROUP BY POST_NO)CMT 
+						                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+						                                                                                                                        FROM BOARD_LIKE
+						                                                                                                                        GROUP BY POST_NO)L
+				                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+		 ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
+		                                        ON BCCLG.MEM_NO = M.MEM_NO 
+		ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM)
 		WHERE 1=1
+		<if test="searchTxt != null and searchTxt !=''">
+			<choose>
+				<when test="selectFilter == 0">
+					AND TITLE LIKE '%' || #{searchTxt} || '%' OR CONTENTS LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 1">
+					AND TITLE LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 2">
+					AND NIC LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 3">
+					AND POST_NO '%' || #{searchTxt} || '%'
+				</when>
+			</choose>
+		</if>
 	</select>
-	<select id="getBMKFolder" parameterType="hashmap" resultType="Integer">
-		SELECT BMK_NO, MEM_NO, FOLDER_NAME, FOLDER_MEMO, ORDER_SEQUENCE, RANK() OVER (ORDER BY ORDER_SEQUENCE ASC, BMK_NO)
-        FROM BMK_FOLDER
-        WHERE MEM_NO=#{MEM_NO};
+	<select id="getPostList" parameterType="hashmap" resultType="hashmap">
+		SELECT *                           
+FROM(SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT, BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+		FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT, BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+			  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, HIT, CMT_CNT, BOARD_DATE, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+				                                                                                         END LIKE_CNT
+					FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, BC.MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+				                                                                                     END CMT_CNT
+				      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+				            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+				                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+				                                                                                FROM BOARD_CMT
+				                                                                                GROUP BY POST_NO)CMT 
+				                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+				                                                                                                                        FROM BOARD_LIKE
+				                                                                                                                        GROUP BY POST_NO)L
+		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+ ON bccl.mem_no = G.MEM_NO WHERE CATEGORY_NO = 1 )BCCLG LEFT JOIN MEM M
+                                        ON BCCLG.MEM_NO = M.MEM_NO 
+ WHERE RNUM BETWEEN #{startCnt} AND #{endCnt}
+UNION
+SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+		FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+			  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, BOARD_DATE, HIT, CMT_CNT, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+				                                                                                         END LIKE_CNT
+					FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+				                                                                                     END CMT_CNT
+				      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+				            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+				                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+				                                                                                FROM BOARD_CMT
+				                                                                                GROUP BY POST_NO)CMT 
+				                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+				                                                                                                                        FROM BOARD_LIKE
+				                                                                                                                        GROUP BY POST_NO)L
+		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+ ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
+                                        ON BCCLG.MEM_NO = M.MEM_NO 
+WHERE RNUM BETWEEN #{startCnt} AND #{endCnt})
+<if test="searchTxt != null and searchTxt !=''">
+			<choose>
+				<when test="selectFilter == 0">
+					AND TITLE LIKE '%' || #{searchTxt} || '%' OR CONTENTS LIKE  '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 1">
+					AND TITLE LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 2">
+					AND NIC LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 3">
+					AND POST_NO LIKE '%' || #{searchTxt} || '%'
+				</when>
+			</choose>
+			AND RNUM BETWEEN #{startCnt} AND #{endCnt} 
+		</if>
+ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM
+																	 																	   ON BCCLG.MEM_NO = M.MEM_NO
 	</select>
+	
+<select id="getPostSPCnt" parameterType="hashmap" resultType="Integer">	
+	SELECT COUNT(*)
+FROM
+(SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+		FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+			  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, BOARD_DATE, HIT, CMT_CNT, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+				                                                                                         END LIKE_CNT
+					FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+				                                                                                     END CMT_CNT
+				      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+				            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+				                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+				                                                                                FROM BOARD_CMT
+				                                                                                GROUP BY POST_NO)CMT 
+				                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+				                                                                                                                        FROM BOARD_LIKE
+				                                                                                                                        GROUP BY POST_NO)L
+		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+ ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
+                                        ON BCCLG.MEM_NO = M.MEM_NO 
+) WHERE 1=1
+<if test="searchTxt != null and searchTxt !=''">
+			<choose>
+				<when test="selectFilter == 0">
+					AND TITLE LIKE '%' || #{searchTxt} || '%' OR CONTENTS LIKE  '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 1">
+					AND TITLE LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 2">
+					AND NIC LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 3">
+					AND POST_NO LIKE '%' || #{searchTxt} || '%'
+				</when>
+			</choose>
+			AND RNUM BETWEEN #{startCnt} AND #{endCnt} 
+		</if>		
+	</select>
+	
+	<select id="getPostSPList" parameterType="hashmap" resultType="hashmap"> 
+	SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
+		FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
+			  FROM (SELECT BCC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO, CONTENTS, BOARD_DATE, HIT, CMT_CNT, CASE WHEN LIKE_CNT IS NULL THEN 0 ELSE LIKE_CNT
+				                                                                                         END LIKE_CNT
+					FROM (SELECT BC.POST_NO, CATEGORY_NO, CATEGORY_NAME, TITLE, MEM_NO,CONTENTS, BOARD_DATE, HIT, CASE WHEN CMT_CNT IS NULL THEN 0 ELSE CMT_CNT
+				                                                                                     END CMT_CNT
+				      	  FROM (SELECT POST_NO, B.CATEGORY_NO, CATEGORY_NAME, TITLE,CONTENTS, MEM_NO, BOARD_DATE, HIT
+				            	FROM BOARD B INNER JOIN BOARD_CATEGORY C
+				                                 ON B.CATEGORY_NO= C.CATEGORY_NO)BC LEFT JOIN (SELECT POST_NO, COUNT (POST_CMT_NO)AS CMT_CNT
+				                                                                                FROM BOARD_CMT
+				                                                                                GROUP BY POST_NO)CMT 
+				                                                                            ON BC.POST_NO = CMT.POST_NO)BCC LEFT JOIN (SELECT POST_NO, COUNT (MEM_NO)AS LIKE_CNT
+				                                                                                                                        FROM BOARD_LIKE
+				                                                                                                                        GROUP BY POST_NO)L
+		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
+ ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
+                                        ON BCCLG.MEM_NO = M.MEM_NO
+ WHERE 1=1 
+<if test="searchTxt != null and searchTxt !=''">
+			<choose>
+				<when test="selectFilter == 0">
+					AND TITLE LIKE '%' || #{searchTxt} || '%' OR CONTENTS LIKE  '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 1">
+					AND TITLE LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 2">
+					AND NIC LIKE '%' || #{searchTxt} || '%'
+				</when>
+				<when test="selectFilter == 3">
+					AND POST_NO LIKE '%' || #{searchTxt} || '%'
+				</when>
+			</choose>
+			AND RNUM BETWEEN #{startCnt} AND #{endCnt} 
+		</if>		
+	</select>
+	
+	<insert id="addPost" parameterType="hashmap">
+		INSERT INTO BOARD(POST_NO,CATEGORY_NO, MEM_NO, TITLE ,CONTENTS )
+		VALUES(POST_SEQ.NEXTVAL, #{categoryNo},#{memNo},#{title}, #{con})
+	</insert>
+	<select id="getPost" parameterType="hashmap" resultType="hashmap">
+		SELECT POST_NO,CATEGORY_NO, MEM_NO, TITLE ,CONTENTS 
+		FROM B
+		WHERE B_NO = #{bNo}
+	</select>
+	<update id="postUpdate" parameterType="hashmap">
+		UPDATE BOARD SET POST_NO = #{postNo}, TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categoryNo} 
+		WHERE POST_NO = #{postNo}
+	</update>
+	<delete id="postDelete" parameterType="hashmap">
+		UPDATE  BOARD SET DEL = 0
+		WHERE POST_NO = #{postNo}
+	</delete>
+	
 </mapper>

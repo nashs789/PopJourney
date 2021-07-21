@@ -900,6 +900,7 @@ input[type="radio"]:checked {
 	{
 	background-color: #f37321;
 	color: white;
+	cursor: pointer;
 }
 
 .asterisk {
@@ -924,9 +925,75 @@ input[type="radio"]:checked {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$("#journalBoard").on("click", function() {
+  		location.href = "journalBoard";
+  	});
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
+	$("#userPage").on("click", function() {
+  		location.href = "userPage";
+  	});
 	$(".report_btn").on("click", function(){
-		popup();
-	}); // report_btn click end
+		$(".popup, .bg").show();
+	}); 
+	$(".ok_btn").on("click", function(){
+		$(".popup, .bg").hide();
+	});
+	$(".cancel_btn").on("click", function(){
+		$(".popup, .bg").hide();
+	});
+	
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "failed")
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
+					else
+					{
+						location.reload();
+					}
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
 
 });
 
@@ -987,14 +1054,14 @@ function popup() {
                <!-- 호버시 메뉴 생성 -->
             </div>
             <nav class="menu">
-               <ul>
-                  <li id="journalBoard">여행게시판</li>
+				<ul>
+					<li id="journalBoard">여행게시판</li>
 					<li id="community">자유게시판</li>
 					<li id="travelWriter">여행작가</li>
 					<li id="clientCenter">고객센터</li>
 					<li id="admin">내부관리자</li>
-               </ul>
-            </nav>
+				</ul>
+			</nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>
             <input type="text" class="search" placeholder="검색">
             <select class="filter">
@@ -1004,6 +1071,12 @@ function popup() {
                <option value="3">닉네임</option>
             </select>
          </div>
+         <form action="#" id="goForm" method="post"> 
+			<input type="hidden" name="postNo" value="${data.POST_NO}"/>
+			<input type="hidden" name="page" value="${param.page}" />
+			<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
+			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+		</form>
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
@@ -1022,20 +1095,14 @@ function popup() {
 		 </div>
          <div class="container_wrap">
             <div class = "text_area">
-         				<p>속에 든 칼이다 청춘의 끓는 피가 아니더면 인간이 얼마나 쓸쓸하랴? 얼음에 싸인 만물은 얼음이 있을 뿐이다<br/><br/><br/>
-						꽃 피고 새 우는 봄날의 천지는 얼마나 기쁘며 얼마나 아름다우냐? 이것을 얼음 속에서 불러 내는 것이 따뜻한 봄바람이다 <br/>
-						인생에 따뜻한 봄바람을 불어 보내는 것은 청춘의 끓는 피다 청춘의 피가 뜨거운지라 인간의 동산에는 사랑의 풀이 돋고 이상의 꽃이 피고 희망의 놀이 뜨고 열락의<br/><br/><br/>
-						만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아 주며 그들을 행복스럽고 평화스러운 곳으로 인도하겠다는 커다란 이상을 품었기 때문이다 <br/><br/><br/>
-						그러므로 그들은 길지 아니한 목숨을 사는가 싶이 살았으며 그들의 그림자는
-						꽃 피고 새 우는 봄날의 천지는 얼마나 기쁘며 얼마나 아름다우냐? 이것을 얼음 속에서 불러 내는 것이 따뜻한 봄바람이다 <br/>
-						인생에 따뜻한 봄바람을 불어 보내는 것은 청춘의 끓는 피다 청춘의 피가 뜨거운지라 인간의 동산에는 사랑의 풀이 돋고 이상의 꽃이 피고 희망의 놀이 뜨고 열락의</p>
+         				<p>${data.CONTENTS}</p>
          	</div>
          	<div class="category_area">
          			<div class="category_label">
          				카테고리
          			</div>
          			<div class="category_txt">
-         				여행꿀팁
+         				${data.CATEGORY_NAME}
          			</div>
          		</div>
          	<div class="sub_profile">
@@ -1044,24 +1111,33 @@ function popup() {
 	         				<img alt="profile" src="./resources/images/profile2.png" class="profile_img">
 	         			</div>
 	         			<div class="info">
-	         				<span>닉네임</span>
-	         				<div class="grade">
-	         					<img alt="icon" src="./resources/images/grade.png">
-	         					<span>여행작가</span>
-	         				</div>
-	         				<div class="cnt">
-	         					<span>총 게시글 100</span>
-	         					<span>총 댓글 100</span>
-	         				</div>
+	         				<span>${data.NIC}</span>
+						<div class="grade">
+							<img alt="icon" src="./resources/images/grade.png"> 
+							<c:choose>
+							<c:when test="${data.GRADE_NO eq 0}">
+							<span>관리자</span>
+							</c:when>
+							<c:when test="${data.GRADE_NO eq 1}">
+							<span>여행꾼</span>
+							</c:when>
+							<c:when test="${data.GRADE_NO eq 2}">
+							<span>여행작가</span>
+							</c:when>
+							</c:choose>
+						</div>
+						<div class="cnt">
+							<span>총 게시글 100</span> <span>총 댓글 100</span>
+						</div>
 	         			</div>
 	         		</div>
 	         		<div class="follow_btn_area">
-	         			<input type="button" value="여 행 일 지&nbsp;&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&nbsp;&#62;"/>
+	         			<input type="button" id="userPage" value="여 행 일 지&nbsp;&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&nbsp;&#62;"/>
 	         		</div>
          		</div>		
             <div class="post_bottom">
             	<div class="btn_list">
-            		<input type="button" class="edit_btn" value="수  정" />
+            		<input type="button" id="" class="edit_btn" value="수  정" />
             		<input type="button" class="delete_btn" value="삭  제" />
             	</div>
             	<div class="post_page">
@@ -1198,7 +1274,7 @@ function popup() {
 			</div>
 		</div>
 		<div class="popup_btn_list">
-			<span>확 인</span> <span>취 소</span>
+			<span class="ok_btn">확 인</span> <span class="cancel_btn">취 소</span>
 		</div>
 	</div>
 	<div class="bg"></div>

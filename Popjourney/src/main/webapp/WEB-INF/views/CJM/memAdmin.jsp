@@ -760,6 +760,9 @@
 					if($("#mainSearchFilter").val() == 0) {
 						$("#goSearch").attr("action", "search");
 						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
 					}
 				});
 				

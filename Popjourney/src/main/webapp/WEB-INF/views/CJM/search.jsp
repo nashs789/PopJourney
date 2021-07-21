@@ -372,6 +372,12 @@
 	         	border-top: 2px solid #2e3459;
 	         	margin-top: 30px;
 	       }
+	       .board_list_off {
+	       		width: 100%;
+	         	border-top: 2px solid #2e3459;
+	         	margin-top: 30px;
+	         	display: none;
+	       }
 	       .board_list tr {
 	         	border-bottom: 1px solid #ccc;
 	         	background-color: #FFFFFF;
@@ -465,6 +471,11 @@
 				width: 520px;
 				margin: 0px auto;
 			}
+			.search_nic_off {
+				width: 520px;
+				margin: 0px auto;
+				display: none;
+			}
 			.search_nic table {
 				border-collapse: collapse;
 			}
@@ -519,6 +530,7 @@
 				padding-left: 250px;
 				width: 600px;
 				height: 80px;
+				
 			}
 		</style>
 		<script type="text/javascript"
@@ -538,11 +550,6 @@
 			  		location.href = "memAdmin";
 			  	});
 				
-				// 셀렉터 옵션 유지
-				if("${param.searchFilter}" != "") {
-					$("#searchFilter").val("${param.searchFilter}");
-				}
-				
 				// 로그인 정보 유지
 				if("${sMEM_NO}" != "") {
 					$(".logins").css("display", "none");
@@ -559,6 +566,11 @@
 					reloadList();
 				});
 				
+				// 셀렉터 옵션 유지
+				if("${param.mainSearchFilter}" != "") {
+					$("#mainSearchFilter").val("${param.mainSearchFilter}");
+				}
+				$("#mainSearchTxt").val("${param.mainSearchTxt}");
 			}); // document ready end..
 			
 			function reloadList() {
@@ -581,52 +593,10 @@
 							boardCnt(res.boardCnt);
 							nicCnt(res.nicCnt);
 							
-							console.log(res.journalCnt);
-							console.log(res.hashCnt);
-							console.log(res.boardCnt);
-							console.log(res.nicCnt);
-							
-							
-							/* $("#hashTxt").val("");
-							$("#moreHash").val("");
-							$("#hashTxt").val($("#mainSearchTxt").val());
-							$("#moreHash").val($("#mainSearchTxt").val()); */
-							
-							//console.log(res.journalCnt);
-							/* if(res.journalCnt < 10) {
-								$("#j .more_entity").hide();
-								if(res.journalCnt == 0) {
-									$("#j").hide();
-								}
-							} else {
-								$("#j .more_entity").show();
-							}
-							if(res.hashCnt < 10) {
-								$("#h .more_entity").hide();
-								if(res.journalCnt == 0) {
-									$("#h").hide();
-								}
-							} else {
-								$("#h .more_entity").show();
-							}
-							if(res.boardCnt < 11) {
-								$("#b .more_entity").hide();
-								if(res.journalCnt == 0) {
-									$("#b").hide();
-								}
-							} else {
-								$("#b .more_entity").show();
-							}
-							if(res.nicCnt < 11) {
-								$("#n .more_entity").hide();
-								if(res.journalCnt == 0) {
-									$("#n").hide();
-								}
-							} else {
-								$("#n .more_entity").show();
-							} */
-								
-							
+							$("#hashTxt").html("");
+							$("#hashMore").html("");
+							$("#hashTxt").html("#" + res.txt);
+							$("#hashMore").html("#" + res.txt + " 더보기");
 						} else if(res.msg == "Filter1") {
 							
 						} else if(res.msg == "Filter2") {
@@ -647,19 +617,25 @@
 				});
 			}
 			function journalCnt(journalCnt) {
-				
 				$("#journalCnt").html("");
 				var html = "";
-				
 				html = journalCnt + "개의 여행게시판이 검색되었습니다.";
-				
 				$("#journalCnt").html(html);
+				
+				$("#journalMore").html("");
+				var htmlM = "";
+				if(journalCnt > 10) {
+					$("#journalMore").show();
+					htmlM = "<div class=\"more_entity\" id=\"journalMore\">여행게시판 더보기</div>";
+				} else {
+					$("#journalMore").hide();
+				}
+				$("#journalMore").html(htmlM);
 			}
 			function drawList1(journalList) {
 				
 				$("#journalGallery").html("");
 				var html = "";
-				
 				
 				for(d of journalList) {
 					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
@@ -694,14 +670,20 @@
 			} //  function drawList(journalList) end..
 			
 			function hashCnt(hashCnt) {
-				
 				$("#hashCnt").html("");
 				var html = "";
-				
 				html = hashCnt + "개의 여행게시판이 검색되었습니다.";
-				
 				$("#hashCnt").html(html);
 				
+				$("#hashMore").html("");
+				var htmlM = "";
+				if(hashCnt > 10) {
+					$("#hashMore").show();
+					htmlM = "<div class=\"more_entity\" id=\"hashMore\">#" + ${mainSearchTxt} + "더보기</div>";
+				} else {
+					$("#hashMore").hide();
+				}
+				$("#hashMore").html(htmlM);
 			}
 			function drawList2(hashList) {
 				
@@ -740,13 +722,26 @@
 				
 			} // function drawList(hashList) end..
 			function boardCnt(boardCnt) {
-				
 				$("#boardCnt").html("");
 				var html = "";
-				
 				html = boardCnt + "개의 자유게시글이 검색되었습니다.";
-				
 				$("#boardCnt").html(html);
+				
+				$("#boardMore").html("");
+				if(boardCnt > 10) {
+					var htmlM = "";
+					$(".board_list_off").attr("class", "board_list");
+					$("#boardMore").show();
+					htmlM = "<div class=\"more_entity\" id=\"boardMore\">자유게시판 더보기</div>";
+					$("#boardMore").html(htmlM);
+				} else if(0 < boardCnt <= 10) {
+					$(".board_list_off").attr("class", "board_list");
+					$("#boardMore").hide();
+				} else if(boardCnt == 0) {
+					$(".board_list").attr("class", "board_list_off");		
+					$("#boardMore").hide();
+				}
+				
 			}
 			function drawList3(boardList) {
 				$("#boardGallery").html("");
@@ -772,10 +767,26 @@
 			function nicCnt(nicCnt) {
 				$("#nicCnt").html("");
 				var html = "";
-				
 				html = nicCnt + "개의 닉네임이 검색되었습니다.";
-				
 				$("#nicCnt").html(html);
+				
+				$("#nicMore").html("");
+				if(nicCnt > 10) {
+					var htmlM = "";
+					$(".search_nic_off").attr("class", "search_nic");
+					$(".search_nic").show();
+					$("#nicMore").show();
+					htmlM = "<div class=\"more_entity\" id=\"nicMore\">닉네임 더보기</div>";
+					$("#nicMore").html(htmlM);
+				} else if(0 < nicCnt <= 10) {
+					$(".search_nic_off").attr("class", "search_nic");
+					$(".search_nic").show();
+					$("#nicMore").hide();
+				} else if(nicCnt == 0) {
+					$(".search_nic").attr("class", "search_nic_off");			
+					$("#nicMore").hide();
+				}
+				
 			}
 			function drawList4(nicList) {
 				$("#nicGallery").html("");
@@ -903,13 +914,13 @@
 					</div>
 					<c:choose>
 						<c:when test="${journalCnt > 10}">
-							<div class="more_entity">여행게시판 더보기</div>
+							<div class="more_entity" id="journalMore">여행게시판 더보기</div>
 						</c:when>
 					</c:choose>
 					<!-- 여행게시판 검색결과 끝  -->
 					<!-- 해시태그 검색결과 시작 -->	
 					<div class="line"></div>		
-					<div class="search_category" id="hashTxt">#${mainSearchTxt}</div>
+					<div class="search_category" id="hashTxt">#${param.mainSearchTxt}</div>
 					<div class="search_category_cnt" id="hashCnt">${hashCnt}개의 여행게시판이 검색되었습니다.</div>
 					<div class="gallery" id="HashGallery">
 						<c:choose>
@@ -946,7 +957,7 @@
 					</div>
 					<c:choose>
 						<c:when test="${hashCnt > 10}">
-							<div class="more_entity" id="moreHash">#${mainSearchTxt} 더보기</div>				
+							<div class="more_entity" id="hashMore">#${param.mainSearchTxt} 더보기</div>				
 						</c:when>
 					</c:choose>
 					<!-- 해시태그 검색결과 끝 -->	
@@ -1000,7 +1011,7 @@
 					</c:choose>
 					<c:choose>
 						<c:when test="${boardCnt > 10}">
-		            		<div class="more_entity">자유게시판 더보기</div>					
+		            		<div class="more_entity" id="boardMore">자유게시판 더보기</div>					
 						</c:when>
 					</c:choose>
 					<!-- 자유게시판 검색결과 끝 -->		
@@ -1046,7 +1057,7 @@
 					</c:choose>
 					<c:choose>
 						<c:when test="${nicCnt > 10}">
-							<div class="more_entity">닉네임 더보기</div>
+							<div class="more_entity" id="nicMore">닉네임 더보기</div>
 						</c:when>
 					</c:choose>
 					<!-- 닉네임 검색결과 끝 -->		

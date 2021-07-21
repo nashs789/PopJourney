@@ -490,7 +490,7 @@ a {
 
 .alert_popup {
 	display: none;
-	width: 300px;
+	width: 400px;
 	height: 150px;
 	background-color: #fcfcfc;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
@@ -509,7 +509,7 @@ a {
 	font-weight: bold;
 	text-align: center;
 	line-height: 50px;
-	width: 265px;
+	width: 350px;
 	height: 40px;
 	margin: 30px auto 30px auto;
 }
@@ -518,7 +518,7 @@ a {
 	text-decoration: none;
 	display: inline-block;
 	text-align: center;
-	width: 120px;
+	width: 170px;
 	height: 30px;
 	padding: 10px 15px 10px 15px;
 	font-size: 12pt;
@@ -539,9 +539,101 @@ a {
     opacity: 0.2;
 }
 </style>
-<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"
+		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"
+		src="resources/script/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$("#journalBoard").on("click", function() {
+  		location.href = "journalBoard";
+  	});
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
+	
+	CKEDITOR.replace("postCon", {
+		resize_enabled : false,
+		language : "ko",
+		enterMode : "2",
+		width : "1280",
+		height : "500"
+		
+	});
+	
+	$("#addForm").on("keypress", "input", function (event) {
+		if(event.keyCode ==13) {
+			return false;
+		}
+	});
+	
+	$("#addBtn").on("click", function () {
+	var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+			beforeSubmit : function () {
+				$("#postCon").val(CKEDITOR.instances['postCon'].getData());
+				
+				if($.trim($("#bTitle").val()) == "") {
+					alert("제목을 입력해 주세요.");
+					$("#bTitle").focus();
+					return false; // ajaxForm 실행 불가
+				} else if ($.trim($("#bWriter").val()) == "") {
+					alert("작성자를 입력해 주세요.");
+					$("#bWriter").focus();
+					return false;
+				} else if ($.trim($("#bCon").val()) == "") {
+					alert("내용을 입력해 주세요.");
+					$("#bCon").focus();
+					return false;
+				}
+			},
+			success : function (res) {
+				if(res.result == "SUCCESS"){
+					// 글저장
+					var params = $("#addForm").serialize();
+					
+					$.ajax({
+						url:"postWrites", 
+						type: "post",
+						dataType: "json",
+						data : params,
+						success: function(res){
+							if(res.msg == "success"){
+								location.href = "community";
+							} else if (res.msg =="failed") {
+								alert("작성에 실패하였습니다.")
+							} else {
+								alert("작성중 문제가 발생하였습니다.")
+							}
+						}, 
+						error : function (request, status, error) {
+							console.log(error);
+						}
+					});
+				} 
+			},
+			error : function () {
+				console.log(문제);
+			}
+		}); //ajaxForm end
+		
+		addForm.submit();
+	}); //addBtn click end
 
+});
 </script>
 </head>
 <body>
@@ -606,9 +698,15 @@ a {
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
 			&nbsp;>&nbsp;&nbsp;게시글 작성
 		</div>
-		<form action="#">
+		<form action="community" id="goForm" method="post">
+			<input type="hidden" name="page" value="${param.page}" />
+			<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
+			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+		</form>
+		<form action="#" id="addForm" method="post">
+			<input type="hidden" id="sMNo" value="${sMEM_NO}">
 			<div class="title_area">
-				<input type="text" class="input_title" placeholder="게시글 제목"
+				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목"
 					size="50" maxlength="30" autofocus required />
 				<div class="category_area">
 					<span class="asterisk">&#42;</span><span>카테고리</span> <select
@@ -621,12 +719,11 @@ a {
 			</div>
 			<div class="container_wrap">
 				<div class="txt_area">
-					<img alt="에디터" src="./resources/images/toolbar.png">
-					<textarea rows="30" cols="150" placeholder="내용을 입력하시오"></textarea>
+					<textarea rows="30" cols="150" placeholder="내용을 입력하시오" id="postCon" name="postCon"></textarea>
 				</div>
 				<div class="post_bottom">
 					<div class="btn_list">
-						<input type="button" class="enroll_btn" value="등  록" /> <input
+						<input type="button" id="addBtn" class="enroll_btn" value="등  록" /> <input
 							type="reset" class="del_btn" value="삭  제" />
 					</div>
 				</div>

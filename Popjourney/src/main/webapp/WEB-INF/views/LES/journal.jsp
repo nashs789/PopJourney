@@ -445,6 +445,7 @@ a {
 	border: 1px solid #fcba03;
 	border-radius: 20px;
 	padding: 3px 15px;
+	cursor: pointer;
 }
 
 .date_nav ul li:active, .date_nav ul li.on {
@@ -1000,7 +1001,7 @@ a {
 .popup {
 	display:none;
 	width: 600px;
-	height: 470px;
+	height: 515px;
 	background-color: #fcfcfc;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	position: fixed;
@@ -1017,7 +1018,7 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	height: 390px;
+	height: 435px;
 	margin: 30px auto 0 auto;
 }
 
@@ -1082,17 +1083,22 @@ a {
 	margin: 0 20px;
 }
 
-input[type='radio'], input[type='radio']:checked {
+input[type="radio"], input[type="radio"]:checked {
 	appearance: none;
 	width: 0.8rem;
 	height: 0.8rem;
 	border-radius: 100%;
 	margin-right: 0.1rem;
+	cursor: pointer;
 }
 
 input[type="radio"] {
 	background-color: white;
 	border: 2px solid #f37321;
+}
+
+input[type="radio"] + label {
+	cursor: pointer;
 }
 
 input[type="radio"]:checked {
@@ -1121,6 +1127,7 @@ input[type="radio"]:checked {
 	color: #f37321;
 	font-weight: bold;
 	line-height: 30px;
+	cursor: pointer;
 }
 
 .popup_btn_list span:first-child {
@@ -1158,26 +1165,79 @@ input[type="radio"]:checked {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$("#journalBoard").on("click", function() {
+  		location.href = "journalBoard";
+  	});
+	$("#community").on("click", function() {
+  		location.href = "community";
+  	});
+	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	});
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	});
+	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	});
+	
+/* 	if("${sMEM_NO}" != "") { // 로그인 상태
+		$(".btn_list").hide();
+	} else { // 비 로그인 상태
+		$(".btn_list").hide();
+	} */
 	$(".report_btn").on("click", function(){
-		popup();
+		$(".popup, .bg").show();
 	}); // report_btn click end
+	$(".close_btn").on("click", function(){
+		$(".popup, .bg").hide();
+	});
+	$(".submit_btn").on("click", function(){
+		$(".popup, .bg").hide();
+	});
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "failed")
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
+					else
+					{
+						location.reload();
+					}
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
 
 });
-
-function popup() {
-	var popup = document.getElementById("popup");
-	var bg = document.getElementByClass("bg");
-	
-	console.log(popup.style.display);
-	
-	if(popup.style.display == "none") { 
-		popup.style.display = ""; 
-		bg.style.display = "";
-	} else {
-		popup.style.display = "none";
-		bg.style.display = "none";
-	}
-}
 
 
 </script>
@@ -1334,7 +1394,7 @@ function popup() {
 						</div>
 					</div>
 					<div class="follow_btn_area">
-						<input type="button"
+						<input type="button" class="go_user_page"
 							value="여 행 일 지&nbsp;&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&nbsp;&#62;" />
 					</div>
 				</div>
@@ -1545,13 +1605,19 @@ function popup() {
 			</div>
 			<div class="report_radio">
 				<div class="report_radio_box">
-					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">욕설 </label>
+					<input type="radio" id="report_radio0" name="report_reason"><label for="report_radio0">욕설 </label>
 				</div>
 				<div class="report_radio_box">
-					<input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">비방글</label>
+					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">비방</label>
 				</div>
 			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">부적절한 이유</label>
+				    <input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">정치적 발언</label>
+			    </div>
+			    <div class="report_radio_box">
+				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">외설적 언어</label>
+			    </div>
+			    <div class="report_radio_box">
+				    <input type="radio" id="report_radio4" name="report_reason"><label for="report_radio4">기타</label>
 			    </div>
 			</div>
 			<div>
@@ -1559,7 +1625,7 @@ function popup() {
 			</div>
 		</div>
 		<div class="popup_btn_list">
-			<span>확 인</span> <span>취 소</span>
+			<span class="submit_btn">확 인</span> <span class="close_btn">취 소</span>
 		</div>
 	</div>
 	<div class="bg"></div>
