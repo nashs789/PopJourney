@@ -1014,6 +1014,8 @@ function drawPaging(pb) {
 		</div>
 			<div class="board_list_wrap">
 				<form action="#" id="actionForm" method="post">
+				<input type="hidden" id="postNo" name="postNo"/>
+				<input type="hidden" id="page" name="page" value="${page}">
 				<div class="board_menu">
 					<nav class="left_nav">
 						<ul>
@@ -1030,7 +1032,7 @@ function drawPaging(pb) {
 						</ul>
 					</nav>
 				</div>
-				</form>
+	
 				<table class="board_list">
 					<colgroup>
 						<col width="5%" /> <!-- 글번호 -->
@@ -1070,6 +1072,7 @@ function drawPaging(pb) {
 						</select>
 					</div>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>

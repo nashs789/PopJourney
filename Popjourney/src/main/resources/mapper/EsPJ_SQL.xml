@@ -21,7 +21,7 @@
 				                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
 		 ON bccl.mem_no = G.MEM_NO WHERE CATEGORY_NO = 1 )BCCLG LEFT JOIN MEM M
 		                                        ON BCCLG.MEM_NO = M.MEM_NO 
-		 WHERE RNUM BETWEEN 1 AND 5
+		 WHERE RNUM BETWEEN #{startCnt} AND #{endCnt} 
 		UNION
 		SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
 				FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
@@ -40,7 +40,6 @@
 				                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
 		 ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
 		                                        ON BCCLG.MEM_NO = M.MEM_NO 
-		WHERE RNUM BETWEEN 1 AND 15)
 		ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM)
 		WHERE 1=1
 		<if test="searchTxt != null and searchTxt !=''">
@@ -79,7 +78,7 @@ FROM(SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT, BOARD_DATE 
 		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
  ON bccl.mem_no = G.MEM_NO WHERE CATEGORY_NO = 1 )BCCLG LEFT JOIN MEM M
                                         ON BCCLG.MEM_NO = M.MEM_NO 
- WHERE RNUM BETWEEN 1 AND 5
+ WHERE RNUM BETWEEN #{startCnt} AND #{endCnt}
 UNION
 SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG.MEM_NO,GRADE_NO, LIKE_CNT,CMT_CNT,NIC, RNUM
 		FROM (SELECT BCCL.POST_NO, BCCL.CATEGORY_NO,BCCL.CATEGORY_NAME, BCCL.TITLE,BCCL.CONTENTS, BCCL.HIT,BCCL.BOARD_DATE ,BCCL.MEM_NO, G.GRADE_NO, LIKE_CNT, CMT_CNT, ROW_NUMBER () OVER(ORDER BY BOARD_DATE DESC) AS RNUM
@@ -98,9 +97,8 @@ SELECT POST_NO,CATEGORY_NO,CATEGORY_NAME, TITLE, CONTENTS, HIT,BOARD_DATE ,BCCLG
 		                                                                                                                    ON BCC.POST_NO =  L.POST_NO)BCCL LEFT JOIN GRADE G
  ON bccl.mem_no = G.MEM_NO)BCCLG LEFT JOIN MEM M
                                         ON BCCLG.MEM_NO = M.MEM_NO 
-WHERE RNUM BETWEEN 1 AND 15)
-ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM
-	<if test="searchTxt != null and searchTxt !=''">
+WHERE RNUM BETWEEN #{startCnt} AND #{endCnt})
+<if test="searchTxt != null and searchTxt !=''">
 			<choose>
 				<when test="selectFilter == 0">
 					AND TITLE LIKE '%' || #{searchTxt} || '%' OR CONTENTS LIKE  '%' || #{searchTxt} || '%'
@@ -116,7 +114,9 @@ ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM
 				</when>
 			</choose>
 			AND RNUM BETWEEN #{startCnt} AND #{endCnt} 
-		</if>																 																	   ON BCCLG.MEM_NO = M.MEM_NO
+		</if>
+ORDER BY DECODE(CATEGORY_NAME, '공지사항',1), RNUM
+																	 																	   ON BCCLG.MEM_NO = M.MEM_NO
 	</select>
 	
 <select id="getPostSPCnt" parameterType="hashmap" resultType="Integer">	

@@ -226,7 +226,7 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/communityLists", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String communityLists(@RequestParam HashMap<String, String>params) throws Throwable{
-		
+		System.out.println(params);
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		int page = Integer.parseInt(params.get("page"));
