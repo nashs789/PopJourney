@@ -211,7 +211,6 @@ input[type='checkbox'] {
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
 	margin: 0 auto;
 }
 
@@ -330,7 +329,6 @@ a {
 }
 
 .board_list {
-	width: 100%;
 	border-top: 2px solid #2e3459;
 }
 
@@ -355,7 +353,6 @@ a {
 }
 
 .follow_btn_list {
-	height: 65px;
 	margin: 0 90px 20px 1070px;
 	float: right;
 }
@@ -391,11 +388,10 @@ a {
 
 .follow_list {
 	padding: 30px 0 0 45px;
-	height: 2150px;
 }
 
 .user_area {
-	float: left;
+	display: inline-block;
 	width: 340px;
 	height: 390px;
 	margin: 0 0 40px 40px;
@@ -500,7 +496,7 @@ hr {
 
 
 #footer {
-	display: block;
+	display: inline-block;
 	width: 100%;
 	height: 100px;
 	background-color: #2e3459;
@@ -749,14 +745,7 @@ $(document).ready(function(){
 			dataType: "json",
 			type: "post",
 			success: function(result){
-				if(result.msg == "success")
-				{
-					makeMemo(result.followingMemo);
-				}
-				else
-				{
-					alert("오류 발생");
-				}
+				makeMemo(result.followingMemo);
 			},//success end
 			error: function(error){
 				console.log(error);
@@ -790,10 +779,17 @@ function makeFollowing(myFollowing)
 			html += "			alt=\"profile\" src=\"./resources/images/profile.png\"></span>";
 		}
 		html += "		<div class=\"user_info\">";
-		html += "			<span class=\"nic\">" + data.NIC + "</span> <span class=\"memo\">" + data.REQUEST_DATE + "";
+		html += "			<span class=\"nic\">" + data.NIC + "</span> <span class=\"memo\">" + data.REQUEST_DATE + "(" + data.CHA + "일)";
 		html += "</span>";
 		html += "			<hr>";
-		html += "			<p>" + data.MEMO + "</p>";  
+		if(data.MEMO == null)
+		{
+			html += "			<p>메모가 없습니다.</p>";
+		}
+		else
+		{
+			html += "			<p>" + data.MEMO + "</p>"; 
+		}
 		html += "		</div>";
 		html += "		<div class=\"follow_btn_area\">";
 		html += "			<input type=\"button\" class=\"user\" user=\"" + data.MEM_NO + "\"";
@@ -820,11 +816,18 @@ function makeMemo(followingMemo)
 	html += "   	<div class=\"btn_list\">";
 	html += "   		<span id=\"yes\">수 정</span> <span id=\"no\">취 소</span>";
 	html += "   	</div>";
-	html += "   	</div>";
+	html += "   </div>";
 	html += "   <div class=\"bg\"></div>";
 	
 	$("body").append(html);
-	$(".pop_name").val(followingMemo.MEMO);
+	if(followingMemo != null)
+	{
+		$(".pop_name").val(followingMemo.MEMO);
+	}
+	else
+	{
+		$(".pop_name").val("메모가 없습니다.");
+	}
 	
 	$("#no").on("click", function(){
 		$(".popup").remove();
@@ -876,7 +879,6 @@ function makeMemo(followingMemo)
 	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
 	<div id="wrap">
-		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
@@ -899,9 +901,8 @@ function makeMemo(followingMemo)
 								</ul></li>
 						</ul>
 					</div>
-				</div>
-				<!-- 호버시 메뉴 생성 -->
-			</div>
+				</div> <!-- top end -->
+			</div> <!-- banner end -->
 			<nav class="menu">
 				<ul>
 					<li id="journalBoard">여행게시판</li>
@@ -919,7 +920,8 @@ function makeMemo(followingMemo)
 				<option value="2">자유게시판</option>
 				<option value="3">닉네임</option>
 			</select>
-		</div>
+		</div> <!-- header end -->
+		
 		<div class="sub_profile">
 			<div class="info">
 			</div>
@@ -941,7 +943,7 @@ function makeMemo(followingMemo)
 									100</li>
 						</ul>
 					</nav>
-				</div>
+				</div> <!-- board_menu end -->
 				<div id="path_info">
 					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
@@ -955,17 +957,17 @@ function makeMemo(followingMemo)
 				<div class="follow_list">
 
 				</div> <!-- follow_list -->
-			</div>
+			</div> <!-- board_list_wrap -->
 			<div class="more_btn">
 				<input type="button" id="moreBtn" value="더 보 기" />
 			</div>
-		</div>
+		</div> <!-- container end -->
 		<div id="footer">
 			<p>
 				POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />
 				Copyright© POPJOURNEY. All Rights Reserved.
 			</p>
-		</div>
-	</div>
+		</div> <!-- footer end -->
+	</div> <!-- Wrap end -->
 </body>
 </html>

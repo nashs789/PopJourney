@@ -294,4 +294,22 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.updateBMK(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> detailList(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.detailList(params);
+	}
+
+	@Override
+	public int BMKDetailCnt(HashMap<String, String> params) throws Throwable
+	{
+		return ipjd.BMKDetailCnt(params);
+	}
+
+	@Override
+	public int deleteBMKJournal(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.deleteBMKJournal(params);
+	}
 }

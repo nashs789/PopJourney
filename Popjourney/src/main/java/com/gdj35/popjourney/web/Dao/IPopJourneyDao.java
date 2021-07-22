@@ -98,4 +98,11 @@ public interface IPopJourneyDao {
 	int delBMK2(HashMap<String, String> params)throws Throwable;
 
 	int updateBMK(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> detailList(HashMap<String, String> params)throws Throwable;
+
+	int BMKDetailCnt(HashMap<String, String> params)throws Throwable;
+
+	int deleteBMKJournal(HashMap<String, String> params)throws Throwable;
+
 }

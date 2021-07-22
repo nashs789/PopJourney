@@ -536,6 +536,7 @@ $(document).ready(function(){
 				$("#pageCnt").val(result.pageCnt);
 
 				var params = $("#memForm").serialize();
+				console.log(params);
 				
 				$.ajax({
 					url: "timelines",
@@ -744,6 +745,16 @@ function makeTimeline(timeline)
 			html += "     	</div>";
 			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님의 생일 이였습니다. </div>";
 			break;
+		case 5:
+			html += "     			<img class=\"nic\" nic=\"" + time.MEM_NO + "\" src=\"resources/upload/" + time.PHOTO_PATH + "\">";
+			html += "     		</div>";
+			html += "     		<div class=\"last\">";
+			html += "     			<span></span><br><br>";
+			html += "               <span></span>"
+			html += "     		</div>";
+			html += "     	</div>";
+			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 여행 작가가 되셨습니다. </div>";
+			break;
 		default:
 			console.log("흠");
 		}
@@ -752,7 +763,7 @@ function makeTimeline(timeline)
 		html += "   </div>";
 		html += " </div>";
 	} // for문  end
-	
+	console.log(html);
 	$(".timeline").append(html);
 }
 function makeNotification(notification)
