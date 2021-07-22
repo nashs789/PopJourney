@@ -364,6 +364,18 @@
 		   table {
 	         	border-collapse: collapse;
 	       } 
+			/* 여행꿀팁 */
+			.td_t {
+				color: #8000ff;
+			}
+			/* QnA */
+			.td_q {
+				color: #4d94ff;
+			}
+			/* 잡담 */
+			.td_c {
+				 color: #00592d;
+			}
 	       caption {
 	         	display: none;
 	       }
@@ -399,7 +411,6 @@
 	       }
 	       .board_list tbody tr td:nth-child(2) {
 	          	font-weight:550;
-	         	color: rgb(128, 0, 255);
 	       }     
 	       .board_list tbody tr td:nth-child(3) {
 	         	text-align: left;
@@ -538,8 +549,14 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
 				
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -785,14 +802,20 @@
 				
 				for(d of boardList) {
 					html += "<tr class=\"board_data\" postNo=\"" + d.POST_NO + "\">";
-	    			html += "	<td>" + d.POST_NO + "</td>";
-	    			html += "	<td>" + d.CATEGORY_NAME + "</td>";
-	    			html += "	<td class=\"board_title\">" + d.TITLE + "</td>";
-	    			html += "	<td>" + d.GRADE_NAME + "</td>";
-	    			html += "	<td>" + d.NIC + "</td>";
-	    			html += "	<td>" + d.BOARD_DATE + "</td>";
-	    			html += "	<td>" + d.HIT + "</td>";
-	    			html += "	<td>" + d.POST_LIKE_CNT + "</td>";
+	    			html += "<td>" + d.POST_NO + "</td>";
+	    			if(d.CATEGORY_NO == 2) {
+	    				html += "<td class=\"td_t\">" + d.CATEGORY_NAME + "</td>";
+	    			} else if(d.CATEGORY_NO == 3) {
+	    				html += "<td class=\"td_q\">" + d.CATEGORY_NAME + "</td>";
+	    			} else if(d.CATEGORY_NO == 4){
+	    				html += "<td class=\"td_c\">" + d.CATEGORY_NAME + "</td>";
+	    			}
+	    			html += "<td class=\"board_title\">" + d.TITLE + "</td>";
+	    			html += "<td>" + d.GRADE_NAME + "</td>";
+	    			html += "<td>" + d.NIC + "</td>";
+	    			html += "<td>" + d.BOARD_DATE + "</td>";
+	    			html += "<td>" + d.HIT + "</td>";
+	    			html += "<td>" + d.POST_LIKE_CNT + "</td>";
 	    			html += "</tr>";
 				}
 				
@@ -875,7 +898,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>
