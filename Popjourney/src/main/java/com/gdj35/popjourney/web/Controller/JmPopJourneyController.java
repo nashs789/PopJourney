@@ -31,9 +31,16 @@ public class JmPopJourneyController {
 
 	// 여행작가랭킹
 	@RequestMapping(value = "/travelWriterRank")
-	public ModelAndView travelWriterRank(@RequestParam HashMap<String, String> params, ModelAndView mav)
-			throws Throwable {
+	public ModelAndView travelWriterRank(@RequestParam HashMap<String, String> params, ModelAndView mav)throws Throwable {
 
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
 		mav.setViewName("CJM/travelWriterRank");
 
 		return mav;

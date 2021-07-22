@@ -578,6 +578,10 @@
 				
 				reloadList();
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
+				
 				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";

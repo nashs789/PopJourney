@@ -902,12 +902,69 @@
 		WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
-	<!-- <select id="getRankCnt" parameterType="hashmap" resultType="Integer">
-		
+	<select id="getRankCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS JOURNAL_WRITER_CNT
+		FROM MEM M INNER JOIN GRADE G
+		                   ON M.MEM_NO = G.MEM_NO
+		                  AND G.GRADE_NO = 2
+		WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
 	</select>
 	
 	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
-		
-	</select> -->
+		SELECT R.MEM_NO, R.NIC, R.JOURNAL_CNT, R.JOURNAL_LIKE_CNT, R.FOLLOW_CNT, R.SUM, R.RNK
+		FROM (SELECT R.MEM_NO, R.NIC, R.JOURNAL_CNT, R.JOURNAL_LIKE_CNT, R.FOLLOW_CNT, R.SUM,
+		             ROW_NUMBER() OVER(ORDER BY R.SUM DESC) AS RNK
+		      FROM (SELECT R.MEM_NO, R.NIC, R.JOURNAL_CNT, R.JOURNAL_LIKE_CNT, R.FOLLOW_CNT, R.SUM
+		            FROM (SELECT M.MEM_NO, M.NIC, G.GRADE_NO, GC.GRADE_NAME, NVL(J.JOURNAL_CNT, 0) AS JOURNAL_CNT, 
+		                         NVL(JL.JOURNAL_LIKE_CNT, 0) AS JOURNAL_LIKE_CNT, NVL(F.FOLLOW_CNT, 0) AS FOLLOW_CNT, S.SUM
+		                  FROM MEM M INNER JOIN GRADE G
+		                                     ON M.MEM_NO = G.MEM_NO
+		                                    AND G.GRADE_NO = 2
+		                             INNER JOIN GRADE_CATEGORY GC
+		                                     ON G.GRADE_NO = GC.GRADE_NO
+		                        LEFT OUTER JOIN (SELECT MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                         FROM JOURNAL
+		                                         GROUP BY MEM_NO) J
+		                                     ON M.MEM_NO = J.MEM_NO
+		                        LEFT OUTER JOIN (SELECT J.MEM_NO, SUM(JL.JOURNAL_LIKE_CNT) AS JOURNAL_LIKE_CNT
+		                                         FROM JOURNAL J INNER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
+		                                                                    FROM JOURNAL_LIKE
+		                                                                    GROUP BY JOURNAL_NO) JL
+		                                                                ON J.JOURNAL_NO = JL.JOURNAL_NO
+		                                         GROUP BY J.MEM_NO) JL
+		                                     ON M.MEM_NO = JL.MEM_NO
+		                        LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS FOLLOW_CNT
+		                                         FROM FOLLOW
+		                                         GROUP BY TARGET_MEM_NO) F
+		                                     ON M.MEM_NO = F.TARGET_MEM_NO
+		                             INNER JOIN (SELECT R.MEM_NO, SUM( (R.JOURNAL_CNT * 5) + (R.JOURNAL_LIKE_CNT * 1) + (R.FOLLOW_CNT * 1) ) AS SUM
+		                                         FROM (SELECT M.MEM_NO, M.NIC, G.GRADE_NO, GC.GRADE_NAME, NVL(J.JOURNAL_CNT, 0) AS JOURNAL_CNT, 
+		                                                      NVL(JL.JOURNAL_LIKE_CNT, 0) AS JOURNAL_LIKE_CNT, NVL(F.FOLLOW_CNT, 0) AS FOLLOW_CNT
+		                                               FROM MEM M INNER JOIN GRADE G
+		                                                                  ON M.MEM_NO = G.MEM_NO
+		                                                                 AND G.GRADE_NO = 2
+		                                                          INNER JOIN GRADE_CATEGORY GC
+		                                                                  ON G.GRADE_NO = GC.GRADE_NO
+		                                                     LEFT OUTER JOIN (SELECT MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                                                      FROM JOURNAL
+		                                                                      GROUP BY MEM_NO) J
+		                                                                  ON M.MEM_NO = J.MEM_NO
+		                                                     LEFT OUTER JOIN (SELECT J.MEM_NO, SUM(JL.JOURNAL_LIKE_CNT) AS JOURNAL_LIKE_CNT
+		                                                                      FROM JOURNAL J INNER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
+		                                                                                                 FROM JOURNAL_LIKE
+		                                                                                                 GROUP BY JOURNAL_NO) JL
+		                                                                                             ON J.JOURNAL_NO = JL.JOURNAL_NO
+		                                                                      GROUP BY J.MEM_NO) JL
+		                                                                  ON M.MEM_NO = JL.MEM_NO
+		                                                     LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS FOLLOW_CNT
+		                                                                      FROM FOLLOW
+		                                                                      GROUP BY TARGET_MEM_NO) F
+		                                                                  ON M.MEM_NO = F.TARGET_MEM_NO
+		                                               WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R
+		                                         GROUP BY R.MEM_NO) S
+		                                     ON M.MEM_NO = S.MEM_NO
+		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R) R) R
+		WHERE R.RNK BETWEEN #{startCnt} AND #{endCnt}
+	</select>
 	
 </mapper>
