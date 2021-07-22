@@ -92,5 +92,15 @@ public interface IJmPopjourneyDao {
 
 	public int getNicCnt(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable;
+
+
+
 
 }

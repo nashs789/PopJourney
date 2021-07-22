@@ -228,5 +228,25 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	public int getNicCnt(HashMap<String, String> params) throws Throwable {
 		return iJmPopjourneyDao.getNicCnt(params);
 	}
+	
+	@Override
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getHashDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBoardDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNicDetailList(params);
+	}
 
 }

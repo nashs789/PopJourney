@@ -16,6 +16,7 @@
 				font-size: 0px;
 				font-family: 'Black Han Sans', sans-serif;
 				min-width: 1480px;
+				background-color: #f9f9f9;
 			}
 			
 			/* 여기서부터 헤더 레이아웃 */
@@ -187,7 +188,7 @@
 				display: block;
 				width: 1280px;
 				margin: 0 auto;
-				background-color: #FFFFFF;
+				background-color: #f9f9f9;
 			}
 			.rank_area {
 				display: block;
@@ -248,6 +249,11 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
+				background-color: #f9f9f9;
+				cursor: pointer;
+			}
+			tbody tr:hover {
+				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 10pt;
@@ -270,24 +276,13 @@
 			.click_article:hover {
 				color: #fcba03;
 			}
-			.nic {
-				cursor: pointer;
-			}
-			.nic:hover {
-				color: #fcba03;
-			}
 			
-			.paging_wrap {
-            	width: 100%;
-            	height: 100px;
-            	padding-top: 50px;
-	        }
-	        .paging { 
+			 .paging { 
 	            font-size: 0;
 	            text-align: center;
 	            margin: 40px 0px 60px 0px;
 	        }  
-	        .paging a {
+	        .paging div {
 	            display: inline-block;
 	            margin-left: 10px;
 	            padding: 5px 10px;
@@ -296,24 +291,26 @@
 	            font-weight: bold;
 	            text-decoration: none;
 	        }   
-	        .paging a.paging_btn {
+	        .paging_btn {
 	            background-color: none;
 	            color: #2e3459;
 	            letter-spacing:-5px;
 	            font-size: 12pt;
 	        }
-	        .paging a.num {           
+	        .paging div.num {           
 	            color: #2e3459;
 	        }
-	        .paging a:first-child {
+	        .paging div:first-child {
 	            margin-left: 0;
 	        } 
-	        .paging a.num:hover,
-	        .paging a.num.on,
-	        .paging a.paging_btn:hover  {
+	        .paging div.num:hover,
+	        .paging div.num.on,
+	        .paging div.paging_btn:hover  {
 	            color: #F1404B;
 	            text-decoration: underline;
+	            cursor: pointer;
 	        }
+	        
 			.travel_writer_score h4, .travel_writer_score h6 {
 				font-size: 10pt;
 				font-weight: 600;
@@ -345,6 +342,11 @@
 				
 				reloadList();
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
+				
+				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -367,7 +369,55 @@
 					$(".btns").css("display", "none");
 				}
 				
+				/* // 검색 처리
+				$(".search_btn").on("click", function() {
+					$("#page").val(1);
+					$("#searchOldTxt").val($("#searchTxt").val());
+					reloadList();
+				}); */
 				
+				// 페이징 처리
+				$(".paging").on("click", "div", function() {
+					$($("#page").val($(this).attr("page")));
+					$("#searchTxt").val($("#searchTxt").val());
+					reloadList();
+				});
+				
+				// 회원프로필 이동
+				$("#writerRank").on("click", "tr", function() {
+					$("#userNo").val($(this).attr("mno"));
+					
+					$("#actionForm").attr("action", "userPage");
+					$("#actionForm").submit();
+				});
+				
+				// 검색처리
+				$("#searchBtn").on("click", function() {
+					$("#page").val(1);
+					$("#sTxt").val($("#searchTxt").val());
+					console.log($("#sTxt").val());
+					reloadList();
+				});
+				
+				// 메인검색창 넘어가는 부분(동기)
+				$(".search_icon").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						$("#goSearch").attr("action", "search");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#goSearch").attr("action", "searchHashtag");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#goSearch").attr("action", "searchCommunity");
+						$("#goSearch").submit();
+					} else {
+						$("#goSearch").attr("action", "searchNic");
+						$("#goSearch").submit();
+					}
+				});
 				
 				
 			}); // document ready end..
@@ -385,8 +435,6 @@
 						drawPaging(res.pb);
 					},
 					error: function(request, status, error) {
-						console.log(request);
-						console.log(status);
 						console.log(error);
 					}
 				});
@@ -396,34 +444,25 @@
 				var html = "";
 				
 				for(d of list) {
-					if(d.LEAVE_DATE == "-") {
-						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"not_leave\">";
+					html += "<tr mno=\"" + d.MEM_NO + "\">";
+					if(d.RNK == 1) {
+						html += "<td><img alt=\"crown\" src=\"./resources/images/Crown.png\" class=\"rank_photo\"></td>";
+					} else if(d.RNK == 2) {
+						html += "<td><img alt=\"medalsilver\" src=\"./resources/images/medalsilver.png\" class=\"rank_photo\"></td>";
+					} else if(d.RNK == 3) {
+						html += "<td><img alt=\"medalbronze\" src=\"./resources/images/medalbronze.png\" class=\"rank_photo\"></td>";
 					} else {
-						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
-					}				
-					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
-					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
-					html += "<td>" + d.ID + "</td>";
+						html += "<td>" + d.RNK + "</td>";
+					}
 					html += "<td>" + d.NIC + "</td>";
-					html += "<td>" + d.NAME + "</td>";
-					html += "<td>" + d.SEX + "</td>";
-					html += "<td>" + d.AGE + "</td>";
-					html += "<td>" + d.EMAIL + "</td>";
-					html += "<td>" + d.PHONE + "</td>";
-					html += "<td>" + d.GRADE_NAME + "</td>";
-					html += "<td>" + d.JOIN_DATE + "</td>";
-					html += "<td>" + d.LEAVE_DATE + "</td>";
-					html += "<td></td>"; // 게시글수
-					html += "<td></td>"; // 좋아요수
-					html += "<td></td>"; // 팔로워수
-					html += "<td></td>"; // 누적신고수
-					html += "<td>" + d.ACC_CNT + "</td>";
-					html += "<td></td>"; // 등업신청유무
-					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					html += "<td>" + d.JOURNAL_CNT + "</td>";
+					html += "<td>" + d.JOURNAL_LIKE_CNT +"</td>";
+					html += "<td>" + d.FOLLOW_CNT +"</td>";
+					html += "<td>" + d.SUM + "</td>";
 					html += "</tr>";
 				}
 				
-				$("#list_wrap tbody").html(html);
+				$("#writerRank").html(html);
 			}
 			
 			function drawPaging(pb) {
@@ -497,26 +536,32 @@
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
-				<input type="text" class="search" placeholder="검색">
-				<select class="filter">
-					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행게시판</option>
-					<option value="2">해시태그</option>
-					<option value="3">자유게시판</option>
-					<option value="4">닉네임</option>
-				</select>
+				<form action="#" id="goSearch" method="post" >
+					<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+					<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+					<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+						<option value="0" selected="selected">통합검색</option>
+						<option value="1">여행일지</option>
+						<option value="2">해시태그</option>
+						<option value="3">자유게시판</option>
+						<option value="4">닉네임</option>
+					</select>
+				</form>
 			</div>
 			<div id="container">
 				<!-- 여기서 부터 랭킹 -->
 				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="page" name="page" value="${page}" />
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
+					<input type="hidden" id="userNo" name="userNo" />
+					<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
+					<input type="hidden" id="sTxt" name="sTxt" value="${param.sTxt}" />
 				</form>
 				<div class="rank_area">
 					<div class="nic_search">
 						검색 :
-						<input class="nic_txt" type="text" placeholder="닉네임을 입력하세요."/>
-						<input class="nic_btn" type="button" value="검색" />
+						<input class="nic_txt" type="text" id="searchTxt" placeholder="닉네임을 입력하세요."/>
+						<input class="nic_btn" type="button" id="searchBtn" value="검색" />
 					</div>
 					<div class="travel_writer_rank">
 						<table>
@@ -538,168 +583,7 @@
 									<th class="click_article">여행작가 점수</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td><img alt="crown" src="./resources/images/Crown.png" class="rank_photo"></td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td><img alt="medalsilver" src="./resources/images/medalsilver.png" width="32px"></td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td><img alt="medalbronze" src="./resources/images/medalbronze.png" width="32px"></td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>10</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>11</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>12</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>13</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>14</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>15</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>16</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>17</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>18</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>19</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-								<tr>
-									<td>20</td>
-									<td class="nic">닉네임</td>
-									<td>999</td>
-									<td>999</td>
-									<td>999</td>
-									<td>9999</td>
-								</tr>
-							</tbody>
+							<tbody id="writerRank"></tbody>
 						</table>
 					</div>
 					<div class="travel_writer_score">

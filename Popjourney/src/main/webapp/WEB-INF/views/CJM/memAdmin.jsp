@@ -578,6 +578,10 @@
 				
 				reloadList();
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
+				
 				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
@@ -762,6 +766,15 @@
 						$("#goSearch").submit();
 					} else if($("#mainSearchFilter").val() == 1) {
 						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#goSearch").attr("action", "searchHashtag");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#goSearch").attr("action", "searchCommunity");
+						$("#goSearch").submit();
+					} else {
+						$("#goSearch").attr("action", "searchNic");
 						$("#goSearch").submit();
 					}
 				});
