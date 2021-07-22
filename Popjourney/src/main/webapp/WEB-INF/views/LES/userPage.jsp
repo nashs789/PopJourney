@@ -761,7 +761,10 @@ $(document).ready(function(){
 				dataType: "json",
 				type: "post",
 				success: function(result){
-					location.reload();
+					var html = "";
+					html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
+					
+					$(".right_group").html(html);
 				},//success end
 				error: function(error){
 					console.log(error);
@@ -778,7 +781,10 @@ $(document).ready(function(){
 				dataType: "json",
 				type: "post",
 				success: function(result){
-					location.reload();		
+					var html = "";
+					html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우</li>";
+					
+					$(".right_group").html(html);	
 				},//success end
 				error: function(error){
 					console.log(error);

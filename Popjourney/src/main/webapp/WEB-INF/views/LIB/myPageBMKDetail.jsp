@@ -70,7 +70,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: none;
+	display: inline-block;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -79,166 +79,67 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
-.logins {
-	display:inline-block;
-	vertical-align: top;
-	width: 470px;
-	height: 70px;
-	text-align: right;
-	background-color: #FFFFFF;
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
 }
-
-.sub_login1 {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 55px;
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
 }
-
-.sub_login2 {
-	display: block;
-	width: calc(100% - 75px);
-	height: 15px;
-	line-height: 10px;
-	text-align: right;
-	padding-right: 75px;
+#notificationPhoto {
+   margin-left: 200px;
 }
-
-.sub_login2 span {
-	position: relative;
-	width: 10px;
-	font-size: 12px;
-	font-weight: 600;
-	cursor: pointer;
-	margin-left: 10px;
-}
-
-.sub_login2 span:hover {
-	color: #fcba03;
-}
-
-.login {
-	float: right;
-	width: 100px;
-	height: 25px;
-	margin-top: 20px;
-	margin-left: 5px;
-}
-
-.login_btn {
-	float: right;
-	margin: 20px 20px 0px 5px;
-	width: 50px;
-	height: 30px;
-	background-color: #2e3459;
-	font-weight: bold;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 26px;
-	cursor: pointer;
-}
-
-.login_btn:hover {
-	color: #FFFFFF;
-	background-color: #f37321;
-}
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
-
-.timeline {
+#profileSlidedown{
 	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+   	z-index: 300;
 }
-
-.timeline tr {
-	height: 50px;
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
 }
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
-}
-
-#dd {
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid #fcba03;
-	background-color: white;
-	position: absolute;
-	margin-top: 10px;
-	padding: 0px;
-	right: 8px;
-	height: 108px;
-	width: 122px;
-	display: none;
-}
-
-#dd li {
-	display: inline-block;
-	border: 1px solid rgb(250, 250, 250);
-	font-size: 12pt;
-	width: 120px;
-	text-align: center;
-}
-
-#dd li:hover {
+#profileSlidedown li:hover {
 	background-color: #f37321;
 }
-
 .menu {
 	position: absolute;
 	height: 70px;
@@ -302,7 +203,6 @@ input[type='checkbox'] {
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
 	margin: 0 auto;
 }
 
@@ -416,7 +316,6 @@ input[type='checkbox'] {
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
-	height: 100%;
 	font-weight: 500;
 }
 
@@ -455,7 +354,7 @@ a {
 	font-size: 18pt;
 }
 
-.edit_btn, .del_btn, .add_btn {
+.del_btn{
 	display: inline-block;
 	text-align: center;
 	width: 35px;
@@ -469,18 +368,10 @@ a {
 	border: 2px solid #2e3459;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
 }
-
-.edit_btn span {
-	padding-left: 2px;
-}
-
-.add_btn:hover, .edit_btn:hover {
-	border: 2px solid #2e3459;
-	background-color: #2e3459;
-	color: white;
-}
-
 .del_btn:hover {
 	border: 2px solid #F1404B;
 	background-color: #F1404B;
@@ -520,7 +411,6 @@ a {
 .gallery {
 	margin-top: 30px;
 	padding: 30px 0 0 45px;
-	height: 1200px;
 }
 
 .post, .folder {
@@ -571,7 +461,7 @@ a {
 }
 
 .thumb {
-	height: 210px;
+	height: 180px;
 	display: block;
 	position: relative;
 }
@@ -579,7 +469,7 @@ a {
 .thumb img {
 	width: 292px;
 	height: 170px;
-	margin: 23px;
+	margin: 0px 23px 23px 23px;
 }
 
 .post_info {
@@ -607,6 +497,7 @@ a {
 .post_profile img {
 	width: 42px;
 	height: 42px;
+	border-radius: 50%;
 }
 
 .post_profile>span {
@@ -638,7 +529,7 @@ a {
 }
 
 #footer {
-	display: block;
+	display: inline-block;
 	width: 100%;
 	height: 100px;
 	background-color: #2e3459;
@@ -846,6 +737,26 @@ input[type="radio"]:checked {
     z-index: 400;
     opacity: 0.2;
 }
+.paging_wrap {
+	width: 100%;
+	height: 100px;
+	padding-top: 50px;
+	font-size: 18pt;
+	text-align: center;
+	display: inline-block;
+}
+.paging_wrap span{
+	margin-left: 15px;
+	cursor: pointer;
+}
+.on{
+	font-weight: bold;
+	color: red;
+	text-decoration: underline;
+}
+#admin{
+	display: none;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -870,7 +781,6 @@ $(document).ready(function(){
 		$("#admin").show();
 	}
 	
-
 	var html = "";  
 	
 	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
@@ -878,9 +788,213 @@ $(document).ready(function(){
 	html += "<span>${sINTRO}</span>"; 
 	
 	$(".info").html(html);
+	
+	var params = $("#listForm").serialize();
+	
+	$.ajax({
+		url:"detailLists",
+		data:params,
+		dataType:"json",
+		type:"post",
+		success:function(result){
+			if(result.msg == "success")
+			{
+				makeJournalList(result.detail);
+				makePage(result.pb);
+			}
+			else
+			{
+				alert("가져오는데 실패!");
+			}
+		},//success end
+		error:function(error){
+			console.log(error);
+		}//error end
+	}); //ajax end
+	
+	$(".gallery").on("change", "input:checkbox", function(){
+		$("input:checkbox").prop("checked", false);
+		$(this).prop("checked", true);
+		$("#box").val($(this).attr($(this).attr("class")));
+	}); //follow_list input:checkbox changed end
+	
+	$(".del_btn").on("click", function(){
+		if($("input[type='checkbox']").filter(':checked').size() == 0)
+		{
+			alert("하나라도 선택 ㄱㄱ");
+		}
+		else
+		{
+			var params = $("#listForm").serialize();
+
+ 			$.ajax({
+				url: "deleteBMKJournals",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success: function(result){
+					if(result.msg == "success")
+					{
+						alert("삭제 성공");
+						location.reload();
+					}
+					else
+					{
+						alert("오류 발생");
+					}
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end  
+		}
+	}); //edit_btn click end
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$(window).on("scroll", function(){
+	    var $window = $(this);
+	    var scroll = $window.scrollTop();
+	    var wheigth = $window.height();
+	    var dheight = $(document).height();
+	   
+        if(scroll + wheigth + 100 > dheight)
+        {
+        	$(".del_btn").css("bottom", 110);
+        } 
+        else
+        {
+        	$(".del_btn").css("bottom", 20);
+        }
+	}); // window scroll end
+	
+	$(".paging_wrap").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		
+		var params = $("#listForm").serialize();
+		
+		$.ajax({
+			url: "detailLists",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					makeJournalList(result.detail);
+					makePage(result.pb);
+					$("html").scrollTop(300);
+				}
+				else
+				{
+					alert("오류 발생");
+				}
+			},//success end
+			error: function(error){
+				console.log(error);
+			}//error end
+		}); //ajax end 
+	}); //paging_wrap click end
 }); //document ready end
+function makeJournalList(detail)
+{
+	var html = "";
+	
+	html +="	<div class=\"post\">";
+	html +="		북마크로 돌아가기";
+	html +="	</div>";
+	
+	for(data of detail)
+	{ 
+		html += "   <div class=\"post\">";
+		html += "		<input type = \"checkbox\" class=\"ck\" ck=\"" + data.JOURNAL_NO + "\"/>";	
+		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+		html += "   	<div class=\"post_info\">";
+		html += "   		<p>";
+		html += "   			<span>" + data.CATEGORY + " > " + data.SUB_CATEGORY + "(" + data.REGION + ") </span>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<strong class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</strong>";
+		html += "   		</p>";
+		html += "   		<p>";
+		html += "   			<em>";
+		if(data.PATH != null)
+		{
+			var hashTag = data.PATH;
+			var arr =[];
+			arr = hashTag.split(",");
+			
+			if(arr.length != 0)
+			{
+				for(var i = 0; i < arr.length; i++)
+				{
+					 html += "#" + arr[i]+ " "; 
+				}
+			}
+		}
+		html += "</em>"; 
+		html += "   		</p>";
+		html += "   	</div>";
+		html += "   	<div class=\"post_profile\">";
+		html += "			<img alt=\"작성자\" src=\"resources/upload/" + data.PROFILE + "\"> <span>" + data.NIC + "</span>";
+		html += "   		<div>";
+		html += "   			<div>";
+		html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
+		html += "   				<span class=\"cnt\">" + data.LIKE_CNT + "</span>";
+		html += "   			</div>";
+		html += "   			<span>" + data.JOURNAL_DATE + "</span>";
+		html += "   		</div>";
+		html += "   	</div>";
+		html += "   </div>";
+	}
+	$(".gallery").html(html);
+}
+function makePage(pb)
+{
+	var html = "<span name=\"1\"><<</span>";
+	
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\"><</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
+	}
+	
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#page").val() == i) {
+			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
+		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPcount) {
+		html += "<span name=\"" + pb.maxPcount + "\">></span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+	}
+	
+	html += "<span name=\"" + pb.maxPcount + "\">>></span>";
+	
+	$(".paging_wrap").html(html);
+}
 </script>
 </head>
+<form action="#" id="listForm">
+	<input type="hidden" id="BMKNo" name="BMKNo" value="${BMKNo}"/>
+	<input type="hidden" id="page" name="page" value="1"/>
+	<input type="hidden" id="cnt" name="cnt" value="${cnt}"/>
+	<input type="hidden" id="box" name="box" value=""/>
+</form>
 <body>
 	<div id="wrap">
 		<!-- header부분 고정 -->
@@ -906,16 +1020,6 @@ $(document).ready(function(){
 									<li id="logoutBtn">로그아웃</li>
 								</ul></li>
 						</ul>
-					</div>
-					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
-						<div class="sub_login2">
-							<span>회원가입</span> <span>ID/PW 찾기</span>
-						</div>
 					</div>
 				</div>
 				<!-- 호버시 메뉴 생성 -->
@@ -947,11 +1051,11 @@ $(document).ready(function(){
 			<div class="board_list_wrap">
 				<div class="board_menu">
 					<nav class="menu_nav">
-						<ul id="left_menu">
+						<ul id="left_group">
 							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
-						<ul class="right_menu">
+						<ul class="right_group">
 							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
 							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
@@ -967,41 +1071,12 @@ $(document).ready(function(){
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 북마크 </span> &nbsp;>&nbsp;&nbsp;폴더1
 				</div>
 				<div class="folder_btn_list">
-						<div class="add_btn">
-							<span> &#43;</span> <br/>추  가
-						</div>
-						<div class="edit_btn">
-							<span>  ⚙️</span> <br/>수  정
-						</div>
 						<div class="del_btn">
 							<span> &#45;</span> <br/>삭  제
 						</div>
 				</div>
 				<div class="gallery">
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"	src="./resources/images/a4.jpg"></span>
-						<div class="post_info">
-							<p>
-								<span>지역별 > 대구</span>
-							</p>
-							<p>
-								<strong>고북수진 당일치기</strong>
-							</p>
-							<p>
-								<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-							</p>
-						</div>
-						<div class="post_profile">
-							<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-							<div>
-								<div>
-									<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-									<span class="cnt">100</span>
-								</div>
-								<span>2021-05-24</span>
-							</div>
-						</div>
-					</div>
+
 				</div> <!-- gallery end -->
 			<div class="paging_wrap">
 			</div>
