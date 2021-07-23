@@ -351,15 +351,15 @@
 		                                     ON B.MEM_NO = MCCNT.MEM_NO)
                                            
 		      WHERE DEL != 0
-              AND POST_NO= #{postNo}
+              AND POST_NO= #{newPostNo}
 	</select>
 	<update id="postUpdate" parameterType="hashmap">
 		UPDATE BOARD SET POST_NO = #{postNo}, TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categoryNo} 
-		WHERE POST_NO = #{postNo}
+		WHERE POST_NO = #{newPostNo}
 	</update>
 	<delete id="postDelete" parameterType="hashmap">
 		UPDATE  BOARD SET DEL = 0
-		WHERE POST_NO = #{postNo}
+		WHERE POST_NO = #{newPostNo}
 	</delete>
 	
 </mapper>

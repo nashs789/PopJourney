@@ -607,7 +607,7 @@ $(document).ready(function(){
 					return false;
 				}
 					var params = $("#writeForm").serialize();
-					console.log(params);
+
 					$.ajax({
 						url:"postWrites", 
 						type: "post",
@@ -615,7 +615,8 @@ $(document).ready(function(){
 						data : params,
 						success: function(res){
 							if(res.msg == "success"){
-								console.log(params);
+								$("#newPostNo").val(res.postNo);
+
 								$("#writeForm").attr("action", "post");
 								$("#writeForm").submit();
 							} else if (res.msg =="failed") {

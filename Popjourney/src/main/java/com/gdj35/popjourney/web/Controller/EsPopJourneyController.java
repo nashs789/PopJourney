@@ -330,7 +330,6 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/post")
 	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		HashMap<String, String> data = iEsPopjourneyService.getPost(params);
-		
 		mav.addObject("data",data);
 		
 		mav.setViewName("LES/post");
@@ -354,8 +353,7 @@ public class EsPopJourneyController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		int postNo = iEsPopjourneyService.getPostNo(params);
 		modelMap.put("postNo", postNo);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(postNo);
+
 		try {
 			int cnt = iEsPopjourneyService.addPost(params);
 			
