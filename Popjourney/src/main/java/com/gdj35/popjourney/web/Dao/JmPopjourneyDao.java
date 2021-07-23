@@ -1,6 +1,5 @@
 package com.gdj35.popjourney.web.Dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -168,16 +167,6 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	}
 
 	@Override
-	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("JmPJ.getFAQCnt", params);
-	}
-
-	@Override
-	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("JmPJ.getFAQList", params);
-	}
-
-	@Override
 	public int FAQCnt(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("JmPJ.FAQCnt", params);
 	}
@@ -225,6 +214,26 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	@Override
 	public int getNicCnt(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("JmPJ.getNicCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getJournalDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getHashDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getBoardDetailList", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getNicDetailList", params);
 	}
 
 }

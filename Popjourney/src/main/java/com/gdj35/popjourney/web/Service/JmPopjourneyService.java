@@ -1,6 +1,5 @@
 package com.gdj35.popjourney.web.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdj35.popjourney.web.Dao.IJmPopjourneyDao;
-import com.gdj35.popjourney.web.Dao.JmPopjourneyDao;
 
 @Service
 public class JmPopjourneyService implements IJmPopjourneyService {
@@ -170,16 +168,6 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	}
 
 	@Override
-	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
-		return iJmPopjourneyDao.getFAQCnt(params);
-	}
-
-	@Override
-	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
-		return iJmPopjourneyDao.getFAQList(params);
-	}
-
-	@Override
 	public int FAQCnt(HashMap<String, String> params) throws Throwable {
 		return iJmPopjourneyDao.FAQCnt(params);
 	}
@@ -227,6 +215,26 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	@Override
 	public int getNicCnt(HashMap<String, String> params) throws Throwable {
 		return iJmPopjourneyDao.getNicCnt(params);
+	}
+	
+	@Override
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getHashDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBoardDetailList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNicDetailList(params);
 	}
 
 }

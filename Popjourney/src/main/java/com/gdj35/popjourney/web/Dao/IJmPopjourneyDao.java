@@ -1,6 +1,5 @@
 package com.gdj35.popjourney.web.Dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,10 +67,6 @@ public interface IJmPopjourneyDao {
 
 	public int deleteCmt(HashMap<String, String> params) throws Throwable;
 
-	public int getFAQCnt(HashMap<String, String> params) throws Throwable;
-
-	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable;
-
 	public int FAQCnt(HashMap<String, String> params) throws Throwable;
 
 	public List<HashMap<String, String>> FAQList(HashMap<String, String> params) throws Throwable;
@@ -91,6 +86,16 @@ public interface IJmPopjourneyDao {
 	public int getBoardCnt(HashMap<String, String> params) throws Throwable;
 
 	public int getNicCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getJournalDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getHashDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBoardDetailList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable;
+
+
 
 
 }

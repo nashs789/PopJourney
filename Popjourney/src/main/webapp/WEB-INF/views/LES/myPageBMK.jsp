@@ -1079,7 +1079,7 @@ function editBMK()
 	$("#yes").on("click", function(){
 		$("#BMKNO").val($("#box").val());
 		var params = $("#editForm").serialize();
-		console.log(params);
+		
 		$.ajax({
 			url:"updateBMKs",
 			data:params,

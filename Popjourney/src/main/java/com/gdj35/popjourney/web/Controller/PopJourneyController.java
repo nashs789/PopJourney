@@ -516,7 +516,7 @@ public class PopJourneyController {
 	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@2"+params);
 		if(params.get("GBN").equals("1"))
 		{
 			params.put("page", Integer.toString(Integer.parseInt(params.get("page")) * 10));
@@ -531,7 +531,7 @@ public class PopJourneyController {
 			params.put("page", Integer.toString((Integer.parseInt(params.get("page"))+1) * 10));
 		}
 		try {
-			
+			System.out.println("##################################"+params.get("page"));
 			List<HashMap<String, String>> notification  = ipjs.notification(params);
 			
 			if(notification != null)
@@ -653,8 +653,8 @@ public class PopJourneyController {
 	public String timelines(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-
-		List<HashMap<String, String>> timeline = ipjs.timeline(params);
+		System.out.println(params);
+	    List<HashMap<String, String>> timeline = ipjs.timeline(params);
 		
 		try {
 			if(timeline != null)
@@ -968,16 +968,9 @@ public class PopJourneyController {
 				 
 				 HashMap<String, String> followingMemo = ipjs.followingMemo(params);
 
-				 if(followingMemo != null)
-				 {
-					 modelMap.put("msg", "success");
-					 modelMap.put("followingMemo", followingMemo);
-				 }
-				 else
-				 {
-					 modelMap.put("msg", "failed");
-				 }
-				
+				 modelMap.put("msg", "success");
+				 modelMap.put("followingMemo", followingMemo);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				modelMap.put("msg", "error");
@@ -1204,7 +1197,6 @@ public class PopJourneyController {
 				 {
 					 modelMap.put("msg", "success");
 					 modelMap.put("cnt", cnt);
-
 				 }
 				 else
 				 {
@@ -1221,8 +1213,12 @@ public class PopJourneyController {
 		
 		//북마크 상세보기
 		@RequestMapping(value = "/myPageBMKDetail")
-		public ModelAndView myPageBMKDetail(@RequestParam HashMap<String, String> params, ModelAndView mav)
+		public ModelAndView myPageBMKDetail(@RequestParam HashMap<String, String> params, ModelAndView mav)throws Throwable
 		{
+			int cnt = ipjs.BMKDetailCnt(params);
+			
+			mav.addObject("cnt", cnt);
+			mav.addObject("BMKNo", params.get("BMKNo"));
 			mav.setViewName("LIB/myPageBMKDetail");
 
 			return mav;
@@ -1259,6 +1255,70 @@ public class PopJourneyController {
 				 
 				 int cnt = ipjs.updateBMK(params);
 
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//북마크 안에 일지 리스트
+		@RequestMapping(value = "/detailLists", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String detailLists(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			int page = Integer.parseInt(params.get("page"));
+			int cnt = Integer.parseInt(params.get("cnt"));
+
+			PagingBean pb = ips.getPagingBean(page, cnt, 14, 5);
+
+			params.put("startCnt", Integer.toString(pb.getStartCount()));
+			params.put("endCnt", Integer.toString(pb.getEndCount()));
+
+			 try {
+				 
+				 List<HashMap<String, String>> detail = ipjs.detailList(params);
+
+				 if(detail != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("pb", pb);
+					 modelMap.put("detail", detail);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//북마크 안에 일지 리스트
+		@RequestMapping(value = "/deleteBMKJournals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String deleteBMKJournals(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 int cnt = ipjs.deleteBMKJournal(params);
+
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
 			} catch (Exception e) {
 				e.printStackTrace();
 				modelMap.put("msg", "error");

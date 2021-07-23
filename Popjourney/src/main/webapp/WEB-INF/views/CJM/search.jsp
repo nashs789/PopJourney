@@ -244,7 +244,7 @@
 				width: 100%;
 				height: 5px;
 				margin: 30px auto 15px auto;
-				border-bottom: 5px solid #fcba03;
+				border-bottom: 2px solid #2e3459;
 			}
 			.search_category {
 				font-size: 18pt;
@@ -364,12 +364,24 @@
 		   table {
 	         	border-collapse: collapse;
 	       } 
+			/* 여행꿀팁 */
+			.td_t {
+				color: #8000ff;
+			}
+			/* QnA */
+			.td_q {
+				color: #4d94ff;
+			}
+			/* 잡담 */
+			.td_c {
+				 color: #00592d;
+			}
 	       caption {
 	         	display: none;
 	       }
 	       .board_list {
 	         	width: 100%;
-	         	border-top: 2px solid #2e3459;
+	         	border-top: 1px solid #2e3459;
 	         	margin-top: 30px;
 	       }
 	       .board_list_off {
@@ -399,7 +411,6 @@
 	       }
 	       .board_list tbody tr td:nth-child(2) {
 	          	font-weight:550;
-	         	color: rgb(128, 0, 255);
 	       }     
 	       .board_list tbody tr td:nth-child(3) {
 	         	text-align: left;
@@ -538,8 +549,14 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
 				
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -562,15 +579,51 @@
 					$(".btns").css("display", "none");
 				}
 				
-				$(".search_btn").on("click", function() {
-					reloadList();
-				});
-				
 				// 셀렉터 옵션 유지
 				if("${param.mainSearchFilter}" != "") {
 					$("#mainSearchFilter").val("${param.mainSearchFilter}");
 				}
 				$("#mainSearchTxt").val("${param.mainSearchTxt}");
+				
+				// 검색처리
+				$(".search_btn").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						reloadList();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#actionForm").attr("action", "searchTravelDiary");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#actionForm").attr("action", "searchHashtag");
+						$("#actionForm").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#actionForm").attr("action", "searchCommunity");
+						$("#actionForm").submit();
+					} else {
+						$("#actionForm").attr("action", "searchNic");
+						$("#actionForm").submit();
+					}
+				});
+				
+				// 더보기 처리
+				$("#journalMore").on("click", function() {
+					$("#actionForm").attr("action", "searchTravelDiary");
+					$("#actionForm").submit();
+				});
+				$("#hashMore").on("click", function() {
+					$("#actionForm").attr("action", "searchHashtag");
+					$("#actionForm").submit();
+				});
+				$("#boardMore").on("click", function() {
+					$("#actionForm").attr("action", "searchCommunity");
+					$("#actionForm").submit();
+				});
+				$("#nicMore").on("click", function() {
+					$("#actionForm").attr("action", "searchNic");
+					$("#actionForm").submit();
+				});
+			
+				
+	
 			}); // document ready end..
 			
 			function reloadList() {
@@ -614,8 +667,8 @@
 					error: function(request, status, error) {
 						console.log(error);
 					}
-				});
-			}
+				}); // ajax end..
+			} // reloadList() end..
 			function journalCnt(journalCnt) {
 				$("#journalCnt").html("");
 				var html = "";
@@ -749,14 +802,20 @@
 				
 				for(d of boardList) {
 					html += "<tr class=\"board_data\" postNo=\"" + d.POST_NO + "\">";
-	    			html += "	<td>" + d.POST_NO + "</td>";
-	    			html += "	<td>" + d.CATEGORY_NAME + "</td>";
-	    			html += "	<td class=\"board_title\">" + d.TITLE + "</td>";
-	    			html += "	<td>" + d.GRADE_NAME + "</td>";
-	    			html += "	<td>" + d.NIC + "</td>";
-	    			html += "	<td>" + d.BOARD_DATE + "</td>";
-	    			html += "	<td>" + d.HIT + "</td>";
-	    			html += "	<td>" + d.POST_LIKE_CNT + "</td>";
+	    			html += "<td>" + d.POST_NO + "</td>";
+	    			if(d.CATEGORY_NO == 2) {
+	    				html += "<td class=\"td_t\">" + d.CATEGORY_NAME + "</td>";
+	    			} else if(d.CATEGORY_NO == 3) {
+	    				html += "<td class=\"td_q\">" + d.CATEGORY_NAME + "</td>";
+	    			} else if(d.CATEGORY_NO == 4){
+	    				html += "<td class=\"td_c\">" + d.CATEGORY_NAME + "</td>";
+	    			}
+	    			html += "<td class=\"board_title\">" + d.TITLE + "</td>";
+	    			html += "<td>" + d.GRADE_NAME + "</td>";
+	    			html += "<td>" + d.NIC + "</td>";
+	    			html += "<td>" + d.BOARD_DATE + "</td>";
+	    			html += "<td>" + d.HIT + "</td>";
+	    			html += "<td>" + d.POST_LIKE_CNT + "</td>";
 	    			html += "</tr>";
 				}
 				
@@ -839,7 +898,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>

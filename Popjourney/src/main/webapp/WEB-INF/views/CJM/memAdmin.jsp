@@ -519,7 +519,6 @@
 				border: 2px solid #2E3459;
 			}
 			
-			
 	        .paging { 
 	            font-size: 0;
 	            text-align: center;
@@ -578,7 +577,14 @@
 				
 				reloadList();
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
+				
 				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -733,11 +739,12 @@
 				});
 				
 				// 회원프로필 이동
-				$("#list_wrap tbody").on("click", "tr", function() {
-					$("#userNo").val($(this).attr("mno"));
-					
-					$("#actionForm").attr("action", "userPage");
-					$("#actionForm").submit();
+				
+				$("#list_wrap tbody").on("click", "td:not(:first-child):not(:last-child)", function() {
+						$("#userNo").val($(this).parent().attr("mno"));
+						
+						$("#actionForm").attr("action", "userPage");
+						$("#actionForm").submit();
 				});
 				
 				
@@ -762,6 +769,15 @@
 						$("#goSearch").submit();
 					} else if($("#mainSearchFilter").val() == 1) {
 						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#goSearch").attr("action", "searchHashtag");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#goSearch").attr("action", "searchCommunity");
+						$("#goSearch").submit();
+					} else {
+						$("#goSearch").attr("action", "searchNic");
 						$("#goSearch").submit();
 					}
 				});
@@ -803,23 +819,23 @@
 						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
 					}				
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
-					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
-					html += "<td>" + d.ID + "</td>";
-					html += "<td>" + d.NIC + "</td>";
-					html += "<td>" + d.NAME + "</td>";
-					html += "<td>" + d.SEX + "</td>";
-					html += "<td>" + d.AGE + "</td>";
-					html += "<td>" + d.EMAIL + "</td>";
-					html += "<td>" + d.PHONE + "</td>";
-					html += "<td>" + d.GRADE_NAME + "</td>";
-					html += "<td>" + d.JOIN_DATE + "</td>";
-					html += "<td>" + d.LEAVE_DATE + "</td>";
-					html += "<td>" + d.POST_SUM + "</td>"; // 게시글수
-					html += "<td>" + d.LIKE_SUM + "</td>"; // 좋아요수
-					html += "<td>" + d.FOLLOW_SUM + "</td>"; // 팔로워수
-					html += "<td>" + d.REPORT_CNT +"</td>"; // 누적신고수
-					html += "<td>" + d.ACC_CNT + "</td>";
-					html += "<td></td>"; // 등업신청유무
+					html += "<td id=\"mNo\" class=\"clickTr\">" + d.MEM_NO + "</td>";
+					html += "<td class=\"clickTr\">" + d.ID + "</td>";
+					html += "<td class=\"clickTr\">" + d.NIC + "</td>";
+					html += "<td class=\"clickTr\">" + d.NAME + "</td>";
+					html += "<td class=\"clickTr\">" + d.SEX + "</td>";
+					html += "<td class=\"clickTr\">" + d.AGE + "</td>";
+					html += "<td class=\"clickTr\">" + d.EMAIL + "</td>";
+					html += "<td class=\"clickTr\">" + d.PHONE + "</td>";
+					html += "<td class=\"clickTr\">" + d.GRADE_NAME + "</td>";
+					html += "<td class=\"clickTr\">" + d.JOIN_DATE + "</td>";
+					html += "<td class=\"clickTr\">" + d.LEAVE_DATE + "</td>";
+					html += "<td class=\"clickTr\">" + d.POST_SUM + "</td>"; // 게시글수
+					html += "<td class=\"clickTr\">" + d.LIKE_SUM + "</td>"; // 좋아요수
+					html += "<td class=\"clickTr\">" + d.FOLLOW_SUM + "</td>"; // 팔로워수
+					html += "<td class=\"clickTr\">" + d.REPORT_CNT +"</td>"; // 누적신고수
+					html += "<td class=\"clickTr\">" + d.ACC_CNT + "</td>";
+					html += "<td class=\"clickTr\"></td>"; // 등업신청유무
 					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
@@ -863,33 +879,6 @@
 				$("#searchFilter").val("0");
 				$("#searchTxt").val("");
 			}
-			
-			/* function popupDel() {
-				var html = "";
-				
-				html += "<div class=\"popupDel\">                             "
-			   	html += "	<div class=\"popup_entity_txt\">삭제하시겠습니까?<\"/div>"
-			    html += "    <div class=\"btn_list\">                         "
-				html += "    	<span id=\"ok\">OK</span>                     "
-				html += "        <span id=\"cancel\">CANCEL</span>            "
-				html += "    </div>                                         "
-				html += "</div>                                             "
-				html += "<div class=\"bg\"></div>                             "
-				
-				$("body").prepend(html);
-				
-				$(".bg").hide();
-				$(".popupDel").hide();
-				
-				$(".bg").fadeIn();
-				$(".popupDel").fadeIn();
-				
-				$("#ok").off("click");
-			}
-			
-			function closePopup() {
-				$()
-			} */
 			
 		</script>
 	</head>
@@ -956,7 +945,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행일지</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>

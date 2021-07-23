@@ -545,15 +545,16 @@ svg{
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var popupText = "";
+	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
 	//로그인 상태 확인
 	if("${sMEM_NO}" != "")
 	{
 		$(".logins").css("display", "none");
 		$(".btns").css("display", "inline-block");
+		//로그인 상태에 따라서 우측 상단 제어
 		
-		var path = "";
+		var path = ""; //사진경로 담아줄 변수
 		
 		if("${sPHOTO_PATH}" != "")
 		{
@@ -566,15 +567,15 @@ $(document).ready(function(){
 			path = "./resources/images/profile.png";
 
 			$("#profilePhoto").attr("src", path);
-		}
+		}//if ~ else end
+		//프로필 사진이 DB에 있는경우 저장된 사진으로, 없는 경우 기본 사진으로
 		
 		if("${sGRADE_NO}" == "0")
 		{
 			$("#admin").show();
-		}
+		}//등급에 따라서 내부 관리자 보이기
 		
 		var params = $("#memForm").serialize();
-		
 		$.ajax({
 			url: "notifications",
 			data: params,
@@ -596,9 +597,9 @@ $(document).ready(function(){
 				console.log(error);
 			} // error end
 		}); //ajax end 
-	}
+	}//if end -> 로그인 상태여부에 따른 처리
 	
-	$.ajax({
+	$.ajax({ //공지사항 5개  만들기
 		url: "notices",
 		dataType: "json",
 		type: "post",
@@ -607,12 +608,13 @@ $(document).ready(function(){
 			if(result.msg == "success")
 			{
 				makeNoticeBoard(result.noticeData);
+				$("#CD0").click();
 			}
 			else
 			{
 				popupText = "오류가 발생했습니다.";
 				commonPopup(popupText);
-			}
+			}//if ~ else end
 		}, //success end
 		error: function(request, status, error) {
 			console.log(error);
@@ -638,7 +640,7 @@ $(document).ready(function(){
 					console.log(error);
 				} // error end
 			}); //ajax end  
-		} //if end
+		} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
 		
 		if($(this).attr("class") == "user")
 		{
@@ -654,7 +656,7 @@ $(document).ready(function(){
 		{
 			console.log("post");
 			console.log($(this).attr($(this).attr("class")));
-		}
+		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
 	}); //notification tbody span tr click end
 	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
@@ -703,7 +705,8 @@ $(document).ready(function(){
 		$(".bg").remove();
 		if(event.keyCode == 13)
 			$("#loginBtn").click();
-	});
+	});//inputPW, inputID 
+	//keypress end 엔터시 로그인 버튼 클릭
 	
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
@@ -716,6 +719,7 @@ $(document).ready(function(){
 			$("#profileSlidedown").css("display", "block");
 		}
 	}); //profilePhoto click end
+	//프로필 사진 클릭 시 하위메뉴 나왔다 사라졌다 & 알람 팝업은 안보이도록
 	
 	$("#notificationPhoto").on("click", function(){
 		$("#profileSlidedown").css("display", "none");
@@ -728,6 +732,7 @@ $(document).ready(function(){
 			$("#notification").css("display", "inline-block");
 		}
 	}); //notificationPhoto click end
+	//알람 아이콘 클릭 시 알람 팝업 나왔다 사라졌다 & 프로필 하위메뉴는 안보이도록
 	
 	var LCD = "#L"; // CD -> LCD
 	var CD = "#"; // LCD -> CD
@@ -744,7 +749,7 @@ $(document).ready(function(){
 		LCD += $(this).attr("id");
 		$(LCD).css("fill", "#000");
 		LCD = "#L";
-	}); 
+	}); //svg path mouseover end
 	
 	//지도에 호버 종료시 지역의 이름은 흰색 글씨로, 해당 지역 지도는 원래 가지고있던 색으로 변경	
 	$("svg").on("mouseout", "path", function(){ 
@@ -753,7 +758,7 @@ $(document).ready(function(){
 		$(this).css("fill", CDColor);
 		LCD = "#L";
 		CDColor = "";
-	});
+	}); //svg path mouseout end
 	
 	//지역 이름에 호버시 글씨 색은 검은색으로, 해당 지역 지도는 #c2c2d6색으로 변경	
     $("svg").on("mouseover", ".TEXT", function(){
@@ -765,7 +770,7 @@ $(document).ready(function(){
 		}
 		$(CD).css("fill", "#c2c2d6");
 		CD = "#";
-	}); 
+	}); //svg TEXT mouseover end
  	 
     //지역 이름에 호버 종료시 글씨 색은 흰색으로, 해당 지역 지도는 원래 가지고있던 색으로 변경
    	$("svg").on("mouseout", ".TEXT", function(){
@@ -774,8 +779,9 @@ $(document).ready(function(){
  		$(CD).css("fill", CDColor);
 		CD = "#";
 		CDColor = ""; 
-	});
+	}); //svg TEXT mouseout end
     
+	//지도영역 클릭시 해당 지역에 해당하는 년/월/주간 랭킹을 가져온다
    	$("svg").on("click", "path", function(){
     	region = $(this).attr("id").substr(2);
     	$("#regionNo").val(region);
@@ -797,6 +803,7 @@ $(document).ready(function(){
 		}); //ajax end
     }); //svg path click end
     
+ 	 //지도영역에 있는 글자 클릭시 해당 지역에 해당하는 년/월/주간 랭킹을 가져온다
     $("svg").on("click", ".TEXT", function(){
     	region = $(this).attr("id").substr(3);
     	$("#regionNo").val(region);
@@ -818,6 +825,7 @@ $(document).ready(function(){
 		}); //ajax end
     }); //svg .TEXT click end
     
+    //랭킹 게시판에서 게시글 제목 클릭 시 해당 게시글로, 닉네임 클릭 시 해당 유저 페이지로
     $("#boardWrap").on("click", "tr td", function(){
     	$("#journalNo").val($(this).attr("no"));
     	
@@ -907,7 +915,7 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 		$(".popup").remove();
 		$(".bg").remove();
 	}); //yesBtn click end
-}
+}//commonPopup end
 function findBtnPopup()
 {
 	var html = "";
@@ -928,7 +936,7 @@ function findBtnPopup()
 		$(".popup").remove();
 		$(".bg").remove();
 	}); //cancelImg click end
-}
+}//findBtnPopup end
 function makeNotification(notification)
 {
 	var html = ""; //알림 표현용
@@ -1014,6 +1022,18 @@ function makeNotification(notification)
 				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
+			case 9:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [여행일지]<span class=\"journal\" journal=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 10:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [게시글]<span class=\"post\" post=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE2 + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
 			default:
 				console.log("여긴 뭐넣을까?");
 		}
@@ -1023,7 +1043,7 @@ function makeNotification(notification)
 	
 	$("#cnt").prepend(html1);
 	$("#notification tbody").html(html);
-}
+} //makeNotification end
 function makeNoticeBoard(noticeData)
 {
 	var html = "";
@@ -1064,7 +1084,7 @@ function makeNoticeBoard(noticeData)
 	html +="</div><!-- noticeBoard end  -->";
 	
 	$("#noticeWrap").html(html);
-}
+}//makeNoticeBoard end 
 function makeRankBoard(yearData, monthData, weekData)
 {
 	var html = "";
@@ -1106,7 +1126,15 @@ function makeRankBoard(yearData, monthData, weekData)
 	html +="</div><!-- yearBoard end  -->";
 	/* -------------------------------------------------------------- */
 	html +="<div id=\"monthBoard\">";
-	html +="	<div class=\"title\">["+monthData[0].MONTH+"월 랭킹]</div>";
+	if(monthData.length != 0)
+	{
+		html +="	<div class=\"title\">["+monthData[0].MONTH+"월 랭킹]</div>";
+	}
+	else
+	{
+		html +="	<div class=\"title\">[월간 랭킹]</div>";
+	}
+	
 	html +="	<table>";
 	html +="		<colgroup>";
 	html +="			<col width=\"50px\">";
@@ -1125,17 +1153,20 @@ function makeRankBoard(yearData, monthData, weekData)
 	html +="		</tr>";
 	html +="	</thead>";
 	
-	for(data of monthData)
-	{ 
-		html +="	<tbody>";
-		html +="		<tr>";
-		html +="			<td>" + data.JOURNAL_NO + "</td>";
-		html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
-		html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
-		html +="			<td>" + data.HIT + "</td>";
-		html +="			<td>" + data.JOURNAL_DATE + "</td>";
-		html +="		</tr>";
-		html +="	</tbody>";
+	if(monthData.length != 0)
+	{
+		for(data of monthData)
+		{ 
+			html +="	<tbody>";
+			html +="		<tr>";
+			html +="			<td>" + data.JOURNAL_NO + "</td>";
+			html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
+			html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
+			html +="			<td>" + data.HIT + "</td>";
+			html +="			<td>" + data.JOURNAL_DATE + "</td>";
+			html +="		</tr>";
+			html +="	</tbody>";
+		}
 	}
 	html +="	</table>";
 	html +="</div> <!-- monthBoard end -->";
@@ -1160,24 +1191,27 @@ function makeRankBoard(yearData, monthData, weekData)
 	html +="		</tr>";
 	html +="	</thead>";
 	
-	for(data of weekData)
-	{ 
-		html +="	<tbody>";
-		html +="		<tr>";
-		html +="			<td>" + data.JOURNAL_NO + "</td>";
-		html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
-		html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
-		html +="			<td>" + data.HIT + "</td>";
-		html +="			<td>" + data.JOURNAL_DATE + "</td>";
-		html +="		</tr>";
-		html +="	</tbody>";
+	if(weekData.length != 0)
+	{
+		for(data of weekData)
+		{ 
+			html +="	<tbody>";
+			html +="		<tr>";
+			html +="			<td>" + data.JOURNAL_NO + "</td>";
+			html +="			<td class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</td>";
+			html +="			<td class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</td>";
+			html +="			<td>" + data.HIT + "</td>";
+			html +="			<td>" + data.JOURNAL_DATE + "</td>";
+			html +="		</tr>";
+			html +="	</tbody>";
+		}
 	}
 
 	html +="	</table>";
 	html +="</div> <!-- weekBoard end -->";
 	
 	$("#rankWrap").html(html);
-}         
+}//makeRankBoard end   
 </script>
 </head>
 <body>

@@ -474,6 +474,10 @@
 				$(".logo_photo").on("click", function() {
 					location.href = "main";
 				});
+				
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -516,7 +520,7 @@
 				});
 				
 				// 검색 처리
-				$("#searchIcon").on("click", "img", function() {
+				$("#questionSearchIcon").on("click", function() {
 					$("#page").val(1);
 					$("#searchOldTxt").val($("#searchTxt").val());
 					reloadList();
@@ -526,7 +530,6 @@
 				$(".paging").on("click", "div", function() {
 					$($("#page").val($(this).attr("page")));
 					$("#searchTxt").val($("#searchTxt").val());
-					$("#allCkbox").prop("checked", false);
 					reloadList();
 				});
 				
@@ -536,6 +539,26 @@
 					$("#actionForm").attr("action", "clientCenterMatterDetail");
 					$("#actionForm").submit();
 					//console.log($("tr .writeMemNo").val());
+				});
+				
+				// 메인검색창 넘어가는 부분(동기)
+				$(".search_icon").on("click", function() {
+					if($("#mainSearchFilter").val() == 0) {
+						$("#goSearch").attr("action", "search");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 1) {
+						$("#goSearch").attr("action", "searchTravelDiary");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 2) {
+						$("#goSearch").attr("action", "searchHashtag");
+						$("#goSearch").submit();
+					} else if($("#mainSearchFilter").val() == 3) {
+						$("#goSearch").attr("action", "searchCommunity");
+						$("#goSearch").submit();
+					} else {
+						$("#goSearch").attr("action", "searchNic");
+						$("#goSearch").submit();
+					}
 				});
 				
 			}); // document ready end..
@@ -683,21 +706,23 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>
 					</ul>
 				</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon" id="searchIcon" />
-				<input type="text" class="search" placeholder="검색">
-				<select class="filter">
-					<option value="0" selected="selected">통합검색</option>
-					<option value="1">여행게시판</option>
-					<option value="2">해시태그</option>
-					<option value="3">자유게시판</option>
-					<option value="4">닉네임</option>
-				</select>
+				<form action="#" id="goSearch" method="post" >
+					<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+					<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+					<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+						<option value="0" selected="selected">통합검색</option>
+						<option value="1">여행일지</option>
+						<option value="2">해시태그</option>
+						<option value="3">자유게시판</option>
+						<option value="4">닉네임</option>
+					</select>
+				</form>
 			</div>
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
@@ -712,7 +737,7 @@
 						</div>
 						<div class="question_search">
 							<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="문의사항 검색" />
-							<div><img alt="검색" src="./resources/images/search.png"></div>
+							<div><img alt="검색" src="./resources/images/search.png" id="questionSearchIcon"></div>
 						</div>
 					</div>
 					<div class="sidebar">

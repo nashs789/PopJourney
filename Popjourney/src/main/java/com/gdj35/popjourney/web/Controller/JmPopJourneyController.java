@@ -31,9 +31,16 @@ public class JmPopJourneyController {
 
 	// 여행작가랭킹
 	@RequestMapping(value = "/travelWriterRank")
-	public ModelAndView travelWriterRank(@RequestParam HashMap<String, String> params, ModelAndView mav)
-			throws Throwable {
+	public ModelAndView travelWriterRank(@RequestParam HashMap<String, String> params, ModelAndView mav)throws Throwable {
 
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
 		mav.setViewName("CJM/travelWriterRank");
 
 		return mav;
@@ -84,16 +91,17 @@ public class JmPopJourneyController {
 	@ResponseBody
 	public String clientCenterFAQCnt(@RequestParam HashMap<String, String> params) throws Throwable {
 		
+		System.out.println("CNT_Params >> " + params);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
-		
 		try {
+			
 			int FAQCnt = iJmPopjourneyService.FAQCnt(params);
 			
 			if(FAQCnt > 0) {
-				
+			
 				int firstCnt = 1;
 				int lastCnt = 10;
 				int addCnt = 10;
@@ -122,17 +130,20 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/clientCenterFAQList", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String clientCenterFAQList(@RequestParam HashMap<String, String> params) throws Throwable {
-		System.out.println("회원서비스클릭11111111 >> " + params);
 		System.out.println("FAQParams >> " + params);
+		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
+			
 			List<HashMap<String,String>> list = iJmPopjourneyService.FAQList(params);
+			
 			modelMap.put("firstCnt", Integer.parseInt(params.get("firstCnt")) + Integer.parseInt(params.get("addCnt")));
 			modelMap.put("lastCnt", Integer.parseInt(params.get("lastCnt")) + Integer.parseInt(params.get("addCnt")));
 			modelMap.put("list", list);
+			
 			System.out.println("QList >> " + list);
 		}catch(Throwable e) {
 			e.printStackTrace();
@@ -984,6 +995,208 @@ public class JmPopJourneyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	
+	}
+	
+	// 통합검색 - 여행일지 검색
+	@RequestMapping(value = "/searchTravelDiary")
+	public ModelAndView searchTravelDiary(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
+		mav.setViewName("CJM/searchTravelDiary");
+
+		return mav;
+	}
+	
+	@RequestMapping(value="/searchTravelDiarys", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String searchTravelDiarys(@RequestParam HashMap<String, String> params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getJournalCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 15, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getJournalDetailList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("journalCnt", cnt);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	// 통합검색 - 해시태그 검색
+	@RequestMapping(value = "/searchHashtag")
+	public ModelAndView searchHashtag(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
+		mav.setViewName("CJM/searchHashtag");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/searchHashtags", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String searchHashtags(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getHashCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 15, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getHashDetailList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("hashCnt", cnt);
+		
+		String txt = params.get("mainSearchTxt");
+		String filter = params.get("mainSearchFilter");
+		modelMap.put("txt", txt);
+		modelMap.put("filter", filter);
+		System.out.println(txt);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("page >> " + page);
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	// 통합검색 - 자유게시판 검색
+	@RequestMapping(value = "/searchCommunity")
+	public ModelAndView searchCommunity(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
+		mav.setViewName("CJM/searchCommunity");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/searchCommunitys", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String searchCommunitys(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getBoardCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getBoardDetailList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("boardCnt", cnt);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("boardCnt >> " + cnt);
+		System.out.println("page >> " + page);
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	// 통합검색 - 닉네임 검색
+	@RequestMapping(value = "/searchNic")
+	public ModelAndView searchNic(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		
+		mav.setViewName("CJM/searchNic");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/searchNics", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody public String searchNics(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iJmPopjourneyService.getNicCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iJmPopjourneyService.getNicDetailList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		modelMap.put("nicCnt", cnt);
+		
+		System.out.println("params >> " + params);
+		System.out.println("list >> " + list);
+		System.out.println("pb >> " + pb);
+		System.out.println("nicCnt >> " + cnt);
+		System.out.println("page >> " + page);
+		
+		return mapper.writeValueAsString(modelMap);
+		
 	}
 	
 
