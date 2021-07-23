@@ -233,6 +233,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.popupDel2 {
 			   display: none; /* 클릭 시 inline-block */
@@ -286,6 +287,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			
 			#container {

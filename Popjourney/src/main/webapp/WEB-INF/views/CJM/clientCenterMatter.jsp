@@ -520,7 +520,7 @@
 				});
 				
 				// 검색 처리
-				$("#searchIcon").on("click", "img", function() {
+				$("#questionSearchIcon").on("click", function() {
 					$("#page").val(1);
 					$("#searchOldTxt").val($("#searchTxt").val());
 					reloadList();
@@ -737,7 +737,7 @@
 						</div>
 						<div class="question_search">
 							<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="문의사항 검색" />
-							<div><img alt="검색" src="./resources/images/search.png"></div>
+							<div><img alt="검색" src="./resources/images/search.png" id="questionSearchIcon"></div>
 						</div>
 					</div>
 					<div class="sidebar">

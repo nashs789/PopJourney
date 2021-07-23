@@ -91,16 +91,17 @@ public class JmPopJourneyController {
 	@ResponseBody
 	public String clientCenterFAQCnt(@RequestParam HashMap<String, String> params) throws Throwable {
 		
+		System.out.println("CNT_Params >> " + params);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
-		
 		try {
+			
 			int FAQCnt = iJmPopjourneyService.FAQCnt(params);
 			
 			if(FAQCnt > 0) {
-				
+			
 				int firstCnt = 1;
 				int lastCnt = 10;
 				int addCnt = 10;
@@ -129,17 +130,20 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/clientCenterFAQList", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String clientCenterFAQList(@RequestParam HashMap<String, String> params) throws Throwable {
-		System.out.println("회원서비스클릭11111111 >> " + params);
 		System.out.println("FAQParams >> " + params);
+		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
+			
 			List<HashMap<String,String>> list = iJmPopjourneyService.FAQList(params);
+			
 			modelMap.put("firstCnt", Integer.parseInt(params.get("firstCnt")) + Integer.parseInt(params.get("addCnt")));
 			modelMap.put("lastCnt", Integer.parseInt(params.get("lastCnt")) + Integer.parseInt(params.get("addCnt")));
 			modelMap.put("list", list);
+			
 			System.out.println("QList >> " + list);
 		}catch(Throwable e) {
 			e.printStackTrace();

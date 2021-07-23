@@ -233,6 +233,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			
 			#container {

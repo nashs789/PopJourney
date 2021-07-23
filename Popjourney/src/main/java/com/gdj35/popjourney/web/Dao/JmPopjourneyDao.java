@@ -1,6 +1,5 @@
 package com.gdj35.popjourney.web.Dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -165,16 +164,6 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 	@Override
 	public int deleteCmt(HashMap<String, String> params) throws Throwable {
 		return sqlSession.delete("JmPJ.deleteCmt", params);
-	}
-
-	@Override
-	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("JmPJ.getFAQCnt", params);
-	}
-
-	@Override
-	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("JmPJ.getFAQList", params);
 	}
 
 	@Override

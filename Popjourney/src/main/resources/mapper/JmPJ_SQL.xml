@@ -506,23 +506,23 @@
 	<select id="FAQList" parameterType="hashmap" resultType="hashmap">
 		SELECT F.FAQ_NO, F.FAQ_EVENT_NAME, F.QUESTION, F.ANSWER, F.FAQ_EVENT_NO, F.RNUM
 		FROM (SELECT F.FAQ_NO, FE.FAQ_EVENT_NAME, F.QUESTION, F.ANSWER, F.FAQ_EVENT_NO,
-		             ROW_NUMBER() OVER(ORDER BY FAQ_NO DESC) AS RNUM
+		             ROW_NUMBER() OVER(ORDER BY F.FAQ_NO DESC) AS RNUM
 		      FROM FAQ F INNER JOIN FAQ_EVENT FE
 		                         ON F.FAQ_EVENT_NO = FE.FAQ_EVENT_NO
 		      WHERE F.QUESTION LIKE '%' || #{searchTxt} || '%'
 		      <if test="sidebarGbn != null and sidebarGbn != ''">
 			    	<choose>
 					    <when test="sidebarGbn == 1">
-							AND FAQ_EVENT_NO = #{sidebarGbn}			  
+							AND FE.FAQ_EVENT_NO = #{sidebarGbn}			  
 					    </when>
 					    <when test="sidebarGbn == 2">
-							AND FAQ_EVENT_NO = #{sidebarGbn}	  
+							AND FE.FAQ_EVENT_NO = #{sidebarGbn}	  
 					    </when>
 					    <when test="sidebarGbn == 3">
-							AND FAQ_EVENT_NO = #{sidebarGbn}  
+							AND FE.FAQ_EVENT_NO = #{sidebarGbn}  
 					    </when>
 					    <when test="sidebarGbn == 4">
-							AND FAQ_EVENT_NO = #{sidebarGbn}  
+							AND FE.FAQ_EVENT_NO = #{sidebarGbn}  
 					    </when>
 					</choose>
 			   </if>
