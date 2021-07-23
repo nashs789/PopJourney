@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -340,21 +341,27 @@ a {
 }
 
 .title_area {
-	width: 1280px;
+	width: 1255px;
 	height: 60px;
 	color: black;
 	font-size: 18pt;
 	margin: auto;
 	margin-top: 30px;
-	padding-left: 20px;
+	padding-left: 28px;
 	border-bottom: 2px solid #2e3459;
 }
-
+#postTitle {
+	background-color: #f9f9f9;
+}
+.category_select {
+	margin: 30px 0 0 10px;
+}
 .input_title {
 	font-size: 18pt;
 	color: #2e3459;
 	border: none;
 	padding: 5px 0 5px;
+	background-color: #f9f9f9;
 }
 
 .category_area {
@@ -362,8 +369,8 @@ a {
 	position: absolute;
 	width: 230px;
 	height: 80px;
-	padding-left: 40px;
-	margin: 0px 0 0 350px;
+	padding-left: 24px;
+	margin: 0px 0 0 428px;
 }
 
 .category_area span {
@@ -547,6 +554,13 @@ a {
 		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if("${sMEM_NO}" != "") { // 로그인 상태
+		$(".btns").css("display","inline-block");
+		$(".logins").css("display","none");
+	} else { // 비 로그인 상태
+		$(".logins").css("display","inline-block");
+		$(".btns").css("display","none");
+	}
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
@@ -573,38 +587,27 @@ $(document).ready(function(){
 		
 	});
 	
-	$("#addForm").on("keypress", "input", function (event) {
+	$("#writeForm").on("keypress", "input", function (event) {
 		if(event.keyCode ==13) {
 			return false;
 		}
 	});
 	
 	$("#addBtn").on("click", function () {
-	var fileForm = $("#fileForm");
-		
-		fileForm.ajaxForm({
-			beforeSubmit : function () {
+	
 				$("#postCon").val(CKEDITOR.instances['postCon'].getData());
 				
-				if($.trim($("#bTitle").val()) == "") {
+				if($.trim($("#postTitle").val()) == "") {
 					alert("제목을 입력해 주세요.");
-					$("#bTitle").focus();
+					$("#postTitle").focus();
 					return false; // ajaxForm 실행 불가
-				} else if ($.trim($("#bWriter").val()) == "") {
-					alert("작성자를 입력해 주세요.");
-					$("#bWriter").focus();
-					return false;
-				} else if ($.trim($("#bCon").val()) == "") {
+				} else if ($.trim($("#postCon").val()) == "") {
 					alert("내용을 입력해 주세요.");
-					$("#bCon").focus();
+					$("#postCon").focus();
 					return false;
 				}
-			},
-			success : function (res) {
-				if(res.result == "SUCCESS"){
-					// 글저장
-					var params = $("#addForm").serialize();
-					
+					var params = $("#writeForm").serialize();
+					console.log(params);
 					$.ajax({
 						url:"postWrites", 
 						type: "post",
@@ -612,7 +615,7 @@ $(document).ready(function(){
 						data : params,
 						success: function(res){
 							if(res.msg == "success"){
-								location.href = "community";
+								location.href = "post";
 							} else if (res.msg =="failed") {
 								alert("작성에 실패하였습니다.")
 							} else {
@@ -622,21 +625,21 @@ $(document).ready(function(){
 						error : function (request, status, error) {
 							console.log(error);
 						}
-					});
-				} 
-			},
-			error : function () {
-				console.log(문제);
-			}
-		}); //ajaxForm end
-		
-		addForm.submit();
+					});		 
 	}); //addBtn click end
-
+	$("#delBtn").on("click", function () {
+		$("#postCon").val('');
+		CKEDITOR.instances['postCon'].setData('');
+		console.log($("#postCon").val());
+		alert("글을 삭제합니다. // 팝업창 : 예, 아니오 로 만들기");
+	});
 });
 </script>
 </head>
 <body>
+<form action="post" id="goForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+</form>	
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -664,9 +667,11 @@ $(document).ready(function(){
 					</div>
 					<div class="logins">
 						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
+							<form action="#" id="loginForm" method="post">
+								<input type="button" class="login_btn" value="로그인" /> 
+								<input type="password" class="login" id="inputPW" name="inputPW" placeholder="PW" /> 
+								<input type="text" class="login" id="inputID" name="inputID" placeholder="ID" />
+							</form>
 						</div>
 						<div class="sub_login2">
 							<span>회원가입</span> <span>ID/PW 찾기</span>
@@ -684,36 +689,35 @@ $(document).ready(function(){
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-				type="text" class="search" placeholder="검색"> <select
-				class="filter">
-				<option value="0">통합검색</option>
-				<option value="1">여행일지</option>
-				<option value="2">자유게시판</option>
-				<option value="3">닉네임</option>
-			</select>
+				<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input type="text" class="search" placeholder="검색"> 
+				<select class="filter">
+					<option value="0">통합검색</option>
+					<option value="1">여행일지</option>
+					<option value="2">자유게시판</option>
+					<option value="3">닉네임</option>
+				</select>
 		</div>
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
 			&nbsp;>&nbsp;&nbsp;게시글 작성
 		</div>
-		<form action="community" id="goForm" method="post">
-			<input type="hidden" name="page" value="${param.page}" />
-			<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
-			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
-		</form>
-		<form action="#" id="addForm" method="post">
-			<input type="hidden" id="sMNo" value="${sMEM_NO}">
+		<form action="#" id="writeForm" method="post">
+			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 			<div class="title_area">
 				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목"
 					size="50" maxlength="30" autofocus required />
 				<div class="category_area">
-					<span class="asterisk">&#42;</span><span>카테고리</span> <select
-						class="category_filter">
-						<option value="0">여행꿀팁</option>
-						<option value="1">Q&A</option>
-						<option value="2">잡담</option>
+					<span class="asterisk">&#42;</span><span>카테고리</span> 
+					<select class="category_select" id="categorySelect" name="categorySelect">
+						<c:choose>
+						<c:when test="${sGRADE_NO eq 0}">
+						<option value="1">공지사항</option>
+						</c:when>
+						</c:choose>
+						<option value="2">여행꿀팁</option>
+						<option value="3">Q&A</option>
+						<option value="4">잡담</option>
 					</select>
 				</div>
 			</div>
@@ -723,8 +727,8 @@ $(document).ready(function(){
 				</div>
 				<div class="post_bottom">
 					<div class="btn_list">
-						<input type="button" id="addBtn" class="enroll_btn" value="등  록" /> <input
-							type="reset" class="del_btn" value="삭  제" />
+						<input type="button" id="addBtn" class="enroll_btn" value="등  록" /> 
+						<input type="reset" id="delBtn" class="del_btn" value="삭  제" />
 					</div>
 				</div>
 			</div>

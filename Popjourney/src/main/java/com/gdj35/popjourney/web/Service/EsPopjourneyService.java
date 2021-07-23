@@ -83,6 +83,26 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.getPostFList(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getPostNList(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostNList(params);
+	}
+
+	@Override
+	public int getPostNCnt(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostNCnt(params);
+	}
+
+	@Override
+	public int getPostCMTCnt(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostCMTCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getPostCMTList(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostCMTList(params);
+	}
+
 	
 
 

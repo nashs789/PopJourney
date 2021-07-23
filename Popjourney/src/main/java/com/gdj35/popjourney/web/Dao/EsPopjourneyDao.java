@@ -82,5 +82,25 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 		return sqlSession.selectList("EsPJ.getPostFList", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getPostNList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("EsPJ.getPostNList", params);
+	}
+
+	@Override
+	public int getPostNCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("EsPJ.getPostNCnt", params);
+	}
+
+	@Override
+	public int getPostCMTCnt(HashMap<String, String> params) {
+		return sqlSession.selectOne("EsPJ.getPostCMTCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getPostCMTList(HashMap<String, String> params) {
+		return sqlSession.selectList("EsPJ.getPostCMTList", params);
+	}
+
 
 }
