@@ -615,7 +615,9 @@ $(document).ready(function(){
 						data : params,
 						success: function(res){
 							if(res.msg == "success"){
-								location.href = "post";
+								console.log(params);
+								$("#writeForm").attr("action", "post");
+								$("#writeForm").submit();
 							} else if (res.msg =="failed") {
 								alert("작성에 실패하였습니다.")
 							} else {
@@ -636,10 +638,7 @@ $(document).ready(function(){
 });
 </script>
 </head>
-<body>
-<form action="post" id="goForm" method="post">
-	<input type="hidden" id="postNo" name="postNo" value=""/>
-</form>	
+<body>	
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -704,6 +703,7 @@ $(document).ready(function(){
 		</div>
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+			<input type="hidden" id="newPostNo" name="newPostNo" value="${postNo}"/>
 			<div class="title_area">
 				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목"
 					size="50" maxlength="30" autofocus required />

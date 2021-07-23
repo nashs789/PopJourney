@@ -1086,9 +1086,28 @@ function popup() {
 			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 		</form>
 		<div id="path_info">
-			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
-			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
+			<span> 
+			<img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
+			</span> 
+			&nbsp;&nbsp;>&nbsp;&nbsp; 
+			<span> 자유게시판 </span>
+			&nbsp;&nbsp;>&nbsp;&nbsp;
+			<c:choose>
+				<c:when test="${data.CATEGORY_NO eq 1}">
+					</span>공지사항<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 2}">
+					</span>여행꿀팁<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 3}">
+					</span>Q & A<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 4}">
+					</span>잡&nbsp;&nbsp;&nbsp;담<span>
+				</c:when>
+			</c:choose>
 			&nbsp;>&nbsp;&nbsp;${data.TITLE}
+			
 		</div>
 		<div class= "title_area">
 			<div class="title_left">

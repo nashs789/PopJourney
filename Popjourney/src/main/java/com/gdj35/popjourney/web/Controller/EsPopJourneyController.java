@@ -352,7 +352,10 @@ public class EsPopJourneyController {
 	public String postWrites(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
+		int postNo = iEsPopjourneyService.getPostNo(params);
+		modelMap.put("postNo", postNo);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(postNo);
 		try {
 			int cnt = iEsPopjourneyService.addPost(params);
 			

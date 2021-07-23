@@ -103,6 +103,11 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.getPostCMTList(params);
 	}
 
+	@Override
+	public int getPostNo(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostNo(params);
+	}
+
 	
 
 

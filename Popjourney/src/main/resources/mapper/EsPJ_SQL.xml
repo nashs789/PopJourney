@@ -296,6 +296,11 @@
 		      WHERE RK BETWEEN #{startCnt} AND #{endCnt})
 	</select>
 	<!-- EsPJ.getPostCMTCnt -->
+	<select id="getPostNo" parameterType="hashmap" resultType="Integer">
+		SELECT LAST_NUMBER  
+		FROM user_sequences
+		where SEQUENCE_NAME = 'POST_SEQ'	
+	</select>
 	<insert id="addPost" parameterType="hashmap">
 		INSERT INTO BOARD(POST_NO,CATEGORY_NO, MEM_NO, TITLE ,CONTENTS )
 		VALUES(POST_SEQ.NEXTVAL,#{categorySelect},#{MEM_NO},#{postTitle}, #{postCon})
@@ -346,7 +351,7 @@
 		                                     ON B.MEM_NO = MCCNT.MEM_NO)
                                            
 		      WHERE DEL != 0
-              AND POST_NO= 49
+              AND POST_NO= #{postNo}
 	</select>
 	<update id="postUpdate" parameterType="hashmap">
 		UPDATE BOARD SET POST_NO = #{postNo}, TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categoryNo} 
