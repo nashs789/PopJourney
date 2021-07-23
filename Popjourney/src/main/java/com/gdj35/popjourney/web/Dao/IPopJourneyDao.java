@@ -105,4 +105,8 @@ public interface IPopJourneyDao {
 
 	int deleteBMKJournal(HashMap<String, String> params)throws Throwable;
 
+	List<HashMap<String, String>> journalList(HashMap<String, String> params)throws Throwable;
+
+	int journalListCnt(HashMap<String, String> params)throws Throwable;
+
 }

@@ -303,7 +303,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 #container {
 	display: block;
 	width: 1280px;
-	height: 100%;
 	margin: 0 auto;
 }
 
@@ -454,7 +453,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 	padding: 4px;
 	width: 30px;
 	height: 30px;
-	background-color: #2e3459;
 	border-radius: 100px;
 	cursor: pointer;
 }
@@ -494,7 +492,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
-	height: 100%;
 	font-weight: 500;
 	border-top: 1px solid #ccc;
 }
@@ -536,11 +533,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 	background-color: #2e3459;
 	color: white;
 }
-
-.c_top>li:hover #c_bottom {
-	display: block;
-}
-
 #c_bottom {
 	position: absolute;
 	width: 100%;
@@ -572,7 +564,6 @@ a {
 
 .gallery {
 	padding: 30px 0 0 45px;
-	height: 2150px;
 }
 
 .post {
@@ -627,12 +618,17 @@ a {
 .post_profile img {
 	width: 42px;
 	height: 42px;
+	border-radius: 50%;
 }
 
 .post_profile>span {
-	position: absolute;
-	line-height: 42px;
-	margin-left: 8px;
+    height: 30px;
+    position: absolute;
+    line-height: 15pt;
+    margin-left: 8px;
+    width: 100px;
+    font-size: 10pt;
+    font-weight: bold;
 }
 
 .post_profile>div {
@@ -656,47 +652,26 @@ a {
 .post_profile>div>div .cnt {
 	color: #F1404B;
 }
-
 .paging_wrap {
 	width: 100%;
-	height: 150px;
+	height: 100px;
 	padding-top: 50px;
-}
-
-.paging {
-	font-size: 0;
+	font-size: 18pt;
 	text-align: center;
-}
-
-.paging a{
 	display: inline-block;
-	margin-left: 10px;
-	padding: 5px 10px;
-	border-radius: 5px;
-	font-size: 12pt;
+}
+.paging_wrap span{
+	margin-left: 15px;
+	cursor: pointer;
+}
+.on{
 	font-weight: bold;
-}
-
-.paging a.paging_btn {
-	background-color: none;
-	color: #2e3459;
-	letter-spacing: -5px;
-	font-size: 12pt;
-}
-
-.paging a.num {
-	color: #2e3459;
-}
-
-.paging a:first-child {
-	margin-left: 0;
-}
-
-.paging a.num:hover, .paging a.num.on, .paging a.paging_btn:hover {
-	color: #F1404B;
+	color: red;
 	text-decoration: underline;
 }
-
+#admin{
+	display: none;
+}
 .board_search>.filter {
 	float: right;
 	margin: 20px 0px 20px 0px;
@@ -723,7 +698,7 @@ a {
 }
 
 #footer {
-	display: block;
+	display: inline-block;
 	width: 100%;
 	height: 100px;
 	background-color: #2e3459;
@@ -831,125 +806,349 @@ a {
     z-index: 400;
     opacity: 0.2;
 }
+.c_top{
+	cursor: pointer;
+}
+.all img{
+	background-color: #f37321;
+}
+.writer img, .traveler img{
+	background-color: #2e3459;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
-	$("#community").on("click", function() {
-  		location.href = "community";
-  	});
-	$("#travelWriter").on("click", function() {
-  		location.href = "travelWriterRank";
-  	});
-	$("#clientCenter").on("click", function() {
-  		location.href = "clientCenterQuestion";
-  	});
-	$("#admin").on("click", function() {
-  		location.href = "memAdmin";
-  	});
-	if("${param.searchGbn}" != ""){
-		$("#searchGbn").val("${param.searchGbn}");
-	}
-	reloadList();
-	$("#searchBtn").on("click", function () {
-		$("#page").val(1);
-		reloadList();
-	});
-	$(".paging_wrap").on("click", "div", function () {
-		$("#page").val($(this).attr("page"));
-		reloadList();
-	});	
-	$(".journal").on("click", function () {
-		$("#journalNo").val($(this).attr("journalno"));
-		
-		$("#actionForm").attr("action", "journal");
-		$("#actionForm").submit();
-	});
-});
- 
-function reloadList() {
-	var params = $("#actionForm").serialize();
+	var params = $("#journalForm").serialize();
 	
 	$.ajax({
-		url:"journalBoards", 
-		type: "post",
-		dataType: "json",
-		data : params,
-		success: function(res){
-			drawList(res.list);
-			drawPaging(res.pb);
-		}, 
-		error: function (request, status, error) {
-			console.log(error);
-		}
-	});
-}
-// 목록 그리기 
-function drawList(list) {
-	var html = "";
-	
-	for(var d of list){
-		for (var i = 1 ; i < 16 ; i++ ) {
-			html +="<div class=\"post\">"
-			html +="<span class=\"thumb\"><img alt=\"썸네일\""
-			html +=		"src=\"./resources/images/a1.jpg"></span>"
-			html +="<div class=\"post_info\">"
-			html +="<p>"
-			html +="<span>지역별 > " + d.CTG + "</span>"
-			html +="</p>"
-			html +="<p>"
-			html +="<strong>" + d.TITLE + "</strong>"
-			html +="</p>"
-			html +="<p>"
-			html +="<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>"
-			html +="</p>"
-			html +="</div>"
-			html +="<div class=\"post_profile\">"
-			html +="<img alt=\"작성자\" src=\"./resources/images/profile3.png\"> <span>" + d.NIC + "</span>"
-			html +="<div>"
-			html +="<div>"
-			html +="<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>"
-			html +="<span class=\"cnt\">" + d.LIKE + "</span>"
-			html +="</div>"
-			html +="<span>" + d.JOURNAL_DATE + "</span>"
-			html +="</div>"
-			html +="</div>"
-			html +="</div>"
-	}
-	$(".gallery").html(html); 
-	}
-	}
+		url:"journalListCnts",
+		data: params,
+		dataType:"json",
+		type:"post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				$("#cnt").val(result.cnt);
+				$("#startCnt").val(result.pb.startCount);
+				$("#endCnt").val(result.pb.endCount);
+				$("#maxCnt").val(result.pb.maxPcount);
+				$("#startPCnt").val(result.pb.startPcount);
+				$("#endPCnt").val(result.pb.endPcount);
+				
+				var params = $("#journalForm").serialize();
 
-function drawPaging(pb) {
-	var html = "";
+				$.ajax({
+					url:"journalLists",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success: function(result){
+						makeJournalList(result.list);
+						makePage();
+					}, //success end
+					error: function(error){
+						console.log(error);
+					} //error end
+				}); //ajax end
+			}
+			else
+			{
+				alert("실패");
+			}
+		}, //success end
+		error: function(error){
+			console.log(error);
+		} //error end
+	}); //ajax end
 	
-	html += "<div page=\"1\">처음</div>";
-	if($("#page").val() =="1"){
-		html += "<div page=\"1\">이전</div>";
+	$(".paging_wrap").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		$("#startCnt").val(1 + (($("#page").val()-1)) * 15);
+		$("#endCnt").val($("#page").val()*15);
+		var params = $("#journalForm").serialize();
+
+		$.ajax({
+			url: "journalLists",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					makeJournalList(result.list);
+					makePage();
+					$("html").scrollTop(300);
+				}
+				else
+				{
+					alert("오류 발생");
+				}
+			},//success end
+			error: function(error){
+				console.log(error);
+			}//error end
+		}); //ajax end 
+	}); //paging_wrap click end
+	
+	$(".search_icon").on("click", function(){
+		$("#searchGbn").val($("#sg").val());
+		$("#searchTxt").val($("#st").val());
+		
+		var params = $("#journalForm").serialize();
+		console.log(params);
+	}); //search_icon click end
+	
+	$(".left_nav ul li").on("click", "span", function(){
+
+		if($(this).attr("class") == "all")
+		{
+			$("#gradeNo").val(0);
+			$(".all img").css("background-color", "#f37321");
+			$(".writer img").css("background-color", "#2e3459");
+			$(".traveler img").css("background-color", "#2e3459");
+		}
+		else if($(this).attr("class") == "writer")
+		{
+			$("#gradeNo").val(2);
+			$(".all img").css("background-color", "#2e3459");
+			$(".writer img").css("background-color", "#f37321");
+			$(".traveler img").css("background-color", "#2e3459");
+		}
+		else if($(this).attr("class") == "traveler")
+		{
+			$("#gradeNo").val(1);
+			$(".all img").css("background-color", "#2e3459");
+			$(".writer img").css("background-color", "#2e3459");
+			$(".traveler img").css("background-color", "#f37321");
+		}
+		
+		$("#page").val(1);
+		var params = $("#journalForm").serialize();
+		
+		$.ajax({
+			url:"journalListCnts",
+			data: params,
+			dataType:"json",
+			type:"post",
+			success: function(result){
+				if(result.msg == "success")
+				{
+					$("#cnt").val(result.cnt);
+					$("#startCnt").val(result.pb.startCount);
+					$("#endCnt").val(result.pb.endCount);
+					$("#maxCnt").val(result.pb.maxPcount);
+					$("#startPCnt").val(result.pb.startPcount);
+					$("#endPCnt").val(result.pb.endPcount);
+					
+					var params = $("#journalForm").serialize();
+
+					$.ajax({
+						url:"journalLists",
+						data: params,
+						dataType:"json",
+						type:"post",
+						success: function(result){
+							makeJournalList(result.list);
+							makePage();
+						}, //success end
+						error: function(error){
+							console.log(error);
+						} //error end
+					}); //ajax end
+				}
+				else if(result.msg == "failed")
+				{
+					alert("글이 없습니다.");
+				}
+			}, //success end
+			error: function(error){
+				console.log(error);
+			} //error end
+		}); //ajax end
+	}); //left_nav click end
+	
+	$(".c_top").on("click", "li" ,function(){
+		if($(this).attr("id") == "category_all")
+		{
+			$("#categoryNo").val(0);
+			$("#category_all").css("background-color", "#2e3459");
+			$("#category_all").css("color", "white");
+			$(".c_top #regionSelect, #transportation, #attraction, #activity").css("background-color", "white");
+			$(".c_top #regionSelect, #transportation, #attraction, #activity").css("color", "#2e3459");
+			$("#activity ul, #attraction ul, #transportation ul, #regionSelect ul").css("display", "none");
+		}
+		else if($(this).attr("id") == "regionSelect")
+		{
+			$("#categoryNo").val(1);
+			$("#regionSelect").css("background-color", "#2e3459");
+			$("#regionSelect").css("color", "white");
+			$(".c_top #category_all, #transportation, #attraction, #activity").css("background-color", "white");
+			$(".c_top #category_all, #transportation, #attraction, #activity").css("color", "#2e3459");
+			$("#regionSelect ul").css("display", "block");
+			$("#activity ul, #attraction ul, #transportation ul").css("display", "none");
+		}
+		else if($(this).attr("id") == "transportation")
+		{
+			$("#categoryNo").val(2);
+			$("#transportation").css("background-color", "#2e3459");
+			$("#transportation").css("color", "white");
+			$(".c_top #category_all, #regionSelect, #attraction, #activity").css("background-color", "white");
+			$(".c_top #category_all, #regionSelect, #attraction, #activity").css("color", "#2e3459");
+			$("#transportation ul").css("display", "block");
+			$("#activity ul, #attraction ul, #regionSelect ul").css("display", "none");
+		}
+		else if($(this).attr("id") == "attraction")
+		{
+			$("#categoryNo").val(3);
+			$("#attraction").css("background-color", "#2e3459");
+			$("#attraction").css("color", "white");
+			$(".c_top #category_all, #transportation, #regionSelect, #activity").css("background-color", "white");
+			$(".c_top #category_all, #transportation, #regionSelect, #activity").css("color", "#2e3459");
+			$("#attraction ul").css("display", "block");
+			$("#activity ul, #transportation ul, #regionSelect ul").css("display", "none");
+		}
+		else if($(this).attr("id") == "activity")
+		{
+			$("#categoryNo").val(4);
+			$("#activity").css("background-color", "#2e3459");
+			$("#activity").css("color", "white");
+			$(".c_top #category_all, #transportation, #attraction, #regionSelect").css("background-color", "white");
+			$(".c_top #category_all, #transportation, #attraction, #regionSelect").css("color", "#2e3459");
+			$("#activity ul").css("display", "block");
+			$("#attraction ul, #transportation ul, #regionSelect ul").css("display", "none");
+		}
+		
+		console.log($("#categoryNo").val());
+	});//regionSelect
+	
+	$("#regionSelect ul").on("click", "li", function(){
+		$("#subCategoryNo").val($(this).attr("id").substring(1));
+		console.log($("#subCategoryNo").val());
+	}); //regionSelect li ul click end
+}); //document ready end
+function makeJournalList(list)
+{
+		var html = "";
+		
+		for(var data of list)
+		{
+			html += "   <div class=\"post\">";
+			html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+			html += "   	<div class=\"post_info\">";
+			html += "   		<p>";
+			html += "   			<span>" + data.CATEGORY + " > " + data.SUB_CATEGORY + "(" + data.REGION + ") </span>";
+			html += "   		</p>";
+			html += "   		<p>";
+			html += "   			<strong class=\"journal\" journal=\"" + data.JOURNAL_NO + "\">" + data.TITLE + "</strong>";
+			html += "   		</p>";
+			html += "   		<p>";
+			html += "   			<em>";
+		
+			if(data.PATH != null)
+			{
+				var hashTag = data.PATH;
+				var arr =[];
+				arr = hashTag.split(",");
+				
+				if(arr.length != 0)
+				{
+					for(var i = 0; i < arr.length; i++)
+					{
+						 html += "#" + arr[i]+ " "; 
+					}
+				}
+			}
+			
+			html += "</em>"; 
+			html += "   		</p>";
+			html += "   	</div>";
+			html += "   	<div class=\"post_profile\">";
+			html += "			<img alt=\"작성자\" src=\"resources/upload/" + data.PROFILE + "\"> <span>" + data.NIC + "</br>(" + data.GRADE + ")</span>";
+			html += "   		<div>";
+			html += "   			<div>";
+			html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
+			html += "   				<span class=\"cnt\">" + data.LIKE_CNT + "</span>";
+			html += "   			</div>";
+			html += "   			<span>" + data.JOURNAL_DATE + "</span>";
+			html += "   		</div>";
+			html += "   	</div>";
+			html += "   </div>";
+		}
+
+		$(".gallery").html(html);
+}
+function makePage()
+{
+	var html = "<span name=\"1\"><<</span>";
+	
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\"><</span>";
 	} else {
-		html += "<div page=\"" +($("#page").val() -1) + "\">이전</div>";
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
 	}
-	for(var i =pb.startPcount ; i <=pb.endPcount;i++){
-		if($("#page").val() == i){
-			html += "<div class = \"on\" page=\"" + i + "\">" + i + "</div>";
-		} else {
-			html += "<div page=\"" + i + "\">" + i + "</div>";
+	
+	if($("#endPCnt").val() == $("#page").val() && $("#endPCnt").val() != $("#maxCnt").val())
+	{
+		$("#startPCnt").val(($("#startPCnt").val()*1)+1);
+		$("#endPCnt").val(($("#endPCnt").val()*1)+1);
+	}
+	else if($("#startPCnt").val() == $("#page").val() && $("#startPCnt").val() != 1)
+	{
+		$("#startPCnt").val($("#startPCnt").val()-1);
+		$("#endPCnt").val($("#endPCnt").val()-1);
+	}
+	else if($("#page").val() == $("#maxCnt").val())
+	{
+		$("#startPCnt").val($("#maxCnt").val() - 4);
+		$("#endPCnt").val($("#maxCnt").val());
+
+		if($("#startPCnt").val() <= 0)
+		{
+			$("#startPCnt").val(1);
 		}
 	}
-	if($("#page").val() == pb.maxPcount){
-		html += "<div page=\"" + pb.maxPcount + "\">다음</div>";
-	} else {
-		html += "<div page=\"" +($("#page").val() * 1 + 1) + "\">다음</div>";
+	else if($("#page").val() == 1)
+	{
+		$("#startPCnt").val(1);
+		$("#endPCnt").val(5);
 	}
 	
-	html += "<div page=\"" + pb.maxPcount + "\">마지막</div>";
+	for(var i = $("#startPCnt").val() * 1 ; i <= $("#endPCnt").val() * 1 ; i++) {
+		if($("#page").val() == i) {
+			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
+		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}	
+
+	if($("#page").val() == $("#maxCnt").val()) {
+		html += "<span name=\"" + $("#maxCnt").val() + "\">></span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+	}
 	
-	$(".paging_wrap").html(html);
+	html += "<span name=\"" + $("#maxCnt").val() + "\">>></span>";
+	
+	$(".paging").html(html);
 }
 </script>
 </head>
 <body>
+<form action="#" id="journalForm">
+	<input type="hidden" id="cnt" name="cnt"/>
+	<input type="hidden" id="page" name="page" value="1"/>
+	<input type="hidden" id="startCnt" name="startCnt"/>
+	<input type="hidden" id="endCnt" name="endCnt"/>
+	<input type="hidden" id="maxCnt" name="maxCnt"/>
+	<input type="hidden" id="startPCnt" name="startPCnt"/>
+	<input type="hidden" id="endPCnt" name="endPCnt"/>
+	<input type="hidden" id="searchGbn" name="searchGbn"/>
+	<input type="hidden" id="searchTxt" name="searchTxt"/>
+	<input type="hidden" id="gradeNo" name="gradeNo" value="0"/>
+	<input type="hidden" id="categoryNo" name="categoryNo" value="0"/>
+	<input type="hidden" id="subCategoryNo" name="subCategoryNo" value="1"/>
+</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1037,27 +1236,27 @@ function drawPaging(pb) {
 				<div class="category_nav">
 					<ul class="c_top">
 						<li id="category_all">&nbsp;전체보기&nbsp;</li>
-						<li>&nbsp;&nbsp;지역별&nbsp;&nbsp;
+						<li id="regionSelect">&nbsp;&nbsp;지역별&nbsp;&nbsp;
 							<ul id="c_bottom">
-								<li>서울</li>
-								<li>부산</li>
-								<li>대구</li>
-								<li>인천</li>
-								<li>광주</li>
-								<li>대전</li>
-								<li>울산</li>
-								<li>세종</li>
-								<li>경기도</li>
-								<li>강원도</li>
-								<li>충청북도</li>
-								<li>충청남도</li>
-								<li>전라북도</li>
-								<li>전라남도</li>
-								<li>경상북도</li>
-								<li>경상남도</li>
-								<li>제주도</li>
+								<li id="r0">서울</li>
+								<li id="r1">부산</li>
+								<li id="r2">대구</li>
+								<li id="r3">인천</li>
+								<li id="r4">광주</li>
+								<li id="r5">대전</li>
+								<li id="r6">울산</li>
+								<li id="r7">세종</li>
+								<li id="r8">경기도</li>
+								<li id="r9">강원도</li>
+								<li id="r10">충청북도</li>
+								<li id="r11">충청남도</li>
+								<li id="r12">전라북도</li>
+								<li id="r13">전라남도</li>
+								<li id="r14">경상북도</li>
+								<li id="r15">경상남도</li>
+								<li id="r16">제주도</li>
 							</ul></li>
-						<li>&nbsp;&nbsp;교통편&nbsp;&nbsp;
+						<li id="transportation">&nbsp;&nbsp;교통편&nbsp;&nbsp;
 							<ul id="c_bottom">
 								<li>도보</li>
 								<li>자가용</li>
@@ -1065,7 +1264,7 @@ function drawPaging(pb) {
 								<li>기차</li>
 								<li>배</li>
 							</ul></li>
-						<li>&nbsp;&nbsp;관광지&nbsp;&nbsp;
+						<li id="attraction">&nbsp;&nbsp;관광지&nbsp;&nbsp;
 							<ul id="c_bottom">
 								<li>바다</li>
 								<li>계곡</li>
@@ -1079,7 +1278,7 @@ function drawPaging(pb) {
 								<li>시장</li>
 
 							</ul></li>
-						<li>&nbsp;&nbsp;활&nbsp;동&nbsp;&nbsp;
+						<li id="activity">&nbsp;&nbsp;활&nbsp;동&nbsp;&nbsp;
 							<ul id="c_bottom">
 								<li>농장</li>
 								<li>공연</li>
@@ -1097,9 +1296,9 @@ function drawPaging(pb) {
 				<div class="board_menu">
 					<nav class="left_nav">
 						<ul>
-							<li><img alt="작성자" src="./resources/images/all.png"><br />전체보기</li>
-							<li><img alt="작성자" src="./resources/images/writer.png"><br />여행작가</li>
-							<li><img alt="작성자" src="./resources/images/user2.png"><br />여행꾼</li>
+							<li><span class="all"><img alt="작성자" src="./resources/images/all.png"></span><br />전체보기</li>
+							<li><span class="writer"><img alt="작성자" src="./resources/images/writer.png"></span><br />여행작가</li>
+							<li><span class="traveler"><img alt="작성자" src="./resources/images/user2.png"></span><br />여행꾼</li>
 						</ul>
 					</nav>
 					<nav class="right_nav">
@@ -1112,414 +1311,17 @@ function drawPaging(pb) {
 					</nav>
 				</div>
 				<div class="gallery">
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
 
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a4.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a1.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a2.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-					<div class="post">
-						<span class="thumb"><img alt="썸네일"
-								src="./resources/images/a3.jpg"></span>
-							<div class="post_info">
-								<p>
-									<span>지역별 > 대구</span>
-								</p>
-								<p>
-									<strong>고북수진 당일치기</strong>
-								</p>
-								<p>
-									<em>#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#먹거리 #야경#야경#먹거리 #야경</em>
-								</p>
-							</div>
-							<div class="post_profile">
-								<img alt="작성자" src="./resources/images/profile3.png"> <span>닉네임</span>
-								<div>
-									<div>
-										<span>조회수</span> <span class="cnt">100</span> <span>좋아요</span>
-										<span class="cnt">100</span>
-									</div>
-									<span>2021-05-24</span>
-								</div>
-
-							</div>
-					</div>
-				</div>
+				</div> <!-- gallery end -->
 				<div class="paging_wrap">
-					<div class="paging">
-						<a href="#" class="paging_btn"><<</a> <a href="#"
-							class="paging_btn"><</a> <a href="#" class="num on">1</a> <a
-							href="#" class="num">2</a> <a href="#" class="num">3</a> <a
-							href="#" class="num">4</a> <a href="#" class="num">5</a> <a
-							href="#" class=paging_btn>></a> <a href="#" class=paging_btn>>></a>
-					</div>
+					<div class="paging"></div>
 					<div class="board_search">
-						<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-							type="text" class="search" name="journal_search"  placeholder="검색"> <select
-							class="filter">
-							<option value="0">제목+내용</option>
-							<option value="1">해시태그</option>
+						<img alt="search" src="./resources/images/search.png" class="search_icon" /> 
+						<input type="text" class="search" id="st" name="searchTxt"  placeholder="검색"> 
+						<select	class="filter" id="sg" name="searchGbn">
+							<option value="0">전체보기</option>
+							<option value="1">제목</option>
 							<option value="2">닉네임</option>
-							<option value="3">글번호</option>
-							<option value="4">댓글작성자</option>
 						</select>
 					</div>
 				</div>
