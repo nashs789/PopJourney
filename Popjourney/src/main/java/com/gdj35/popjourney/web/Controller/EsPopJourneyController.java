@@ -218,7 +218,7 @@ public class EsPopJourneyController {
 		}
 		mav.addObject("page", page);
 		mav.setViewName("LES/community");
-
+		
 		return mav;
 
 	}
@@ -233,7 +233,6 @@ public class EsPopJourneyController {
 		int page = Integer.parseInt(params.get("page"));
 		
 		int cnt = iEsPopjourneyService.getPostCnt(params);
-		
 		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
@@ -258,30 +257,75 @@ public class EsPopJourneyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
-	
-	@RequestMapping(value = "/communityFilter", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String Filter(@RequestParam HashMap<String, String>params) throws Throwable{
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		int page = Integer.parseInt(params.get("page"));
-		
-		int cnt = iEsPopjourneyService.getPostFCnt(params);
-		
-		PagingBean pb = iPagingService.getPagingBean(page, cnt);
-		
-		params.put("startCnt", Integer.toString(pb.getStartCount()));
-		params.put("endCnt", Integer.toString(pb.getEndCount()));
-		
-		List<HashMap<String,String>> list = iEsPopjourneyService.getPostFList(params);
-		modelMap.put("list",list);
-		modelMap.put("pb",pb);
-		
-		return mapper.writeValueAsString(modelMap);
-	}
-
-
+	//자유게시판- 공지사항
+		@RequestMapping(value = "/communityNLists", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String communityNLists(@RequestParam HashMap<String, String>params) throws Throwable{
+			System.out.println(params);
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			int page = Integer.parseInt(params.get("page"));
+			
+			int cnt = iEsPopjourneyService.getPostNCnt(params);
+			PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+			params.put("startCnt", Integer.toString(pb.getStartCount()));
+			params.put("endCnt", Integer.toString(pb.getEndCount()));
+			try {
+				List<HashMap<String,String>> list = iEsPopjourneyService.getPostNList(params);
+				System.out.println(list);
+				
+				if(list != null)
+				{
+					modelMap.put("msg", "success");
+					modelMap.put("list",list);
+					modelMap.put("pb", pb);
+				}
+				else
+				{
+					modelMap.put("msg", "failed");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+		@RequestMapping(value = "/communityCMTLists", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String communityCMTLists(@RequestParam HashMap<String, String>params) throws Throwable{
+			System.out.println(params);
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			int page = Integer.parseInt(params.get("page"));
+			
+			int cnt = iEsPopjourneyService.getPostCMTCnt(params);
+			PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+			params.put("startCnt", Integer.toString(pb.getStartCount()));
+			params.put("endCnt", Integer.toString(pb.getEndCount()));
+			try {
+				List<HashMap<String,String>> list = iEsPopjourneyService.getPostCMTList(params);
+				System.out.println(list);
+				
+				if(list != null)
+				{
+					modelMap.put("msg", "success");
+					modelMap.put("list",list);
+					modelMap.put("pb", pb);
+				}
+				else
+				{
+					modelMap.put("msg", "failed");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+		}
 	// 게시글 상세페이지
 	@RequestMapping(value = "/post")
 	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
@@ -290,9 +334,7 @@ public class EsPopJourneyController {
 		mav.addObject("data",data);
 		
 		mav.setViewName("LES/post");
-
 		return mav;
-
 	}
 
 	// 게시글 작성 페이지
@@ -310,7 +352,10 @@ public class EsPopJourneyController {
 	public String postWrites(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
+		int postNo = iEsPopjourneyService.getPostNo(params);
+		modelMap.put("postNo", postNo);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(postNo);
 		try {
 			int cnt = iEsPopjourneyService.addPost(params);
 			

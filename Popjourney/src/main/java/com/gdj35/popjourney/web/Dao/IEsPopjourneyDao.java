@@ -33,6 +33,16 @@ public interface IEsPopjourneyDao {
 
 	public List<HashMap<String, String>> getPostFList(HashMap<String, String> params)throws Throwable;
 
+	public List<HashMap<String, String>> getPostNList(HashMap<String, String> params) throws Throwable;
+
+	public int getPostNCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getPostCMTCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getPostCMTList(HashMap<String, String> params) throws Throwable;
+
+	public int getPostNo(HashMap<String, String> params) throws Throwable;
+
 	
 
 

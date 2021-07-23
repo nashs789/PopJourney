@@ -233,6 +233,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.popupDel2 {
 			   display: none; /* 클릭 시 inline-block */
@@ -286,6 +287,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			
 			#container {
@@ -522,6 +524,9 @@
 				});
 				
 				// 페이지 상단 배너 메뉴
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -808,7 +813,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행일지</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>

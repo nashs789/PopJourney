@@ -363,6 +363,9 @@
 			    background-color: rgb(250, 250, 250);
 			    line-height: 75px;
 			}
+			.question_sidebar ul li:hover {
+				background-color: #f7f7f7;
+			}
 			
 			.question_area {
 				display: block;
@@ -377,6 +380,9 @@
 				padding: 25px 34px;
 				cursor: pointer;
 				border-bottom: 1px solid rgb(238, 238, 238);
+			}
+			.question:hover {
+				background-color: #fdfdfd;
 			}
 			.question img {
 				float: right;
@@ -440,6 +446,9 @@
 				});
 				
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -473,139 +482,59 @@
 				}
 				
 				
-				if($("#sidebarGbn").val() == "") {
-					var params = $("#actionForm").serialize();
-					
-					$.ajax({
-						
-						url: "clientCenterFAQCnt",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							if(res.msg == "success") {
-								$("#FAQCnt").val(res.FAQCnt);
-								$("#firstCnt").val(res.firstCnt);
-								$("#lastCnt").val(res.lastCnt);
-								$("#addCnt").val(res.addCnt);
-								$(".more").click();
-							} else {
-								txt = "오류가 발생했습니다.";
-								commonPopup(txt);
-							}
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
-					
-					$(".more").on("click", function() {
-						var params = $("#actionForm").serialize();
-						
-						$.ajax({
-							url: "clientCenterFAQList",
-							type: "post",
-							dataType: "json",
-							data: params,
-							success: function(res) {
-									$("#firstCnt").val(res.firstCnt);
-									$("#lastCnt").val(res.lastCnt);
-									drawFAQList(res.list);
-									if($("#FAQCnt").val() < 11 || $("#FAQCnt").val() < $("#firstCnt").val()) {
-										$(".more").hide();
-										$(".qna_list").css("margin-bottom", "50px");
-									}
-									$(function(){
-										$(".question_area .question").click(function(){
-											$(".answer").slideUp();
-											
-											if(!$(this).next().is(":visible")) {
-												$(this).next().slideDown();
-											}
-										})
-									});
-							},
-							error: function(request, status, error) {
-								console.log(error);
-							}
-						});
-					});
-				} 
+			 	if($("#sidebarGbn").val() == "") {
+			 		console.log("click 누르기");
+					reloadCnt();
+				}
 				
-				/* $("#sidebarGbn1").on("click", function() {
-					$("#sidebarGbn").val($("#sidebarGbn1").val());
-					$(".qna_list").html("");
-					$("#firstCnt").val(1);
-					$("#lastCnt").val(10);
-					$("#searchTxt").val("");
-					console.log("123");
-					var params = $("#actionForm").serialize();
-					
-					$.ajax({
-						
-						url: "clientCenterFAQCnt",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							if(res.msg == "success") {
-								$("#FAQCnt").val(res.FAQCnt);
-								$("#firstCnt").val(res.firstCnt);
-								$("#lastCnt").val(res.lastCnt);
-								$("#addCnt").val(res.addCnt);
-								$(".more").click();
-							} else {
-								txt = "오류가 발생했습니다.";
-								commonPopup(txt);
-							}
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
-					console.log("222");
-					$(".more").on("click", function() {
-						$("#firstCnt").val(1);
-						$("#lastCnt").val(10);
-						$("#searchTxt").val("");
-						var params = $("#actionForm").serialize();
-						
-						$.ajax({
-							url: "clientCenterFAQList",
-							type: "post",
-							dataType: "json",
-							data: params,
-							success: function(res) {
-									$("#firstCnt").val(res.firstCnt);
-									$("#lastCnt").val(res.lastCnt);
-									drawFAQList(res.list);
-									if($("#FAQCnt").val() < 11 || $("#FAQCnt").val() < $("#firstCnt").val()) {
-										$(".more").hide();
-										$(".qna_list").css("margin-bottom", "50px");
-									}
-									$(function(){
-										$(".question_area .question").click(function(){
-											$(".answer").slideUp();
-											
-											if(!$(this).next().is(":visible")) {
-												$(this).next().slideDown();
-											}
-										})
-									});
-							},
-							error: function(request, status, error) {
-								console.log(error);
-							}
-						});
-					});
-					console.log("333");
-					
-				}); // sidebarGbn1 click end */
-				
-				/* // 사이드바(회원서비스, 여행/자유게시판, 등급/랭킹, 신고) 클릭 시 리스트 다시 그리기
 				$("#sidebarGbn1").on("click", function() {
 					$("#sidebarGbn").val($("#sidebarGbn1").val());
-				}); */
+					$(".qna_list").empty();
+					$("#searchTxt").val("");
+					console.log($("#sidebarGbn").val());
+					reloadCnt();
+				});
+				$("#sidebarGbn2").on("click", function() {
+					$("#sidebarGbn").val($("#sidebarGbn2").val());
+					$(".qna_list").empty();
+					$("#searchTxt").val("");
+					console.log($("#sidebarGbn").val());
+					reloadCnt();
+				});
+				 $("#sidebarGbn3").on("click", function() {
+					$("#sidebarGbn").val($("#sidebarGbn3").val());
+					$(".qna_list").empty();
+					$("#searchTxt").val("");
+					console.log($("#sidebarGbn").val());
+					reloadCnt();
+				});
+				 
+				$("#sidebarGbn4").on("click", function() {
+					$("#sidebarGbn").val($("#sidebarGbn4").val());
+					$(".qna_list").empty();
+					$("#searchTxt").val("");
+					console.log($("#sidebarGbn").val());
+					reloadCnt();
+				}); 
+				
+				$("#questionSearchIcon").on("click", function() {
+					//$("#mainSearchOldTxt").val($("#mainSearchTxt").val());
+					$("#sidebarGbn").val("");
+					$(".qna_list").empty();
+					reloadCnt();
+				});
+				
+				$(".more").on("click", function() {
+					reloadList();
+				});
+				
+				$(".qna_list").on("click", ".question", function(){
+					$(".answer").slideUp();
+					
+					if(!$(this).next().is(":visible")) {
+						$(this).next().slideDown();
+					}
+				});
 				
 				// 메인검색창 넘어가는 부분(동기)
 				$(".search_icon").on("click", function() {
@@ -626,6 +555,8 @@
 						$("#goSearch").submit();
 					}
 				});
+				
+				
 				
 			}); // document ready end..
 			
@@ -648,38 +579,63 @@
 				});
 			}
 			
-			/* function reloadList() {
+			function reloadCnt() {
 				var params = $("#actionForm").serialize();
-				
+				console.log(params);
+				console.log("reloadCnt");
 				$.ajax({
-					url: "clientCenterQuestions",
+					
+					url: "clientCenterFAQCnt",
 					type: "post",
 					dataType: "json",
 					data: params,
 					success: function(res) {
-						drawList(res.list);
-						$(function(){
-							$(".question_area .question").click(function(){
-								$(".answer").slideUp();
-								
-								if(!$(this).next().is(":visible")) {
-									$(this).next().slideDown();
-								}
-							})
-						});
+						if(res.msg == "success") {
+							$("#FAQCnt").val(res.FAQCnt);
+							$("#firstCnt").val(res.firstCnt);
+							$("#lastCnt").val(res.lastCnt);
+							$("#addCnt").val(res.addCnt);
+							reloadList();
+						} else {
+							txt = "오류가 발생했습니다.";
+							commonPopup(txt);
+						}
 					},
 					error: function(request, status, error) {
-						console.log(request);
-						console.log(status);
 						console.log(error);
 					}
 				});
-			} */
+			}
+			
+			function reloadList() {
+				var params = $("#actionForm").serialize();
+				console.log(params);
+				console.log("reloadList");
+				$.ajax({
+					url: "clientCenterFAQList",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+							console.log("여기????");
+							$("#firstCnt").val(res.firstCnt);
+							$("#lastCnt").val(res.lastCnt);
+							drawFAQList(res.list);
+							if($("#FAQCnt").val() < 11 || $("#FAQCnt").val() < $("#firstCnt").val()) {
+								$(".more").hide();
+								$(".qna_list").css("margin-bottom", "50px");
+							}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
 			
 			
-			var html = "";
 			function drawFAQList(list) {
-				
+				var html = "";
+				console.log(list);
 				for(d of list) {
 					html += "<li class=\"qna_data\">"
 					html += "<div class=\"question\">"
@@ -694,7 +650,7 @@
 					html += "</li>"
 				}
 				
-				$(".qna_list").html(html);
+				$(".qna_list").append(html);
 			}
 			
 		</script>
@@ -731,7 +687,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>
@@ -762,8 +718,8 @@
 						<div>고객센터</div>					
 					</div>
 					<div class="question_search">
-						<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="자주 묻는 질문 검색" />
-						<div><img alt="검색" src="./resources/images/search.png"></div>
+						<input type="text" id="searchTxt" name="searchTxt" placeholder="자주 묻는 질문 검색" />
+						<div><img alt="검색" src="./resources/images/search.png" id="questionSearchIcon"></div>
 					</div>
 				</div>
 				</form>

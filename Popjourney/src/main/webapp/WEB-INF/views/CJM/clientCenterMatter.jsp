@@ -475,8 +475,8 @@
 					location.href = "main";
 				});
 				
-				$(".logo_photo").on("click", function() {
-					location.href = "main";
+				$("#community").on("click", function() {
+					location.href = "community";
 				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
@@ -520,7 +520,7 @@
 				});
 				
 				// 검색 처리
-				$("#searchIcon").on("click", "img", function() {
+				$("#questionSearchIcon").on("click", function() {
 					$("#page").val(1);
 					$("#searchOldTxt").val($("#searchTxt").val());
 					reloadList();
@@ -706,7 +706,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>
@@ -737,7 +737,7 @@
 						</div>
 						<div class="question_search">
 							<input type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="문의사항 검색" />
-							<div><img alt="검색" src="./resources/images/search.png"></div>
+							<div><img alt="검색" src="./resources/images/search.png" id="questionSearchIcon"></div>
 						</div>
 					</div>
 					<div class="sidebar">

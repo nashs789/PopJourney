@@ -233,6 +233,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			
 			#container {
@@ -494,6 +495,9 @@
 					location.href = "main";
 				});
 				
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -731,7 +735,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행일지</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>

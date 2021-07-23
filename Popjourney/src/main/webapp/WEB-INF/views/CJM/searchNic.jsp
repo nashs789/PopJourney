@@ -355,7 +355,14 @@
 				
 				reloadList();
 				
+				$(".logo_photo").on("click", function() {
+					location.href = "main";
+				});
+				
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#community").on("click", function() {
+					location.href = "community";
+				});
 				$("#travelWriter").on("click", function() {
 			  		location.href = "travelWriterRank";
 			  	});
@@ -530,7 +537,7 @@
 				<nav class="menu">
 					<ul>
 						<li>여행게시판</li>
-						<li>자유게시판</li>
+						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
 						<li id="admin">내부관리자</li>

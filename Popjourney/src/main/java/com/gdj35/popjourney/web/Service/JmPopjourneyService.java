@@ -1,6 +1,5 @@
 package com.gdj35.popjourney.web.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdj35.popjourney.web.Dao.IJmPopjourneyDao;
-import com.gdj35.popjourney.web.Dao.JmPopjourneyDao;
 
 @Service
 public class JmPopjourneyService implements IJmPopjourneyService {
@@ -167,16 +165,6 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 	@Override
 	public int deleteCmt(HashMap<String, String> params) throws Throwable {
 		return iJmPopjourneyDao.deleteCmt(params);
-	}
-
-	@Override
-	public int getFAQCnt(HashMap<String, String> params) throws Throwable {
-		return iJmPopjourneyDao.getFAQCnt(params);
-	}
-
-	@Override
-	public List<HashMap<String, String>> getFAQList(HashMap<String, String> params) throws Throwable {
-		return iJmPopjourneyDao.getFAQList(params);
 	}
 
 	@Override

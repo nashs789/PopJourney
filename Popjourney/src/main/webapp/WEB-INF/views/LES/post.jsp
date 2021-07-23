@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
    <head>
@@ -367,6 +368,10 @@ a {
 	font-size: 12pt;
 }
 
+.report_btn {
+	cursor: pointer;
+}
+
 .text_area {
 	width: 1280px;
 	height: 100%;
@@ -490,7 +495,7 @@ a {
 .post_bottom {
 	width: 1280px;
 	height: 350px;
-	margin-top: 90px;
+	margin-top: 30px;
 	font-size: 12pt;
 	color: black;
 }
@@ -925,6 +930,9 @@ input[type="radio"]:checked {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if("${sMEM_NO}" == "${data.MEM_NO}") { // 로그인 상태
+		$(".btn_list").css("display","inline-block");
+	} 
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
@@ -941,19 +949,19 @@ $(document).ready(function(){
 	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	});
-	$("#userPage").on("click", function() {
-  		location.href = "userPage";
-  	});
 	$(".report_btn").on("click", function(){
 		$(".popup, .bg").show();
 	}); 
+	
 	$(".ok_btn").on("click", function(){
 		$(".popup, .bg").hide();
 	});
 	$(".cancel_btn").on("click", function(){
 		$(".popup, .bg").hide();
 	});
-	
+	$("#userPage").on("click", function(){
+		
+	});
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
@@ -1078,16 +1086,35 @@ function popup() {
 			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 		</form>
 		<div id="path_info">
-			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
-			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
-			&nbsp;>&nbsp;&nbsp;게시글 제목
+			<span> 
+			<img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
+			</span> 
+			&nbsp;&nbsp;>&nbsp;&nbsp; 
+			<span> 자유게시판 </span>
+			&nbsp;&nbsp;>&nbsp;&nbsp;
+			<c:choose>
+				<c:when test="${data.CATEGORY_NO eq 1}">
+					</span>공지사항<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 2}">
+					</span>여행꿀팁<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 3}">
+					</span>Q & A<span>
+				</c:when>
+				<c:when test="${data.CATEGORY_NO eq 4}">
+					</span>잡&nbsp;&nbsp;&nbsp;담<span>
+				</c:when>
+			</c:choose>
+			&nbsp;>&nbsp;&nbsp;${data.TITLE}
+			
 		</div>
 		<div class= "title_area">
 			<div class="title_left">
-				<strong>게시글 제목</strong><br />
+				<strong>${data.TITLE}</strong><br />
 				<br />
-				<br /> <span>작성일</span> <span>2021-05-24</span> <span>조회</span><span>56</span>
-				<span>좋아요</span><span>31</span> <span>댓글</span><span>2</span>
+				<br /> <span>작성일</span> <span>${data.BOARD_DATE}</span> <span>조회</span><span>${data.HIT}</span>
+				<span>좋아요</span><span>${data.LIKE_CNT}</span> <span>댓글</span><span>${data.POST_CMT_CNT}</span>
 			</div>
 			<div class="title_right">	
 				<span class="report_btn">신고하기</span>
@@ -1102,7 +1129,20 @@ function popup() {
          				카테고리
          			</div>
          			<div class="category_txt">
-         				${data.CATEGORY_NAME}
+         				<c:choose>
+							<c:when test="${data.CATEGORY_NO eq 1}">
+							<span>공지사항</span>
+							</c:when>
+							<c:when test="${data.CATEGORY_NO eq 2}">
+							<span>여행꿀팁</span>
+							</c:when>
+							<c:when test="${data.CATEGORY_NO eq 3}">
+							<span>Q & A</span>
+							</c:when>
+							<c:when test="${data.CATEGORY_NO eq 4}">
+							<span>잡&nbsp;&nbsp;&nbsp;담</span>
+							</c:when>
+							</c:choose>
          			</div>
          		</div>
          	<div class="sub_profile">
@@ -1115,19 +1155,19 @@ function popup() {
 						<div class="grade">
 							<img alt="icon" src="./resources/images/grade.png"> 
 							<c:choose>
-							<c:when test="${data.GRADE_NO eq 0}">
+							<c:when test="${sGRADE_NO eq 0}">
 							<span>관리자</span>
 							</c:when>
-							<c:when test="${data.GRADE_NO eq 1}">
+							<c:when test="${sGRADE_NO eq 1}">
 							<span>여행꾼</span>
 							</c:when>
-							<c:when test="${data.GRADE_NO eq 2}">
+							<c:when test="${sGRADE_NO eq 2}">
 							<span>여행작가</span>
 							</c:when>
 							</c:choose>
 						</div>
 						<div class="cnt">
-							<span>총 게시글 100</span> <span>총 댓글 100</span>
+							<span>총 게시글 ${data.MEM_POST_CNT}</span> <span>총 댓글 ${data.MEM_CMT_CNT}</span>
 						</div>
 	         			</div>
 	         		</div>
@@ -1173,7 +1213,7 @@ function popup() {
 							<img alt="프로필" src="./resources/images/profile2.png">
 						</div>
 						<div class="cmt_contents_right">
-							<strong>닉네임</strong><span class="cmt_date">2021-05-25</span><br /> <span><img
+							<strong>닉네임</strong><span class="cmt_date">${data.BOARD_DATE}</span><br /> <span><img
 								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
 							<div class="cmt_txt">
 								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
