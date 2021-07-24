@@ -108,4 +108,6 @@ public interface IPopJourneyService {
 	List<HashMap<String, String>> journalList(HashMap<String, String> params)throws Throwable;
 
 	int journalListCnt(HashMap<String, String> params)throws Throwable;
+
+	HashMap<String, String> getNumber(HashMap<String, String> params)throws Throwable;
 }
