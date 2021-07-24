@@ -355,11 +355,11 @@
 	</select>
 	<update id="postUpdate" parameterType="hashmap">
 		UPDATE BOARD SET POST_NO = #{postNo}, TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categoryNo} 
-		WHERE POST_NO = #{newPostNo}
+		WHERE POST_NO = #{postNo}
 	</update>
-	<delete id="postDelete" parameterType="hashmap">
+	<delete id="postDeletes" parameterType="hashmap">
 		UPDATE  BOARD SET DEL = 0
-		WHERE POST_NO = #{newPostNo}
+		WHERE POST_NO = #{postNo}
 	</delete>
 	
 </mapper>

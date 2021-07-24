@@ -237,4 +237,9 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getNicDetailList(params);
 	}
 
+	@Override
+	public HashMap<String, String> getJournal(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournal(params);
+	}
+
 }
