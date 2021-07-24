@@ -990,7 +990,7 @@
 		FROM MEM M INNER JOIN JOURNAL J
 		                   ON M.MEM_NO = J.MEM_NO
 		                  AND J.DEL = 1
-		                  AND J.JOURNAL_NO = #{journal}
+		                  AND J.JOURNAL_NO = #{journalNo}
 		           INNER JOIN JOURNAL_DETAIL JD
 		                   ON J.JOURNAL_NO = JD.JOURNAL_NO
 		                  AND JD.JOURNAL_SEQUENCE = 1
@@ -1051,7 +1051,7 @@
 		SELECT J.JOURNAL_NO, JD.JOURNAL_SEQUENCE, JD.MEMO
 		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
 		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
-		WHERE J.JOURNAL_NO = #{journal}
+		WHERE J.JOURNAL_NO = #{journalNo}
 		ORDER BY JD.JOURNAL_SEQUENCE ASC
 	</select>
 	
@@ -1059,7 +1059,7 @@
 		SELECT J.JOURNAL_NO, COUNT(*) AS CNT
 		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
 		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
-		WHERE J.JOURNAL_NO = #{journal}
+		WHERE J.JOURNAL_NO = #{journalNo}
 		GROUP BY J.JOURNAL_NO
 	</select>
 	
@@ -1074,7 +1074,7 @@
 		                         INNER JOIN HASH H
 		                                 ON JH.HASH_NO = H.HASH_NO
 		                                AND H.DEL = 1
-		WHERE J.JOURNAL_NO = #{journal}
+		WHERE J.JOURNAL_NO = #{journalNo}
 	</select>
 	
 </mapper>

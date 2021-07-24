@@ -1185,7 +1185,7 @@ $(document).ready(function(){
 		<div class="container_wrap">
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
-					<input type="hidden" id="journal" name="journal" value="${param.journal}" /> <!-- journal = 여행일지NO  -->
+					<input type="hidden" id="journalNo" name="journalNo" value="${param.journalNo}" /> <!-- journal = 여행일지NO  -->
 				</form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
