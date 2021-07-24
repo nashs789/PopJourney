@@ -478,16 +478,25 @@ public class PopJourneyController {
 				Date lastDate = simpleD.parse(loginInfo.get("LAST_DATE"));
 				Date today = simpleD.parse(loginInfo.get("TODAY"));
 
+				params.put("MEM_NO", String.valueOf(loginInfo.get("MEM_NO")));
+				
 				if (lastDate.compareTo(today) < 0) {
-					params.put("MEM_NO", String.valueOf(loginInfo.get("MEM_NO")));
-
 					ipjs.accCnt(params);
 				}
+				
+				HashMap<String, String> data = ipjs.getNumber(params);
+				
 				session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
 				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
 				session.setAttribute("sNIC", loginInfo.get("NIC"));
 				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
 				session.setAttribute("sINTRO", loginInfo.get("INTRO"));
+				
+				session.setAttribute("sFOLLOWER", data.get("FOLLOWER_CNT")); //팔로워 숫자
+				session.setAttribute("sFOLLOWING", data.get("FOLLOWING_CNT")); //팔로잉 숫자
+				session.setAttribute("sBMK", data.get("BMK_JOURNAL_CNT")); //북마크 안에 일지 숫자
+				session.setAttribute("sJOURNAL", data.get("JOURNAL_CNT")); //작성한 일지 숫자
+				session.setAttribute("sPOINT", data.get("TOTAL_POINT")); //여행작가 점수
 
 				//modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
 				//modelMap.put("NIC", loginInfo.get("NIC")); 필요없는거 같아서 주석해놈
@@ -1367,6 +1376,7 @@ public class PopJourneyController {
 				 int page = Integer.parseInt(params.get("page"));
 				 System.out.println("page!!!!!!!!!!!!!!!!!"+page);
 				 PagingBean pb = ips.getPagingBean(page, cntList, 15, 5);
+				 System.out.println("pb##########################"+pb);
 
 				 params.put("startCnt", Integer.toString(pb.getStartCount()));
 				 params.put("endCnt", Integer.toString(pb.getEndCount()));

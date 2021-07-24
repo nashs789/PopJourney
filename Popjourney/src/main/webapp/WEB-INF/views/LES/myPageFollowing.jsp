@@ -932,15 +932,15 @@ function makeMemo(followingMemo)
 					<nav class="menu_nav">
 						<ul id="left_group">
 							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL }</li>
 						</ul>
 						<ul class="right_group">
 							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									100</li>
+									${sBMK }</li>
 							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
-									100</li>
+									${sFOLLOWER }</li>
 							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
-									100</li>
+									${sFOLLOWING }</li>
 						</ul>
 					</nav>
 				</div> <!-- board_menu end -->

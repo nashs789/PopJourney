@@ -5,6 +5,7 @@
 		SELECT M.INTRO, M.MEM_NO, G.GRADE_NO, PHOTO_PATH, NIC, TO_CHAR(LAST_DATE, 'YYYY-MM-DD')AS LAST_DATE, TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS TODAY 
 		FROM MEM M INNER JOIN GRADE G
 		                   ON M.MEM_NO = G.MEM_NO
+		                   AND M.LEAVE_DATE IS NULL
 		WHERE ID = #{inputID} AND PW = #{inputPW}
 	</select>
 	
@@ -1018,137 +1019,271 @@
 	</delete>
 	
 	<select id="journalList" parameterType="hashmap" resultType="hashmap">
-		SELECT JOURNAL_NO, TITLE, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD') AS JOURNAL_DATE, HIT, SUB_CATEGORY, CATEGORY, PHOTO_PATH, REGION, LIKE_CNT, PATH,
-		       PROFILE, NIC, CASE WHEN GRADE_NO = 0
-		                          THEN '관리자'
-		                          WHEN GRADE_NO = 1
-		                          THEN '여행꾼'
-		                          ELSE '여행작가'
-		                    END AS GRADE
-		FROM (SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
-		                                THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
-		                                                                              THEN '[' || JCMT.CNT || ']'
-		                                                                              ELSE '[0]'
-		                                                                         END
-		                                ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
-		                                                     THEN '[' || JCMT.CNT || ']'
-		                                                     ELSE '[0]'
-		                                                 END
-		                            END AS TITLE, J.JOURNAL_DATE, CASE WHEN HIT IS NULL
-		                                                               THEN 0
-		                                                               ELSE HIT
-		                                                           END AS HIT, JC.SUB_CATEGORY_NAME AS SUB_CATEGORY, JC2.SUB_CATEGORY_NAME AS CATEGORY, JD.PHOTO_PATH,
-		             JC3.SUB_CATEGORY_NAME AS REGION, CASE WHEN JLIKE.LIKE_CNT IS NULL
-		                                                   THEN 0
-		                                                   ELSE JLIKE.LIKE_CNT
-		                                              END AS LIKE_CNT, ROW_NUMBER() OVER(ORDER BY J.JOURNAL_DATE DESC) AS RK, H.PATH, J.MEM_NO, M.PHOTO_PATH AS PROFILE, M.NIC, J.DEL, G.GRADE_NO
-		      FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
-		                             ON J.CATEGORY = JC.CATEGORY_NO
-		                             AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
-		                     INNER JOIN JOURNAL_CATEGORY JC2
-		                             ON JC.CATEGORY_NO = JC2.SUB_CATEGORY_NO
-		                             AND JC2.CATEGORY_NO = 0
-		                     INNER JOIN JOURNAL_DETAIL JD
-		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
-		                     INNER JOIN JOURNAL_CATEGORY JC3
-		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
-		                             AND JC3.CATEGORY_NO = 1
-		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
-		                                      FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-		                                                             ON J.JOURNAL_NO = JC.JOURNAL_NO
-		                                      GROUP BY J.JOURNAL_NO) JCMT
-		                                  ON J.JOURNAL_NO = JCMT.JOURNAL_NO
-		                     LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
-		                                      FROM JOURNAL_LIKE
-		                                      GROUP BY JOURNAL_NO) JLIKE
-		                                  ON J.JOURNAL_NO = JLIKE.JOURNAL_NO
-		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
-		                                      FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
-		                                                 ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
-		                                            FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
-		                                                                 ON J.JOURNAL_NO = JH.JOURNAL_NO
-		                                                         INNER JOIN HASH H
-		                                                                 ON JH.HASH_NO = H.HASH_NO) J
-		                                      START WITH J.RNUM = 1
-		                                      CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
-		                                      AND PRIOR J.RNUM = J.RNUM - 1
-		                                      GROUP BY J.JOURNAL_NO) H 
-		                                  ON J.JOURNAL_NO = H.JOURNAL_NO
-		                    INNER JOIN MEM M
-		                            ON J.MEM_NO = M.MEM_NO
-		                    INNER JOIN GRADE G
-		                            ON M.MEM_NO = G.MEM_NO
-		         WHERE J.DEL = 1
-		         <choose>
-			<when test="gradeNo != 0">
-				AND GRADE_NO = #{gradeNo}
-			</when>
-		</choose>)                 
-		WHERE RK BETWEEN #{startCnt} AND #{endCnt}    
+		SELECT *
+		FROM (SELECT JOURNAL_NO, TITLE, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE, HIT, SUB_CATEGORY, REGION, CATEGORY, PATH, PHOTO_PATH,
+		             NIC, GRADE, LIKE_CNT, <choose>
+                                               <when test="SEQ == 0">
+                                                   ROW_NUMBER() OVER(ORDER BY JOURNAL_DATE DESC) AS RK
+                                               </when>
+                                               <when test="SEQ == 1">
+                                                   ROW_NUMBER() OVER(ORDER BY HIT DESC) AS RK 
+                                               </when>
+                                               <when test="SEQ == 2">
+                                                   ROW_NUMBER() OVER(ORDER BY LIKE_CNT DESC) AS RK
+                                               </when>
+                                           </choose>, THUMB
+		      FROM(SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
+		                                     THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
+		                                                                                   THEN '[' || JCMT.CNT || ']'
+		                                                                                   ELSE '[0]'
+		                                                                              END
+		                                     ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
+		                                                          THEN '[' || JCMT.CNT || ']'
+		                                                          ELSE '[0]'
+		                                                      END
+		                                 END AS TITLE, J.JOURNAL_DATE, CASE WHEN HIT IS NULL
+		                                                                    THEN 0
+		                                                                    ELSE HIT
+		                                                                END AS HIT, JC.SUB_CATEGORY_NAME AS SUB_CATEGORY, JC2.SUB_CATEGORY_NAME AS REGION,
+		           JC3.SUB_CATEGORY_NAME AS CATEGORY, H.PATH, M.PHOTO_PATH, M.NIC, CASE WHEN GRADE_NO = 0
+		                                                                                THEN '관리자'
+		                                                                                WHEN GRADE_NO = 1
+		                                                                                THEN '여행꾼'
+		                                                                                ELSE '여행작가'
+		                                                                          END AS GRADE, CASE WHEN JLIKE.LIKE_CNT IS NULL
+		                                                                                             THEN 0
+		                                                                                             ELSE JLIKE.LIKE_CNT
+		                                                                                        END AS LIKE_CNT, 
+		           JD.PHOTO_PATH AS THUMB , J.DEL  
+		           FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                                    ON J.CATEGORY = JC.CATEGORY_NO
+		                                    AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+                                           <choose>
+		                                        <when test="categoryNo != 1 and categoryNo != 0">
+		                                            AND J.SUB_CATEGORY = #{subCategoryNo}
+                                           			AND J.CATEGORY = #{categoryNo}
+		                                        </when>
+		                                  </choose>
+		                          INNER JOIN JOURNAL_CATEGORY JC2
+		                                  ON J.REGION_NO = JC2.SUB_CATEGORY_NO
+		                                  AND JC2.CATEGORY_NO = 1
+		                                   <choose>
+		                                        <when test="categoryNo == 1">
+		                                            AND J.REGION_NO = #{subCategoryNo}
+		                                        </when>
+		                                  </choose>
+		                          INNER JOIN JOURNAL_DETAIL JD
+		                                        ON J.JOURNAL_NO = JD.JOURNAL_NO
+		                                        AND JD.JOURNAL_SEQUENCE = 1
+		                          INNER JOIN JOURNAL_CATEGORY JC3
+		                                  ON J.CATEGORY = JC3.SUB_CATEGORY_NO
+		                                  AND JC3.CATEGORY_NO = 0
+		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
+		                                           FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                                  ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                           GROUP BY J.JOURNAL_NO) JCMT
+		                                       ON J.JOURNAL_NO = JCMT.JOURNAL_NO
+		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
+		                                           FROM JOURNAL_LIKE
+		                                           GROUP BY JOURNAL_NO) JLIKE
+		                                       ON J.JOURNAL_NO = JLIKE.JOURNAL_NO
+		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
+		                                                 FROM (SELECT J.JOURNAL_NO, H.HASH_NAME,
+		                                                            ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
+		                                                       FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
+		                                                                            ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                                                                    INNER JOIN HASH H
+		                                                                            ON JH.HASH_NO = H.HASH_NO) J
+		                                                 START WITH J.RNUM = 1
+		                                                 CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
+		                                                 AND PRIOR J.RNUM = J.RNUM - 1
+		                                                 GROUP BY J.JOURNAL_NO) H 
+		                                             ON J.JOURNAL_NO = H.JOURNAL_NO
+		                          INNER JOIN MEM M
+		                                  ON J.MEM_NO = M.MEM_NO
+		                                  AND M.LEAVE_DATE IS NULL
+		                          INNER JOIN GRADE G
+		                                  ON M.MEM_NO = G.MEM_NO
+		                                  <choose>
+		                                     <when test="gradeNo != 0">
+		                                        AND GRADE_NO = #{gradeNo}
+		                                     </when>
+		                                  </choose>)
+		    WHERE DEL = 1
+		    <if test="searchTxt != null and searchTxt != ''">
+		    	<choose>
+		    		<when test="searchGbn == 0">
+		    			AND TITLE LIKE '%' || #{searchTxt} || '%' OR NIC LIKE '%' || #{searchTxt} || '%'   
+		    		</when>
+		    		<when test="searchGbn == 1">
+		    			AND TITLE LIKE '%' || #{searchTxt} || '%'
+		    		</when>
+		    		<when test="searchGbn == 2">
+		    			AND NIC LIKE '%' || #{searchTxt} || '%' 
+		    		</when>
+		    	</choose>
+		    </if>)  
+	WHERE RK BETWEEN #{startCnt} AND #{endCnt}                   
 	</select>
-	
+  
 	<select id="journalListCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
-		FROM (SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
-		                                THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
-		                                                                              THEN '[' || JCMT.CNT || ']'
-		                                                                              ELSE '[0]'
-		                                                                         END
-		                                ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
-		                                                     THEN '[' || JCMT.CNT || ']'
-		                                                     ELSE '[0]'
-		                                                 END
-		                            END AS TITLE, J.JOURNAL_DATE, CASE WHEN HIT IS NULL
-		                                                               THEN 0
-		                                                               ELSE HIT
-		                                                           END AS HIT, JC.SUB_CATEGORY_NAME AS SUB_CATEGORY, JC2.SUB_CATEGORY_NAME AS CATEGORY, JD.PHOTO_PATH,
-		             JC3.SUB_CATEGORY_NAME AS REGION, CASE WHEN JLIKE.LIKE_CNT IS NULL
-		                                                   THEN 0
-		                                                   ELSE JLIKE.LIKE_CNT
-		                                              END AS LIKE_CNT, RANK() OVER(ORDER BY J.JOURNAL_DATE DESC) AS RK, H.PATH, J.MEM_NO, M.PHOTO_PATH AS PROFILE, M.NIC, J.DEL, G.GRADE_NO
-		      FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
-		                             ON J.CATEGORY = JC.CATEGORY_NO
-		                             AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
-		                     INNER JOIN JOURNAL_CATEGORY JC2
-		                             ON JC.CATEGORY_NO = JC2.SUB_CATEGORY_NO
-		                             AND JC2.CATEGORY_NO = 0
-		                     INNER JOIN JOURNAL_DETAIL JD
-		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
-		                     INNER JOIN JOURNAL_CATEGORY JC3
-		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
-		                             AND JC3.CATEGORY_NO = 1
-		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
-		                                      FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-		                                                             ON J.JOURNAL_NO = JC.JOURNAL_NO
-		                                      GROUP BY J.JOURNAL_NO) JCMT
-		                                  ON J.JOURNAL_NO = JCMT.JOURNAL_NO
-		                     LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
-		                                      FROM JOURNAL_LIKE
-		                                      GROUP BY JOURNAL_NO) JLIKE
-		                                  ON J.JOURNAL_NO = JLIKE.JOURNAL_NO
-		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
-		                                      FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
-		                                                 ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
-		                                            FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
-		                                                                 ON J.JOURNAL_NO = JH.JOURNAL_NO
-		                                                         INNER JOIN HASH H
-		                                                                 ON JH.HASH_NO = H.HASH_NO) J
-		                                      START WITH J.RNUM = 1
-		                                      CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
-		                                      AND PRIOR J.RNUM = J.RNUM - 1
-		                                      GROUP BY J.JOURNAL_NO) H 
-		                                  ON J.JOURNAL_NO = H.JOURNAL_NO
-		                    INNER JOIN MEM M
-		                            ON J.MEM_NO = M.MEM_NO
-                            INNER JOIN GRADE G
-		                            ON M.MEM_NO = G.MEM_NO)
-            WHERE DEL = 1                    
-			<choose>
-				<when test="gradeNo != 0">
-					AND GRADE_NO = #{gradeNo}
-				</when>
-			</choose>
+		FROM (SELECT JOURNAL_NO, TITLE, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD')AS JOURNAL_DATE, HIT, SUB_CATEGORY, REGION, CATEGORY, PATH, PHOTO_PATH,
+		             NIC, GRADE, LIKE_CNT, <choose>
+                                                <when test="SEQ == 0">
+                                                    ROW_NUMBER() OVER(ORDER BY JOURNAL_DATE DESC) AS RK
+                                                </when>
+                                                <when test="SEQ == 1">
+                                                    ROW_NUMBER() OVER(ORDER BY HIT DESC) AS RK 
+                                                </when>
+                                                <when test="SEQ == 2">
+                                                    ROW_NUMBER() OVER(ORDER BY LIKE_CNT DESC) AS RK
+                                                </when>
+                                            </choose>, THUMB
+		      FROM(SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
+		                                     THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
+		                                                                                   THEN '[' || JCMT.CNT || ']'
+		                                                                                   ELSE '[0]'
+		                                                                              END
+		                                     ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
+		                                                          THEN '[' || JCMT.CNT || ']'
+		                                                          ELSE '[0]'
+		                                                      END
+		                                 END AS TITLE, J.JOURNAL_DATE, CASE WHEN HIT IS NULL
+		                                                                    THEN 0
+		                                                                    ELSE HIT
+		                                                                END AS HIT, JC.SUB_CATEGORY_NAME AS SUB_CATEGORY, JC2.SUB_CATEGORY_NAME AS REGION,
+		           JC3.SUB_CATEGORY_NAME AS CATEGORY, H.PATH, M.PHOTO_PATH, M.NIC, CASE WHEN GRADE_NO = 0
+		                                                                                THEN '관리자'
+		                                                                                WHEN GRADE_NO = 1
+		                                                                                THEN '여행꾼'
+		                                                                                ELSE '여행작가'
+		                                                                          END AS GRADE, CASE WHEN JLIKE.LIKE_CNT IS NULL
+		                                                                                             THEN 0
+		                                                                                             ELSE JLIKE.LIKE_CNT
+		                                                                                        END AS LIKE_CNT, 
+		           JD.PHOTO_PATH AS THUMB , J.DEL  
+		           FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                                    ON J.CATEGORY = JC.CATEGORY_NO
+		                                    AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+		                                    <choose>
+		                                        <when test="categoryNo != 1 and categoryNo != 0">
+		                                            AND J.SUB_CATEGORY = #{subCategoryNo}
+                                           			AND J.CATEGORY = #{categoryNo}
+		                                        </when>
+		                                  </choose>
+		                          INNER JOIN JOURNAL_CATEGORY JC2
+		                                  ON J.REGION_NO = JC2.SUB_CATEGORY_NO
+		                                  AND JC2.CATEGORY_NO = 1
+		                                   <choose>
+		                                        <when test="categoryNo == 1">
+		                                            AND J.REGION_NO = #{subCategoryNo}
+		                                        </when>
+		                                  </choose>
+		                          INNER JOIN JOURNAL_DETAIL JD
+		                                        ON J.JOURNAL_NO = JD.JOURNAL_NO
+		                                        AND JD.JOURNAL_SEQUENCE = 1
+		                          INNER JOIN JOURNAL_CATEGORY JC3
+		                                  ON J.CATEGORY = JC3.SUB_CATEGORY_NO
+		                                  AND JC3.CATEGORY_NO = 0
+		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
+		                                           FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                                  ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                           GROUP BY J.JOURNAL_NO) JCMT
+		                                       ON J.JOURNAL_NO = JCMT.JOURNAL_NO
+		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
+		                                           FROM JOURNAL_LIKE
+		                                           GROUP BY JOURNAL_NO) JLIKE
+		                                       ON J.JOURNAL_NO = JLIKE.JOURNAL_NO
+		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
+		                                                 FROM (SELECT J.JOURNAL_NO, H.HASH_NAME,
+		                                                            ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
+		                                                       FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
+		                                                                            ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                                                                    INNER JOIN HASH H
+		                                                                            ON JH.HASH_NO = H.HASH_NO) J
+		                                                 START WITH J.RNUM = 1
+		                                                 CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
+		                                                 AND PRIOR J.RNUM = J.RNUM - 1
+		                                                 GROUP BY J.JOURNAL_NO) H 
+		                                             ON J.JOURNAL_NO = H.JOURNAL_NO
+		                          INNER JOIN MEM M
+		                                  ON J.MEM_NO = M.MEM_NO
+		                                  AND M.LEAVE_DATE IS NULL
+		                          INNER JOIN GRADE G
+		                                  ON M.MEM_NO = G.MEM_NO
+		                                  <choose>
+		                                     <when test="gradeNo != 0">
+		                                        AND GRADE_NO = #{gradeNo}
+		                                     </when>
+		                                  </choose>)
+		    WHERE DEL = 1
+		    <if test="searchTxt != null and searchTxt != ''">
+	    	<choose>
+	    		<when test="searchGbn == 0">
+	    			AND TITLE LIKE '%' || #{searchTxt} || '%' OR NIC LIKE '%' || #{searchTxt} || '%'   
+	    		</when>
+	    		<when test="searchGbn == 1">
+	    			AND TITLE LIKE '%' || #{searchTxt} || '%'
+	    		</when>
+	    		<when test="searchGbn == 2">
+	    			AND NIC LIKE '%' || #{searchTxt} || '%' 
+	    		</when>
+	    	</choose>
+	    </if>)    
+	</select>
+	
+	<select id="getNumber" parameterType="hashmap" resultType="hashmap">
+		SELECT FR.FOLLOWER_CNT, FW.FOLLOWING_CNT, BJ.BMK_JOURNAL_CNT, JC.JOURNAL_CNT, TP.TOTAL_POINT
+		FROM (SELECT F.TARGET_MEM_NO, COUNT(*) AS FOLLOWER_CNT
+		      FROM FOLLOW F INNER JOIN MEM M
+		                            ON F.REQUEST_MEM_NO = M.MEM_NO
+		                            AND M.LEAVE_DATE IS NULL
+		      WHERE F.TARGET_MEM_NO = #{MEM_NO}
+		      GROUP BY F.TARGET_MEM_NO) FR INNER JOIN (SELECT REQUEST_MEM_NO, COUNT(*) AS FOLLOWING_CNT
+		                                               FROM FOLLOW F INNER JOIN MEM M
+		                                                                     ON F.REQUEST_MEM_NO = M.MEM_NO
+		                                                                     AND M.LEAVE_DATE IS NULL
+		                                               WHERE REQUEST_MEM_NO = #{MEM_NO}
+		                                               GROUP BY REQUEST_MEM_NO) FW
+		                                           ON 1 = 1
+		                                 INNER JOIN (SELECT COUNT(*) AS BMK_JOURNAL_CNT
+		                                             FROM BMK
+		                                             WHERE BMK_NO IN(SELECT BMK_NO
+		                                                             FROM BMK_FOLDER BF INNER JOIN MEM M
+		                                                                                         ON BF.MEM_NO = M.MEM_NO
+		                                                                                        AND M.LEAVE_DATE IS NULL
+		                                                             WHERE BF.MEM_NO = #{MEM_NO})) BJ
+		                                         ON 1 = 1 
+		                                 INNER JOIN (SELECT J.MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                             FROM JOURNAL J INNER JOIN MEM M
+		                                                                    ON J.MEM_NO = M.MEM_NO
+		                                                                    AND M.LEAVE_DATE IS NULL
+		                                             WHERE J.MEM_NO = #{MEM_NO}
+		                                             GROUP BY J.MEM_NO) JC
+		                                         ON 1 = 1
+		                                 INNER JOIN (SELECT A1.LIKE_POINT + A2.JOURNAL_POINT + A3.FOLLOWER_POINT AS TOTAL_POINT
+		                                             FROM (SELECT J.MEM_NO, COUNT(*) AS LIKE_POINT
+		                                                   FROM JOURNAL_LIKE JL INNER JOIN JOURNAL J
+		                                                                                ON JL.JOURNAL_NO = J.JOURNAL_NO
+		                                                                                AND J.MEM_NO = #{MEM_NO}
+		                                                                        INNER JOIN MEM M
+		                                                                                ON JL.MEM_NO = M.MEM_NO
+		                                                                                AND M.LEAVE_DATE IS NULL
+		                                                   GROUP BY J.MEM_NO) A1 INNER JOIN (SELECT J.MEM_NO, COUNT(*) * 5 AS JOURNAL_POINT
+		                                                                                     FROM JOURNAL J INNER JOIN MEM M
+		                                                                                                            ON J.MEM_NO = M.MEM_NO
+		                                                                                                            AND M.LEAVE_DATE IS NULL
+		                                                                                                            AND J.MEM_NO = #{MEM_NO}
+		                                                                                     GROUP BY J.MEM_NO) A2
+		                                                                                 ON 1 = 1
+		                                                                         INNER JOIN (SELECT F.TARGET_MEM_NO, COUNT(*) AS FOLLOWER_POINT
+		                                                                                     FROM FOLLOW F INNER JOIN MEM M
+		                                                                                                           ON F.REQUEST_MEM_NO = M.MEM_NO
+		                                                                                                           AND M.LEAVE_DATE IS NULL
+		                                                                                                           AND F.TARGET_MEM_NO = #{MEM_NO}
+		                                                                                     GROUP BY F.TARGET_MEM_NO) A3
+		                                                                                 ON 1 = 1) TP         
+		                                        ON 1 = 1	
 	</select>
 </mapper>

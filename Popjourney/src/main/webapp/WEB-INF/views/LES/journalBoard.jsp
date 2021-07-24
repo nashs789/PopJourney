@@ -87,162 +87,120 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
+}
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
+}
+#notificationPhoto {
+   margin-left: 200px;
+}
 .logins {
-	display:inline-block;
-	vertical-align: top;
-	width: 470px;
-	height: 70px;
-	text-align: right;
-	background-color: #FFFFFF;
+   display: inline-block;
+   vertical-align: top;
+   width: 470px;
+   height: 70px;
+   text-align: right;
+   background-color: #FFFFFF;
 }
-
 .sub_login1 {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 55px;
+   display: block;
+   position: relative;
+   width: 100%;
+   height: 55px;
 }
-
 .sub_login2 {
-	display: block;
-	width: calc(100% - 75px);
-	height: 15px;
-	line-height: 10px;
-	text-align: right;
-	padding-right: 75px;
+   display: block;
+    width: calc(100% - 75px);
+    height: 15px;
+    line-height: 10px;
+    text-align: right;
+    padding-right: 75px;
 }
-
 .sub_login2 span {
-	position: relative;
-	width: 10px;
-	font-size: 12px;
-	font-weight: 600;
-	cursor: pointer;
-	margin-left: 10px;
+   position: relative;
+   width: 10px;
+   font-size: 12px;
+   font-weight: 600;
+   cursor: pointer;
+   margin-left: 10px;
 }
-
 .sub_login2 span:hover {
-	color: #fcba03;
+   color: #fcba03;
 }
-
-.login {
-	float: right;
-	width: 100px;
-	height: 25px;
-	margin-top: 20px;
-	margin-left: 5px;
+#inputID, #inputPW {
+   float: right;
+   width: 100px;
+   height: 25px;
+   margin-top: 20px;
+   margin-left: 5px;
 }
-
-.login_btn {
-	float: right;
-	margin: 20px 20px 0px 5px;
-	width: 50px;
-	height: 30px;
-	background-color: #2e3459;
-	font-weight: bold;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 26px;
-	cursor: pointer;
+#loginBtn {
+   float: right;
+   margin: 20px 20px 0px 5px;
+   width: 50px;
+   height: 30px;
+   background-color: #2e3459;
+   font-weight: bold;
+   font-size: 12px;
+   color: #FFFFFF;
+   text-align: center;
+   line-height: 26px;
 }
-
-.login_btn:hover {
-	color: #FFFFFF;
-	background-color: #f37321;
+#loginBtn:hover{
+   color: #FFFFFF;
+   background-color: #f37321;
 }
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
-.timeline {
+#profileSlidedown{
 	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
 }
-
-.timeline tr {
-	height: 50px;
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
 }
-
-.timeline table {
-	border-collapse: collapse;
-}
-
-.timeline table tr th:first-child {
-	text-align: center;
-}
-
-.timeline tr th {
-	text-align: left;
-}
-
-.timeline tr th img {
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline tfoot tr {
-	background-color: #939597;
-}
-
-.timeline tfoot tr th {
-	text-align: center;
-	cursor: pointer;
-}
-
-.timeline table tr th span {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.timeline table tr th span:hover {
-	color: blue;
-}
-
-#dd {
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid #fcba03;
-	background-color: white;
-	position: absolute;
-	margin-top: 10px;
-	padding: 0px;
-	right: 8px;
-	height: 108px;
-	width: 122px;
-	display: none;
-}
-
-#dd li {
-	display: inline-block;
-	border: 1px solid rgb(250, 250, 250);
-	font-size: 12pt;
-	width: 120px;
-	text-align: center;
-}
-
-#dd li:hover {
+#profileSlidedown li:hover {
 	background-color: #f37321;
 }
 
@@ -509,6 +467,8 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 
 #category_all {
 	margin-left: 15px;
+	background-color: #2e3459;
+	color: white;
 }
 
 .category_nav ul li {
@@ -815,88 +775,159 @@ a {
 .writer img, .traveler img{
 	background-color: #2e3459;
 }
+#write{
+	background-color: #2e3459;
+}
+#write:hover{
+	background-color: #f37321;
+}
+#date0{
+	color: #f37321;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var params = $("#journalForm").serialize();
 	
-	$.ajax({
-		url:"journalListCnts",
-		data: params,
-		dataType:"json",
-		type:"post",
-		success: function(result){
-			if(result.msg == "success")
-			{
-				$("#cnt").val(result.cnt);
-				$("#startCnt").val(result.pb.startCount);
-				$("#endCnt").val(result.pb.endCount);
-				$("#maxCnt").val(result.pb.maxPcount);
-				$("#startPCnt").val(result.pb.startPcount);
-				$("#endPCnt").val(result.pb.endPcount);
-				
-				var params = $("#journalForm").serialize();
+	loadPage2();
 
-				$.ajax({
-					url:"journalLists",
-					data: params,
-					dataType:"json",
-					type:"post",
-					success: function(result){
-						makeJournalList(result.list);
-						makePage();
-					}, //success end
-					error: function(error){
-						console.log(error);
-					} //error end
-				}); //ajax end
-			}
-			else
-			{
-				alert("실패");
-			}
-		}, //success end
-		error: function(error){
-			console.log(error);
-		} //error end
-	}); //ajax end
+	//로그인 상태 확인
+	if("${sMEM_NO}" != "")
+	{
+		$(".logins").css("display", "none");
+		$(".btns").css("display", "inline-block");
+		//로그인 상태에 따라서 우측 상단 제어
+		
+		var path = ""; //사진경로 담아줄 변수
+		
+		if("${sPHOTO_PATH}" != "")
+		{
+			path = "resources/upload/" + "${sPHOTO_PATH}";
+			
+			$("#profilePhoto").attr("src", path);
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
+
+			$("#profilePhoto").attr("src", path);
+		}//if ~ else end
+		//프로필 사진이 DB에 있는경우 저장된 사진으로, 없는 경우 기본 사진으로
+		
+		if("${sGRADE_NO}" == "0")
+		{
+			$("#admin").show();
+		}//등급에 따라서 내부 관리자 보이기
+		
+		var html = "";
+		                                                                                                
+		html +="	<div class=\"sub_profile\">";
+		html +="		<div>";
+		html +="			<img alt=\"profile\" src=\""+path+"\" class=\"profile_img\">";
+		html +="		</div>";
+		html +="		<div class=\"info\">";
+		html +="			<span>${sNIC}</span>";
+		html +="			<div class=\"grade\">";
+		if("${sGRADE_NO}" == 0)
+		{
+			html +="				<img alt=\"icon\" src=\"./resources/images/grade.png\"> <span>관리자</span>";
+		}
+		else if("${sGRADE_NO}" == 1)
+		{
+			html +="				<img alt=\"icon\" src=\"./resources/images/grade.png\"> <span>여행꾼</span>";
+		}
+		else
+		{
+			html +="				<img alt=\"icon\" src=\"./resources/images/grade.png\"> <span>여행작가</span>";
+		}
+		html +="			</div>";
+		html +="			<div class=\"cnt\">";
+		html +="				<span>총 게시글 ${sJOURNAL}</span> <span>팔로워 ${sFOLLOWER}</span>";
+		html +="			</div>";
+		html +="		</div>";
+		html +="	</div>";
+				                                                                                   
+		$(".top_area").prepend(html);
+		$(".sub_profile").css("display", "block");
+	}//if end -> 로그인 상태여부에 따른 처리
 	
-	$(".paging_wrap").on("click", "span", function() {
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+		if($.trim($("#inputID").val()) == "")
+		{
+			popupText = "아이디를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else if($.trim($("#inputPW").val()) == "")
+		{
+			popupText = "비밀번호를 입력하세요.";
+			commonPopup(popupText);
+		}
+		else
+		{
+			var params = $("#loginForm").serialize();
+			
+			$.ajax({
+				url: "logins",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "failed")
+					{
+						//popupText = "ID와 PW가 일치하지 않습니다.";
+						//commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
+					else
+					{
+						location.reload();
+					}
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}// if ~ else end
+	}); //loginBtn click end
+
+	$("#inputPW, #inputID").on("keypress", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+		if(event.keyCode == 13)
+			$("#loginBtn").click();
+	});//inputPW, inputID 
+	//keypress end 엔터시 로그인 버튼 클릭
+	
+	$("#write").on("click", function(){
+		makePopup();
+	});//write click end
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	//프로필 사진 클릭 시 하위메뉴 나왔다 사라졌다 & 알람 팝업은 안보이도록
+	
+	$(".paging").on("click", "span", function() {
 		$("#page").val($(this).attr("name"));
 		$("#startCnt").val(1 + (($("#page").val()-1)) * 15);
 		$("#endCnt").val($("#page").val()*15);
-		var params = $("#journalForm").serialize();
-
-		$.ajax({
-			url: "journalLists",
-			data: params,
-			dataType: "json",
-			type: "post",
-			success: function(result){
-				if(result.msg == "success")
-				{
-					makeJournalList(result.list);
-					makePage();
-					$("html").scrollTop(300);
-				}
-				else
-				{
-					alert("오류 발생");
-				}
-			},//success end
-			error: function(error){
-				console.log(error);
-			}//error end
-		}); //ajax end 
+		
+		loadPage();
 	}); //paging_wrap click end
 	
-	$(".search_icon").on("click", function(){
-		$("#searchGbn").val($("#sg").val());
-		$("#searchTxt").val($("#st").val());
-		
-		var params = $("#journalForm").serialize();
-		console.log(params);
+	$(".search_icon").on("click", function(){	
+		loadPage2();
+		$("#page").val(1);
 	}); //search_icon click end
 	
 	$(".left_nav ul li").on("click", "span", function(){
@@ -924,48 +955,8 @@ $(document).ready(function(){
 		}
 		
 		$("#page").val(1);
-		var params = $("#journalForm").serialize();
-		
-		$.ajax({
-			url:"journalListCnts",
-			data: params,
-			dataType:"json",
-			type:"post",
-			success: function(result){
-				if(result.msg == "success")
-				{
-					$("#cnt").val(result.cnt);
-					$("#startCnt").val(result.pb.startCount);
-					$("#endCnt").val(result.pb.endCount);
-					$("#maxCnt").val(result.pb.maxPcount);
-					$("#startPCnt").val(result.pb.startPcount);
-					$("#endPCnt").val(result.pb.endPcount);
-					
-					var params = $("#journalForm").serialize();
-
-					$.ajax({
-						url:"journalLists",
-						data: params,
-						dataType:"json",
-						type:"post",
-						success: function(result){
-							makeJournalList(result.list);
-							makePage();
-						}, //success end
-						error: function(error){
-							console.log(error);
-						} //error end
-					}); //ajax end
-				}
-				else if(result.msg == "failed")
-				{
-					alert("글이 없습니다.");
-				}
-			}, //success end
-			error: function(error){
-				console.log(error);
-			} //error end
-		}); //ajax end
+		$("#page").val(1);
+		loadPage2();
 	}); //left_nav click end
 	
 	$(".c_top").on("click", "li" ,function(){
@@ -977,6 +968,7 @@ $(document).ready(function(){
 			$(".c_top #regionSelect, #transportation, #attraction, #activity").css("background-color", "white");
 			$(".c_top #regionSelect, #transportation, #attraction, #activity").css("color", "#2e3459");
 			$("#activity ul, #attraction ul, #transportation ul, #regionSelect ul").css("display", "none");
+			loadPage2();
 		}
 		else if($(this).attr("id") == "regionSelect")
 		{
@@ -1018,15 +1010,98 @@ $(document).ready(function(){
 			$("#activity ul").css("display", "block");
 			$("#attraction ul, #transportation ul, #regionSelect ul").css("display", "none");
 		}
-		
-		console.log($("#categoryNo").val());
 	});//regionSelect
 	
-	$("#regionSelect ul").on("click", "li", function(){
+	$(".right_nav ul").on("click", "li", function(){
+		if($(this).attr("id") == "date0")
+		{
+			$("#date0").css("color", "#f37321");
+			$("#hitt1, #like2").css("color", "#2e3459");
+		}
+		else if($(this).attr("id") == "hitt1")
+		{
+			$("#hitt1").css("color", "#f37321");
+			$("#date0, #like2").css("color", "#2e3459");
+		}
+		else if($(this).attr("id") == "like2")
+		{
+			$("#like2").css("color", "#f37321");
+			$("#date0, #hitt1").css("color", "#2e3459");
+		}
+		
+		$("#SEQ").val($(this).attr("id").substring(4));
+		$("#page").val(1);
+		loadPage2();
+	});//right_nav click li end
+	
+	var preID = "#";
+	
+	$(".c_top li ul").on("click", "li", function(){
 		$("#subCategoryNo").val($(this).attr("id").substring(1));
-		console.log($("#subCategoryNo").val());
-	}); //regionSelect li ul click end
+		$(preID).css("color", "black");
+		preID = "#";
+		$(this).css("color", "red");
+		preID += $(this).attr("id");
+		$("#page").val(1);
+		loadPage2();
+	}); //c_top li ul click li end
+	
+	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
 }); //document ready end
+function loadPage()
+{
+	var params = $("#journalForm").serialize();
+
+	$.ajax({
+		url:"journalListCnts",
+		data: params,
+		dataType:"json",
+		type:"post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				var params = $("#journalForm").serialize();
+
+				$.ajax({
+					url:"journalLists",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success: function(result){
+						makeJournalList(result.list);
+						makePage();
+					}, //success end
+					error: function(error){
+						console.log(error);
+					} //error end
+				}); //ajax end
+			}
+			else if(result.msg == "failed")
+			{
+				alert("일지가 없습니다.");
+			}
+			else
+			{
+				alert("실패 ");
+			}
+		}, //success end
+		error: function(error){
+			console.log(error);
+		} //error end
+	}); //ajax end
+}
 function makeJournalList(list)
 {
 		var html = "";
@@ -1034,7 +1109,7 @@ function makeJournalList(list)
 		for(var data of list)
 		{
 			html += "   <div class=\"post\">";
-			html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
+			html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.THUMB + "\"></span>";
 			html += "   	<div class=\"post_info\">";
 			html += "   		<p>";
 			html += "   			<span>" + data.CATEGORY + " > " + data.SUB_CATEGORY + "(" + data.REGION + ") </span>";
@@ -1064,7 +1139,7 @@ function makeJournalList(list)
 			html += "   		</p>";
 			html += "   	</div>";
 			html += "   	<div class=\"post_profile\">";
-			html += "			<img alt=\"작성자\" src=\"resources/upload/" + data.PROFILE + "\"> <span>" + data.NIC + "</br>(" + data.GRADE + ")</span>";
+			html += "			<img alt=\"작성자\" src=\"resources/upload/" + data.PHOTO_PATH + "\"> <span>" + data.NIC + "</br>(" + data.GRADE + ")</span>";
 			html += "   		<div>";
 			html += "   			<div>";
 			html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
@@ -1132,23 +1207,98 @@ function makePage()
 	
 	$(".paging").html(html);
 }
+function loadPage2()
+{
+	var params = $("#journalForm").serialize();
+
+	$.ajax({
+		url:"journalListCnts",
+		data: params,
+		dataType:"json",
+		type:"post",
+		success: function(result){
+			if(result.msg == "success")
+			{
+				$("#cnt").val(result.cnt);
+				$("#startCnt").val(result.pb.startCount);
+				$("#endCnt").val(result.pb.endCount);
+				$("#maxCnt").val(result.pb.maxPcount);
+				$("#startPCnt").val(result.pb.startPcount);
+				$("#endPCnt").val(result.pb.endPcount);
+				
+				var params = $("#journalForm").serialize();
+
+				$.ajax({
+					url:"journalLists",
+					data: params,
+					dataType:"json",
+					type:"post",
+					success: function(result){
+						makeJournalList(result.list);
+						makePage();
+					}, //success end
+					error: function(error){
+						console.log(error);
+					} //error end
+				}); //ajax end
+			}
+			else if(result.msg == "failed")
+			{
+				alert("일지가 없습니다.");
+			}
+			else
+			{
+				alert("실패 ");
+			}
+		}, //success end
+		error: function(error){
+			console.log(error);
+		} //error end
+	}); //ajax end
+}
+function makePopup()
+{
+	var html = "";
+	
+	html+="	<div class=\"popup\">";
+	html+="		<div class=\"popup_contents_txt\">";
+	html+="			<div>";
+	html+="				일지 작성 <span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
+	html+="			</div>";
+	html+="				<span class=\"asterisk\">&#42;</span>여행 시작일 : <input type=\"date\" name=\"start_date\"> <span class="asterisk">&#42;</span>";
+	html+="				여행 종료일 : <input	type=\"date\" name=\"end_date\">";
+	html+="			<div class=\"category_area\">";
+	html+="				<span class=\"asterisk\">&#42;</span>";
+	html+="					<span>여행지역  </span> <selectclass=\"pref_filter\">";
+	html+="					<option value=\"0\">서울</option>";
+	html+="					<option value=\"1\">부산</option>";
+	html+="					<option value=\"2\">대구</option>";
+	html+="					<option value=\"3\">인천</option>";
+	html+="					<option value=\"4\">광주</option>";
+	html+="					<option value=\"5\">대전</option>";
+	html+="					<option value=\"6\">울산</option>";
+	html+="					<option value=\"7\">세종</option>";
+	html+="					<option value=\"8\">경기도</option>";
+	html+="					<option value=\"9\">강원도</option>";
+	html+="					<option value=\"10\">층청북도</option>";
+	html+="					<option value=\"11\">층청남도</option>";
+	html+="					<option value=\"12\">전라북도</option>";
+	html+="					<option value=\"13\">전라남도</option>";
+	html+="					<option value=\"14\">경상북도</option>";
+	html+="					<option value=\"15\">경상남도</option>";
+	html+="					<option value=\"16\">제주도</option>";
+	html+="				</select> ";
+	html+="			</div>";
+	html+="		</div>";
+	html+="		<div class=\"btn_list\">";
+	html+="			<span id=\"goWrite\">작 성</span> <span id=\"cancel\">취 소</span>";
+	html+="		</div>";
+	html+="	</div>";
+	html+="	<div class=\"bg\"></div>";
+}
 </script>
 </head>
 <body>
-<form action="#" id="journalForm">
-	<input type="hidden" id="cnt" name="cnt"/>
-	<input type="hidden" id="page" name="page" value="1"/>
-	<input type="hidden" id="startCnt" name="startCnt"/>
-	<input type="hidden" id="endCnt" name="endCnt"/>
-	<input type="hidden" id="maxCnt" name="maxCnt"/>
-	<input type="hidden" id="startPCnt" name="startPCnt"/>
-	<input type="hidden" id="endPCnt" name="endPCnt"/>
-	<input type="hidden" id="searchGbn" name="searchGbn"/>
-	<input type="hidden" id="searchTxt" name="searchTxt"/>
-	<input type="hidden" id="gradeNo" name="gradeNo" value="0"/>
-	<input type="hidden" id="categoryNo" name="categoryNo" value="0"/>
-	<input type="hidden" id="subCategoryNo" name="subCategoryNo" value="1"/>
-</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1159,31 +1309,35 @@ function makePage()
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-								<div class="timeline">
-								</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
-								<ul id="dd">
-									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
-									<li>로그아웃</li>
-								</ul></li>
+						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							<div id="cnt"></div>
+							</li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
-						<div class="sub_login2">
-							<span>회원가입</span> <span>ID/PW 찾기</span>
-						</div>
-					</div>
+                     <div class="sub_login1">
+                     	<form action="#" id="loginForm">
+	                        <input type="button" id="loginBtn" value="로그인" />
+	                        <input type="password" id="inputPW" name="inputPW" placeholder="PW" />
+	                        <input type="text" id="inputID" name="inputID" placeholder="ID" />
+                        </form>
+                     </div>
+                     <div class="sub_login2">
+                        <span id="join">회원가입</span>
+                        <span id="find">ID/PW 찾기</span>
+                     </div>
+                  </div>
 				</div>
 				<!-- 호버시 메뉴 생성 -->
 			</div>
@@ -1208,9 +1362,6 @@ function makePage()
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행게시판 </span>
-			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 지역별 </span>
-			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 대구 &nbsp;&nbsp;>&nbsp;&nbsp;
-			</span> 여행작가
 		</div>
 		<div class="sub_area">
 			<span>여행게시판</span>
@@ -1219,20 +1370,6 @@ function makePage()
 				</div>
 		<div id="container">
 			<div class="top_area">
-				<div class="sub_profile">
-					<div>
-						<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-					</div>
-					<div class="info">
-						<span>닉네임</span>
-						<div class="grade">
-							<img alt="icon" src="./resources/images/grade.png"> <span>여행작가</span>
-						</div>
-						<div class="cnt">
-							<span>총 게시글 100</span> <span>총 댓글 100</span>
-						</div>
-					</div>
-				</div>
 				<div class="category_nav">
 					<ul class="c_top">
 						<li id="category_all">&nbsp;전체보기&nbsp;</li>
@@ -1258,36 +1395,37 @@ function makePage()
 							</ul></li>
 						<li id="transportation">&nbsp;&nbsp;교통편&nbsp;&nbsp;
 							<ul id="c_bottom">
-								<li>도보</li>
-								<li>자가용</li>
-								<li>버스</li>
-								<li>기차</li>
-								<li>배</li>
+								<li id="t0">도보</li>
+								<li id="t1">자가용</li>
+								<li id="t2">버스</li>
+								<li id="t3">기차</li>
+								<li id="t4">배</li>
+								<li id="t5">자전거</li>
 							</ul></li>
 						<li id="attraction">&nbsp;&nbsp;관광지&nbsp;&nbsp;
 							<ul id="c_bottom">
-								<li>바다</li>
-								<li>계곡</li>
-								<li>산</li>
-								<li>유적지</li>
-								<li>박물관</li>
-								<li>테마파크</li>
-								<li>전망대</li>
-								<li>건축물</li>
-								<li>거리 광장</li>
-								<li>시장</li>
+								<li id="a0">바다</li>
+								<li id="a1">계곡</li>
+								<li id="a2">산</li>
+								<li id="a3">유적지</li>
+								<li id="a4">박물관</li>
+								<li id="a5">테마파크</li>
+								<li id="a6">전망대</li>
+								<li id="a7">건축물</li>
+								<li id="a8">거리 광장</li>
+								<li id="a9">시장</li>
 
 							</ul></li>
 						<li id="activity">&nbsp;&nbsp;활&nbsp;동&nbsp;&nbsp;
 							<ul id="c_bottom">
-								<li>농장</li>
-								<li>공연</li>
-								<li>축제</li>
-								<li>마사지</li>
-								<li>온천</li>
-								<li>투어</li>
-								<li>야외활동</li>
-								<li>식도락</li>
+								<li id="b0">농장</li>
+								<li id="b1">공연</li>
+								<li id="b2">축제</li>
+								<li id="b3">마사지</li>
+								<li id="b4">온천</li>
+								<li id="b5">투어</li>
+								<li id="b6">야외활동</li>
+								<li id="b7">식도락</li>
 							</ul></li>
 					</ul>
 				</div>
@@ -1303,10 +1441,10 @@ function makePage()
 					</nav>
 					<nav class="right_nav">
 						<ul>
-							<li class="img_none">최신순</li>
-							<li class="img_none">조회순</li>
-							<li class="img_none">좋아요순</li>
-							<li><img alt="bookmark" src="./resources/images/pen.png"><br />글쓰기</li>
+							<li class="img_none" id="date0">최신순</li>
+							<li class="img_none" id="hitt1">조회순</li>
+							<li class="img_none" id="like2">좋아요순</li>
+							<li><img id="write" src="./resources/images/pen.png"><br />글쓰기</li>
 						</ul>
 					</nav>
 				</div>
@@ -1317,12 +1455,26 @@ function makePage()
 					<div class="paging"></div>
 					<div class="board_search">
 						<img alt="search" src="./resources/images/search.png" class="search_icon" /> 
-						<input type="text" class="search" id="st" name="searchTxt"  placeholder="검색"> 
-						<select	class="filter" id="sg" name="searchGbn">
-							<option value="0">전체보기</option>
-							<option value="1">제목</option>
-							<option value="2">닉네임</option>
-						</select>
+						<form action="#" id="journalForm">
+							<input type="hidden" id="cnt" name="cnt"/>
+							<input type="hidden" id="page" name="page" value="1"/>
+							<input type="hidden" id="startCnt" name="startCnt"/>
+							<input type="hidden" id="endCnt" name="endCnt"/>
+							<input type="hidden" id="maxCnt" name="maxCnt"/>
+							<input type="hidden" id="startPCnt" name="startPCnt"/>
+							<input type="hidden" id="endPCnt" name="endPCnt"/>
+							<input type="hidden" id="gradeNo" name="gradeNo" value="0"/>
+							<input type="hidden" id="categoryNo" name="categoryNo" value="0"/>
+							<input type="hidden" id="subCategoryNo" name="subCategoryNo" value="1"/>
+							<input type="hidden" id="SEQ" name="SEQ" value="0"/>
+							
+							<input type="text" class="search" id="searchTxt" name="searchTxt"  placeholder="검색"> 
+							<select	class="filter" id="searchGbn" name="searchGbn">
+								<option value="0">전체보기</option>
+								<option value="1">제목</option>
+								<option value="2">닉네임</option>
+							</select>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -1334,42 +1486,5 @@ function makePage()
 			</p>
 		</div>
 	</div>
-	<div class="popup">
-		<div class="popup_contents_txt">
-			<div>
-				일지 작성 <span>필수 입력 사항 </span><span class="asterisk">&#42;</span>
-			</div>
-			<form action="#" id="actionForm" method="post">
-				<span class="asterisk">&#42;</span>여행 시작일 : <input type="date" name="start_date"> <span class="asterisk">&#42;</span>여행 종료일 : <input
-					type="date" name="end_date">
-				<div class="category_area">
-					<span class="asterisk">&#42;</span><span>여행지역  </span> <select
-						class="pref_filter">
-						<option value="0">서울</option>
-						<option value="1">부산</option>
-						<option value="2">대구</option>
-						<option value="3">인천</option>
-						<option value="4">광주</option>
-						<option value="5">대전</option>
-						<option value="6">울산</option>
-						<option value="7">세종</option>
-						<option value="8">경기도</option>
-						<option value="9">강원도</option>
-						<option value="10">층청북도</option>
-						<option value="11">층청남도</option>
-						<option value="12">전라북도</option>
-						<option value="13">전라남도</option>
-						<option value="14">경상북도</option>
-						<option value="15">경상남도</option>
-						<option value="16">제주도</option>
-					</select> 
-				</div>
-			</form>
-		</div>
-		<div class="btn_list">
-			<span>작 성</span> <span>취 소</span>
-		</div>
-	</div>
-	<div class="bg"></div>
 </body>
 </html>
