@@ -1199,5 +1199,18 @@ public class JmPopJourneyController {
 		
 	}
 	
+	// 여행일지 세부페이지
+	@RequestMapping(value = "/journal")
+	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		HashMap<String, String> data = iJmPopjourneyService.getJournal(params);
+		
+		mav.addObject("data", data);
+		
+		mav.setViewName("CJM/journal");
+		
+		return mav;
+	}
+	
 
 }
