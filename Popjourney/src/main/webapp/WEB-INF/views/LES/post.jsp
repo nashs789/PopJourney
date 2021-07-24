@@ -1002,8 +1002,40 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
-
+	$("#postEditBtn").on("click", function () {
+		$("#goForm").attr("action","postWrite");
+		$("#goForm").submit();
+	});
+	
+	$(".delete_btn").on("click", function () {
+		console.log("눌렀다!!");
+		if(confirm("삭제하시겠습니까?")){
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url:"postDeletes", 
+				type: "post",
+				dataType: "json",
+				data : params,
+				success: function(res){
+					if(res.msg == "success"){
+						location.href = "community";
+					} else if (res.msg =="failed") {
+						alert("삭제에 실패하였습니다.")
+					} else {
+						alert("삭제중 문제가 발생하였습니다.")
+					}
+				}, 
+				error: function (request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
 });
+
+
+
 
 function popup() {
 	var popup = document.getElementById("popup");
@@ -1096,7 +1128,7 @@ function popup() {
 				<c:when test="${data.CATEGORY_NO eq 1}">
 					</span>공지사항<span>
 				</c:when>
-				<c:when test="${data.CATEGORY_NO eq 2}">
+				<c:when test= "${data.CATEGORY_NO eq 2}">
 					</span>여행꿀팁<span>
 				</c:when>
 				<c:when test="${data.CATEGORY_NO eq 3}">
@@ -1177,7 +1209,7 @@ function popup() {
          		</div>		
             <div class="post_bottom">
             	<div class="btn_list">
-            		<input type="button" id="" class="edit_btn" value="수  정" />
+            		<input type="button" id="postEditBtn" class="edit_btn" value="수  정" />
             		<input type="button" class="delete_btn" value="삭  제" />
             	</div>
             	<div class="post_page">

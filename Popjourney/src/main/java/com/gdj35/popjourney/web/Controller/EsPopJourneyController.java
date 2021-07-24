@@ -82,133 +82,8 @@ public class EsPopJourneyController {
 		return mav;
 
 	}
+
 	
-	// 여행 게시판
-	@RequestMapping(value = "/journalBoard")
-	public ModelAndView journalBoard(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-
-		int page = 1;
-		if (params.get("page") != null) {
-			page = Integer.parseInt(params.get("page"));
-		}
-		mav.addObject("page", page);
-		mav.setViewName("LES/journalBoard");
-
-		return mav;
-
-	}
-	
-	@RequestMapping(value = "/journalBoards", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String journalBoard(@RequestParam HashMap<String, String>params) throws Throwable{
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		int page = Integer.parseInt(params.get("page"));
-		
-		int cnt = iEsPopjourneyService.getJournalCnt(params);
-		
-		PagingBean pb = iPagingService.getPagingBean(page, cnt);
-		
-		params.put("startCnt", Integer.toString(pb.getStartCount()));
-		params.put("endCnt", Integer.toString(pb.getEndCount()));
-		
-		List<HashMap<String,String>> list = iEsPopjourneyService.journalList(params);
-		
-		modelMap.put("list",list);
-		modelMap.put("pb",pb);
-		
-		return mapper.writeValueAsString(modelMap);
-	}
-
-	// 여행 일지 상세페이지
-	@RequestMapping(value = "/journal")
-	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-
-		mav.setViewName("LES/journal");
-
-		return mav;
-
-	}
-
-	// 여행 일지 작성 페이지
-	@RequestMapping(value = "/journalWrite")
-	public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-
-		mav.setViewName("LES/journalWrite");
-
-		return mav;
-
-	}
-	
-	@RequestMapping(value = "/journalWrites", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String journalWrites(@RequestParam HashMap<String, String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
-		try {
-			int cnt = iEsPopjourneyService.addJournal(params);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
-			}
-			
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("msg","error");
-		}
-		
-		return mapper.writeValueAsString(modelMap);
-	}
-	
-	@RequestMapping(value = "/journalUpdates", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String testABUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
-		try {
-			int cnt = iEsPopjourneyService.updateJournal(params);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
-			}
-			
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("msg","error");
-		}
-		
-		return mapper.writeValueAsString(modelMap);
-	} 
-	@RequestMapping(value = "/journalDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String journalDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
-		try {
-			int cnt = iEsPopjourneyService.deleteJournal(params);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
-			}
-			
-		} catch (Throwable e) {
-			e.printStackTrace();
-			modelMap.put("msg","error");
-		}
-		
-		return mapper.writeValueAsString(modelMap);
-	} 
-
 	// 자유게시판
 	@RequestMapping(value = "/community")
 	public ModelAndView community(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
@@ -339,7 +214,7 @@ public class EsPopJourneyController {
 	// 게시글 작성 페이지
 	@RequestMapping(value = "/postWrite")
 	public ModelAndView postWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-
+		HashMap<String, String> data = iEsPopjourneyService.getPost(params);
 		mav.setViewName("LES/postWrite");
 
 		return mav;

@@ -427,7 +427,7 @@ a {
 	display: inline-block;
 }
 
-.enroll_btn, .del_btn {
+#enroll_btn, .del_btn {
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -439,11 +439,11 @@ a {
 	cursor: pointer;
 }
 
-.enroll_btn {
+#enroll_btn {
 	margin-right: 60px;
 }
 
-.enroll_btn:hover {
+#enroll_btn:hover {
 	border: 2px solid #294a37;
 	background-color: #294a37;
 	color: white;
@@ -593,7 +593,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#addBtn").on("click", function () {
+	$(".addBtn").on("click", function () {
 	
 				$("#postCon").val(CKEDITOR.instances['postCon'].getData());
 				
@@ -728,7 +728,14 @@ $(document).ready(function(){
 				</div>
 				<div class="post_bottom">
 					<div class="btn_list">
-						<input type="button" id="addBtn" class="enroll_btn" value="등  록" /> 
+						<c:choose>
+							<c:when test="${empty data.postNo}">
+								<input type="button" id="enroll_btn" class="addBtn"  value="등  록" /> 
+							</c:when>
+							<c:when test="${!empty data.postNo}">
+								<input type="button" id="edit_btn" class="addBtn" value="수  정" /> 
+							</c:when>
+						</c:choose>
 						<input type="reset" id="delBtn" class="del_btn" value="삭  제" />
 					</div>
 				</div>
