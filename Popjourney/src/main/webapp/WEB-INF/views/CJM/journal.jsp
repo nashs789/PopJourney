@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -393,72 +394,9 @@ a {
 	height: 300px;
 }
 
-.schedule {
-	width: 80%;
-	margin: 0 auto;
-	height: 80px;
-	background-color: #ffd666;
-	border-radius: 20px;
-	font-size: 12pt;
-	font-weight: 900;
-	margin-top: 30px;
-}
-
-.date_nav {
-	height: 50px;
-}
-
-.date_nav span img {
-	width: 20px;
-	height: 20px;
-	cursor: pointer;
-}
-
-.left_arrow {
-	margin-left: 10px;
-}
-
-.date_nav span {
-	top: 3px;
-	position: relative;
-}
-
-.date_nav ul {
-	height: 50px;
-	text-align: center;
-	padding: 0;
-	margin: 0;
-	display: inline-block;
-}
-
-.date_nav ul li {
-	display: inline-block;
-	height: 25px;
-	list-style: none;
-	color: #2e3459;
-	line-height: 25px;
-	text-decoration: none;
-	padding-top: 13px;
-	margin-top: 25px;
-	margin-left: 30px;
-	margin-right: 30px;
-	background-color: white;
-	border: 1px solid #fcba03;
-	border-radius: 20px;
-	padding: 3px 15px;
-	cursor: pointer;
-}
-
-.date_nav ul li:active, .date_nav ul li.on {
-	border: 1px solid #2e3459;
-	background-color: #2e3459;
-	color: white;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-}
 
 .content_area {
 	width: 80%;
-	height: 970px;
 	margin: 0 auto;
 }
 
@@ -510,14 +448,12 @@ a {
 
 .txt_area {
 	width: 800px;
-	height: 365px;
 	color: black;
 	font-size: 12pt;
 }
 
 .txt_area p {
 	width: 800px;
-	height: 367px;
 	overflow-y: scroll;
     -ms-overflow-style: none;
 }
@@ -778,7 +714,6 @@ a {
 	-ms-overflow-style: none;
 	position: absolute;
 	width: 280px;
-	height: 1348px;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 6px;
 }
 
@@ -797,6 +732,12 @@ a {
 	height: 70px;
 	border-bottom: 1px solid #ccc;
 	cursor: pointer;
+}
+.journal_nav > span {
+	margin: 0px;
+}
+.journal_nav p {
+	margin-bottom: 20px;
 }
 
 .idx {
@@ -1139,6 +1080,9 @@ input[type="radio"]:checked {
     z-index: 400;
     opacity: 0.2;
 }
+.profile_img {
+	border-radius: 50%;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
@@ -1243,19 +1187,6 @@ $(document).ready(function(){
 				<form action="#" id="actionForm" method="post">
 					<input type="hidden" id="journal" name="journal" value="${param.journal}" /> <!-- journal = 여행일지NO  -->
 				</form>
-				<div class="schedule">
-					<nav class="date_nav">
-						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
-							<ul>
-								<li>DAY 1</li>
-								<li>DAY 2</li>
-								<li>DAY 3</li>
-								<li>DAY 4</li>
-								<li>DAY 5</li>
-							</ul>
-						<span><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
-					</nav>
-				</div>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
 				</div>
@@ -1266,7 +1197,7 @@ $(document).ready(function(){
 					<span>1/19</span>
 					<div class="img_slide">
 						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
-							<img alt="사진" src="./resources/images/${data.JOURNAL_PHOTO_PATH}">
+							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}">
 						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
 					</div>
 					<div class="txt_area">
@@ -1281,8 +1212,10 @@ $(document).ready(function(){
 					<div class="hash_label">해시태그</div>
 					<div class="hash_txt" id="hashTxt">
 						<ul>
-							<li> #해시태그 1</li>
-							<li> #해시태그 2</li>
+							<c:forEach items="${hash}" var="h">
+								<li> #${h.HASH_NAME}</li>
+							</c:forEach>
+							<!-- <li> #해시태그 2</li>
 							<li> #해시태그 3</li>
 							<li> #해시태그 4</li>
 							<li> #해시태그 5</li>
@@ -1292,19 +1225,26 @@ $(document).ready(function(){
 							<li> #해시태그 9</li>
 							<li> #해시태그 10</li>
 							<li> #해시태그 11</li>
-							<li> #해시태그 12</li>
+							<li> #해시태그 12</li> -->
 						</ul>
 					</div>
 				</div>
 				<div class="sub_profile">
 					<div class="profile_info">
 						<div>
-							<img alt="profile" src="./resources/images/profile2.png" class="profile_img">
+							<img alt="profile" src="./resources/upload/${data.MEM_PHOTO_PATH}" class="profile_img">
 						</div>
 						<div class="info">
 							<span>${data.NIC}</span>
 							<div class="grade">
-								<img alt="icon" src="./resources/images/grade.png"> <span>${data.GRADE_NAME}</span>
+								<c:choose>
+									<c:when test="${data.GRADE_NO eq 2}">
+										<img alt="icon" src="./resources/images/grade.png"> <span>${data.GRADE_NAME}</span>
+									</c:when>
+									<c:otherwise>
+										<span>${data.GRADE_NAME}</span>
+									</c:otherwise>
+								</c:choose>
 							</div>
 							<div class="cnt">
 								<span>총 게시글 ${data.MEM_JOURNAL_CNT}</span> <span>총 팔로우 ${data.MEM_FOLLOW_CNT}</span>
@@ -1318,7 +1258,17 @@ $(document).ready(function(){
 				</div>
 			</div>
 			<div class="sidebar">
-				<div class="journal_nav">
+				<c:forEach items="${memoData}" var="d" varStatus="status">
+					<div class="journal_nav">
+						<div class="idx">${status.count}</div>
+						<span>
+							<p>${d.MEMO}</p>
+						</span>
+					</div>
+				</c:forEach>
+				
+				
+				<!-- <div class="journal_nav">
 					<div class="idx">1</div>
 					<span>
 						<p>한 줄 메모.....</p>
@@ -1401,7 +1351,7 @@ $(document).ready(function(){
 					<span>
 						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
 					</span>
-				</div>
+				</div> -->
 			</div>
 			<div class="post_bottom">
 				<div class="btn_list">
@@ -1417,7 +1367,7 @@ $(document).ready(function(){
 			</div>
 			<div class="cmt_area">
 				<div class="cmt_top">
-					<span>댓글 </span><span>2</span><span> 개</span>
+					<span>댓글 </span><span>${data.JOURNAL_CMT_CNT}</span><span> 개</span>
 				</div>
 				<div class="cmt_bottom">
 					<textarea rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>

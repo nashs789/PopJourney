@@ -242,4 +242,19 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getJournal(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getMemoData(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getMemoData(params);
+	}
+
+	@Override
+	public int getSequenceCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getSequenceCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHash(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getHash(params);
+	}
+
 }

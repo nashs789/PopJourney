@@ -241,4 +241,19 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectOne("JmPJ.getJournal", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getMemoData(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getMemoData", params);
+	}
+
+	@Override
+	public int getSequenceCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getSequenceCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHash(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getHash", params);
+	}
+
 }

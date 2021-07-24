@@ -1203,11 +1203,38 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/journal")
 	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		
+		// 여행일지 세부페이지의 메인데이터
 		HashMap<String, String> data = iJmPopjourneyService.getJournal(params);
+		// 여행일지 세부페이지의 메모데이터
+		List<HashMap<String, String>> memoData = iJmPopjourneyService.getMemoData(params); 
+		// 여행일지 세부페이지의 시퀀스 갯수
+		int cnt = iJmPopjourneyService.getSequenceCnt(params);  // 이거 왜 안되지..
+		// 여행일지 세부페이지의 해시태그
+		List<HashMap<String, String>> hash = iJmPopjourneyService.getHash(params);
+		// 여행일지 세부페이지의 댓글
+		
+		// 여행일지 세부페이지의 대댓글
 		
 		mav.addObject("data", data);
+		mav.addObject("memoData", memoData);
+		mav.addObject("cnt", cnt);
+		mav.addObject("hash", hash);
+		
+		System.out.println("data >> " + data);
+		System.out.println("memoData >> " + memoData);
+		System.out.println("cnt >> " + cnt);
+		System.out.println("hash >> " + hash);
 		
 		mav.setViewName("CJM/journal");
+		
+		return mav;
+	}
+	
+	// 여행일지 작성페이지
+	@RequestMapping(value = "/journalWrite")
+	public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("CJM/journalWrite");
 		
 		return mav;
 	}
