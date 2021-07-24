@@ -359,7 +359,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	display: block;
 	margin-top: 10px;
 }
-
+#postAll span img {
+	background-color: #f37321;
+}
 .right_nav {
 	position: relative;
 	left: 750px;
@@ -427,7 +429,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	width: 20px;
 	height: 20px;
 }
-
+.make_path_info {
+	display: inline-block;
+}
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
@@ -450,7 +454,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 .order_list ul {
 	padding: 0;
 }
-
+.order_list ul li:first-child {
+	color: #f37321;
+}
 .order_list ul li {
 	height: 50px;
 	list-style: none;
@@ -531,14 +537,18 @@ a {
 	font-weight: bold;
 }
 
-.board_list tbody tr td:nth-child(3) {
+.board_list tbody tr td:nth-child(3){
 	text-align: left;
 	cursor: pointer;
 }
-
-.board_list tbody tr td:nth-child(3):hover {
+.board_list tbody tr td:nth-child(5) {
+	cursor: pointer;
+}
+.board_list tbody tr td:nth-child(3):hover,
+.board_list tbody tr td:nth-child(5):hover  {
 	text-decoration: underline;
 }
+
 
 .notice_board {
 	font-weight: 550;
@@ -549,7 +559,7 @@ a {
 	color: #F1404B;
 }
 
-.notice_board>td>span {
+.board_list td>span {
 	padding: 5px 10px;
 	border-radius: 5px;
 	background-color: #2e3459;
@@ -596,6 +606,8 @@ a {
     cursor: pointer;
     text-align: center;
     color: #2e3459;
+    font-size: 12pt;
+    font-weight: bold;
     }
 
 #footer {
@@ -606,10 +618,9 @@ a {
 	color: #FFFFFF;
 	font-size: 15px;
 }
-.paging_wrap div:active, .paging_wrap .on  {
+.paging_wrap span:active, .paging_wrap .on  {
 	color: #F1404B;
     text-decoration: underline;
-
 }
 
 #footer p {
@@ -622,7 +633,7 @@ a {
 
 .paging_wrap {
 	width: 100%;
-	height: 100px;
+	height: 200px;
 	padding-top: 50px;
 	font-size: 18pt;
 	text-align: center;
@@ -641,8 +652,46 @@ a {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	reloadList();
+	if("${sMEM_NO}" != "") { // 로그인 상태
+		$(".btns").css("display","inline-block");
+		$(".sub_profile").css("display","block");
+		$(".logins, .sub_area").css("display","none");
+	} else { // 비 로그인 상태
+		$(".logins, .sub_area").css("display","inline-block");
+		$(".btns, .sub_profile").css("display","none");
+	}
 	
+	$(".login_btn").on("click", function () {
+		if($.trim($("#inputID").val())==""){
+			alert("아이디를 입력해 주세요.");
+			$("#inputID").focus();
+		} else if ($.trim($("#inputPW").val())=="") {
+			alert("비밀번호를 입력해 주세요.");
+			$("#inputPW").focus();
+		} else {
+			var params = $("#loginForm").serialize();
+			$.ajax({
+				url:"logins", 
+				type: "post", 
+				dataType: "json", 
+				data : params, 
+				success: function(res){
+						location.reload();
+				}, 
+				error: function (request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});//login_btn end
+	
+	$("#categoryNo").val(0);
+	$("#gradeNo").val(0);
+	if("${param.selectFilter}" != ""){
+		$("#selectFilter").val("${param.selectFilter}");
+	} 
+	reloadList();
+	makePathInfo();
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   	});
@@ -656,17 +705,26 @@ $(document).ready(function() {
   		location.href = "memAdmin";
   	});
 	$("#newPost").on("click", function() {
-  		location.href = "postWrite";
+		if("${sMEM_NO}" == "") { // 비로그인 상태
+			alert("로그인이 필요한 서비스입니다.");
+		} else {
+			location.href = "postWrite";
+		}
+  		
   	});
 	
-	$(".search_btn").on("click", function () {
+	$("#searchBtn").on("click", function () {
 		$("#page").val(1);
+		$("#searchOldTxt").val($("#searchTxt").val());
 		reloadList();
+		makePathInfo();
 	});
 	
 	$(".paging").on("click", "span", function () {
 		$("#page").val($(this).attr("name"));
+		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
+		makePathInfo();
 	});	
 	
 	$(".post").on("click", function () {
@@ -683,14 +741,56 @@ $(document).ready(function() {
 		}
 	}); //board_list click td end
 	
-	$(".left_nav").on("click", "span", function(){
+	$(".order_list").on("click", "li", function () {
+		$(".categoryNo").css("color","#2e3459");
+		$(".gradeNo").children("img").css("background-color","#2e3459");
+		$("#postAll").children("span").children("img").css("background-color","#f37321");
 		console.log($(this).attr($(this).attr("class")));
+		$("#gradeNo").val(0);
+		$("#categoryNo").val($(this).attr($(this).attr("class")));
+		if($("#categoryNo").val() == 1){ //공지사항
+			noticeList();
+			$(this).css("color","#f37321");
+			$(".gradeNo").children("img").css("cursor","auto");
+		} else {
+			$(this).css("color","#f37321");
+			$(".gradeNo").children("img").css("cursor","pointer");
+			reloadList();
+		}
+	}); //order_list li  end
+	$(".left_nav").on("click", "span", function(){ //작성자 여행등급 필터
+		$(".gradeNo").children("img").css("background-color","#2e3459");
+		console.log($(this).attr($(this).attr("class")));
+		$("#gradeNo").val($(this).attr($(this).attr("class")));
+		if($("#categoryNo").val() != 1){ //전체보기, 여행꿀팁, Q&A, 잡담
+			console.log($(this).children());
+			$(this).children("img").css("background-color","#f37321");
+			reloadList();
+		} else {
+			$("#postAll").children("span").children("img").css("background-color","#f37321");
+		}
 	}); //left_nav span click end
+	 
+	$(".right_nav").on("click", "span", function(){ //내가 쓴 글, 댓글쓴 글, 글쓰기
+		console.log($(this).attr($(this).attr("class")));
+		$(".gradeNo").children("img").css("background-color","#2e3459");
+		$(this).children("img").css("background-color","#f37321");
+		$("#gradeNo").val($(this).attr($(this).attr("class")));
+		if("${sMEM_NO}" == "") { // 비로그인 상태
+			alert("로그인이 필요한 서비스입니다.");
+			$(".gradeNo").children("img").css("background-color","#2e3459");
+		} else {
+			reloadList();
+		}
+		console.log("눌렸나?"+ $("#gradeNo").val());
+		
+	}); //right_nav span click end
 }); //document ready end
+
 // 카테고리별, 작성자별(등급, 내가 쓴 글)
 function reloadList() {
-	var params = $("#BoardForm").serialize();
-	
+	var params = $("#boardForm").serialize();
+	console.log(params);
 	$.ajax({
 		url:"communityLists", 
 		type: "post",
@@ -699,6 +799,48 @@ function reloadList() {
 		success: function(res){
 			drawList(res.list);
 			makePage(res.pb);
+			makePathInfo();
+		}, 
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+//공지사항
+function noticeList() {
+	var params = $("#boardForm").serialize();
+	
+	console.log(params);
+	$.ajax({
+		url:"communityNLists", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			drawList(res.list);
+			makePage(res.pb);
+			makePathInfo();
+			$("#gradeNo").val(9);
+		}, 
+		error: function (request, status, error) {
+			console.log(error);
+		}
+	});
+}
+// 댓글 쓴 글
+function cmtWriteList() {
+	var params = $("#boardForm").serialize();
+	
+	console.log(params);
+	$.ajax({
+		url:"communityCMTLists", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			drawList(res.list);
+			makePage(res.pb);
+			makePathInfo();
 		}, 
 		error: function (request, status, error) {
 			console.log(error);
@@ -707,22 +849,26 @@ function reloadList() {
 }
 function drawList(list) {
 	var html = "";
-	
+	console.log(list);
 	for(var d of list){
 		html += "<tr>";
-		html += "<td>" + d.POST_NO + "</td>";
+		
 		switch(d.CATEGORY_NO)
 		{
 			case 1:
+				html += "<td><span>공지</span></td>";
 				html +=	"<td class=\"td_n\">공지사항 </td>";
 				break;
 			case 2:
+				html += "<td>" + d.POST_NO + "</td>";
 				html +=	"<td class=\"td_t\">여행꿀팁 </td>";
 				break;
 			case 3:
+				html += "<td>" + d.POST_NO + "</td>";
 				html +=	"<td class=\"td_q\"> Q & A </td>";
 				break;
 			case 4:
+				html += "<td>" + d.POST_NO + "</td>";
 				html +=	"<td class=\"td_c\">잡&nbsp;&nbsp;&nbsp;담 </td>";
 				break;
 			default:
@@ -752,6 +898,43 @@ function drawList(list) {
 	
 	$(".board_list tbody").html(html); 
 }
+
+function makePathInfo()
+{
+	var html = "";
+	
+	if($("#categoryNo").val() == "0") {
+		html += "&nbsp;&nbsp;>&nbsp;&nbsp;"; 
+		html += "<span> 전체보기 &nbsp\;&nbsp\; </span>";
+	} else if ($("#categoryNo").val() == "1"){
+		html += "&nbsp;&nbsp;>&nbsp;&nbsp;"; 
+		html += "<span> 공지사항 &nbsp\;&nbsp\; </span>";
+	} else if ($("#categoryNo").val() == "2"){
+		html += "&nbsp;&nbsp;>&nbsp;&nbsp;"; 
+		html += "<span> 여행꿀팁 &nbsp\;&nbsp\; </span>";
+	} else if ($("#categoryNo").val() == "3"){
+		html += "&nbsp;&nbsp;>&nbsp;&nbsp;"; 
+		html += "<span> Q & A &nbsp\;&nbsp\; </span>";
+	} else {
+		html += "&nbsp;&nbsp;>&nbsp;&nbsp;"; 
+		html += "<span> 잡&nbsp\;&nbsp\;담 &nbsp\;&nbsp\; </span>";
+	}
+	
+	if($("#gradeNo").val() == "0") {
+		html += ">&nbsp;&nbsp;전체보기";
+	} else if ($("#gradeNo").val() == "1") {
+		html += ">&nbsp;&nbsp;여행꾼";
+	} else if ($("#gradeNo").val() == "2") {
+		html += ">&nbsp;&nbsp;여행작가";
+	}  else if ($("#gradeNo").val() == "3") {
+		html += ">&nbsp;&nbsp;내가 쓴 글";
+	}  else { 
+		html += ">&nbsp;&nbsp;댓글 쓴 글";
+	}
+	
+	$(".make_path_info").html(html);
+}
+
 function makePage(pb)
 {
 	var html = "<span name=\"1\"><<</span>";
@@ -783,14 +966,9 @@ function makePage(pb)
 </script>
 </head>
 <body>
-<form action="#" id="BoardForm">
-	<input type="hidden" id="page" name="page" value="${page}"/>
-	<input type="hidden" id="nfirstPage" name="nfirstPage" value="1"/> <!-- n이 붙은건 공지 페이지 -->
-	<input type="hidden" id="nlastPage" name="nlastPage" value="5"/>
-</form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
-</form>			
+</form>		
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -855,8 +1033,9 @@ function makePage(pb)
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
-			&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행꿀팁
-				&nbsp;&nbsp;>&nbsp;&nbsp; </span> 여행작가
+			<div class="make_path_info">
+				 &nbsp;&nbsp;>&nbsp;&nbsp;
+			</div>
 		</div>
 		<div class= "top_msg">
 			<span>자유게시판</span>
@@ -898,11 +1077,11 @@ function makePage(pb)
 			<div class="category_nav">
 			<nav class="order_list">
 				<ul>
-					<li>전체보기</li>
-					<li>공지사항</li>
-					<li>여행꿀팁</li>
-					<li>Q & A</li>
-					<li>잡&nbsp;&nbsp;&nbsp;담</li>
+					<li class="categoryNo" categoryNo="0">전체보기</li>
+					<li class="categoryNo" categoryNo="1">공지사항</li>
+					<li class="categoryNo" categoryNo="2">여행꿀팁</li>
+					<li class="categoryNo" categoryNo="3">Q & A</li>
+					<li class="categoryNo" categoryNo="4">잡&nbsp;&nbsp;&nbsp;담</li>
 				</ul>
 			</nav>
 		</div>
@@ -917,8 +1096,8 @@ function makePage(pb)
 					</nav>
 					<nav class="right_nav">
 						<ul>
-							<li><img alt="bookmark" src="./resources/images/doc.png"><br />내가 쓴 글</li>
-							<li><img alt="bookmark" src="./resources/images/comment.png"><br />댓글 쓴 글</li>
+							<li><span class="gradeNo" gradeNo="3"><img alt="bookmark" src="./resources/images/doc.png"></span><br />내가 쓴 글</li>
+							<li><span class="gradeNo" gradeNo="4"><img alt="bookmark" src="./resources/images/comment.png"></span><br />댓글 쓴 글</li>
 							<li id="newPost"><img alt="bookmark" src="./resources/images/pen.png"><br />글쓰기</li>
 						</ul>
 					</nav>
@@ -953,12 +1132,23 @@ function makePage(pb)
 				<div class="paging_wrap">
 					<div class="paging"></div>
 					<div class="board_search">
-						<img alt="search" src="./resources/images/search.png" class="search_icon" /> 
-						<input type="text" class="search" name="searchTxt" placeholder="검색" value="${param.searchTxt}"> 
+					<form action="#" id="boardForm">
+						<img alt="search" src="./resources/images/search.png" class="search_icon" id="searchBtn"/>
+							<input type="hidden" id="page" name="page" value="${page}"/>
+							<input type="hidden" id="nfirstPage" name="nfirstPage" value="1"/> <!-- n이 붙은건 공지 페이지 -->
+							<input type="hidden" id="nlastPage" name="nlastPage" value="5"/>
+							<input type="hidden" id="categoryNo" name="categoryNo" value=""/>
+							<input type="hidden" id="gradeNo" name="gradeNo" value=""/>
+							<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+							<input type="hidden" id="memGradeNo" name="memGradeNo" value="${sGRADE_NO}"/>
+				<input type="text" class="search" name="searchTxt" placeholder="검색" value="${param.searchTxt}"> 
 						<select class="filter" id="selectFilter" name="selectFilter">
+							<option value="0">통합검색</option>
 							<option value="1">제목</option>
 							<option value="2">닉네임</option>
 						</select>
+						</form>
+		
 					</div>
 				</div> <!-- PAGING_WRAP END -->
 			</div>

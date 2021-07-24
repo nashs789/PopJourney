@@ -536,7 +536,6 @@ $(document).ready(function(){
 				$("#pageCnt").val(result.pageCnt);
 
 				var params = $("#memForm").serialize();
-				console.log(params);
 				
 				$.ajax({
 					url: "timelines",
@@ -763,7 +762,7 @@ function makeTimeline(timeline)
 		html += "   </div>";
 		html += " </div>";
 	} // for문  end
-	console.log(html);
+
 	$(".timeline").append(html);
 }
 function makeNotification(notification)
@@ -840,7 +839,7 @@ function makeNotification(notification)
 				html +=" </tr>";
 				break;
 			default:
-				console.log("여긴 뭐넣을까?");
+				console.log("여긴 뭐넣을까?");	
 		}
 	}
 	

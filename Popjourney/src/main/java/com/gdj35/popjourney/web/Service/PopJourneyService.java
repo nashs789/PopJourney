@@ -312,4 +312,16 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.deleteBMKJournal(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> journalList(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.journalList(params);
+	}
+
+	@Override
+	public int journalListCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.journalListCnt(params);
+	}
 }

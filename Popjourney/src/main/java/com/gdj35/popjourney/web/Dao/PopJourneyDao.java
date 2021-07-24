@@ -311,4 +311,16 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.delete("PJ.deleteBMKJournal", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> journalList(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.journalList", params);
+	}
+
+	@Override
+	public int journalListCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.journalListCnt", params);
+	}
 }

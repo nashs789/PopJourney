@@ -214,7 +214,7 @@ public class PopJourneyController {
 		// inputCode, inputKeyword, sex, selectTelcom, selectKeyword, photoPath
 		// inputNic, inputIntro, marketing
 		
-		System.out.println(params);
+
 		try {
 			int cnt = ipjs.join(params);
 			ipjs.setProfile();
@@ -424,7 +424,7 @@ public class PopJourneyController {
 	  	  ObjectMapper mapper = new ObjectMapper(); 
 	  	  HashMap<String, String> modelMap = new HashMap<String, String>();
 	  	  
-	  	  System.out.println(params);
+
 		  
 		  try { 
 			  int cnt = ipjs.updateProfile(params);
@@ -516,7 +516,7 @@ public class PopJourneyController {
 	public String notifications(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@2"+params);
+
 		if(params.get("GBN").equals("1"))
 		{
 			params.put("page", Integer.toString(Integer.parseInt(params.get("page")) * 10));
@@ -531,7 +531,7 @@ public class PopJourneyController {
 			params.put("page", Integer.toString((Integer.parseInt(params.get("page"))+1) * 10));
 		}
 		try {
-			System.out.println("##################################"+params.get("page"));
+
 			List<HashMap<String, String>> notification  = ipjs.notification(params);
 			
 			if(notification != null)
@@ -653,7 +653,7 @@ public class PopJourneyController {
 	public String timelines(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		System.out.println(params);
+
 	    List<HashMap<String, String>> timeline = ipjs.timeline(params);
 		
 		try {
@@ -695,7 +695,7 @@ public class PopJourneyController {
 			 try {
 				 
 				 HashMap<String, String> mini = ipjs.miniProfile(params);
-				 System.out.println(mini);
+	
 				 if(mini != null)
 				 {
 					 modelMap.put("msg", "success");
@@ -1316,6 +1316,69 @@ public class PopJourneyController {
 					 modelMap.put("msg", "success");
 				 }
 				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//일지 리스트 그리기
+		@RequestMapping(value = "/journalLists", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String journalLists(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 
+				 List<HashMap<String, String>> journalList = ipjs.journalList(params);
+
+				 if(journalList != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("list", journalList);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//일지 리스트 그리기
+		@RequestMapping(value = "/journalListCnts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String journalListCnts(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			System.out.println("값 찎어보기!!!!!!!!!!!!!!!!!"+params);
+			 try {
+				 int cntList = ipjs.journalListCnt(params);
+				 int page = Integer.parseInt(params.get("page"));
+				 System.out.println("page!!!!!!!!!!!!!!!!!"+page);
+				 PagingBean pb = ips.getPagingBean(page, cntList, 15, 5);
+
+				 params.put("startCnt", Integer.toString(pb.getStartCount()));
+				 params.put("endCnt", Integer.toString(pb.getEndCount()));
+				 params.put("maxCnt", Integer.toString(pb.getMaxPcount()));
+
+				 if(cntList > 0)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("pb", pb);
+					 modelMap.put("cnt", cntList);
+				 }
+				 else if(cntList == 0)
 				 {
 					 modelMap.put("msg", "failed");
 				 }
