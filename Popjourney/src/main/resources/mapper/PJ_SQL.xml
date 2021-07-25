@@ -1031,7 +1031,7 @@
                                                <when test="SEQ == 2">
                                                    ROW_NUMBER() OVER(ORDER BY LIKE_CNT DESC) AS RK
                                                </when>
-                                           </choose>, THUMB
+                                           </choose>, THUMB, MEM_NO
 		      FROM(SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
 		                                     THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
 		                                                                                   THEN '[' || JCMT.CNT || ']'
@@ -1054,7 +1054,7 @@
 		                                                                                             THEN 0
 		                                                                                             ELSE JLIKE.LIKE_CNT
 		                                                                                        END AS LIKE_CNT, 
-		           JD.PHOTO_PATH AS THUMB , J.DEL  
+		           JD.PHOTO_PATH AS THUMB , J.DEL, J.MEM_NO
 		           FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
 		                                    ON J.CATEGORY = JC.CATEGORY_NO
 		                                    AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO

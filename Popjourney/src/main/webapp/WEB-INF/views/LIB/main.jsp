@@ -649,8 +649,8 @@ $(document).ready(function(){
 		}
 		else if($(this).attr("class") == "journal")
 		{
-			console.log("journal");
-			console.log($(this).attr($(this).attr("class")));
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
 		}
 		else if($(this).attr("class") == "post")
 		{
@@ -839,7 +839,8 @@ $(document).ready(function(){
     	}
     	else if($(this).attr("class") == "journal")
     	{
-    		console.log("일지");
+    		$("#journalNo").val($(this).attr($(this).attr("class")));
+    		$("#journalForm").submit();
     	}
     }); // 상세보기 페이지 구현하면 만들기
   
@@ -1218,7 +1219,7 @@ function makeRankBoard(yearData, monthData, weekData)
 <form action="#" id="regionForm">
 	<input type="hidden" id="regionNo" name="regionNo" value="1"/>
 </form>
-<form action="#" id="journalForm">
+<form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
 </form>
 <form action="#" id="memForm">

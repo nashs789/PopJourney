@@ -1399,4 +1399,22 @@ public class PopJourneyController {
 					
 				return mapper.writeValueAsString(modelMap);
 		}
+		
+		//게시글 목록
+		@RequestMapping(value = "/journalBoard")
+		public ModelAndView journalBoard(ModelAndView mav) {
+			
+			mav.setViewName("LES/journalBoard");
+
+			return mav;
+		}
+		
+		//게시글 목록
+		@RequestMapping(value = "/myPageMap")
+		public ModelAndView myPageMap(ModelAndView mav) {
+			
+			mav.setViewName("LES/myPageMap");
+
+			return mav;
+		}
 }
