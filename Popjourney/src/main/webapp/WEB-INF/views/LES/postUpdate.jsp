@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 작성</title>
+<title>게시글 수정</title>
 <style type="text/css">
 /* #fcba03 노랑
             #2e3459 남색
@@ -427,7 +427,7 @@ a {
 	display: inline-block;
 }
 
-#enrollBtn, .del_btn {
+#editBtn, .del_btn {
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -439,11 +439,11 @@ a {
 	cursor: pointer;
 }
 
-#enrollBtn {
+#editBtn {
 	margin-right: 60px;
 }
 
-#enrollBtn:hover {
+#editBtn:hover {
 	border: 2px solid #294a37;
 	background-color: #294a37;
 	color: white;
@@ -550,8 +550,6 @@ a {
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript"
 		src="resources/script/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" 
-		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	if("${sMEM_NO}" != "") { // 로그인 상태
@@ -564,6 +562,7 @@ $(document).ready(function(){
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
+  		console.log("눌려?");
   	});
 	$("#community").on("click", function() {
   		location.href = "community";
@@ -577,7 +576,10 @@ $(document).ready(function(){
 	$("#admin").on("click", function() {
   		location.href = "memAdmin";
   	});
-	
+	if("editPostNo" != null){
+		//$("input[name=postTitle]").attr("value",${data.TITLE});	
+		//$("#postCon").val(CKEDITOR.instances['postCon'].getData());
+	}
 	CKEDITOR.replace("postCon", {
 		resize_enabled : false,
 		language : "ko",
@@ -593,51 +595,51 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#enrollBtn").on("click", function () {
-		
-				$("#postCon").val(CKEDITOR.instances['postCon'].getData());
-				
-				if($.trim($("#postTitle").val()) == "") {
-					alert("제목을 입력해 주세요.");
-					$("#postTitle").focus();
-					return false; // ajaxForm 실행 불가
-				} else if ($.trim($("#postCon").val()) == "") {
-					alert("내용을 입력해 주세요.");
-					$("#postCon").focus();
-					return false;
-				}
-					var params = $("#writeForm").serialize();
+	$("#editBtn").on("click", function () {
+		//CKEDITOR.instances['postCon'].setData(${data.CONTENTS});
+		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
+		if($.trim($("#postTitle").val()) == "") {
+			alert("제목을 입력해 주세요.");
+			$("#postTitle").focus();
+			return false; // ajaxForm 실행 불가
+		} else if ($.trim($("#postCon").val()) == "") {
+			alert("내용을 입력해 주세요.");
+			$("#postCon").focus();
+			return false;
+		}
+			var params = $("#writeForm").serialize();
 
-					$.ajax({
-						url:"postWrites", 
-						type: "post",
-						dataType: "json",
-						data : params,
-						success: function(res){
-							if(res.msg == "success"){
-								$("#newPostNo").val(res.postNo);
-								$("#writeForm").attr("action", "post");
-								$("#writeForm").submit();
-								console.log(params);
-								alert("@@@@@@@@@@@@@");
-							} else if (res.msg =="failed") {
-								alert("작성에 실패하였습니다.")
-							} else {
-								alert("작성중 문제가 발생하였습니다.")
-							}
-						}, 
-						error : function (request, status, error) {
-							console.log(error);
-						}
-					});		 
-	}); //enrollBtn click end
+			$.ajax({
+				url:"postUpdates", 
+				type: "post",
+				dataType: "json",
+				data : params,
+				success: function(res){
+					if(res.msg == "success"){
+						$("#writeForm").attr("action", "post");
+						$("#writeForm").submit();
+					} else if (res.msg =="failed") {
+						alert("작성에 실패하였습니다.")
+					} else {
+						alert("작성중 문제가 발생하였습니다.")
+					}
+				}, 
+				error : function (request, status, error) {
+					console.log(error);
+				}
+			});		 
+}); //editBtn click end
 
 	$("#delBtn").on("click", function () {
 		$("#postCon").val('');
 		CKEDITOR.instances['postCon'].setData('');
 		console.log($("#postCon").val());
 		alert("글을 삭제합니다. // 팝업창 : 예, 아니오 로 만들기");
-	});
+	});/* 
+	if("${postNo}"){
+		
+	}
+	$("#flag").val("1").prop("selected", true); */
 	
 });//document.ready end
 </script>
@@ -703,11 +705,10 @@ $(document).ready(function(){
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 자유게시판 </span>
-			&nbsp;>&nbsp;&nbsp;게시글 작성
+			&nbsp;>&nbsp;&nbsp;게시글 수정
 		</div>
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-			<input type="hidden" id="newPostNo" name="newPostNo" value="${postNo}"/>
 			<input type="hidden" id="editPostNo" name="editPostNo" value="${param.postNo}"/>
 			<div class="title_area">
 				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목" size="50" maxlength="30" autofocus required/>
@@ -727,11 +728,11 @@ $(document).ready(function(){
 			</div>
 			<div class="container_wrap">
 				<div class="txt_area">
-					<textarea rows="30" cols="150" placeholder="내용을 입력하시오" id="postCon" name="postCon"></textarea>
+					<textarea rows="30" cols="150" placeholder="내용을 입력하시오" id="postCon" name="postCon">${data.CONTENTS}</textarea>
 				</div>
 				<div class="post_bottom">
 					<div class="btn_list">
-						<input type="button" id="enrollBtn" class="add_btn"  value="등  록" /> 
+						<input type="button" id="editBtn" class="add_btn" value="수  정" /> 
 						<input type="reset" id="delBtn" class="del_btn" value="삭  제" />
 					</div>
 				</div>

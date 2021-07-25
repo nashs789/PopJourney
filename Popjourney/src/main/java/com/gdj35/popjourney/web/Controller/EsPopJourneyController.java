@@ -47,6 +47,15 @@ public class EsPopJourneyController {
 		return mav;
 
 	}
+	// 마이페이지 북마크
+		@RequestMapping(value = "/myPageMap2")
+		public ModelAndView myPageMap2(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+
+			mav.setViewName("LES/myPageMap2");
+
+			return mav;
+
+		}
 
 	// 마이페이지 팔로워
 	@RequestMapping(value = "/myPageFollower")
@@ -204,9 +213,13 @@ public class EsPopJourneyController {
 	// 게시글 상세페이지
 	@RequestMapping(value = "/post")
 	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		HashMap<String, String> data = iEsPopjourneyService.getPost(params);
-		mav.addObject("data",data);
 		
+		try {
+			HashMap<String, String> data = iEsPopjourneyService.getPost(params);
+			mav.addObject("data",data);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		mav.setViewName("LES/post");
 		return mav;
 	}
@@ -214,7 +227,7 @@ public class EsPopJourneyController {
 	// 게시글 작성 페이지
 	@RequestMapping(value = "/postWrite")
 	public ModelAndView postWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		HashMap<String, String> data = iEsPopjourneyService.getPost(params);
+		
 		mav.setViewName("LES/postWrite");
 
 		return mav;
@@ -246,7 +259,23 @@ public class EsPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-	@RequestMapping(value = "/postUpdate", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@RequestMapping(value = "/postUpdate")
+	public ModelAndView postUpdate(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		try {
+			
+			HashMap<String, String> data = iEsPopjourneyService.editPost(params);
+			mav.addObject("data",data);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		mav.setViewName("LES/postUpdate");
+
+		return mav;
+
+	}
+	
+	@RequestMapping(value = "/postUpdates", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String postUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();

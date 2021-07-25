@@ -43,36 +43,6 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 	}
 
 	@Override
-	public int getJournalCnt(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("EsPJ.getJournalCnt", params);
-	}
-	
-	@Override
-	public List<HashMap<String, String>> journalList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("EsPJ.journalList", params);
-	}
-
-	@Override
-	public int addJournal(HashMap<String, String> params) throws Throwable{
-		return sqlSession.insert("EsPJ.addJournal", params);
-	}
-
-	@Override
-	public HashMap<String, String> getJournal(HashMap<String, String> params) throws Throwable{
-		return sqlSession.selectOne("EsPJ.getJournal", params);
-	}
-
-	@Override
-	public int updateJournal(HashMap<String, String> params) throws Throwable{
-		return sqlSession.update("EsPJ.updateJournal", params);
-	}
-
-	@Override
-	public int deleteJournal(HashMap<String, String> params) throws Throwable {
-		return sqlSession.update("EsPJ.deleteJournal", params);
-	}
-
-	@Override
 	public int getPostFCnt(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("EsPJ.getPostFCnt", params);
 	}
@@ -105,6 +75,11 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 	@Override
 	public int getPostNo(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("EsPJ.getPostNo", params);
+	}
+
+	@Override
+	public HashMap<String, String> editPost(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("EsPJ.editPost", params);
 	}
 
 

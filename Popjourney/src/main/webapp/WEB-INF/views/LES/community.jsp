@@ -727,11 +727,13 @@ $(document).ready(function() {
 		makePathInfo();
 	});	
 	
-	$(".post").on("click", function () {
-		$("#postNo").val($(this).attr("postno"));
-		$("#actionForm").attr("action", "post");
-		$("#actionForm").submit();
-	});
+	$(".board_list").on("click", "td", function(){
+		if($(this).attr("class") == "title")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}
+	}); //board_list click td end
 	
 	$(".board_list").on("click", "td", function(){
 		if($(this).attr("class") == "user")
@@ -966,6 +968,10 @@ function makePage(pb)
 </script>
 </head>
 <body>
+<form action="post" id="postForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+</form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>		

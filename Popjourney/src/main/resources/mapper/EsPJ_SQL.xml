@@ -351,11 +351,23 @@
 		                                     ON B.MEM_NO = MCCNT.MEM_NO)
                                            
 		      WHERE DEL != 0
-              AND POST_NO= #{newPostNo}
+			      <choose>
+			      	<when test="newPostNo == 1">
+			      	 AND POST_NO= #{postNo}
+			      	</when>
+			      	<when test="newPostNo != 1">
+			      	 AND POST_NO= #{newPostNo}
+			      	</when>
+			      </choose>
+	</select>
+	<select id="editPost" parameterType="hashmap">
+		SELECT *
+		FROM BOARD
+		WHERE POST_NO = #{postNo}
 	</select>
 	<update id="postUpdate" parameterType="hashmap">
-		UPDATE BOARD SET POST_NO = #{postNo}, TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categoryNo} 
-		WHERE POST_NO = #{postNo}
+		UPDATE BOARD SET TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categorySelect} 
+		WHERE POST_NO = #{editPostNo}
 	</update>
 	<delete id="postDeletes" parameterType="hashmap">
 		UPDATE  BOARD SET DEL = 0
