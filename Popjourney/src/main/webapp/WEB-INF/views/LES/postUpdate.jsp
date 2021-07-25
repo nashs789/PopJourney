@@ -594,7 +594,15 @@ $(document).ready(function(){
 			return false;
 		}
 	});
-	
+	if("${data.CATEGORY_NO}" == "1") { 
+		$("#categorySelect").val("1").prop("selected", true); 		
+	} else if ("${data.CATEGORY_NO}" == "2") { 
+		$("#categorySelect").val("2").prop("selected", true); 		
+	} else if ("${data.CATEGORY_NO}" == "3") { 
+		$("#categorySelect").val("3").prop("selected", true); 		
+	} else { 
+		$("#categorySelect").val("4").prop("selected", true); 		
+	} 
 	$("#editBtn").on("click", function () {
 		//CKEDITOR.instances['postCon'].setData(${data.CONTENTS});
 		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
@@ -635,11 +643,9 @@ $(document).ready(function(){
 		CKEDITOR.instances['postCon'].setData('');
 		console.log($("#postCon").val());
 		alert("글을 삭제합니다. // 팝업창 : 예, 아니오 로 만들기");
-	});/* 
-	if("${postNo}"){
-		
-	}
-	$("#flag").val("1").prop("selected", true); */
+	}); 
+	
+	
 	
 });//document.ready end
 </script>
@@ -710,8 +716,10 @@ $(document).ready(function(){
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 			<input type="hidden" id="editPostNo" name="editPostNo" value="${param.postNo}"/>
+			<input type="hidden" id="postNo" name="postNo" value="${param.postNo}"/>
+			<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 			<div class="title_area">
-				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목" size="50" maxlength="30" autofocus required/>
+				<input type="text" class="input_title" id="postTitle" name="postTitle" value="${data.TITLE}" placeholder="게시글 제목" size="50" maxlength="30" autofocus required/>
 				<div class="category_area">
 					<span class="asterisk">&#42;</span><span>카테고리</span> 
 					<select class="category_select" id="categorySelect" name="categorySelect">

@@ -335,7 +335,7 @@ a {
 
 .title_area {
 	width: 1280px;
-	height: 130px;
+	height: 110px;
 	color: black;
 	font-size: 18pt;
 	margin: auto;
@@ -362,7 +362,7 @@ a {
 
 .title_right {
 	float: right;
-	margin-top: 100px;
+	margin-top: 75px;
 	font-weight: bold;
 	margin-right: 10px;
 	font-size: 12pt;
@@ -378,8 +378,11 @@ a {
 	margin: 0 auto;
 	color: black;
 	font-size: 12pt;
+	padding: 20px;
 }
-
+p {
+	padding-right: 40px;
+}
 .category_area {
 	width: 1280px;
 	height: 50px;
@@ -494,7 +497,7 @@ a {
 
 .post_bottom {
 	width: 1280px;
-	height: 350px;
+	height: 100%;
 	margin-top: 30px;
 	font-size: 12pt;
 	color: black;
@@ -601,9 +604,6 @@ a {
 	background-color: #f37321;
 }
 
-.reaction ul li:nth-child(1) {
-	margin-right: 60px;
-}
 
 .reaction img {
 	height: 39px;
@@ -770,7 +770,7 @@ a {
 .popup {
 	display:none;
 	width: 600px;
-	height: 470px;
+	height: 515px;
 	background-color: #fcfcfc;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	position: fixed;
@@ -787,7 +787,7 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	height: 390px;
+	height: 435px;
 	margin: 30px auto 0 auto;
 }
 
@@ -858,11 +858,16 @@ input[type='radio'], input[type='radio']:checked {
 	height: 0.8rem;
 	border-radius: 100%;
 	margin-right: 0.1rem;
+	cursor: pointer;
 }
 
 input[type="radio"] {
 	background-color: white;
 	border: 2px solid #f37321;
+}
+
+input[type="radio"] + label {
+	cursor: pointer;
 }
 
 input[type="radio"]:checked {
@@ -891,6 +896,7 @@ input[type="radio"]:checked {
 	color: #f37321;
 	font-weight: bold;
 	line-height: 30px;
+	cursor: pointer;
 }
 
 .popup_btn_list span:first-child {
@@ -905,7 +911,6 @@ input[type="radio"]:checked {
 	{
 	background-color: #f37321;
 	color: white;
-	cursor: pointer;
 }
 
 .asterisk {
@@ -932,6 +937,15 @@ input[type="radio"]:checked {
 $(document).ready(function(){
 	if("${sMEM_NO}" == "${data.MEM_NO}") { // 로그인 상태
 		$(".btn_list").css("display","inline-block");
+		$(".reaction").css("display","none");
+		$(".cmt_area").css("margin-top","50px");
+	} 
+	if("${sMEM_NO}" == ""){
+		$(".reaction").css("display","none");
+	} 
+	 if("${likeCheck.POST_NO}"!="") {
+		$(".reaction").children("ul").children("li").children("img").attr("like","1");
+		$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
 	} 
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$("#journalBoard").on("click", function() {
@@ -960,8 +974,13 @@ $(document).ready(function(){
 		$(".popup, .bg").hide();
 	});
 	$("#userPage").on("click", function(){
-		
+		if("${sMEM_NO}" != "${data.MEM_NO}") {
+			$("#userForm").submit();
+		} else {
+			location.href = "myPage";
+		}
 	});
+	
 	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
@@ -1008,7 +1027,6 @@ $(document).ready(function(){
 	});
 	
 	$(".delete_btn").on("click", function () {
-		console.log("눌렀다!!");
 		if(confirm("삭제하시겠습니까?")){
 			var params = $("#goForm").serialize();
 			
@@ -1032,11 +1050,73 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
+	$("#prevPost").on("click", function(){
+			$("#prevPostForm").submit();
+	}); //prevPost click end
+	
+	$("#nextPost").on("click", function(){
+			$("#nextPostForm").submit();
+	}); //nextPost click end
+	
+	$(".reaction").on("click","img", function(){
+		var like = $(this).attr("like");
+		
+		console.log(like);
+		//console.log(params);
+		if(like=0){ //좋아요 x : 좋아요 기능
+			$.ajax({
+				url:"postLikes", 
+				type: "post",
+				dataType: "json",
+				data : params,
+				success: function(res){
+					if(result.msg == "success")
+					{
+					}
+				}, //success end
+				error: function (request, status, error) {
+					console.log(error);
+				}//error end
+			});//ajax end
+		} else if(like=1) { //좋아요 o : 좋아요 취소기능
+			$.ajax({
+				url:"postLikeCancles", 
+				type: "post",
+				dataType: "json",
+				data : params,
+				success: function(res){
+					if(result.msg == "success")
+					{
+					}
+				}, //success end
+				error: function (request, status, error) {
+					console.log(error);
+				}//error end
+			});//ajax end
+		}
+	});
+
 });
 
-
-
-
+//조회수
+function hitCnt() {
+	console.log(params);
+	$.ajax({
+		url:"postHits", 
+		type: "post",
+		dataType: "json",
+		data : params,
+		success: function(res){
+			if(result.msg == "success")
+			{
+			}
+		}, //success end
+		error: function (request, status, error) {
+			console.log(error);
+		}//error end
+	});//ajax end
+}//likeStatus end
 function popup() {
 	var popup = document.getElementById("popup");
 	var bg = document.getElementByClass("bg");
@@ -1054,6 +1134,14 @@ function popup() {
 </script>
    </head>
    <body>
+	<form action="#" id="prevPostForm" method="post">
+		<input type="hidden" id="prevPostNo" name="postNo" value="${prePost.POST_NO}"/>
+		<input type="hidden" id="pNewPostNo" name="newPostNo" value="1"/>
+   </form>
+   <form action="#" id="nextPostForm" method="post">
+   		<input type="hidden" id="netPostNo" name="postNo" value="${nextPost.POST_NO}">
+		<input type="hidden" id="nNewPostNo" name="newPostNo" value="1"/>
+   </form>
       <div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
@@ -1111,8 +1199,12 @@ function popup() {
                <option value="3">닉네임</option>
             </select>
          </div>
+         <form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value="${data.MEM_NO}"/>
+</form>	
          <form action="#" id="goForm" method="post"> 
 			<input type="hidden" name="postNo" value="${data.POST_NO}"/>
+			<input type="hidden" name="editPostNo" value="${data.POST_NO}"/>
 			<input type="hidden" name="postTitle" value="${data.TITLE}"/>
 			<input type="hidden" name="postCategoryNo" value="${data.CATEGORY_NO}"/>
 			<input type="hidden" name="postContents" value="${data.CONTENTS}"/>
@@ -1147,7 +1239,7 @@ function popup() {
 		<div class= "title_area">
 			<div class="title_left">
 				<strong>${data.TITLE}</strong><br />
-				<br />
+				
 				<br /> <span>작성일</span> <span>${data.BOARD_DATE}</span> <span>조회</span><span>${data.HIT}</span>
 				<span>좋아요</span><span>${data.LIKE_CNT}</span> <span>댓글</span><span>${data.POST_CMT_CNT}</span>
 			</div>
@@ -1202,7 +1294,7 @@ function popup() {
 							</c:choose>
 						</div>
 						<div class="cnt">
-							<span>총 게시글 ${data.MEM_POST_CNT}</span> <span>총 댓글 ${data.MEM_CMT_CNT}</span>
+							<span>총 게시글 ${data.MEM_POST_CNT}</span> <span>총 댓글</span>
 						</div>
 	         			</div>
 	         		</div>
@@ -1217,26 +1309,23 @@ function popup() {
             	</div>
             	<div class="post_page">
             		<div class="post_label">이전글</div>
-            		<div class="post_label_title">이전 게시글 제목</div>
+            		<div class="post_label_title" id="prevPost">${prePost.TITLE}</div>
             	</div>
-            	<div class="post_page">
-            		<div class="post_label">다음글</div>
-            		<div class="post_label_title">다음 게시글 제목</div>
-            	</div>
+            	<c:choose>
+            		<c:when test="${!empty nextPost.TITLE}">
+		            	<div class="post_page">
+		            		<div class="post_label">다음글</div>
+		            		<div class="post_label_title" id="nextPost">${nextPost.TITLE}</div>
+		            	</div>
+		            </c:when>
+            	</c:choose>
             	<div class="reaction">
-            		<ul>
-            			<li>
-            				<img alt="좋아요" src="./resources/images/like.png"><br/>좋아요
-            			</li>
-            			<li>
-            				<img alt="북마크" src="./resources/images/bmrk.png"><br/>북마크
-            			</li>
-            		</ul>
+            		<ul><li><img alt="좋아요" src="./resources/images/like.png" class="like" like="0"><br/>좋아요</li></ul>
             	</div>
             </div>
             <div class="cmt_area">
 				<div class="cmt_top">
-					<span>댓글 </span><span>2</span><span> 개</span>
+					<span>댓글 </span><span>${data.POST_CMT_CNT}</span><span> 개</span>
 				</div>
 				<div class="cmt_bottom">
 					<textarea rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
@@ -1335,13 +1424,19 @@ function popup() {
 			</div>
 			<div class="report_radio">
 				<div class="report_radio_box">
-					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">욕설 </label>
+					<input type="radio" id="report_radio0" name="report_reason"><label for="report_radio0">욕설 </label>
 				</div>
 				<div class="report_radio_box">
-					<input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">비방글</label>
+					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">비방</label>
 				</div>
 			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">부적절한 이유</label>
+				    <input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">정치적 발언</label>
+			    </div>
+			    <div class="report_radio_box">
+				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">외설적 언어</label>
+			    </div>
+			    <div class="report_radio_box">
+				    <input type="radio" id="report_radio4" name="report_reason"><label for="report_radio4">기타</label>
 			    </div>
 			</div>
 			<div>
@@ -1349,7 +1444,7 @@ function popup() {
 			</div>
 		</div>
 		<div class="popup_btn_list">
-			<span class="ok_btn">확 인</span> <span class="cancel_btn">취 소</span>
+			<span class="submit_btn">확 인</span> <span class="close_btn">취 소</span>
 		</div>
 	</div>
 	<div class="bg"></div>

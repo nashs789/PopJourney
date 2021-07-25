@@ -33,6 +33,12 @@ public interface IEsPopjourneyDao {
 
 	public HashMap<String, String> editPost(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> nextPost(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> prePost(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable;
+
 	
 
 
