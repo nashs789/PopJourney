@@ -336,7 +336,7 @@ svg{
 }
 .TEXT {
     fill: #ffffff;
-    font-size: 16;
+    font-size: 16pt;
     font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
@@ -645,17 +645,18 @@ $(document).ready(function(){
 		if($(this).attr("class") == "user")
 		{
 			$("#userNo").val($(this).attr($(this).attr("class")));
+			console.log($("#userNo").val());
 			$("#userForm").submit();
 		}
 		else if($(this).attr("class") == "journal")
 		{
-			console.log("journal");
-			console.log($(this).attr($(this).attr("class")));
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
 		}
 		else if($(this).attr("class") == "post")
 		{
-			console.log("post");
-			console.log($(this).attr($(this).attr("class")));
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
 		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
 	}); //notification tbody span tr click end
 	
@@ -827,11 +828,6 @@ $(document).ready(function(){
     
     //랭킹 게시판에서 게시글 제목 클릭 시 해당 게시글로, 닉네임 클릭 시 해당 유저 페이지로
     $("#boardWrap").on("click", "tr td", function(){
-    	$("#journalNo").val($(this).attr("no"));
-    	
-    /* 	console.log($(this).attr("class"));
-    	console.log($(this).attr($(this).attr("class"))); */
-    	
     	if($(this).attr("class") == "user")
     	{
     		$("#userNo").val($(this).attr($(this).attr("class")));
@@ -839,9 +835,23 @@ $(document).ready(function(){
     	}
     	else if($(this).attr("class") == "journal")
     	{
-    		console.log("일지");
+    		$("#journalNo").val($(this).attr($(this).attr("class")));
+    		$("#journalForm").submit();
+    	}
+    	else if($(this).attr("class") == "post")
+    	{
+    		$("#postNo").val($(this).attr($(this).attr("class")));
+    		$("#postForm").submit();
     	}
     }); // 상세보기 페이지 구현하면 만들기
+    
+    $("#journalBoard").on("click", function(){
+    	location.href = "journalBoard";
+    });//postBoard click end
+    
+    $("#community").on("click", function(){
+    	location.href = "community";
+    });//community click end
   
    	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
@@ -882,6 +892,10 @@ $(document).ready(function(){
 	$("#notificationMore").on("click", function(){
 		location.href="notification";
 	}); //notificationMore click end
+	
+	$("#bookmarkPhoto").on("click", function(){
+		location.href = "myPageBMK";
+	}); //bookmarkPhoto click end
   	
   	$("#logoutBtn").on("click", function(){
 		$.ajax({
@@ -1071,9 +1085,9 @@ function makeNoticeBoard(noticeData)
 	for(var data of noticeData)
 	{
 		html +=" 	<tbody>";
-		html +=" 		<tr no=\"" + data.POST_NO + "\">";
+		html +=" 		<tr>";
 		html +=" 			<td>" + data.POST_NO + "</td>";
-		html +=" 			<td>" + data.TITLE + "</td>";
+		html +=" 			<td class=\"post\" post=\"" + data.POST_NO + "\">" + data.TITLE + "</td>";
 		html +=" 			<td>운영자</td>";
 		html +=" 			<td>" + data.HIT + "</td>";
 		html +=" 			<td>" + data.BOARD_DATE + "</td>";
@@ -1218,9 +1232,6 @@ function makeRankBoard(yearData, monthData, weekData)
 <form action="#" id="regionForm">
 	<input type="hidden" id="regionNo" name="regionNo" value="1"/>
 </form>
-<form action="#" id="journalForm">
-	<input type="hidden" id="journalNo" name="journalNo" value=""/>
-</form>
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
 	<input type="hidden" id="page" name="page" value="${page}"/>
@@ -1232,6 +1243,13 @@ function makeRankBoard(yearData, monthData, weekData)
 </form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>
+<form action="journal" id="journalForm" method="post">
+	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+</form>
+<form action="post" id="postForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 </form>
 	<div id="wrap">
          <!-- header부분 고정 -->
@@ -1293,8 +1311,8 @@ function makeRankBoard(yearData, monthData, weekData)
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행게시판</li>
-                  <li>자유게시판</li>
+                  <li id="journalBoard">여행게시판</li>
+                  <li id="community">자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>
 				  <li id="admin">내부관리자</li>

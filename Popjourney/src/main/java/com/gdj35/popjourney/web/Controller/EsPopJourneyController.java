@@ -17,6 +17,7 @@ import com.gd.test.common.CommonProperties;
 import com.gdj35.popjourney.common.bean.PagingBean;
 import com.gdj35.popjourney.common.service.IPagingService;
 import com.gdj35.popjourney.web.Service.IEsPopjourneyService;
+import com.gdj35.popjourney.web.Service.IPopJourneyService;
 
 @Controller
 public class EsPopJourneyController {
@@ -25,6 +26,9 @@ public class EsPopJourneyController {
 
 	@Autowired
 	public IPagingService iPagingService;
+	
+	@Autowired //인복
+	public IPopJourneyService ipjs;
 
 	// 마이페이지 썸네일
 	@RequestMapping(value = "/myPage")
@@ -82,12 +86,23 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/userPage")
 	public ModelAndView userPage(@RequestParam HashMap<String, String> params, ModelAndView mav)
 			throws Throwable {
-		int page = 1;
-
-		mav.addObject("page", page);
 		
+		int page = 1;
+		int journalCnt = ipjs.journalCnt2(params);
+
+		if(journalCnt != 0)
+		{
+			mav.addObject("cnt", journalCnt);
+		}
+		else if(journalCnt == 0)
+		{
+			mav.addObject("cnt", 0);
+		}
+		mav.addObject("page", page);
+
 		mav.addObject("userNo", params.get("userNo"));
 		mav.setViewName("LES/userPage");
+
 
 		return mav;
 

@@ -534,7 +534,6 @@ a {
 	border: 1px solid #f1f1f1;
 	font-size: 10pt;
 	color: black;
-	cursor: pointer;
 }
 
 .post:hover {
@@ -675,8 +674,7 @@ a {
 }
 
 .popup {
-	display:none;
-	/* display: inline-block; */
+	display:inline-block;
 	width: 600px;
 	height: 210px;
 	background-color: #fcfcfc;
@@ -758,7 +756,7 @@ a {
 
 .bg {
 	position: fixed;
-    display: none;
+    display: inline-block;
     width: 100%;
     height: 100%;
     top: 0px;
@@ -783,6 +781,9 @@ a {
 }
 #date0{
 	color: #f37321;
+}
+.journal, .thumb, .user{
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -930,6 +931,19 @@ $(document).ready(function(){
 		$("#page").val(1);
 	}); //search_icon click end
 	
+	$(".gallery").on("click", ".post span, strong, img", function(){
+		if($(this).attr("class") == "journal" || $(this).attr("class") == "thumb")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#goJournalForm").submit();
+		}
+		else if($(this).attr("class") == "user")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+	});// gellery click end
+	
 	$(".left_nav ul li").on("click", "span", function(){
 
 		if($(this).attr("class") == "all")
@@ -1012,7 +1026,7 @@ $(document).ready(function(){
 		}
 	});//regionSelect
 	
-	$(".right_nav ul").on("click", "li", function(){
+	$(".right_nav ul").on("click", ".img_none", function(){
 		if($(this).attr("id") == "date0")
 		{
 			$("#date0").css("color", "#f37321");
@@ -1139,7 +1153,7 @@ function makeJournalList(list)
 			html += "   		</p>";
 			html += "   	</div>";
 			html += "   	<div class=\"post_profile\">";
-			html += "			<img alt=\"작성자\" src=\"resources/upload/" + data.PHOTO_PATH + "\"> <span>" + data.NIC + "</br>(" + data.GRADE + ")</span>";
+			html += "			<img class=\"user\" user=\"" + data.MEM_NO + "\" alt=\"작성자\" src=\"resources/upload/" + data.PHOTO_PATH + "\"> <span class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</br>(" + data.GRADE + ")</span>";
 			html += "   		<div>";
 			html += "   			<div>";
 			html += "   				<span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";
@@ -1186,7 +1200,7 @@ function makePage()
 	else if($("#page").val() == 1)
 	{
 		$("#startPCnt").val(1);
-		$("#endPCnt").val(5);
+		$("#endPCnt").val($("#endPCnt").val());
 	}
 	
 	for(var i = $("#startPCnt").val() * 1 ; i <= $("#endPCnt").val() * 1 ; i++) {
@@ -1265,11 +1279,12 @@ function makePopup()
 	html+="			<div>";
 	html+="				일지 작성 <span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
 	html+="			</div>";
-	html+="				<span class=\"asterisk\">&#42;</span>여행 시작일 : <input type=\"date\" name=\"start_date\"> <span class="asterisk">&#42;</span>";
-	html+="				여행 종료일 : <input	type=\"date\" name=\"end_date\">";
+	html+="				<span class=\"asterisk\">&#42;</span>여행 시작일 : <input type=\"date\" class=\"start_date\"> <span class=\"asterisk\">&#42;</span>";
+	html+="				여행 종료일 : <input	type=\"date\" class=\"end_date\">";
 	html+="			<div class=\"category_area\">";
 	html+="				<span class=\"asterisk\">&#42;</span>";
-	html+="					<span>여행지역  </span> <selectclass=\"pref_filter\">";
+	html+="					<span>여행지역  </span> <select id=\"regionSelect\">";
+	html+="					<option value=\"17\">지역</option>";
 	html+="					<option value=\"0\">서울</option>";
 	html+="					<option value=\"1\">부산</option>";
 	html+="					<option value=\"2\">대구</option>";
@@ -1295,9 +1310,62 @@ function makePopup()
 	html+="		</div>";
 	html+="	</div>";
 	html+="	<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$(".start_date").on("change", function(){
+		$("#startDate").val($(".start_date").val());
+		console.log($("#startDate").val());
+	})//start_date change end
+	
+	$(".end_date").on("change", function(){
+		$("#endDate").val($(".end_date").val());
+		console.log($("#endDate").val());
+	})//start_date change end
+	
+	$("#goWrite").on("click", function(){
+		if($(".start_date").val() == "")
+		{
+			alert("시작일을 입력하세요.");
+		}
+		else if($(".end_date").val() == "")
+		{
+			alert("종료일을 입력하세요.");
+		}
+		else if($("#startDate").val() > $("#endDate").val())
+		{
+			alert("시작일이 종료일보다 클 수 없음");
+		}
+		else if($("#regionSelect").val() == "17")
+		{
+			alert("지역을 입력하세요.");
+		}
+		else
+		{
+			$("#regionNo").val($("#regionSelect[id='regionSelect'] option:selected").val());
+			
+			//$("#writeForm").submit();
+		}
+	});//goWrite click end
+	
+	$("#cancel").on("click", function(){
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancel click end
 }
 </script>
 </head>
+<form action="journalWrite" id="writeForm" method="post">
+	<input type="hidden" id="startDate" name="startDate"/>
+	<input type="hidden" id="endDate" name="endDate"/>
+	<input type="hidden" id="regionNo" name="regionNo"/>
+</form>
+<form action="journal" id="goJournalForm" method="post">
+	<input type="hidden" id="journalNo" name="journalNo"/>
+</form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo"/>
+</form>
 <body>
 	<div id="wrap">
 		<!-- header부분 고정 -->
@@ -1311,7 +1379,7 @@ function makePopup()
 					<div class="btns">
 						<ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
-							<div id="cnt"></div>
+							<div id="noCnt"></div>
 							</li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="" id="profilePhoto">
