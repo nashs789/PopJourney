@@ -1200,7 +1200,7 @@ function makePage()
 	else if($("#page").val() == 1)
 	{
 		$("#startPCnt").val(1);
-		$("#endPCnt").val(5);
+		$("#endPCnt").val($("#endPCnt").val());
 	}
 	
 	for(var i = $("#startPCnt").val() * 1 ; i <= $("#endPCnt").val() * 1 ; i++) {
@@ -1379,7 +1379,7 @@ function makePopup()
 					<div class="btns">
 						<ul>
 						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
-							<div id="cnt"></div>
+							<div id="noCnt"></div>
 							</li>
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="" id="profilePhoto">

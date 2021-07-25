@@ -1066,7 +1066,7 @@ function makePage(pb)
 					<nav class="menu_nav">
 						<ul id="left_group">
 							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;${cnt}</li>
 						</ul>
 						<ul class="right_group">
 

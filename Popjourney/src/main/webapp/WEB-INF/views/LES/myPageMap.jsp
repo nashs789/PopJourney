@@ -305,7 +305,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 #container {
 	display: block;
 	width: 1280px;
-	height: 1000px;
 	margin: 0 auto;
 }
 
@@ -370,7 +369,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	text-decoration: none;
 	color: #2e3459;
 }
-.menu_nav ul li:hover img, .menu_nav ul li.on img {
+.menu_nav ul li img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
 
@@ -407,15 +406,12 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 100%;
 }
 
-#left_group li:nth-child(2) img{
-	background-color: #f37321;
-}
-
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	font-weight: 500;
+	text-align: center;
 }
 
 a {
@@ -432,6 +428,7 @@ a {
 	font-size: 10pt;
 	padding-top: 10px;
 	padding-left: 20px;
+	text-align: left;
 }
 
 #path_info {
@@ -517,30 +514,127 @@ a {
 	width: 600px;
 	height: 80px;
 }
+#mapOn{
+	background-color: #f37321;
+}
+.location-image a img {
+  width: 100%; /* need to overwrite inline dimensions */
+  height: 200px;
+}
+h2 {
+  margin-bottom: .5em;
+  margin-left: 150px;
+}
+.grid-container {
+  width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
+  margin: 0px auto 50px auto;
+}
+.child-page-listing{
+	font-size: 14pt;
+}
+
+/* hover styles */
+.location-listing {
+  position: relative;
+}
+
+.location-image {
+  line-height: 0;
+  overflow: hidden;
+}
+
+.location-image img {
+  filter: blur(0px);
+  transition: filter 0.3s ease-in;
+  transform: scale(1.1);
+}
+.location-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity .5s;
+  background: rgba(90,0,10,0.4);
+  color: white;
+  
+  /* position the text in t’ middle*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-listing:hover .location-title {
+  opacity: 1;
+}
+
+.location-listing:hover .location-image img {
+  filter: blur(2px);
+}
+
+
+/* for touch screen devices */
+@media (hover: none) { 
+  .location-title {
+    opacity: 1;
+  }
+  .location-image img {
+    filter: blur(2px);
+  }
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#journalBoard").on("click", function() {
-  		location.href = "journalBoard";
-  	});
-	$("#community").on("click", function() {
-  		location.href = "community";
-  	});
-	$("#travelWriter").on("click", function() {
-  		location.href = "travelWriterRank";
-  	});
-	$("#clientCenter").on("click", function() {
-  		location.href = "clientCenterQuestion";
-  	});
-	$("#admin").on("click", function() {
-  		location.href = "memAdmin";
-  	});
-});
+	var path = "";
+	
+	if("${sPHOTO_PATH}" != "")
+	{
+		path = "resources/upload/" + "${sPHOTO_PATH}";
+		
+		$("#profilePhoto").attr("src", path);
+	}
+	else
+	{
+		path = "./resources/images/profile.png";
+
+		$("#profilePhoto").attr("src", path);
+	}
+	
+	if("${sGRADE_NO}" == "0")
+	{
+		$("#admin").show();
+	}
+	
+	var html = "";  
+	
+	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
+	html += "<div>${sNIC}</div>";
+	html += "<span>${sINTRO}</span>"; 
+	
+	$(".info").html(html);
+	
+	$("article").on("click",function(){
+		$("#regionNo").val($(this).attr("id").substring(1));
+		$("#detailForm").submit();
+	}); //article click end
+});//document ready end
 
 </script>
 </head>
 <body>
+<form action="myPageMapDetail" id="detailForm" method="post">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value=${sMEM_NO }>
+	<input type="hidden" id="regionNo" name="regionNo">
+</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -610,15 +704,15 @@ $(document).ready(function() {
 					<nav class="menu_nav">
 						<ul id="left_group">
 							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="map" id="mapOn" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL }</li>
 						</ul>
 						<ul class="right_group">
 							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									100</li>
+									${sBMK }</li>
 							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
-									100</li>
+									${sFOLLOWER }</li>
 							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
-									100</li>
+									${sFOLLOWING }</li>
 						</ul>
 					</nav>
 				</div>
@@ -627,14 +721,131 @@ $(document).ready(function() {
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span> &nbsp;>&nbsp;&nbsp;지도
 				</div>
-				<div class="map_wrap">
-					<img alt="지도" src="./resources/images/ggmap.png">
-					<div class="map_pin">
-						<img alt="일지" src="./resources/images/a1.jpg">
-						<div class="pin_cnt">50</div>
-						<div class="tri"></div>
-					</div>
-				</div>
+			</div>
+			<div class="child-page-listing">
+			  <h2>지역별 사진첩</h2>
+			  <div class="grid-container">
+			    <article id="r0" class="location-listing">
+			      <a class="location-title">SEOUL(서울)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/seoul.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r1" class="location-listing">
+			      <a class="location-title" >BUSAN(부산)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/busan.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r2" class="location-listing">
+			      <a class="location-title" >DAEGU(대구)</a>
+			      <div class="location-image"> 
+			             <a ><img  src="./resources/images/daegu.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r3" class="location-listing">
+			      <a class="location-title" >INCHEON(인천)</a>
+			      <div class="location-image">
+			        <a ><img  src="./resources/images/incheon.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r4" class="location-listing">
+			    	<a class="location-title" >GWANGJU(광주)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gwangju.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r5" class="location-listing">
+			      <a class="location-title" >DAEJEON(대전)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/daejeon.jpg">          
+			          </a>
+			      </div>
+			    </article>
+			    <article id="r6" class="location-listing">
+			
+			      <a class="location-title" >ULSAN(울산)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/ulsan.jpg">    </a>
+			      </div>
+			    </article>
+			
+			    <article id="r7" class="location-listing">
+			      <a class="location-title" >SEJONG(세종)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/sejong.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r8" class="location-listing">
+			      <a class="location-title" >GYEONGGI-DO(경기도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gyeonggi.jpg">  </a>
+			      </div>
+			    </article>
+			    <article id="r9" class="location-listing">
+			
+			      <a class="location-title" >GANGWON-DO(강원도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gangwon.jpg"> </a>
+			      </div>
+			    </article>
+			
+			    <article id="r10" class="location-listing">
+			      <a class="location-title" >CHUNGBUK-DO(충청북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/chungbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r11" class="location-listing">
+			      <a class="location-title" >CHUNGNAM-DO(충청남도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/chungnam.jpg"></a>
+			      </div>
+			    </article>
+			    
+			    <article id="r12" class="location-listing">
+			      <a class="location-title" >JEONBUK-DO(전라북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeonbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r13" class="location-listing">
+			      <a class="location-title" >JEONNAM-DO(전라남도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeonnam.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r14" class="location-listing">
+			      <a class="location-title" >GYEONGSANGBUK-DO(경상북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gyeongsangbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r15" class="location-listing">
+			      <a class="location-title" >GYEONGSANGNAM-DO(경상남도)</a>
+			      <div class="location-image">
+			        <a><img src="./resources/images/gyeongsangnam.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r16" class="location-listing">
+			      <a class="location-title" >JEJU-DO(제주도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeju.jpg"></a>
+			      </div>
+			    </article>
+			  </div>
+			  <!-- end grid container -->
 			</div>
 		</div>
 	</div>

@@ -1,11 +1,10 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지</title>
+<title>지도</title>
 <style type="text/css">
 /* #fcba03 노랑
             #2e3459 남색
@@ -80,7 +79,7 @@ body {
 }
 
 .btns { /* .logins와 연동  */
-	display: inline-block;
+	display: none;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -89,70 +88,166 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-#bookmarkPhoto, #notificationPhoto {
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
+
+.btns img {
+	width: 40px;
+	margin-right: 20px;
+	margin-top: 15px;
+	cursor: pointer;
 }
-#notificationPhoto{
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   position: relative;
+
+.bell_icon {
+	margin-left: 200px;
 }
-#notificationTxt{
-	line-height: 17px;
-	width: 20px;
-	height: 20px;
-	background-color: red;
-	position: absolute;
-	top: 10px;
-	right: 190px;
-	border-radius: 50%;
-	color: white;
+
+.logins {
+	display:inline-block;
+	vertical-align: top;
+	width: 470px;
+	height: 70px;
+	text-align: right;
+	background-color: #FFFFFF;
 }
-#profilePhoto{
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   border-radius: 50%;
+
+.sub_login1 {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 55px;
 }
-#notificationPhoto {
-   margin-left: 200px;
+
+.sub_login2 {
+	display: block;
+	width: calc(100% - 75px);
+	height: 15px;
+	line-height: 10px;
+	text-align: right;
+	padding-right: 75px;
 }
+
+.sub_login2 span {
+	position: relative;
+	width: 10px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.sub_login2 span:hover {
+	color: #fcba03;
+}
+
+.login {
+	float: right;
+	width: 100px;
+	height: 25px;
+	margin-top: 20px;
+	margin-left: 5px;
+}
+
+.login_btn {
+	float: right;
+	margin: 20px 20px 0px 5px;
+	width: 50px;
+	height: 30px;
+	background-color: #2e3459;
+	font-weight: bold;
+	font-size: 12px;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 26px;
+	cursor: pointer;
+}
+
+.login_btn:hover {
+	color: #FFFFFF;
+	background-color: #f37321;
+}
+
 .banner {
 	width: 100%;
 	height: 70px;
 }
-#profileSlidedown{
+
+.timeline {
 	display: none;
-   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-   	border: 2px solid #fcba03;
-   	background-color: white;
-   	position: absolute;
-   	padding: 0px;
-   	right: 8px;
-   	width: 122px;
-   	margin-top: 10px;
-   	z-index: 300;
+	/* display: inline-block; */
+	width: 400px;
+	background-color: #EAEAEA;
+	box-shadow: 0px 0px 1px 1px #444444;
+	position: absolute;
+	margin-top: 72px;
+	right: 10px;
+	z-index: 300;
 }
-#profileSlidedown li {
-   	display: inline-block;
-   	border: 1px solid rgb(250,250,250);
-   	font-size: 12pt;
-   	width: 120px;
-   	text-align: center;
-   	cursor: pointer;
+
+.timeline tr {
+	height: 50px;
 }
-#profileSlidedown li:hover {
+
+.timeline table {
+	border-collapse: collapse;
+}
+
+.timeline table tr th:first-child {
+	text-align: center;
+}
+
+.timeline tr th {
+	text-align: left;
+}
+
+.timeline tr th img {
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline tfoot tr {
+	background-color: #939597;
+}
+
+.timeline tfoot tr th {
+	text-align: center;
+	cursor: pointer;
+}
+
+.timeline table tr th span {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.timeline table tr th span:hover {
+	color: blue;
+}
+
+#dd {
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	border: 2px solid #fcba03;
+	background-color: white;
+	position: absolute;
+	margin-top: 10px;
+	padding: 0px;
+	right: 8px;
+	height: 108px;
+	width: 122px;
+	display: none;
+}
+
+#dd li {
+	display: inline-block;
+	border: 1px solid rgb(250, 250, 250);
+	font-size: 12pt;
+	width: 120px;
+	text-align: center;
+}
+
+#dd li:hover {
 	background-color: #f37321;
 }
-#myPage{
-	background-color: #f37321;
-}
+
 .menu {
 	position: absolute;
 	height: 70px;
@@ -175,6 +270,12 @@ body {
 	color: #fcba03;
 }
 
+.menu ul li a {
+	display: inline-block;
+	height: 30px;
+	text-decoration: none;
+	color: white;
+}
 
 .search {
 	float: right;
@@ -262,14 +363,13 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	font-weight: 900;
 }
 
-.menu_nav ul li {
+.menu_nav ul li  {
 	display: inline-block;
 	height: 50px;
 	text-decoration: none;
 	color: #2e3459;
 }
-
-.menu_nav ul li:hover img, .menu_nav ul li.on img {
+.menu_nav ul li img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
 
@@ -283,34 +383,33 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	cursor: pointer;
 }
 
-#left_menu {
+#left_group {
 	display: inline-block;
 	position: relative;
 	height: 100%;
 	padding: 0 0 0 50px;
 }
 
-#left_menu li {
+#left_group li {
 	margin: 0px;
 }
 
-#left_menu img {
+#left_group img {
 	margin-left: 0;
 	margin-right: 0;
 }
 
-.right_menu {
+.right_group {
 	padding-left: 0;
 	display: inline-block;
 	width: 58%;
 	height: 100%;
 }
-#left_menu li:nth-child(1) img{
-	background-color: #f37321;
-}
+
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
+	height: 100%;
 	font-weight: 500;
 }
 
@@ -320,16 +419,15 @@ a {
 }
 
 .board_list {
-	width: 100%;
 	border-top: 2px solid #2e3459;
 }
-
 #path_info {
 	width: calc(100% -20px);
 	height: 35px;
 	font-size: 10pt;
 	padding-top: 10px;
 	padding-left: 20px;
+	text-align: left;
 }
 
 #path_info {
@@ -344,6 +442,80 @@ a {
 	height: 20px;
 }
 
+.map_wrap {
+	padding-top: 30px;
+	width: 100%;
+	height: 700px;
+}
+
+.map_wrap img {
+	width: 100%;
+	height: 700px;
+}
+
+.map_pin {
+	position: absolute;
+	top: 900px;
+	left: 300px;
+	width: 200px;
+	height: 140px;
+	margin: 22px 25px 0 25px;
+	border-radius: 10px;
+	box-shadow: rgb(0 0 0/ 9%) 0 6px 9px 0;
+	color: #2e3459;
+	border: 2px solid #f37321;
+}
+
+.map_pin img {
+	width: 200px;
+	height: 140px;
+	border-radius: 10px;
+}
+
+.pin_cnt {
+	position: relative;
+	top: -150px;
+	left: 182px;
+	background-color: #f37321;
+	color: white;
+	border-radius: 100px;
+	font-size: 12pt;
+	width: 25px;
+	text-align: center;
+	font-weight: bold;
+	padding: 8px 5px 8px 5px;
+}
+
+.tri {
+	position: relative;
+	top: -35px;
+	left: 93px;
+	width: 0px;
+	height: 0px;
+	border-top: 10px solid #f37321;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+}
+
+#footer {
+	display: block;
+	width: 100%;
+	height: 100px;
+	background-color: #2e3459;
+	color: #FFFFFF;
+	font-size: 15px;
+}
+
+#footer p {
+	margin: 0px auto;
+	padding-top: 20px;
+	padding-left: 250px;
+	width: 600px;
+	height: 80px;
+}
+#mapOn{
+	background-color: #f37321;
+}
 .gallery {
 	padding: 30px 0 0 45px;
 }
@@ -448,32 +620,83 @@ a {
 	color: red;
 	text-decoration: underline;
 }
-#footer {
-	display: block;
-	width: 100%;
-	height: 100px;
-	background-color: #2e3459;
-	color: #FFFFFF;
-	font-size: 15px;
+.location-image a img {
+  width: 100%; /* need to overwrite inline dimensions */
+  height: 200px;
+}
+h2 {
+  margin-bottom: .5em;
+  margin-left: 150px;
+}
+.grid-container {
+  width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
+  margin: 0px auto 50px auto;
+}
+.child-page-listing{
+	font-size: 14pt;
 }
 
-#footer p {
-	margin: 0px auto;
-	padding-top: 20px;
-	padding-left: 250px;
-	width: 600px;
-	height: 80px;
+/* hover styles */
+.location-listing {
+  position: relative;
 }
-.journal, .thumb{
-	cursor:pointer;
+
+.location-image {
+  line-height: 0;
+  overflow: hidden;
 }
-#admin{
-	display: none;	
+
+.location-image img {
+  filter: blur(0px);
+  transition: filter 0.3s ease-in;
+  transform: scale(1.1);
+}
+.location-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity .5s;
+  background: rgba(90,0,10,0.4);
+  color: white;
+  
+  /* position the text in t’ middle*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-listing:hover .location-title {
+  opacity: 1;
+}
+
+.location-listing:hover .location-image img {
+  filter: blur(2px);
+}
+
+
+/* for touch screen devices */
+@media (hover: none) { 
+  .location-title {
+    opacity: 1;
+  }
+  .location-image img {
+    filter: blur(2px);
+  }
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function() {
 	var path = "";
 	
 	if("${sPHOTO_PATH}" != "")
@@ -493,7 +716,7 @@ $(document).ready(function(){
 	{
 		$("#admin").show();
 	}
-
+	
 	var html = "";  
 	
 	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
@@ -501,18 +724,27 @@ $(document).ready(function(){
 	html += "<span>${sINTRO}</span>"; 
 	
 	$(".info").html(html);
-
- 	var params = $("#memForm").serialize();
+	
+	loadPage();
+	
+	$(".paging_wrap").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		loadPage();
+	}); //paging_wrap click end
+});//document ready end
+function loadPage()
+{
+	var params = $("#detailForm").serialize();
 	
 	$.ajax({
-		url: "myPageJournals",
+		url: "regionDetails",
 		data: params,
 		dataType: "json",
 		type: "post",
 		success: function(result){
 			if(result.msg == "success")
 			{
-				makeGallery(result.myPage);
+				makeGallery(result.regionList);
 				makePage(result.pb);
 			}
 			else
@@ -525,64 +757,15 @@ $(document).ready(function(){
 		}//error end
 	}); //ajax end 
 	
-	$(".paging_wrap").on("click", "span", function() {
-		$("#page").val($(this).attr("name"));
-		
-		var params = $("#memForm").serialize();
-		
-		$.ajax({
-			url: "myPageJournals",
-			data: params,
-			dataType: "json",
-			type: "post",
-			success: function(result){
-				if(result.msg == "success")
-				{
-					makeGallery(result.myPage);
-					makePage(result.pb);
-					$("html").scrollTop(300);
-				}
-				else
-				{
-					alert("오류 발생");
-				}
-			},//success end
-			error: function(error){
-				console.log(error);
-			}//error end
-		}); //ajax end 
-	}); //paging_wrap click end
-	
-	$("#profilePhoto").on("click", function(){
-		$("#notification").css("display", "none");
-		if($("#profileSlidedown").css("display") == "block")
-		{
-			$("#profileSlidedown").css("display", "none");
-		}
-		else
-		{
-			$("#profileSlidedown").css("display", "block");
-		}
-	}); //profilePhoto click end
-	
-	$(".gallery").on("click", "span, strong", function(){
-		console.log($(this).attr($(this).attr("class")));
-	}); //post click span end
-	
-	$("#follower").on("click", function(){
-		location.href = "myPageFollower";
-	}); //follower click end
-	
-	$("#following").on("click", function(){
-		location.href = "myPageFollowing";
-	}); //following click end
-
-}); //document ready end
-function makeGallery(myPage)
+	$("article").on("click",function(){
+		$("#regionNo").val($(this).attr("id").substring(1));
+	}); //article click end
+}
+function makeGallery(regionList)
 {
 	var html = "";
 	
-	for(data of myPage)
+	for(data of regionList)
 	{ 
 		html += "   <div class=\"post\">";
 		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
@@ -656,35 +839,49 @@ function makePage(pb)
 </script>
 </head>
 <body>
-<form action="#" id="memForm">
-	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="page" name="page" value="${page}"/>
+<form action="#" id="detailForm">
+	<input type="hidden" id="cnt" name="cnt" value="${cnt}">
+	<input type="hidden" id="page" name="page" value="1">
+	<input type="hidden" id="regionNo" name="regionNo" value="${regionNo}">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }">
 </form>
 	<div id="wrap">
+		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
+						<!-- 밑에 logins와 연동 -->
 						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="bell_icon" id="notificationPhoto">
-							
-							</li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
-							<li><img alt="프로필" src="" id="profilePhoto">
-								<ul id="profileSlidedown">
-									<li id="myPage">마이 페이지</li>
-									<li id="timeline">타임라인</li>
-									<li id="editProfile">프로필 수정</li>
-									<li id="editInfo">회원정보 수정</li>
-									<li id="logoutBtn">로그아웃</li>
+							<li><img alt="bell" src="./resources/images/bell.png" class="./resources/images/bell_icon">
+								<div class="timeline">
+								</div></li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
+							<li><img alt="프로필" src="./resources/images/profile.png">
+								<ul id="dd">
+									<li>마이 페이지</li>
+									<li>프로필 수정</li>
+									<li>회원정보 수정</li>
+									<li>로그아웃</li>
 								</ul></li>
 						</ul>
-					</div> <!-- btns end -->
+					</div>
+					<div class="logins">
+						<div class="sub_login1">
+							<input type="button" class="login_btn" value="로그인" /> <input
+								type="password" class="login" placeholder="PW" /> <input
+								type="text" class="login" placeholder="ID" />
+						</div>
+						<div class="sub_login2">
+							<span>회원가입</span> <span>ID/PW 찾기</span>
+						</div>
+					</div>
 				</div>
+				<!-- 호버시 메뉴 생성 -->
 			</div>
 			<nav class="menu">
 				<ul>
@@ -706,40 +903,41 @@ function makePage(pb)
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				
+				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
+				<div>닉네임</div>
+				<span>소개글</span>
 			</div>
 		</div>
 		<div id="container">
 			<div class="board_list_wrap">
 				<div class="board_menu">
 					<nav class="menu_nav">
-						<ul id="left_menu">
-							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL}</li>
+						<ul id="left_group">
+							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
+							<li><img alt="map" id="mapOn" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL }</li>
 						</ul>
-						<ul class="right_menu">
-							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									${sBMK}</li>
-							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
-									${sFOLLOWER}</li>
-							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
-									${sFOLLOWING}</li>
+						<ul class="right_group">
+							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
+									${sBMK }</li>
+							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
+									${sFOLLOWER }</li>
+							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
+									${sFOLLOWING }</li>
 						</ul>
 					</nav>
-				</div> <!-- board_menu end -->
+				</div>
 				<div id="path_info">
 					<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
-					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span>
-					&nbsp;>&nbsp;&nbsp;썸네일
-				</div> <!-- path_info end -->
+					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span> &nbsp;>&nbsp;&nbsp;지도
+				</div>
 				<div class="gallery">
 					
 				</div><!-- gallery end -->
 				<div class="paging_wrap">
 				
 				</div> <!-- paging_wrap end -->
-			</div> <!-- board_list_wrap end -->
+			</div>
 		</div>
 	</div>
 	<div id="footer">
@@ -748,5 +946,6 @@ function makePage(pb)
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
 	</div>
+
 </body>
 </html>

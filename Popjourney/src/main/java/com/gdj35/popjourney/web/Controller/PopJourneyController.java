@@ -1370,13 +1370,13 @@ public class PopJourneyController {
 		public String journalListCnts(@RequestParam HashMap<String, String> params) throws Throwable {
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> modelMap = new HashMap<String, Object>();
-			System.out.println("값 찎어보기!!!!!!!!!!!!!!!!!"+params);
+			
 			 try {
 				 int cntList = ipjs.journalListCnt(params);
 				 int page = Integer.parseInt(params.get("page"));
-				 System.out.println("page!!!!!!!!!!!!!!!!!"+page);
+				 System.out.println("으아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ"+cntList);
 				 PagingBean pb = ips.getPagingBean(page, cntList, 15, 5);
-				 System.out.println("pb##########################"+pb);
+				 
 
 				 params.put("startCnt", Integer.toString(pb.getStartCount()));
 				 params.put("endCnt", Integer.toString(pb.getEndCount()));
@@ -1409,12 +1409,59 @@ public class PopJourneyController {
 			return mav;
 		}
 		
-		//게시글 목록
+		//지역별 사진
 		@RequestMapping(value = "/myPageMap")
 		public ModelAndView myPageMap(ModelAndView mav) {
 			
 			mav.setViewName("LES/myPageMap");
 
 			return mav;
+		}
+		
+		//지역별 사진 모아보기
+		@RequestMapping(value = "/myPageMapDetail")
+		public ModelAndView myPageMapDetail(ModelAndView mav, @RequestParam HashMap<String, String> params)throws Throwable {
+			
+			int cnt = ipjs.regionListCnt(params);
+			
+			mav.addObject("regionNo", params.get("regionNo"));
+			mav.addObject("cnt", cnt);
+			mav.setViewName("LIB/myPageMapDetail");
+
+			return mav;
+		}
+		
+		//일지 리스트 그리기
+		@RequestMapping(value = "/regionDetails", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String regionDetails(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			 try {
+				 int cnt = Integer.parseInt(params.get("cnt"));
+				 int page = Integer.parseInt(params.get("page"));
+				 PagingBean pb = ips.getPagingBean(page, cnt, 15, 5);
+				
+				 params.put("startCnt", Integer.toString(pb.getStartCount()));
+				 params.put("endCnt", Integer.toString(pb.getEndCount()));
+
+				 List<HashMap<String, String>> regionList = ipjs.regionList(params);
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("pb", pb);
+					 modelMap.put("regionList", regionList);
+				 }
+				 else if(cnt== 0)
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
 		}
 }
