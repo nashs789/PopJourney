@@ -16,18 +16,6 @@ public interface IEsPopjourneyService {
 	public int postUpdate(HashMap<String, String> params) throws Throwable;
 
 	public int postDeletes(HashMap<String, String> params) throws Throwable;
-	
-	public int getJournalCnt(HashMap<String, String> params)throws Throwable;
-
-	public List<HashMap<String, String>> journalList(HashMap<String, String> params) throws Throwable;
-
-	public int addJournal(HashMap<String, String> params) throws Throwable;
-	
-	public HashMap<String, String> getJournal(HashMap<String, String> params) throws Throwable;
-
-	public int updateJournal(HashMap<String, String> params) throws Throwable;
-
-	public int deleteJournal(HashMap<String, String> params) throws Throwable;
 
 	public int getPostFCnt(HashMap<String, String> params) throws Throwable;
 
@@ -42,6 +30,8 @@ public interface IEsPopjourneyService {
 	public List<HashMap<String, String>> getPostCMTList(HashMap<String, String> params) throws Throwable;
 
 	public int getPostNo(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> editPost(HashMap<String, String> params) throws Throwable;
 
 	
 

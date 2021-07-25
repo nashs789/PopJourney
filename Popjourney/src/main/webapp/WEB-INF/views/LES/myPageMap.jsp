@@ -364,63 +364,68 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	font-weight: 900;
 }
 
-.menu_nav ul li a {
+.menu_nav ul li  {
 	display: inline-block;
 	height: 50px;
 	text-decoration: none;
 	color: #2e3459;
 }
-
-.menu_nav ul li a:hover img, .menu_nav ul li a.on img {
+.menu_nav ul li:hover img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
 
-.menu_nav ul li a img {
+.menu_nav ul li img {
 	margin: 10px 20px 0px 20px;
 	padding: 4px;
 	width: 30px;
 	height: 30px;
 	background-color: #2e3459;
 	border-radius: 100px;
+	cursor: pointer;
 }
 
-#left_menu {
+#left_group {
 	display: inline-block;
 	position: relative;
 	height: 100%;
 	padding: 0 0 0 50px;
 }
 
-#left_menu li {
+#left_group li {
 	margin: 0px;
 }
 
-#left_menu img {
+#left_group img {
 	margin-left: 0;
 	margin-right: 0;
 }
 
-.right_menu {
+.right_group {
 	padding-left: 0;
 	display: inline-block;
 	width: 58%;
 	height: 100%;
 }
-#left_menu li:nth-child(2) img{
+
+#left_group li:nth-child(2) img{
 	background-color: #f37321;
 }
+
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
-	height: 1000px;
+	height: 100%;
 	font-weight: 500;
 }
 
-.board_list {
-	width: 100%;
-	border-top: 2px solid #2e3459;
+a {
+	text-decoration: none;
+	color: inherit;
 }
 
+.board_list {
+	border-top: 2px solid #2e3459;
+}
 #path_info {
 	width: calc(100% -20px);
 	height: 35px;
@@ -603,11 +608,11 @@ $(document).ready(function() {
 			<div class="board_list_wrap">
 				<div class="board_menu">
 					<nav class="menu_nav">
-						<ul id="left_menu">
+						<ul id="left_group">
 							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
 							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
 						</ul>
-						<ul class="right_menu">
+						<ul class="right_group">
 							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
 									100</li>
 							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
@@ -627,7 +632,7 @@ $(document).ready(function() {
 					<div class="map_pin">
 						<img alt="일지" src="./resources/images/a1.jpg">
 						<div class="pin_cnt">50</div>
-						<div c  lass="tri"></div>
+						<div class="tri"></div>
 					</div>
 				</div>
 			</div>

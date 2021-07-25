@@ -1003,7 +1003,7 @@ $(document).ready(function(){
 		}// if ~ else end
 	}); //loginBtn click end
 	$("#postEditBtn").on("click", function () {
-		$("#goForm").attr("action","postWrite");
+		$("#goForm").attr("action","postUpdate");
 		$("#goForm").submit();
 	});
 	
@@ -1113,10 +1113,13 @@ function popup() {
          </div>
          <form action="#" id="goForm" method="post"> 
 			<input type="hidden" name="postNo" value="${data.POST_NO}"/>
+			<input type="hidden" name="postTitle" value="${data.TITLE}"/>
+			<input type="hidden" name="postCategoryNo" value="${data.CATEGORY_NO}"/>
+			<input type="hidden" name="postContents" value="${data.CONTENTS}"/>
 			<input type="hidden" name="page" value="${param.page}" />
 			<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
 			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
-		</form>
+		 </form>
 		<div id="path_info">
 			<span> 
 			<img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
@@ -1126,16 +1129,16 @@ function popup() {
 			&nbsp;&nbsp;>&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${data.CATEGORY_NO eq 1}">
-					</span>공지사항<span>
+					공지사항
 				</c:when>
 				<c:when test= "${data.CATEGORY_NO eq 2}">
-					</span>여행꿀팁<span>
+					여행꿀팁
 				</c:when>
 				<c:when test="${data.CATEGORY_NO eq 3}">
-					</span>Q & A<span>
+					Q & A
 				</c:when>
 				<c:when test="${data.CATEGORY_NO eq 4}">
-					</span>잡&nbsp;&nbsp;&nbsp;담<span>
+					잡&nbsp;&nbsp;&nbsp;담
 				</c:when>
 			</c:choose>
 			&nbsp;>&nbsp;&nbsp;${data.TITLE}

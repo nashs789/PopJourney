@@ -44,36 +44,6 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 	}
 
 	@Override
-	public int getJournalCnt(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.getJournalCnt(params);
-	}
-	
-	@Override
-	public List<HashMap<String, String>> journalList(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.journalList(params);
-	}
-
-	@Override
-	public int addJournal(HashMap<String, String> params) throws Throwable{
-		return iEsPopjourneyDao.addJournal(params);
-	}
-
-	@Override
-	public HashMap<String, String> getJournal(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.getJournal(params);
-	}
-
-	@Override
-	public int updateJournal(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.updateJournal(params);
-	}
-
-	@Override
-	public int deleteJournal(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.deleteJournal(params);
-	}
-
-	@Override
 	public int getPostFCnt(HashMap<String, String> params) throws Throwable {
 		return iEsPopjourneyDao.getPostFCnt(params);
 	}
@@ -106,6 +76,11 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 	@Override
 	public int getPostNo(HashMap<String, String> params) throws Throwable {
 		return iEsPopjourneyDao.getPostNo(params);
+	}
+
+	@Override
+	public HashMap<String, String> editPost(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.editPost(params);
 	}
 
 	
