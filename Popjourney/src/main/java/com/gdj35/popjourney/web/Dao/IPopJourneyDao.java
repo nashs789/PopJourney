@@ -109,4 +109,6 @@ public interface IPopJourneyDao {
 
 	int journalListCnt(HashMap<String, String> params)throws Throwable;
 
+	HashMap<String, String> getNumber(HashMap<String, String> params)throws Throwable;
+
 }

@@ -95,4 +95,12 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> getNicDetailList(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getJournal(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getMemoData(HashMap<String, String> params) throws Throwable;
+
+	public int getSequenceCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getHash(HashMap<String, String> params) throws Throwable;
+
 }

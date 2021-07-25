@@ -928,13 +928,19 @@
 		                                     ON M.MEM_NO = J.MEM_NO
 		                        LEFT OUTER JOIN (SELECT J.MEM_NO, SUM(JL.JOURNAL_LIKE_CNT) AS JOURNAL_LIKE_CNT
 		                                         FROM JOURNAL J INNER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
-		                                                                    FROM JOURNAL_LIKE
+		                                                                    FROM JOURNAL_LIKE JL INNER JOIN (SELECT M.MEM_NO
+		                                                                                                     FROM MEM M
+		                                                                                                     WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                                                                                                 ON JL.MEM_NO = M.MEM_NO
 		                                                                    GROUP BY JOURNAL_NO) JL
 		                                                                ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                                         GROUP BY J.MEM_NO) JL
 		                                     ON M.MEM_NO = JL.MEM_NO
 		                        LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS FOLLOW_CNT
-		                                         FROM FOLLOW
+		                                         FROM FOLLOW F INNER JOIN (SELECT M.MEM_NO
+		                                                                   FROM MEM M
+		                                                                   WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                                                               ON F.REQUEST_MEM_NO = M.MEM_NO
 		                                         GROUP BY TARGET_MEM_NO) F
 		                                     ON M.MEM_NO = F.TARGET_MEM_NO
 		                             INNER JOIN (SELECT R.MEM_NO, SUM( (R.JOURNAL_CNT * 5) + (R.JOURNAL_LIKE_CNT * 1) + (R.FOLLOW_CNT * 1) ) AS SUM
@@ -951,13 +957,19 @@
 		                                                                  ON M.MEM_NO = J.MEM_NO
 		                                                     LEFT OUTER JOIN (SELECT J.MEM_NO, SUM(JL.JOURNAL_LIKE_CNT) AS JOURNAL_LIKE_CNT
 		                                                                      FROM JOURNAL J INNER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
-		                                                                                                 FROM JOURNAL_LIKE
+		                                                                                                 FROM JOURNAL_LIKE JL INNER JOIN (SELECT M.MEM_NO
+									                                                                                                      FROM MEM M
+									                                                                                                      WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+									                                                                                                  ON JL.MEM_NO = M.MEM_NO
 		                                                                                                 GROUP BY JOURNAL_NO) JL
 		                                                                                             ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                                                                      GROUP BY J.MEM_NO) JL
 		                                                                  ON M.MEM_NO = JL.MEM_NO
 		                                                     LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS FOLLOW_CNT
-		                                                                      FROM FOLLOW
+		                                                                      FROM FOLLOW F INNER JOIN (SELECT M.MEM_NO
+									                                                                    FROM MEM M
+									                                                                    WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+									                                                                ON F.REQUEST_MEM_NO = M.MEM_NO
 		                                                                      GROUP BY TARGET_MEM_NO) F
 		                                                                  ON M.MEM_NO = F.TARGET_MEM_NO
 		                                               WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R
@@ -965,6 +977,104 @@
 		                                     ON M.MEM_NO = S.MEM_NO
 		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R) R) R
 		WHERE R.RNK BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<select id="getJournal" parameterType="hashmap" resultType="hashmap">
+		SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH, G.GRADE_NO, G.GRADE_NAME, NVL(MJC.MEM_JOURNAL_CNT, 0) AS MEM_JOURNAL_CNT, NVL(F.MEM_FOLLOW_CNT, 0) AS MEM_FOLLOW_CNT,
+		       J.JOURNAL_NO, J.CATEGORY, J.SUB_CATEGORY, J.TITLE, TO_CHAR(J.START_DATE, 'YYYY-MM-DD') AS START_DATE, TO_CHAR(J.END_DATE, 'YYYY-MM-DD') AS END_DATE, 
+      		   TO_CHAR(J.JOURNAL_DATE, 'YYYY-MM-DD') AS JOURNAL_DATE, J.HIT, J.REGION_NO,
+               JD.JOURNAL_SEQUENCE, TO_CHAR(JD.TRAVEL_DATE, 'YYYY-MM-DD') AS TRAVEL_DATE, JD.EXPENSE, JD.PHOTO_PATH AS JOURNAL_PHOTO_PATH, JD.ADDR, JD.MEMO, JD.CONTENTS,
+		       NVL(JOURNAL_LIKE_CNT, 0) AS JOURNAL_LIKE_CNT, NVL(JC.JOURNAL_CMT_CNT, 0) AS JOURNAL_CMT_CNT,
+		       CATE.CATEGORY_NAME, SUB_CATE.SUB_CATEGORY_NAME, H.HASH,
+		       M.LEAVE_DATE, J.DEL
+		FROM MEM M INNER JOIN JOURNAL J
+		                   ON M.MEM_NO = J.MEM_NO
+		                  AND J.DEL = 1
+		                  AND J.JOURNAL_NO = #{journalNo}
+		           INNER JOIN JOURNAL_DETAIL JD
+		                   ON J.JOURNAL_NO = JD.JOURNAL_NO
+		                  AND JD.JOURNAL_SEQUENCE = 1
+		      LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
+		                       FROM JOURNAL_LIKE
+		                       GROUP BY JOURNAL_NO) JL
+		                   ON J.JOURNAL_NO = JL.JOURNAL_NO
+		      LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS JOURNAL_CMT_CNT
+		                       FROM (SELECT JC.JOURNAL_CMT_NO, JC.MEM_NO, JC.JOURNAL_NO, JC.PARENTS_CMT_NO, JC.CONTENTS AS CMT_CONTENTS, JC.CMT_DATE, JC.DEL,
+		                                    M.NIC, M.MEM_PHOTO_PATH
+		                             FROM JOURNAL_CMT JC INNER JOIN (SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH 
+		                                                             FROM MEM M
+		                                                             WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                                                         ON JC.MEM_NO = M.MEM_NO) JC
+		                       GROUP BY JC.JOURNAL_NO) JC
+		                   ON J.JOURNAL_NO = JC.JOURNAL_NO
+		           INNER JOIN (SELECT J.JOURNAL_NO, JC.SUB_CATEGORY_NAME AS CATEGORY_NAME
+		                       FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                                              ON J.CATEGORY = JC.SUB_CATEGORY_NO
+		                                             AND JC.CATEGORY_NO = 0) CATE
+		                   ON J.JOURNAL_NO = CATE.JOURNAL_NO
+		           INNER JOIN (SELECT J.JOURNAL_NO, JC.SUB_CATEGORY_NAME
+		                       FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                                              ON J.CATEGORY = JC.CATEGORY_NO
+		                                             AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO) SUB_CATE
+		                   ON J.JOURNAL_NO = SUB_CATE.JOURNAL_NO
+		      LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS HASH
+		                       FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
+		                                    ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
+		                             FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
+		                                                    ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                                            INNER JOIN HASH H
+		                                                    ON JH.HASH_NO = H.HASH_NO) J
+		                       START WITH J.RNUM = 1
+		                       CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
+		                       AND PRIOR J.RNUM = J.RNUM - 1
+		                       GROUP BY J.JOURNAL_NO) H
+		                   ON J.JOURNAL_NO = H.JOURNAL_NO
+		           INNER JOIN (SELECT M.MEM_NO, G.GRADE_NO, GC.GRADE_NAME
+		                       FROM MEM M INNER JOIN GRADE G
+		                                          ON M.MEM_NO = G.MEM_NO
+		                                  INNER JOIN GRADE_CATEGORY GC
+		                                          ON G.GRADE_NO = GC.GRADE_NO) G
+		                   ON M.MEM_NO = G.MEM_NO
+		      LEFT OUTER JOIN (SELECT MEM_NO, COUNT(*) AS MEM_JOURNAL_CNT
+		                       FROM JOURNAL
+		                       WHERE DEL = 1
+		                       GROUP BY MEM_NO) MJC
+		                   ON M.MEM_NO = MJC.MEM_NO
+		      LEFT OUTER JOIN (SELECT TARGET_MEM_NO, COUNT(*) AS MEM_FOLLOW_CNT
+		                       FROM FOLLOW
+		                       GROUP BY TARGET_MEM_NO) F
+		                   ON M.MEM_NO = F.TARGET_MEM_NO
+		WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+	</select>
+	
+	<select id="getMemoData" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, JD.JOURNAL_SEQUENCE, JD.MEMO
+		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
+		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
+		WHERE J.JOURNAL_NO = #{journalNo}
+		ORDER BY JD.JOURNAL_SEQUENCE ASC
+	</select>
+	
+	<select id="getSequenceCnt" parameterType="hashmap" resultType="Integer">
+		SELECT J.JOURNAL_NO, COUNT(*) AS CNT
+		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
+		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
+		WHERE J.JOURNAL_NO = #{journalNo}
+		GROUP BY J.JOURNAL_NO
+	</select>
+	
+	<select id="getHash" parameterType="hashmap" resultType="hashmap">
+		SELECT J.JOURNAL_NO, J.MEM_NO, JH.HASH_NO, H.HASH_NAME, H.HASH_DATE, H.DEL
+		FROM (SELECT J.JOURNAL_NO, J.MEM_NO
+		      FROM JOURNAL J INNER JOIN MEM M
+		                             ON J.MEM_NO = M.MEM_NO
+		                            AND M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+		      WHERE J.DEL = 1) J INNER JOIN JOURNAL_HASH JH
+		                                 ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                         INNER JOIN HASH H
+		                                 ON JH.HASH_NO = H.HASH_NO
+		                                AND H.DEL = 1
+		WHERE J.JOURNAL_NO = #{journalNo}
 	</select>
 	
 </mapper>

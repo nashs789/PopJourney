@@ -324,4 +324,10 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.journalListCnt(params);
 	}
+
+	@Override
+	public HashMap<String, String> getNumber(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.getNumber(params);
+	}
 }
