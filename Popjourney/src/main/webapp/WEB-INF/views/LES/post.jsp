@@ -525,7 +525,9 @@ p {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
-
+#cmtEditBtn, #cmtCancelBtn {
+	display: none;
+} 
 .reply_edit_btn {
 	margin: 0;
 	padding: 5px 10px;
@@ -572,7 +574,7 @@ p {
 }
 
 .post_label_title {
-	width: 70%;
+	width: 700px;
 	position: relative;
 	margin-left: 580px;
 	font-weight: bold;
@@ -615,6 +617,7 @@ p {
 .cmt_area {
 	width: 1280px;
 	height: 100%;
+	margin-top: 50px;
 }
 
 .cmt_top {
@@ -936,18 +939,46 @@ input[type="radio"]:checked {
 <script type="text/javascript">
 $(document).ready(function(){
 	if("${sMEM_NO}" == "${data.MEM_NO}") { // 로그인 상태
+		$(".btns").css("display","inline-block");
+		$(".logins").css("display","none");
 		$(".btn_list").css("display","inline-block");
 		$(".reaction").css("display","none");
-		$(".cmt_area").css("margin-top","50px");
 	} 
 	if("${sMEM_NO}" == ""){
 		$(".reaction").css("display","none");
+	}
+	if("${sMEM_NO}" != "1"){
+		$("#admin").css("display","none");
 	} 
-	 if("${likeCheck.POST_NO}"!="") {
-		$(".reaction").children("ul").children("li").children("img").attr("like","1");
-		$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
-	} 
+	likeReload();
+	// 로그인 기능
+	$(".login_btn").on("click", function () {
+		if($.trim($("#inputID").val())==""){
+			alert("아이디를 입력해 주세요.");
+			$("#inputID").focus();
+		} else if ($.trim($("#inputPW").val())=="") {
+			alert("비밀번호를 입력해 주세요.");
+			$("#inputPW").focus();
+		} else {
+			var params = $("#loginForm").serialize();
+			$.ajax({
+				url:"logins", 
+				type: "post", 
+				dataType: "json", 
+				data : params, 
+				success: function(res){
+						location.reload();
+				}, 
+				error: function (request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});//login_btn end
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$(".logo_photo").on("click", function() {
+  		location.href = "main";
+  	});
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   	});
@@ -1052,42 +1083,46 @@ $(document).ready(function(){
 	});
 	
 	$("#prevPost").on("click", function(){
-			$("#prevPostForm").submit();
+		$("#prevPostForm").submit();
 	}); //prevPost click end
 	
 	$("#nextPost").on("click", function(){
-			$("#nextPostForm").submit();
+		$("#nextPostForm").submit();
 	}); //nextPost click end
 	
 	$(".reaction").on("click","img", function(){
 		var like = $(this).attr("like");
-		
+		var params = $("#likeForm").serialize();
 		console.log(like);
 		//console.log(params);
-		if(like=0){ //좋아요 x : 좋아요 기능
+		if(like == 0){ //좋아요 x : 좋아요 기능
+			console.log("좋아요!");
 			$.ajax({
 				url:"postLikes", 
 				type: "post",
 				dataType: "json",
 				data : params,
 				success: function(res){
-					if(result.msg == "success")
+					if(res.msg == "success")
 					{
+						likeReload();
 					}
 				}, //success end
 				error: function (request, status, error) {
 					console.log(error);
 				}//error end
 			});//ajax end
-		} else if(like=1) { //좋아요 o : 좋아요 취소기능
+		} else if(like == 1) { //좋아요 o : 좋아요 취소기능
+			console.log("좋아요 취소");
 			$.ajax({
 				url:"postLikeCancles", 
 				type: "post",
 				dataType: "json",
 				data : params,
 				success: function(res){
-					if(result.msg == "success")
+					if(res.msg == "success")
 					{
+						likeReload();
 					}
 				}, //success end
 				error: function (request, status, error) {
@@ -1096,9 +1131,58 @@ $(document).ready(function(){
 			});//ajax end
 		}
 	});
+	//댓글 작성버튼
+	$("#cmtEnrollBtn").on("click", function() {
+		if($.trim($("#cmtCon").val()) == "") {
+			alert("내용을 입력하십시오.");
+			$("#cmtCon").focus();
+		} else {
+			var params = $("#cmtForm").serialize();
+			
+			$.ajax({
+				url : "postCmtWrites",
+				type : "post",
+				dataType : "json",
+				data : params,
+				success : function(res) {
+					if(res.msg == "success") {
+						$("#cmtCon").val("");
+						console.log("작성완료");
+					} else if(res.msg == "failed") {
+						alert("작성에 실패하였습니다.");
+					} else {
+						alert("작성중 문제가 발생하였습니다.");
+					}
+				},
+				error : function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
+	
+	//페이징
+	$(".paging").on("click", "span", function() {
+		$("#page").val($(this).attr("name"));
+		cmtReloadList();
+	});
+});// document ready end
 
-});
 
+
+function likeReload() {
+
+	console.log($(".reaction").children("ul").children("li").children("img").val());
+	if("${likeCheck.POST_NO}"!="") {//좋아요 x
+		
+		$(".reaction").children("ul").children("li").children("img").attr("like","1");
+		$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
+	} else { //좋아요 o
+		
+		$(".reaction").children("ul").children("li").children("img").attr("like","0");
+		$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459");
+	}
+}	
 //조회수
 function hitCnt() {
 	console.log(params);
@@ -1135,12 +1219,18 @@ function popup() {
    </head>
    <body>
 	<form action="#" id="prevPostForm" method="post">
-		<input type="hidden" id="prevPostNo" name="postNo" value="${prePost.POST_NO}"/>
+		<input type="hidden" id="prevPostNo" name="postNo" value="${prevPost.POST_NO}"/>
 		<input type="hidden" id="pNewPostNo" name="newPostNo" value="1"/>
+		<input type="hidden" id="ploginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
    </form>
    <form action="#" id="nextPostForm" method="post">
-   		<input type="hidden" id="netPostNo" name="postNo" value="${nextPost.POST_NO}">
+   		<input type="hidden" id="nextPostNo" name="postNo" value="${nextPost.POST_NO}"/>
 		<input type="hidden" id="nNewPostNo" name="newPostNo" value="1"/>
+		<input type="hidden" id="nloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
+   </form>
+   <form action="#" id="likeForm" method="post">
+   		<input type="hidden" id="lLoginUserNo" name="loginUserNo" value="${sMEM_NO}"/> 
+   		<input type="hidden" id="likePostNo" name="postNo" value="${data.POST_NO}"/>
    </form>
       <div id="wrap">
          <!-- header부분 고정 -->
@@ -1167,14 +1257,16 @@ function popup() {
 								</ul></li>
 						</ul>
 					</div>
-                  <div class="logins">
-                     <div class="sub_login1">
-                        <input type="button" class="login_btn" value="로그인" />
-                        <input type="password" class="login" placeholder="PW" />
-                        <input type="text" class="login" placeholder="ID" />
-                     </div>
-                     <div class="sub_login2">
-                        <span>회원가입</span>
+				<div class="logins">
+					<div class="sub_login1">
+						<form action="#" id="loginForm" method="post">
+							<input type="button" class="login_btn" value="로그인" /> 
+							<input type="password" class="login" id="inputPW" name="inputPW" placeholder="PW" /> 
+							<input type="text" class="login" id="inputID" name="inputID" placeholder="ID" />
+						</form>
+					</div>
+					<div class="sub_login2">
+ 						<span>회원가입</span>
                         <span>ID/PW 찾기</span>
                      </div>
                   </div>
@@ -1200,8 +1292,8 @@ function popup() {
             </select>
          </div>
          <form action="userPage" id="userForm" method="post">
-	<input type="hidden" id="userNo" name="userNo" value="${data.MEM_NO}"/>
-</form>	
+			<input type="hidden" id="userNo" name="userNo" value="${data.MEM_NO}"/>
+		 </form>	
          <form action="#" id="goForm" method="post"> 
 			<input type="hidden" name="postNo" value="${data.POST_NO}"/>
 			<input type="hidden" name="editPostNo" value="${data.POST_NO}"/>
@@ -1309,7 +1401,7 @@ function popup() {
             	</div>
             	<div class="post_page">
             		<div class="post_label">이전글</div>
-            		<div class="post_label_title" id="prevPost">${prePost.TITLE}</div>
+            		<div class="post_label_title" id="prevPost">${prevPost.TITLE}</div>
             	</div>
             	<c:choose>
             		<c:when test="${!empty nextPost.TITLE}">
@@ -1327,10 +1419,16 @@ function popup() {
 				<div class="cmt_top">
 					<span>댓글 </span><span>${data.POST_CMT_CNT}</span><span> 개</span>
 				</div>
-				<div class="cmt_bottom">
-					<textarea rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-					<input type="button" class="edit_btn" value="등  록" />
-				</div>
+				<form action="#" id="cmtForm" method="post">
+					<input type="hidden" id="cmtPostNo" name="postNo" value="${data.POST_NO}"/>
+					<input type="hidden" id="cmtloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
+						<div class="cmt_bottom">
+							<textarea id="cmtCon" name="cmtCon" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
+							<input type="button" class="edit_btn" id="cmtEnrollBtn" value="등  록" />
+							<input type="button" class="delete_btn" id="cmtCancelBtn" value="취  소" />
+							<input type="button" class="edit_btn" id="cmtEditBtn" value="수  정" />
+						</div>
+				</form>
 				<div class="cmt_list">
 					<div class="cmt_contents">
 						<div class="cmt_contents_left">
@@ -1393,13 +1491,15 @@ function popup() {
 					<div class="cmt_cmt_contents">
 						<div class="cmt_contents_right">
 							<div class="cmt_bottom">
-								<textarea class="reply"  rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-								<br/><input type="button" class="reply_edit_btn" value="등  록" />
+								<textarea class="reply"  rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea><br/>
+								<input type="button" class="reply_edit_btn" value="등  록" />
+								<input type="button" class="delete_btn" id="replyCancelBtn" value="취  소" />
+								<input type="button" class="reply_edit_btn" id="replyEditBtn" value="수  정" />
 							</div>
 						</div>
 					</div>
-					
 				</div>
+				<div class="paging"></div>
 			</div>
             </div>    
          </div>

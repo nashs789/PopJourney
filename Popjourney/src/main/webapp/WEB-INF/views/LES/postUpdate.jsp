@@ -545,6 +545,9 @@ a {
     z-index: 400;
     opacity: 0.2;
 }
+#cke_40 {
+	display: none;
+}
 </style>
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -559,7 +562,14 @@ $(document).ready(function(){
 		$(".logins").css("display","inline-block");
 		$(".btns").css("display","none");
 	}
+	if("${sMEM_NO}" != "1"){
+		$("#admin").css("display","none");
+	} 
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$(".logo_photo").on("click", function() {
+		alert("변경사항이 저장되지 않습니다.");
+  		location.href = "main";
+  	});
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   		console.log("눌려?");
@@ -715,6 +725,7 @@ $(document).ready(function(){
 		</div>
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+			<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
 			<input type="hidden" id="editPostNo" name="editPostNo" value="${param.postNo}"/>
 			<input type="hidden" id="postNo" name="postNo" value="${param.postNo}"/>
 			<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>

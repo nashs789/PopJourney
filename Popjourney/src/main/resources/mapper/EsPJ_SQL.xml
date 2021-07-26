@@ -354,10 +354,10 @@
 		UPDATE BOARD SET TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categorySelect} 
 		WHERE POST_NO = #{editPostNo}
 	</update>
-	<delete id="postDeletes" parameterType="hashmap">
+	<update id="postDeletes" parameterType="hashmap">
 		UPDATE  BOARD SET DEL = 0
 		WHERE POST_NO = #{postNo}
-	</delete>
+	</update>
 	<select id="nextPost" parameterType="hashmap" resultType="hashmap">
 		SELECT *
 		FROM BOARD
@@ -368,7 +368,7 @@
 		                 WHERE POST_NO > #{postNo}
 		                 AND DEL !=0)
 	</select>
-	<select id="prePost" parameterType="hashmap" resultType="hashmap">
+	<select id="prevPost" parameterType="hashmap" resultType="hashmap">
 		SELECT *
 		FROM BOARD
 		WHERE 1=1
@@ -383,11 +383,19 @@
 	<select id="likeCheck" parameterType="hashmap" resultType="hashmap">
 		SELECT *
     	FROM BOARD_LIKE
-    	WHERE MEM_NO = #{USER_NO}
+    	WHERE MEM_NO = #{loginUserNo}
     	AND POST_NO = #{postNo}
 	</select>
-	<insert id="postLike" parameterType="hashmap">
+	<insert id="addLike" parameterType="hashmap">
 		INSERT INTO BOARD_LIKE (POST_NO,MEM_NO)
-		VALUES(#{postNo},#{MEM_NO})
+		VALUES(#{postNo},#{loginUserNo})
+	</insert>
+	<delete id="delLike" parameterType="hashmap">
+		DELETE FROM BOARD_LIKE
+		WHERE MEM_NO = #{loginUserNo} AND POST_NO = #{postNo} 
+	</delete>
+	<insert id="writeCmt" parameterType="hashmap">
+		INSERT INTO BOARD_CMT (POST_CMT_NO, MEM_NO, POST_NO, CONTENTS)
+		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{cmtCon})
 	</insert>
 </mapper>

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gd.test.common.CommonProperties;
 import com.gdj35.popjourney.common.bean.PagingBean;
 import com.gdj35.popjourney.common.service.IPagingService;
 import com.gdj35.popjourney.web.Service.IEsPopjourneyService;
@@ -52,15 +51,6 @@ public class EsPopJourneyController {
 		return mav;
 
 	}
-	// 마이페이지 북마크
-		@RequestMapping(value = "/myPageMap")
-		public ModelAndView myPageMap2(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-
-			mav.setViewName("LES/myPageMap");
-
-			return mav;
-
-		}
 
 	// 마이페이지 팔로워
 	@RequestMapping(value = "/myPageFollower")
@@ -232,11 +222,11 @@ public class EsPopJourneyController {
 		
 		try {
 			HashMap<String, String> data = iEsPopjourneyService.getPost(params);
-			HashMap<String, String> prePost = iEsPopjourneyService.prePost(params);
+			HashMap<String, String> prevPost = iEsPopjourneyService.prevPost(params);
 			HashMap<String, String> nextPost = iEsPopjourneyService.nextPost(params);
 			HashMap<String, String> likeCheck = iEsPopjourneyService.likeCheck(params);
 			mav.addObject("data",data);
-			mav.addObject("prePost",prePost);
+			mav.addObject("prevPost",prevPost);
 			mav.addObject("nextPost",nextPost);
 			mav.addObject("likeCheck",likeCheck);
 		} catch (Throwable e) {
@@ -342,8 +332,9 @@ public class EsPopJourneyController {
 	public String postLikes(@RequestParam HashMap<String, String> params) throws Throwable {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
 		try {
-			int cnt = iEsPopjourneyService.addPost(params);
+			int cnt = iEsPopjourneyService.addLike(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
@@ -360,21 +351,51 @@ public class EsPopJourneyController {
 	}
 	@RequestMapping(value = "/postLikeCancles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String postLikeCancles(@RequestParam HashMap<String, String> params, ModelAndView modelAndView)
-			throws Throwable {
+	public String postLikeCancles(@RequestParam HashMap<String, String> params, ModelAndView modelAndView) throws Throwable {
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
 		try {
-			iEsPopjourneyService.deleteLike(params);
+			int delcnt = iEsPopjourneyService.delLike(params);
 
-			modelMap.put("message", "success");
+			if(delcnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			modelMap.put("msg","error");
 		}
 
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/postCmtWrites", 
+			method = RequestMethod.POST, 
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtWrites(
+			@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iEsPopjourneyService.writeCmt(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
 		return mapper.writeValueAsString(modelMap);
 	}
 }

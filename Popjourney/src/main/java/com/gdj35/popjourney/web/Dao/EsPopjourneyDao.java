@@ -88,13 +88,28 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 	}
 
 	@Override
-	public HashMap<String, String> prePost(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("EsPJ.prePost", params);
+	public HashMap<String, String> prevPost(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("EsPJ.prevPost", params);
 	}
 
 	@Override
 	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("EsPJ.likeCheck", params);
+	}
+
+	@Override
+	public int addLike(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.addLike", params);
+	}
+
+	@Override
+	public int delLike(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("EsPJ.delLike", params);
+	}
+
+	@Override
+	public int writeCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.writeCmt",params);
 	}
 
 
