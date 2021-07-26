@@ -619,7 +619,6 @@ $(document).ready(function(){
 								$("#writeForm").attr("action", "post");
 								$("#writeForm").submit();
 								console.log(params);
-								alert("@@@@@@@@@@@@@");
 							} else if (res.msg =="failed") {
 								alert("작성에 실패하였습니다.")
 							} else {
@@ -708,7 +707,6 @@ $(document).ready(function(){
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 			<input type="hidden" id="newPostNo" name="newPostNo" value="${postNo}"/>
-			<input type="hidden" id="editPostNo" name="editPostNo" value="${param.postNo}"/>
 			<div class="title_area">
 				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목" size="50" maxlength="30" autofocus required/>
 				<div class="category_area">

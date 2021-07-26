@@ -83,6 +83,21 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.editPost(params);
 	}
 
+	@Override
+	public HashMap<String, String> nextPost(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.nextPost(params);
+	}
+
+	@Override
+	public HashMap<String, String> prePost(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.prePost(params);
+	}
+
+	@Override
+	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.likeCheck(params);
+	}
+
 	
 
 
