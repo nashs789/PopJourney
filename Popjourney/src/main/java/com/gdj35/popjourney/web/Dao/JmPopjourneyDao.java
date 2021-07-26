@@ -256,4 +256,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectList("JmPJ.getHash", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getJournalCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getJournalCmt", params);
+	}
+
+	@Override
+	public int getCmtCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getCmtCnt", params);
+	}
+
+	@Override
+	public int getCmtAdds(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.getCmtAdds", params);
+	}
+
+	@Override
+	public int getCmtNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.getCmtNotf", params);
+	}
+
 }

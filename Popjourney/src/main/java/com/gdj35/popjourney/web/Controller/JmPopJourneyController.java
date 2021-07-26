@@ -1,5 +1,7 @@
 package com.gdj35.popjourney.web.Controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1211,23 +1213,84 @@ public class JmPopJourneyController {
 		int cnt = iJmPopjourneyService.getSequenceCnt(params);  // 이거 왜 안되지..
 		// 여행일지 세부페이지의 해시태그
 		List<HashMap<String, String>> hash = iJmPopjourneyService.getHash(params);
-		// 여행일지 세부페이지의 댓글
 		
-		// 여행일지 세부페이지의 대댓글
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
 		
 		mav.addObject("data", data);
 		mav.addObject("memoData", memoData);
-		mav.addObject("cnt", cnt);
+		mav.addObject("cnt", String.valueOf(cnt));
 		mav.addObject("hash", hash);
+		mav.addObject("page", page);
 		
 		System.out.println("data >> " + data);
 		System.out.println("memoData >> " + memoData);
 		System.out.println("cnt >> " + cnt);
 		System.out.println("hash >> " + hash);
+		System.out.println("page >> " + page);
 		
 		mav.setViewName("CJM/journal");
 		
 		return mav;
+	}
+	
+	@RequestMapping(value="/journalCmts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalCmts(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cmtCnt = iJmPopjourneyService.getCmtCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cmtCnt, 10, 5);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		// 여행일지 세부페이지의 댓글
+		List<HashMap<String, String>> cmt = iJmPopjourneyService.getJournalCmt(params);
+		
+		modelMap.put("pb", pb);
+		modelMap.put("cmt", cmt);
+		
+		System.out.println("journalCmtsParams >> " + params);
+		System.out.println("cmt >> " + cmt);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	@RequestMapping(value="/journalCmtAdds", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalCmtAdds(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		try {
+			int cnt = iJmPopjourneyService.getCmtAdds(params);
+			int cnt2 = iJmPopjourneyService.getCmtNotf(params);
+			
+			if(cnt > 0 || cnt2 > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	
 	}
 	
 	// 여행일지 작성페이지

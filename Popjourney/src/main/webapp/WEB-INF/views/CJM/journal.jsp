@@ -791,6 +791,10 @@ a {
 	resize: none;
 }
 
+#cmtCmtContents {
+	display: none;
+}
+
 .cmt_contents_right .cmt_bottom textarea, reply {
 	width: 1140px;
 	padding: 5px;
@@ -852,6 +856,7 @@ a {
 .cmt_contents_left img {
 	width: 50px;
 	height: 50px;
+	border-radius: 50%;
 }
 
 .cmt_contents_right {
@@ -898,6 +903,10 @@ a {
 .cmt_cmt_date {
 	float: right;
 	margin-right: 50px;
+}
+
+#cmtEditContents {
+	display: none;
 }
 
 #footer {
@@ -1083,30 +1092,255 @@ input[type="radio"]:checked {
 .profile_img {
 	border-radius: 50%;
 }
+
+.paging { 
+    font-size: 0;
+    text-align: center;
+    margin: 40px 0px 60px 0px;
+}  
+.paging div {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12pt; 
+    font-weight: bold;
+    text-decoration: none;
+}   
+.paging_btn {
+    background-color: none;
+    color: #2e3459;
+    letter-spacing:-5px;
+    font-size: 12pt;
+}
+.paging div.num {           
+    color: #2e3459;
+}
+.paging div:first-child {
+    margin-left: 0;
+} 
+.paging div.num:hover,
+.paging div.num.on,
+.paging div.paging_btn:hover  {
+    color: #F1404B;
+    text-decoration: underline;
+    cursor: pointer;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
-	$("#journalBoard").on("click", function() {
-  		location.href = "journalBoard";
-  	});
-	$("#community").on("click", function() {
-  		location.href = "community";
-  	});
-	$("#travelWriter").on("click", function() {
-  		location.href = "travelWriterRank";
-  	});
-	$("#clientCenter").on("click", function() {
-  		location.href = "clientCenterQuestion";
-  	});
-	$("#admin").on("click", function() {
-  		location.href = "memAdmin";
-  	});
+	$(document).ready(function(){
+		
+		reloadList();
+		
+		//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+		$("#journalBoard").on("click", function() {
+	  		location.href = "journalBoard";
+	  	});
+		$("#community").on("click", function() {
+	  		location.href = "community";
+	  	});
+		$("#travelWriter").on("click", function() {
+	  		location.href = "travelWriterRank";
+	  	});
+		$("#clientCenter").on("click", function() {
+	  		location.href = "clientCenterQuestion";
+	  	});
+		$("#admin").on("click", function() {
+	  		location.href = "memAdmin";
+	  	});
+		
+		// 여행게시판 작성자 번호 가져오기
+		$("#journalWriteMemNo").val($(".title_area").attr("journalMno"));
+		
+		// 여행게시판 댓글 작성자 번호 가져오기
+		//$("#cmtWriteMemNo").val($(".cmt_contents").attr("cmtMemNo"));
+		
+		// 페이징 처리
+		$(".paging").on("click", "div", function() {
+			$($("#page").val($(this).attr("page")));
+			reloadList();
+		});
+		
+		// 댓글작성
+		$("#addBtn").on("click", function() {
+			if($.trim($("#cmtContents").val()) == "") {
+				alert("내용을 넣어주세요.");
+				$("#cmtContents").focus();
+			} else {
+				$("#getCmtContents").val($("#cmtContents").val());
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalCmtAdds",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						$("#cmtList").val("");
+						$("#cmtContents").val("");
+						reloadList();
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		});
+			console.log($(".cmt_contents").attr("cmtMemNo"));
+			console.log($(".cmt_contents").val($(".cmt_contents").attr("cmtMemNo")));
+			console.log($(".cmt_contents").attr("cmtMemNo").val));
+			console.log();
+		if($("#memNo").val() == $(".cmt_contents").attr("cmtMemNo")) {
+			$(".cmt_delete_btn").css("display", "inline-block");
+			$(".cmt_edit_btn").css("display", "inline-block");
+		} else {
+			$(".cmt_delete_btn").css("display", "none");
+			$(".cmt_edit_btn").css("display", "none");
+		}
+		
+		
+		//댓글수정
+		$("#cmtList").on("click", ".cmt_edit_btn", function() {
+			$(this).each(function() {
+				$("#cmtEditContents").css("display", "inline-block");
+			});
+		});
+		
+		// 대댓글 작성
+		$("#cmtList").on("click", ".add_cmt_cmt", function() {
+			$("#cmtCmtContents").css("display", "inline-block");
+		});
 	
-	
+	}); // document ready end..
 
-});
+	function reloadList() {
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "journalCmts",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				drawCmt(res.cmt);
+				drawPaging(res.pb);
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		}); // ajax end..
+	} // reloadList() end..
+	
+	function drawCmt(cmt) {
+
+		var html = "";
+		
+		for(i = 0 ; i < cmt.length ; i++) {
+			
+			if(cmt[i].PARENTS_CMT_NO == null) {
+				
+				html += "<div class=\"cmt_contents\" cmtMemNo=\"" + cmt[i].MEM_NO + "\">";
+				html += "	<div class=\"cmt_contents_left\">";
+				html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[i].MEM_PHOTO_PATH + "\">";
+				html += "	</div>";
+				html += "	<div class=\"cmt_contents_right\">";
+				html += "		<strong>" + cmt[i].NIC + "</strong><span class=\"cmt_date\">" + cmt[i].CMT_DATE + "</span><br />";
+				if(cmt[i].GRADE_NO == 2) {
+					html += "	<span><img alt=\"등급\" src=\"./resources/images/grade.png\"> </span><span>" + cmt[i].GRADE_NAME + "</span>";
+				} else {
+					html += "	<span>" + cmt[i].GRADE_NAME + "</span>";
+				}
+				html += "		<div class=\"cmt_txt\">";
+				html += "			<p>" + cmt[i].CMT_CONTENTS + "</p>";
+				html += "		</div>";
+				html += "		<div class=\"cmt_box\">";
+				html += "			<span class=\"add_cmt_cmt\">답글</span>";
+				html += "			<span class=\"cmt_delete_btn\">삭제</span>";
+				html += "			<span class=\"report_btn\">신고</span>";
+				html += "			<span class=\"cmt_edit_btn\">수정</span>";
+				html += "		</div>";
+				html += "	</div>";
+				html += "</div>";
+				html += "<div class=\"cmt_cmt_contents\" id=\"cmtEditContents\">";
+				html += "	<div class=\"cmt_contents_right\">";
+				html += "		<div class=\"cmt_bottom\">";
+				html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+				html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" value=\"등  록\" />";
+				html += "		</div>";
+				html += "	</div>";
+				html += "</div>";
+				html += "<div class=\"cmt_cmt_contents\" id=\"cmtCmtContents\">";
+				html += "	<div class=\"cmt_contents_right\">";
+				html += "		<div class=\"cmt_bottom\">";
+				html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+				html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" value=\"등  록\" />";
+				html += "		</div>";
+				html += "	</div>";
+				html += "</div>";
+				for(j = 0 ; j < cmt.length ; j++) {
+					if(cmt[i].JOURNAL_CMT_NO == cmt[j].PARENTS_CMT_NO) {
+						html += "<div class=\"cmt_cmt_contents\">";
+						html += "	<div class=\"cmt_contents_left\">";
+						html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[j].MEM_PHOTO_PATH + "\">";
+						html += "	</div>";
+						html += "	<div class=\"cmt_contents_right\">";
+						html += "		<strong>" + cmt[j].NIC + "</strong><span class=\"cmt_cmt_date\">" + cmt[j].CMT_DATE + "</span><br />";
+											if(cmt[j].GRADE_NO == 2) {
+						html += "			<span><img alt=\"등급\" src=\"./resources/images/grade.png\"></span><span>" + cmt[j].GRADE_NAME + "</span>";
+											} else {
+						html += "			<span>" + cmt[j].GRADE_NAME + "</span>";
+											}
+						html += "		<div class=\"cmt_txt\">";
+						html += "			<p>" + cmt[j].CMT_CONTENTS + "</p>";
+						html += "		</div>";
+						html += "		<div class=\"cmt_box\">";
+						html += "           <span></span>";
+						html += "			<span>삭제</span>";
+						html += "			<span class=\"report_btn\">신고</span>";
+						html += "			<span>수정</span>";
+						html += "		</div>";
+						html += "	</div>";
+						html += "</div>";
+					}
+				}
+			}
+		}
+			                                                                                                              
+		$("#cmtList").html(html);
+		
+	} // drawCmt(cmt) end..
+	
+	function drawPaging(pb) {
+		var html = "";
+		
+		html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+		
+		if($("#page").val() == "1") {
+			html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+		} else {
+			html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+		}
+		
+		for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+			if($("#page").val() == i) {
+				html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+			} else {
+				html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+			}
+		}
+		
+		if($("#page").val() == pb.maxPcount) {
+			html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+		} else {
+			html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+		}
+		
+		html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+		
+		$(".paging").html(html);
+		
+	}
 
 
 </script>
@@ -1159,8 +1393,9 @@ $(document).ready(function(){
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-				type="text" class="search" placeholder="검색"> <select
+			<img alt="search" src="./resources/images/search.png" class="search_icon" />
+			<input type="text" class="search" placeholder="검색" />
+			<select
 				class="filter">
 				<option value="0">통합검색</option>
 				<option value="1">여행일지</option>
@@ -1173,7 +1408,7 @@ $(document).ready(function(){
 			</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span>여행일지
 			</span> &nbsp;>&nbsp;&nbsp;여행일지 제목
 		</div>
-		<div class="title_area">
+		<div class="title_area" journalMno="${data.MEM_NO}">
 			<div class="title_left">
 				<strong>${data.TITLE}</strong><br /> <br /> <br /> <span>작성일</span> <span>${data.JOURNAL_DATE}</span>
 				<span>조회</span><span>${data.HIT}</span> <span>좋아요</span><span>${data.JOURNAL_LIKE_CNT}</span> <span>댓글</span><span>${data.JOURNAL_CMT_CNT}</span>
@@ -1185,7 +1420,12 @@ $(document).ready(function(){
 		<div class="container_wrap">
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
-					<input type="hidden" id="journalNo" name="journalNo" value="${param.journalNo}" /> <!-- journal = 여행일지NO  -->
+					<input type="hidden" id="journalNo" name="journalNo" value="${param.journalNo}" />
+					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
+					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="getCmtContents" name="getCmtContents"/>
+					<input type="hidden" id="journalWriteMemNo" name="journalWriteMemNo" />
+					<input type="hidden" id="cmtWriteMemNo" name="cmtWriteMemNo" />
 				</form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
@@ -1194,10 +1434,10 @@ $(document).ready(function(){
 					<div class="img_nav">
 						<a>&#60;</a> <a>&#62;</a>
 					</div>
-					<span>1/19</span>
+					<span>1 / 19</span>
 					<div class="img_slide">
 						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
-							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}">
+							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on">
 						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
 					</div>
 					<div class="txt_area">
@@ -1215,17 +1455,6 @@ $(document).ready(function(){
 							<c:forEach items="${hash}" var="h">
 								<li> #${h.HASH_NAME}</li>
 							</c:forEach>
-							<!-- <li> #해시태그 2</li>
-							<li> #해시태그 3</li>
-							<li> #해시태그 4</li>
-							<li> #해시태그 5</li>
-							<li> #해시태그 6</li>
-							<li> #해시태그 7</li>
-							<li> #해시태그 8</li>
-							<li> #해시태그 9</li>
-							<li> #해시태그 10</li>
-							<li> #해시태그 11</li>
-							<li> #해시태그 12</li> -->
 						</ul>
 					</div>
 				</div>
@@ -1266,92 +1495,6 @@ $(document).ready(function(){
 						</span>
 					</div>
 				</c:forEach>
-				
-				
-				<!-- <div class="journal_nav">
-					<div class="idx">1</div>
-					<span>
-						<p>한 줄 메모.....</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">2</div>
-					<span>
-						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">3</div>
-					<span>
-						<p>인도하겠다는 커다란 이상을 품었기 때문</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">4</div>
-					<span>
-						<p>안고 그들에게 밝은 길을 찾아 주</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">5</div>
-					<span>
-						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">6</div>
-					<span>
-						<p>인도하겠다는 커다란 이상을 품었기 때문</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">7</div>
-					<span>
-						<p>안고 그들에게 밝은 길을 찾아 주</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">8</div>
-					<span>
-						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">9</div>
-					<span>
-						<p>인도하겠다는 커다란 이상을 품었기 때문</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">10</div>
-					<span>
-						<p>안고 그들에게 밝은 길을 찾아 주</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">11</div>
-					<span>
-						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">12</div>
-					<span>
-						<p>인도하겠다는 커다란 이상을 품었기 때문</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">13</div>
-					<span>
-						<p>안고 그들에게 밝은 길을 찾아 주</p>
-					</span>
-				</div>
-				<div class="journal_nav">
-					<div class="idx">14</div>
-					<span>
-						<p>주며 그들을 행복스럽고 평화스러운 곳으로</p>
-					</span>
-				</div> -->
 			</div>
 			<div class="post_bottom">
 				<div class="btn_list">
@@ -1370,78 +1513,11 @@ $(document).ready(function(){
 					<span>댓글 </span><span>${data.JOURNAL_CMT_CNT}</span><span> 개</span>
 				</div>
 				<div class="cmt_bottom">
-					<textarea rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-					<input type="button" class="edit_btn" value="등  록" />
+					<textarea id="cmtContents" name="cmtContents" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
+					<input type="button" class="edit_btn" id="addBtn" value="등  록" />
 				</div>
-				<div class="cmt_list">
-					<div class="cmt_contents">
-						<div class="cmt_contents_left">
-							<img alt="프로필" src="./resources/images/profile2.png">
-						</div>
-						<div class="cmt_contents_right">
-							<strong>닉네임</strong><span class="cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
-							<div class="cmt_txt">
-								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
-									있는가</p>
-							</div>
-							<div class="cmt_box">
-								<span>답글</span>
-								<span>삭제</span>
-								<span class="report_btn">신고</span>
-								<span>수정</span>
-								 
-							</div>
-						</div>
-					</div>
-					<div class="cmt_contents">
-						<div class="cmt_contents_left">
-							<img alt="프로필" src="./resources/images/profile2.png">
-						</div>
-						<div class="cmt_contents_right">
-							<strong>닉네임</strong><span class="cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
-							<div class="cmt_txt">
-								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
-									있는가</p>
-							</div>
-							<div class="cmt_box">
-								<span>답글</span>
-								<span>삭제</span>
-								<span class="report_btn">신고</span>
-								<span>수정</span>
-							</div>
-						</div>
-					</div>
-					<div class="cmt_cmt_contents">
-						<div class="cmt_contents_left">
-							<img alt="프로필" src="./resources/images/profile2.png">
-						</div>
-						<div class="cmt_contents_right">
-							<strong>닉네임</strong><span class="cmt_cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
-							<div class="cmt_txt">
-								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
-									있는가</p>
-							</div>
-							<div class="cmt_box">
-								<span>답글</span>
-								<span>삭제</span>
-								<span class="report_btn">신고</span>
-								<span>수정</span>
-							</div>
-						</div>
-					</div>
-					<div class="cmt_cmt_contents">
-						<div class="cmt_contents_right">
-							<div class="cmt_bottom">
-								<textarea class="reply"  rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-								<br/><input type="button" class="reply_edit_btn" value="등  록" />
-							</div>
-						</div>
-					</div>
-					
-				</div>
+				<div class="cmt_list" id="cmtList"></div>
+				<div class="paging"></div>
 			</div>
 		</div>
 	</div>
