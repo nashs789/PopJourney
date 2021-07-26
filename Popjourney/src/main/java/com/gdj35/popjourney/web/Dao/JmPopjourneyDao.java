@@ -276,4 +276,29 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.insert("JmPJ.getCmtNotf", params);
 	}
 
+	@Override
+	public int getCmtEdits(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getCmtEdits", params);
+	}
+
+	@Override
+	public int getCmtCmtAdds(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.getCmtCmtAdds", params);
+	}
+
+	@Override
+	public int getCmtCmtNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.getCmtCmtNotf", params);
+	}
+
+	@Override
+	public int getCmtCmtNotf2(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.getCmtCmtNotf2", params);
+	}
+
+	@Override
+	public int getCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getCmtDeletes", params);
+	}
+
 }

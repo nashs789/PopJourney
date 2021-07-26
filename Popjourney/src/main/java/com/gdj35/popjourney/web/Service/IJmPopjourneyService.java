@@ -111,4 +111,14 @@ public interface IJmPopjourneyService {
 
 	public int getCmtNotf(HashMap<String, String> params) throws Throwable;
 
+	public int getCmtEdits(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtAdds(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtNotf(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtNotf2(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtDeletes(HashMap<String, String> params) throws Throwable;
+
 }

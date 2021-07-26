@@ -1087,6 +1087,7 @@
 		                    INNER JOIN GRADE_CATEGORY GC
 		                            ON G.GRADE_NO = GC.GRADE_NO
 		WHERE JC.JOURNAL_NO = #{journalNo}
+		AND JC.DEL = 1
 	</select>
 	
 	<select id="getJournalCmt" parameterType="hashmap" resultType="hashmap">
@@ -1104,7 +1105,8 @@
 		                                  ON JC.MEM_NO = G.MEM_NO
 		                          INNER JOIN GRADE_CATEGORY GC
 		                                  ON G.GRADE_NO = GC.GRADE_NO
-		      WHERE JC.JOURNAL_NO = #{journalNo}) C
+		      WHERE JC.JOURNAL_NO = #{journalNo}
+		      AND JC.DEL = 1) C
 		WHERE C.RNUM BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
@@ -1118,4 +1120,28 @@
 		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 1, #{journalWriteMemNo}, #{journalNo})
 	</insert>
 	
+	<update id="getCmtEdits" parameterType="hashmap">
+		UPDATE JOURNAL_CMT SET CONTENTS = #{getCmtContents}
+		WHERE JOURNAL_CMT_NO = #{cmtNo}
+	</update>
+	
+	<insert id="getCmtCmtAdds" parameterType="hashmap">
+		INSERT INTO JOURNAL_CMT(JOURNAL_CMT_NO, MEM_NO, JOURNAL_NO, PARENTS_CMT_NO, CONTENTS)
+		VALUES (JOURNAL_CMT_SEQ.NEXTVAL, #{memNo}, #{journalNo}, #{cmtNo}, #{getCmtContents})
+	</insert>
+	
+	<insert id="getCmtCmtNotf" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 3, #{journalWriteMemNo}, #{journalNo})
+	</insert>
+	
+	<insert id="getCmtCmtNotf2" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 5, #{cmtWriteMemNo}, #{journalNo})
+	</insert>
+	
+	<update id="getCmtDeletes" parameterType="hashmap">
+		UPDATE JOURNAL_CMT SET DEL = 0
+		WHERE JOURNAL_CMT_NO = #{cmtWriteMemNo}
+	</update>
 </mapper>
