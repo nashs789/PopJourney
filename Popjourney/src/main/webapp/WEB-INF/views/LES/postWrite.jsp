@@ -545,6 +545,9 @@ a {
     z-index: 400;
     opacity: 0.2;
 }
+#cke_40 {
+	display: none;
+}
 </style>
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -561,7 +564,14 @@ $(document).ready(function(){
 		$(".logins").css("display","inline-block");
 		$(".btns").css("display","none");
 	}
+	if("${sMEM_NO}" != "1"){
+		$("#admin").css("display","none");
+	}
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
+	$(".logo_photo").on("click", function() {
+		alert("작성 중인 내용이 저장되지 않습니다.");
+  		location.href = "main";
+  	});
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   	});
@@ -619,7 +629,6 @@ $(document).ready(function(){
 								$("#writeForm").attr("action", "post");
 								$("#writeForm").submit();
 								console.log(params);
-								alert("@@@@@@@@@@@@@");
 							} else if (res.msg =="failed") {
 								alert("작성에 실패하였습니다.")
 							} else {
@@ -707,8 +716,9 @@ $(document).ready(function(){
 		</div>
 		<form action="#" id="writeForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+			<input type="hidden" id="postNo" name="postNo" value="${param.postNo}"/>
+			<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
 			<input type="hidden" id="newPostNo" name="newPostNo" value="${postNo}"/>
-			<input type="hidden" id="editPostNo" name="editPostNo" value="${param.postNo}"/>
 			<div class="title_area">
 				<input type="text" class="input_title" id="postTitle" name="postTitle" placeholder="게시글 제목" size="50" maxlength="30" autofocus required/>
 				<div class="category_area">

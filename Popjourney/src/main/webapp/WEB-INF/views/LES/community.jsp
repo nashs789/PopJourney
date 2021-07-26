@@ -692,6 +692,9 @@ $(document).ready(function() {
 	} 
 	reloadList();
 	makePathInfo();
+	$(".logo_photo").on("click", function() {
+  		location.href = "main";
+  	});
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
   	});
@@ -971,6 +974,7 @@ function makePage(pb)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
 </form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>

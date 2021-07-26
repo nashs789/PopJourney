@@ -78,8 +78,8 @@ body {
 	margin-top: 18px;
 }
 
-.btns { /* .logins와 연동  */
-	display: none;
+.btns { 
+	display: inline-block;
 	position: relative;
 	vertical-align: top;
 	width: 470px;
@@ -88,164 +88,132 @@ body {
 	background-color: #FFFFFF;
 	vertical-align: top;
 }
-
-.btns img {
-	width: 40px;
-	margin-right: 20px;
-	margin-top: 15px;
-	cursor: pointer;
+#bookmarkPhoto, #notificationPhoto {
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
 }
-
-.bell_icon {
-	margin-left: 200px;
+#notificationPhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   position: relative;
 }
-
-.logins {
-	display:inline-block;
-	vertical-align: top;
-	width: 470px;
-	height: 70px;
-	text-align: right;
-	background-color: #FFFFFF;
+#notificationTxt{
+	line-height: 17px;
+	width: 20px;
+	height: 20px;
+	background-color: red;
+	position: absolute;
+	top: 10px;
+	right: 190px;
+	border-radius: 50%;
+	color: white;
 }
-
-.sub_login1 {
-	display: block;
-	position: relative;
-	width: 100%;
-	height: 55px;
+#profilePhoto{
+   width: 40px;
+   margin-right: 20px;
+   margin-top: 15px;
+   cursor: pointer;
+   border-radius: 50%;
 }
-
-.sub_login2 {
-	display: block;
-	width: calc(100% - 75px);
-	height: 15px;
-	line-height: 10px;
-	text-align: right;
-	padding-right: 75px;
+#notificationPhoto {
+   margin-left: 200px;
 }
-
-.sub_login2 span {
-	position: relative;
-	width: 10px;
-	font-size: 12px;
-	font-weight: 600;
-	cursor: pointer;
-	margin-left: 10px;
-}
-
-.sub_login2 span:hover {
-	color: #fcba03;
-}
-
-.login {
-	float: right;
-	width: 100px;
-	height: 25px;
-	margin-top: 20px;
-	margin-left: 5px;
-}
-
-.login_btn {
-	float: right;
-	margin: 20px 20px 0px 5px;
-	width: 50px;
-	height: 30px;
-	background-color: #2e3459;
-	font-weight: bold;
-	font-size: 12px;
-	color: #FFFFFF;
-	text-align: center;
-	line-height: 26px;
-	cursor: pointer;
-}
-
-.login_btn:hover {
-	color: #FFFFFF;
-	background-color: #f37321;
-}
-
 .banner {
 	width: 100%;
 	height: 70px;
 }
-
-.timeline {
+#profileSlidedown{
 	display: none;
-	/* display: inline-block; */
-	width: 400px;
-	background-color: #EAEAEA;
-	box-shadow: 0px 0px 1px 1px #444444;
-	position: absolute;
-	margin-top: 72px;
-	right: 10px;
-	z-index: 300;
+   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   	border: 2px solid #fcba03;
+   	background-color: white;
+   	position: absolute;
+   	padding: 0px;
+   	right: 8px;
+   	width: 122px;
+   	margin-top: 10px;
+   	z-index: 300;
 }
-
-.timeline tr {
+#profileSlidedown li {
+   	display: inline-block;
+   	border: 1px solid rgb(250,250,250);
+   	font-size: 12pt;
+   	width: 120px;
+   	text-align: center;
+   	cursor: pointer;
+}
+#profileSlidedown li:hover {
+	background-color: #f37321;
+}
+#notification{
+ 	 display:none;
+     width: 600px;
+     box-shadow: 0px 0px 1px 1px #444444;
+     position: absolute;
+     right: 10px;
+     z-index: 300;
+     font-size: 10pt;
+}
+.read{
+    background-color: #d1d1e0;
 	height: 50px;
+	border-bottom: 1px solid black;
 }
-
-.timeline table {
+.notRead{
+	background-color: #a3a3c2;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+#notification table{
 	border-collapse: collapse;
 }
 
-.timeline table tr th:first-child {
+#notification table tr th:first-child{
 	text-align: center;
 }
 
-.timeline tr th {
+#notification tr th{
 	text-align: left;
 }
 
-.timeline tr th img {
+#notification tr th img{
 	height: 50px;
 	width: 50px;
 	text-align: center;
 	cursor: pointer;
+    margin-top: 5px;
+    border-radius: 50%;
 }
 
-.timeline tfoot tr {
-	background-color: #939597;
+#notification tfoot tr{
+	background-color: #48486a;
+	color: white;
 }
-
-.timeline tfoot tr th {
+   
+#notification tfoot tr th{
 	text-align: center;
 	cursor: pointer;
 }
 
-.timeline table tr th span {
+#notification tfoot tr th:hover{
+	background-color: #a4a4c1;
+}
+
+#notification table tr th span{
 	text-decoration: underline;
 	cursor: pointer;
 }
 
-.timeline table tr th span:hover {
+#notification table tr th span:hover{
 	color: blue;
 }
-
-#dd {
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid #fcba03;
-	background-color: white;
-	position: absolute;
-	margin-top: 10px;
-	padding: 0px;
-	right: 8px;
-	height: 108px;
-	width: 122px;
-	display: none;
-}
-
-#dd li {
-	display: inline-block;
-	border: 1px solid rgb(250, 250, 250);
-	font-size: 12pt;
-	width: 120px;
-	text-align: center;
-}
-
-#dd li:hover {
-	background-color: #f37321;
+.banner {
+	width: 100%;
+	height: 70px;
 }
 
 .menu {
@@ -305,7 +273,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 #container {
 	display: block;
 	width: 1280px;
-	height: 1000px;
 	margin: 0 auto;
 }
 
@@ -370,7 +337,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	text-decoration: none;
 	color: #2e3459;
 }
-.menu_nav ul li:hover img, .menu_nav ul li.on img {
+.menu_nav ul li img, .menu_nav ul li.on img {
 	background-color: #f37321;
 }
 
@@ -407,15 +374,12 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 100%;
 }
 
-#left_group li:nth-child(2) img{
-	background-color: #f37321;
-}
-
 .board_list_wrap {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	font-weight: 500;
+	text-align: center;
 }
 
 a {
@@ -432,6 +396,7 @@ a {
 	font-size: 10pt;
 	padding-top: 10px;
 	padding-left: 20px;
+	text-align: left;
 }
 
 #path_info {
@@ -444,61 +409,6 @@ a {
 	top: 3px;
 	width: 20px;
 	height: 20px;
-}
-
-.map_wrap {
-	padding-top: 30px;
-	width: 100%;
-	height: 700px;
-}
-
-.map_wrap img {
-	width: 100%;
-	height: 700px;
-}
-
-.map_pin {
-	position: absolute;
-	top: 900px;
-	left: 300px;
-	width: 200px;
-	height: 140px;
-	margin: 22px 25px 0 25px;
-	border-radius: 10px;
-	box-shadow: rgb(0 0 0/ 9%) 0 6px 9px 0;
-	color: #2e3459;
-	border: 2px solid #f37321;
-}
-
-.map_pin img {
-	width: 200px;
-	height: 140px;
-	border-radius: 10px;
-}
-
-.pin_cnt {
-	position: relative;
-	top: -150px;
-	left: 182px;
-	background-color: #f37321;
-	color: white;
-	border-radius: 100px;
-	font-size: 12pt;
-	width: 25px;
-	text-align: center;
-	font-weight: bold;
-	padding: 8px 5px 8px 5px;
-}
-
-.tri {
-	position: relative;
-	top: -35px;
-	left: 93px;
-	width: 0px;
-	height: 0px;
-	border-top: 10px solid #f37321;
-	border-right: 10px solid transparent;
-	border-left: 10px solid transparent;
 }
 
 #footer {
@@ -517,67 +427,456 @@ a {
 	width: 600px;
 	height: 80px;
 }
+#admin{
+	display:none;
+}
+#mapOn, #myPage{
+	background-color: #f37321;
+}
+.location-image a img {
+  width: 100%; /* need to overwrite inline dimensions */
+  height: 200px;
+}
+h2 {
+  margin-bottom: .5em;
+  margin-left: 150px;
+}
+.grid-container {
+  width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
+  margin: 0px auto 50px auto;
+}
+.child-page-listing{
+	font-size: 14pt;
+}
+
+/* hover styles */
+.location-listing {
+  position: relative;
+}
+
+.location-image {
+  line-height: 0;
+  overflow: hidden;
+}
+
+.location-image img {
+  filter: blur(0px);
+  transition: filter 0.3s ease-in;
+  transform: scale(1.1);
+}
+.location-title {
+  cursor: pointer;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  z-index: 1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity .5s;
+  background: rgba(90,0,10,0.4);
+  color: white;
+  
+  /* position the text in t’ middle*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-listing:hover .location-title {
+  opacity: 1;
+}
+
+.location-listing:hover .location-image img {
+  filter: blur(2px);
+}
+
+
+/* for touch screen devices */
+@media (hover: none) { 
+  .location-title {
+    opacity: 1;
+  }
+  .location-image img {
+    filter: blur(2px);
+  }
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#journalBoard").on("click", function() {
-  		location.href = "journalBoard";
-  	});
-	$("#community").on("click", function() {
-  		location.href = "community";
-  	});
-	$("#travelWriter").on("click", function() {
+	var path = "";
+	
+	if("${sPHOTO_PATH}" != "")
+	{
+		path = "resources/upload/" + "${sPHOTO_PATH}";
+		
+		$("#profilePhoto").attr("src", path);
+	}
+	else
+	{
+		path = "./resources/images/profile.png";
+
+		$("#profilePhoto").attr("src", path);
+	}
+	
+	if("${sGRADE_NO}" == "0")
+	{
+		$("#admin").show();
+	}
+	
+	var html = "";  
+	
+	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
+	html += "<div>${sNIC}</div>";
+	html += "<span>${sINTRO}</span>"; 
+	
+	$(".info").html(html);
+	
+	var params = $("#memForm").serialize();
+	
+	$.ajax({
+		url: "notifications",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				makeNotification(result.notification);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
+	$("#profilePhoto").on("click", function(){
+		$("#notification").css("display", "none");
+		if($("#profileSlidedown").css("display") == "block")
+		{
+			$("#profileSlidedown").css("display", "none");
+		}
+		else
+		{
+			$("#profileSlidedown").css("display", "block");
+		}
+	}); //profilePhoto click end
+	
+	$("#notificationPhoto").on("click", function(){
+		$("#profileSlidedown").css("display", "none");
+		if($("#notification").css("display") == "block")
+		{
+			$("#notification").css("display", "none");
+		}
+		else
+		{
+			$("#notification").css("display", "inline-block");
+		}
+	}); //notificationPhoto click end
+	
+	$("#notification tbody").on("click", "span, tr, img", function(){
+		if($(this).attr("class") == "notRead")
+		{
+			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
+	
+		    var params = $("#notificationForm").serialize();
+			
+			$.ajax({
+				url: "reads",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end  
+		} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
+		
+		if($(this).attr("class") == "user")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
+		}
+		else if($(this).attr("class") == "post")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
+	}); //notification tbody span tr click end
+	
+	$("article").on("click",function(){
+		$("#regionNo").val($(this).attr("id").substring(1));
+		$("#detailForm").submit();
+	}); //article click end
+	
+	$("#myPageImg").on("click", function(){
+		location.href = "myPage";
+	});//map click end
+	
+	$("#bookmark").on("click", function(){
+		location.href = "myPageBMK";
+	});//map click end
+	
+	$("#follower").on("click", function(){
+		location.href = "myPageFollower";
+	}); //follower click end
+	
+	$("#following").on("click", function(){
+		location.href = "myPageFollowing";
+	}); //following click end
+	
+	 $("#journalBoard").on("click", function(){
+    	location.href = "journalBoard";
+    });//postBoard click end
+    
+    $("#community").on("click", function(){
+    	location.href = "community";
+    });//community click end
+  
+   	$("#travelWriter").on("click", function() {
   		location.href = "travelWriterRank";
-  	});
+  	}); //travelWriter click end
+   	
 	$("#clientCenter").on("click", function() {
   		location.href = "clientCenterQuestion";
-  	});
-	$("#admin").on("click", function() {
+  	}); //clientCenter click end
+	
+  	$("#admin").on("click", function() {
   		location.href = "memAdmin";
-  	});
-});
+  	}); //admin click end
+  	
+  	$("#timeline").on("click", function(){
+  		location.href = "timeline";
+  	}); //timeline click end
+  	
+  	$("#editProfile").on("click", function(){
+  		location.href = "editProfile";
+  	}); //editProfile click end
+  	
+	$("#editInfo").on("click", function(){
+		location.href = "editInfo";
+  	}); //editInfo click end
 
+  	$("#notificationMore").on("click", function(){
+		location.href="notification";
+	}); //notificationMore click end
+	
+	$("#bookmarkPhoto").on("click", function(){
+		location.href = "myPageBMK";
+	}); //bookmarkPhoto click end
+  	
+  	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
+});//document ready end
+function makeNotification(notification)
+{
+	var html = ""; //알림 표현용
+	var readCnt = 0;
+	var html1 = "";  //알림 개수 표현용
+	
+	for(noti of notification)
+	{
+		if(noti.READ == 1)
+		{
+			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+			readCnt++;
+		}
+		else
+		{
+			html += "<tr class=\"read\" read=\"" + noti.NOTF_NO + "\">";
+		}
+		
+		var path ="";
+		
+		if(noti.PHOTO_PATH != null)
+		{
+			path = "resources/upload/"+noti.PHOTO_PATH;
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
+		}
+		
+		switch(noti.EVENT_NO)
+		{
+			case 0:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 1:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;	
+			case 2:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 3:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 4:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 5:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.JCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.JCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 6:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.BCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.BCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 7:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 남기셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 8:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 수정 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 9:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [여행일지]<span class=\"journal\" journal=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 10:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [게시글]<span class=\"post\" post=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE2 + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			default:
+				console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	html1 = "<div id=\"notificationTxt\">" + readCnt + "<div>";
+	
+	$("#cnt").prepend(html1);
+	$("#notification tbody").html(html);
+} //makeNotification end
 </script>
 </head>
 <body>
+<form action="myPageMapDetail" id="detailForm" method="post">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value=${sMEM_NO }>
+	<input type="hidden" id="regionNo" name="regionNo">
+</form>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+	<input type="hidden" id="page" name="page" value="1"/>
+	<input type="hidden" id="GBN" name="GBN" value="1"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+</form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>
+<form action="journal" id="journalForm" method="post">
+	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+</form>
+<form action="post" id="postForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+</form>
+<form action="#" id="notificationForm">
+	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
+</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
-						<!-- 밑에 logins와 연동 -->
-						<ul>
-							<li><img alt="bell" src="./resources/images/bell.png" class="./resources/images/bell_icon">
-								<div class="timeline">
-								</div></li>
-							<li><img alt="bookmark" src="./resources/images/bmk.png"></li>
-							<li><img alt="프로필" src="./resources/images/profile.png">
-								<ul id="dd">
-									<li>마이 페이지</li>
-									<li>프로필 수정</li>
-									<li>회원정보 수정</li>
-									<li>로그아웃</li>
-								</ul></li>
+                     <ul>
+						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							<div id="cnt"></div>
+							<div id="notification">
+								<table border="1">
+									<colgroup>
+										<col width="100px">
+										<col width="350px">
+										<col width="150px">
+									</colgroup>
+									<tbody>	
+
+									</tbody>
+
+									<tfoot>
+										<tr>
+											<th colspan="3" id="notificationMore">...더보기</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div></li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
+								</ul>
+							</li>
 						</ul>
 					</div>
-					<div class="logins">
-						<div class="sub_login1">
-							<input type="button" class="login_btn" value="로그인" /> <input
-								type="password" class="login" placeholder="PW" /> <input
-								type="text" class="login" placeholder="ID" />
-						</div>
-						<div class="sub_login2">
-							<span>회원가입</span> <span>ID/PW 찾기</span>
-						</div>
-					</div>
 				</div>
-				<!-- 호버시 메뉴 생성 -->
 			</div>
 			<nav class="menu">
 				<ul>
@@ -599,9 +898,6 @@ $(document).ready(function() {
 		</div>
 		<div class="sub_profile">
 			<div class="info">
-				<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
-				<div>닉네임</div>
-				<span>소개글</span>
 			</div>
 		</div>
 		<div id="container">
@@ -609,16 +905,16 @@ $(document).ready(function() {
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_group">
-							<li><img alt="thumbnail" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;100</li>
+							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />지역별 사진</li>
+							<li><img alt="map" id="mapOn" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL }</li>
 						</ul>
 						<ul class="right_group">
-							<li><img alt="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									100</li>
-							<li><img alt="follower" src="./resources/images/follower.png"><br />팔로워
-									100</li>
-							<li><img alt="following" src="./resources/images/following.png"><br />팔로잉
-									100</li>
+							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
+									${sBMK }</li>
+							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
+									${sFOLLOWER }</li>
+							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
+									${sFOLLOWING }</li>
 						</ul>
 					</nav>
 				</div>
@@ -627,14 +923,131 @@ $(document).ready(function() {
 					</span> &nbsp;&nbsp;>&nbsp;&nbsp; <span> 마이페이지 </span>
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span> &nbsp;>&nbsp;&nbsp;지도
 				</div>
-				<div class="map_wrap">
-					<img alt="지도" src="./resources/images/ggmap.png">
-					<div class="map_pin">
-						<img alt="일지" src="./resources/images/a1.jpg">
-						<div class="pin_cnt">50</div>
-						<div class="tri"></div>
-					</div>
-				</div>
+			</div>
+			<div class="child-page-listing">
+			  <h2>지역별 사진첩</h2>
+			  <div class="grid-container">
+			    <article id="r0" class="location-listing">
+			      <a class="location-title">SEOUL(서울)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/seoul.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r1" class="location-listing">
+			      <a class="location-title" >BUSAN(부산)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/busan.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r2" class="location-listing">
+			      <a class="location-title" >DAEGU(대구)</a>
+			      <div class="location-image"> 
+			             <a ><img  src="./resources/images/daegu.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r3" class="location-listing">
+			      <a class="location-title" >INCHEON(인천)</a>
+			      <div class="location-image">
+			        <a ><img  src="./resources/images/incheon.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r4" class="location-listing">
+			    	<a class="location-title" >GWANGJU(광주)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gwangju.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r5" class="location-listing">
+			      <a class="location-title" >DAEJEON(대전)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/daejeon.jpg">          
+			          </a>
+			      </div>
+			    </article>
+			    <article id="r6" class="location-listing">
+			
+			      <a class="location-title" >ULSAN(울산)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/ulsan.jpg">    </a>
+			      </div>
+			    </article>
+			
+			    <article id="r7" class="location-listing">
+			      <a class="location-title" >SEJONG(세종)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/sejong.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r8" class="location-listing">
+			      <a class="location-title" >GYEONGGI-DO(경기도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gyeonggi.jpg">  </a>
+			      </div>
+			    </article>
+			    <article id="r9" class="location-listing">
+			
+			      <a class="location-title" >GANGWON-DO(강원도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gangwon.jpg"> </a>
+			      </div>
+			    </article>
+			
+			    <article id="r10" class="location-listing">
+			      <a class="location-title" >CHUNGBUK-DO(충청북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/chungbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r11" class="location-listing">
+			      <a class="location-title" >CHUNGNAM-DO(충청남도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/chungnam.jpg"></a>
+			      </div>
+			    </article>
+			    
+			    <article id="r12" class="location-listing">
+			      <a class="location-title" >JEONBUK-DO(전라북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeonbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r13" class="location-listing">
+			      <a class="location-title" >JEONNAM-DO(전라남도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeonnam.jpg">  </a>
+			      </div>
+			    </article>
+			
+			    <article id="r14" class="location-listing">
+			      <a class="location-title" >GYEONGSANGBUK-DO(경상북도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/gyeongsangbuk.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r15" class="location-listing">
+			      <a class="location-title" >GYEONGSANGNAM-DO(경상남도)</a>
+			      <div class="location-image">
+			        <a><img src="./resources/images/gyeongsangnam.jpg"></a>
+			      </div>
+			    </article>
+			
+			    <article id="r16" class="location-listing">
+			      <a class="location-title" >JEJU-DO(제주도)</a>
+			      <div class="location-image">
+			        <a ><img src="./resources/images/jeju.jpg"></a>
+			      </div>
+			    </article>
+			  </div>
+			  <!-- end grid container -->
 			</div>
 		</div>
 	</div>

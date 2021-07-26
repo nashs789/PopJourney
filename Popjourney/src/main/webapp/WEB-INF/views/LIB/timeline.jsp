@@ -184,6 +184,9 @@ body {
 #profileSlidedown li:hover {
 	background-color: #f37321;
 }
+#timeline{
+	background-color: #f37321;
+}
 .banner {
    width: 100%;
    height: 70px;
@@ -402,7 +405,7 @@ body {
 	width: 100%;
 	margin: 5px 0px 0px 0px;
 }
-.timeline span{
+.timeline span, .timeline img{
 	cursor: pointer;
     font-weight: bold;
 }
@@ -459,7 +462,7 @@ body {
 	margin-top: 25px;
 }
 #miniNic{
-	width: 150px;
+	width: 250px;
 	height: 50px;
 	margin: 0px auto;
 }
@@ -498,6 +501,16 @@ body {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	var path = ""; //사진경로 담아줄 변수
+	
+	path = "resources/upload/" + "${sPHOTO_PATH}";
+	$("#profilePhoto").attr("src", path);
+
+	if("${sGRADE_NO}" == "0")
+	{
+		$("#admin").show();
+	}//등급에 따라서 내부 관리자 보이기
 	
 	var params = $("#memForm").serialize();
 	
@@ -595,9 +608,23 @@ $(document).ready(function(){
 		}
 	}); //notificationPhoto click end
 	
-	/* $(".timeline").on("click", "span", function(){
-		console.log($(this).attr("class"));
-	}); //timeline span click end */
+	$(".timeline").on("click", "span, img", function(){
+		if($(this).attr("class") == "journal")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
+		}
+		else if($(this).attr("class") == "nic")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "post")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}
+	}); //timeline span click end 
 	
 	$(".timeline").on("mouseover", ".nic", function(){
 		var x = event.clientX;
@@ -618,7 +645,7 @@ $(document).ready(function(){
 				}
 				else
 				{
-					alert("오류발생");
+					alert("정보가 없습니다");
 				}
 			}, //success end
 			error: function(error){
@@ -667,6 +694,59 @@ $(document).ready(function(){
         	}); // ajax end
         } //if end
 	}); // window scroll end
+    $("#journalBoard").on("click", function(){
+    	location.href = "journalBoard";
+    });//postBoard click end
+    
+    $("#community").on("click", function(){
+    	location.href = "community";
+    });//community click end
+  
+   	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	}); //travelWriter click end
+   	
+	$("#clientCenter").on("click", function() {
+  		location.href = "clientCenterQuestion";
+  	}); //clientCenter click end
+	
+  	$("#admin").on("click", function() {
+  		location.href = "memAdmin";
+  	}); //admin click end
+  	
+  	$("#myPage").on("click", function(){
+  		location.href = "myPage";
+	}); //find click endmyPage
+  	
+  	$("#editProfile").on("click", function(){
+  		location.href = "editProfile";
+  	}); //editProfile click end
+  	
+	$("#editInfo").on("click", function(){
+		location.href = "editInfo";
+  	}); //editInfo click end
+	
+	$("#notificationMore").on("click", function(){
+		location.href="notification";
+	}); //notificationMore click end
+	
+	$("#bookmarkPhoto").on("click", function(){
+		location.href = "myPageBMK";
+	}); //bookmarkPhoto click end
+  	
+  	$("#logoutBtn").on("click", function(){
+		$.ajax({
+			url: "logouts",
+			type: "post",
+			dataType: "json",
+			success: function(result) {
+				location.reload();
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} //error end
+		}); //ajax end
+  	}); //logoutBtn click end
 });//document ready end 
 function makeTimeline(timeline)
 {
@@ -705,7 +785,14 @@ function makeTimeline(timeline)
 			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 게시물을 포스트 하셨습니다. </div>";  
 			break;
 		case 1:
-			html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			if(time.THUMB_PHOTO_PATH != null)
+			{
+				html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"resources/upload/" + time.THUMB_PHOTO_PATH + "\">";
+			}
+			else
+			{
+				html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			}
 			html += "     		</div>";
 			html += "     		<div class=\"last\">";
 			html += "     			<span class=\"journal\" journal=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
@@ -838,8 +925,32 @@ function makeNotification(notification)
 				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
 				html +=" </tr>";
 				break;
+			case 7:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 남기셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 8:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 수정 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 9:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [여행일지]<span class=\"journal\" journal=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 10:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [게시글]<span class=\"post\" post=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE2 + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
 			default:
-				console.log("여긴 뭐넣을까?");	
+				console.log("여긴 뭐넣을까?");
 		}
 	}
 	
@@ -916,13 +1027,23 @@ function makeProfilePopup(mini, x, y)
 <form action="#" id="memNoForm">
 	<input type="hidden" id="memNo" name="memNo"/>
 </form>
+<form action="userPage" id="userForm" method="post">
+	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>
+<form action="journal" id="journalForm" method="post">
+	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+</form>
+<form action="post" id="postForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+</form>
 	<div id="wrap">
          <!-- header부분 고정 -->
          <div id="header">
             <div class="banner">
                <div class="top">
                   <div class="logo_area">
-                     <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                     <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                      <div class="site_name">우리들의 여행일지</div>
                   </div>
                   <div class="btns"> <!-- 밑에 logins와 연동 -->
@@ -950,7 +1071,7 @@ function makeProfilePopup(mini, x, y)
 							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
 							<li><img alt="프로필" src="./resources/images/profile.png" id="profilePhoto">
 								<ul id="profileSlidedown">
-									<li>마이 페이지</li>
+									<li id="myPage">마이 페이지</li>
 									<li id="timeline">타임라인</li>
 									<li id="editProfile">프로필 수정</li>
 									<li id="editInfo">회원정보 수정</li>
@@ -963,8 +1084,8 @@ function makeProfilePopup(mini, x, y)
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행게시판</li>
-                  <li>자유게시판</li>
+                  <li id="journalBoard">여행게시판</li>
+                  <li id="community">자유게시판</li>
                   <li id="travelWriter">여행작가</li>
 				  <li id="clientCenter">고객센터</li>
 				  <li id="admin">내부관리자</li>

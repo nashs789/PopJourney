@@ -377,9 +377,11 @@
 	
 	<select id="pageCnt" parameterType="hashmap" resultType="hashmap">
 		SELECT COUNT(*) AS CNT
-		FROM NOTF
-		WHERE MEM_NO = #{MEM_NO}
-		AND NOTF_MEM_NO != #{MEM_NO}
+		FROM NOTF NF INNER JOIN MEM M
+							 ON NF.MEM_NO = M.MEM_NO
+							 AND M.LEAVE_DATE IS NULL
+		WHERE NF.MEM_NO = #{MEM_NO}
+		AND NF.NOTF_MEM_NO != #{MEM_NO}
 	</select>
 	
 	<select id="timeline" parameterType="hashmap" resultType="hashmap"> 
@@ -528,143 +530,143 @@
 	
 	<select id="timelinePageCnt" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
-		SELECT COUNT(*) AS CNT
-		FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*, CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 < 60
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 24 * 60 *60 || '초 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60  < 3600
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60 || '분 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *24 *60 *60  < 86400
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 || '시간 전'
-		                                                                            WHEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) >= 1
-		                                                                            THEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) || '년 전'
-		                                                                            WHEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) >= 1
-		                                                                            THEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) || '개월 전'
-		                                                                            ELSE (TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) || '일 전'
-		                                                                        END AS CHA_DATE
-		     FROM(SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, B.POST_NO, CASE WHEN LENGTH(B.TITLE) > 25
-		                                                                THEN SUBSTR(B.TITLE, 1, 25) || '....' || CASE WHEN BCMT.CNT != 0
-		                                                                                                              THEN '[' || BCMT.CNT || ']'
-		                                                                                                              ELSE '[0]'
-		                                                                                                          END
-		                                                                ELSE B.TITLE || CASE WHEN BCMT.CNT != 0
-		                                                                                     THEN '[' || BCMT.CNT || ']'
-		                                                                                     ELSE '[0]'
-		                                                                                END
-		                                                             END AS TITLE, BOARD_DATE AS POSTING_DATE, 0 AS GBN, NULL AS THUMB_PHOTO_PATH, CASE WHEN LENGTH(B.CONTENTS) > 40
-		                                                                                                                                                THEN SUBSTR(B.CONTENTS, 1, 40) || '...'
-		                                                                                                                                                ELSE B.CONTENTS
-		                                                                                                                                           END AS CONTENTS
-		                          FROM FOLLOW F INNER JOIN MEM M
-		                                                ON F.TARGET_MEM_NO = M.MEM_NO
-		                                                AND F.REQUEST_MEM_NO = #{MEM_NO}
-		                                        INNER JOIN BOARD B
-		                                                ON F.TARGET_MEM_NO = B.MEM_NO
-		                                        LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
-		                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
-		                                                                              ON B.POST_NO = BC.POST_NO
-		                                                         GROUP BY BC.POST_NO) BCMT
-		                                                     ON B.POST_NO = BCMT.POST_NO
-		          UNION
-		          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, J.JOURNAL_NO AS POST_NO, CASE WHEN LENGTH(J.TITLE) > 25
-		                                                                              THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
-		                                                                                                                            THEN '[' || JCMT.CNT || ']'
-		                                                                                                                            ELSE '[0]'
-		                                                                                                                       END
-		                                                                              ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
-		                                                                                                   THEN '[' || JCMT.CNT || ']'
-		                                                                                                   ELSE '[0]'
-		                                                                                               END
-		                                                                          END AS JTITLE, JOURNAL_DATE AS POSTING_DATE, 1 AS GBN, JD.PHOTO_PATH AS THUMB_PHOTO_PATH, CASE WHEN LENGTH(JD.CONTENTS) > 40 
-		                                                                                                                                                                         THEN SUBSTR(JD.CONTENTS, 1, 40)
-		                                                                                                                                                                         ELSE JD.CONTENTS
-		                                                                                                                                                                    END CONTENTS
-		          FROM FOLLOW F INNER JOIN MEM M
-		                                ON F.TARGET_MEM_NO = M.MEM_NO
-		                                AND F.REQUEST_MEM_NO = #{MEM_NO}
-		                        INNER JOIN JOURNAL J
-		                                ON F.TARGET_MEM_NO = J.MEM_NO
-		                        INNER JOIN JOURNAL_DETAIL JD
-		                                ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                                AND JD.JOURNAL_SEQUENCE = 1
-		                        LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
-		                                         FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-		                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
-		                                         GROUP BY JC.JOURNAL_NO) JCMT
-		                                     ON J.JOURNAL_NO = JCMT.JOURNAL_NO
-		          UNION       
-		          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, B.POST_NO, CASE WHEN LENGTH(B.TITLE) > 25
-		                                                                THEN SUBSTR(B.TITLE, 1, 25) || '....' || CASE WHEN BCMT.CNT != 0
-		                                                                                                              THEN '[' || BCMT.CNT || ']'
-		                                                                                                              ELSE '[0]'
-		                                                                                                          END
-		                                                                ELSE B.TITLE || CASE WHEN BCMT.CNT != 0
-		                                                                                     THEN '[' || BCMT.CNT || ']'
-		                                                                                     ELSE '[0]'
-		                                                                                END
-		                                                             END AS TITLE, BOARD_DATE AS POSTING_DATE, 2 AS GBN, NULL AS THUM_PHOTO_PATH, CASE WHEN LENGTH(BC.CONTENTS) > 25
-		                                                                                                                                               THEN SUBSTR(BC.CONTENTS, 1, 25) || '...'
-		                                                                                                                                               ELSE BC.CONTENTS
-		                                                                                                                                          END AS CONTENTS
-		          FROM BOARD B INNER JOIN BOARD_CMT BC
-		                               ON B.POST_NO = BC.POST_NO
-		                       INNER JOIN MEM M 
-		                               ON BC.MEM_NO = M.MEM_NO
-		                       LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
-		                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
-		                                                                              ON B.POST_NO = BC.POST_NO
-		                                                         GROUP BY BC.POST_NO) BCMT
-		                                                     ON B.POST_NO = BCMT.POST_NO
-		          WHERE BC.MEM_NO IN (SELECT TARGET_MEM_NO
-		                              FROM FOLLOW F INNER JOIN MEM M
-		                                                    ON F.TARGET_MEM_NO = M.MEM_NO
-		                                                    AND F.REQUEST_MEM_NO = #{MEM_NO})                    
-		          UNION
-		          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
-		                                                                   THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
-		                                                                                                                 THEN '[' || JCMT.CNT || ']'
-		                                                                                                                 ELSE '[0]'
-		                                                                                                             END
-		                                                                   ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
-		                                                                                        THEN '[' || JCMT.CNT || ']'
-		                                                                                        ELSE '[0]'
-		                                                                                   END
-		                                                                END AS TITLE, JOURNAL_DATE AS POSTING_DATE, 3 AS GBN, JD.PHOTO_PATH AS THUM_PHOTO_PATH, CASE WHEN LENGTH(JC.CONTENTS) > 25
-		                                                                                                                                                             THEN SUBSTR(JC.CONTENTS, 1, 25) || '...'
-		                                                                                                                                                             ELSE JC.CONTENTS
-		                                                                                                                                                        END AS CONTENTS
-		          FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-		                                 ON J.JOURNAL_NO = JC.JOURNAL_NO
-		                         INNER JOIN MEM M 
-		                                 ON JC.JOURNAL_NO = M.MEM_NO
-		                         INNER JOIN JOURNAL_DETAIL JD
-		                                 ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                                 AND JD.JOURNAL_SEQUENCE = 2      
-		                         LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
-		                                          FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
-		                                                                 ON J.JOURNAL_NO = JC.JOURNAL_NO
-		                                          GROUP BY JC.JOURNAL_NO) JCMT
-		                                      ON J.JOURNAL_NO = JCMT.JOURNAL_NO
-		          WHERE JC.MEM_NO IN (SELECT TARGET_MEM_NO
-		                              FROM FOLLOW F INNER JOIN MEM M
-		                                                    ON F.TARGET_MEM_NO = M.MEM_NO
-		                                                    AND F.REQUEST_MEM_NO = #{MEM_NO})    
-		          UNION
-		          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, NULL AS POST_NO, NULL AS TITLE,
-		                 TO_DATE(TO_CHAR(SYSDATE, 'YY') || '-' || TO_CHAR(M.BIRTH, 'MM-DD'), 'YY-MM-DD') AS POSTING_DATE, 4 AS GBN, NULL AS THUMB_PHOTO_PATH, NULL CONTENTS
-		          FROM FOLLOW F INNER JOIN MEM M
-		                                ON F.TARGET_MEM_NO = M.MEM_NO
-		                                AND F.REQUEST_MEM_NO = #{MEM_NO}
-		          UNION
-		          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, NULL AS POST_NO, NULL AS TITLE, GRADE_DATE AS POSTING_DATE,
-				                5 AS GBN, NULL AS THUMB_PHOTO_PATH, NULL AS CONTENTS
-				         FROM GRADE G INNER JOIN MEM M
-				                              ON G.MEM_NO = M.MEM_NO
-				                              AND G.GRADE_DATE IS NOT NULL
-				                              AND M.LEAVE_DATE IS NULL
-		                              INNER JOIN FOLLOW F
-		                                      ON F.TARGET_MEM_NO = M.MEM_NO
-		                                      AND F.REQUEST_MEM_NO = #{MEM_NO}) TIMELINE )
-		 ORDER BY RK ASC
+			SELECT COUNT(*) AS CNT
+			FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*, CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 < 60
+			                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 24 * 60 *60 || '초 전'
+			                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60  < 3600
+			                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60 || '분 전'
+			                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *24 *60 *60  < 86400
+			                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 || '시간 전'
+			                                                                            WHEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) >= 1
+			                                                                            THEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) || '년 전'
+			                                                                            WHEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) >= 1
+			                                                                            THEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) || '개월 전'
+			                                                                            ELSE (TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) || '일 전'
+			                                                                        END AS CHA_DATE
+			     FROM(SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, B.POST_NO, CASE WHEN LENGTH(B.TITLE) > 25
+			                                                                THEN SUBSTR(B.TITLE, 1, 25) || '....' || CASE WHEN BCMT.CNT != 0
+			                                                                                                              THEN '[' || BCMT.CNT || ']'
+			                                                                                                              ELSE '[0]'
+			                                                                                                          END
+			                                                                ELSE B.TITLE || CASE WHEN BCMT.CNT != 0
+			                                                                                     THEN '[' || BCMT.CNT || ']'
+			                                                                                     ELSE '[0]'
+			                                                                                END
+			                                                             END AS TITLE, BOARD_DATE AS POSTING_DATE, 0 AS GBN, NULL AS THUMB_PHOTO_PATH, CASE WHEN LENGTH(B.CONTENTS) > 40
+			                                                                                                                                                THEN SUBSTR(B.CONTENTS, 1, 40) || '...'
+			                                                                                                                                                ELSE B.CONTENTS
+			                                                                                                                                           END AS CONTENTS
+			                          FROM FOLLOW F INNER JOIN MEM M
+			                                                ON F.TARGET_MEM_NO = M.MEM_NO
+			                                                AND F.REQUEST_MEM_NO = #{MEM_NO}
+			                                        INNER JOIN BOARD B
+			                                                ON F.TARGET_MEM_NO = B.MEM_NO
+			                                        LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
+			                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
+			                                                                              ON B.POST_NO = BC.POST_NO
+			                                                         GROUP BY BC.POST_NO) BCMT
+			                                                     ON B.POST_NO = BCMT.POST_NO
+			          UNION
+			          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, J.JOURNAL_NO AS POST_NO, CASE WHEN LENGTH(J.TITLE) > 25
+			                                                                              THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
+			                                                                                                                            THEN '[' || JCMT.CNT || ']'
+			                                                                                                                            ELSE '[0]'
+			                                                                                                                       END
+			                                                                              ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
+			                                                                                                   THEN '[' || JCMT.CNT || ']'
+			                                                                                                   ELSE '[0]'
+			                                                                                               END
+			                                                                          END AS JTITLE, JOURNAL_DATE AS POSTING_DATE, 1 AS GBN, JD.PHOTO_PATH AS THUMB_PHOTO_PATH, CASE WHEN LENGTH(JD.CONTENTS) > 40 
+			                                                                                                                                                                         THEN SUBSTR(JD.CONTENTS, 1, 40)
+			                                                                                                                                                                         ELSE JD.CONTENTS
+			                                                                                                                                                                    END CONTENTS
+			          FROM FOLLOW F INNER JOIN MEM M
+			                                ON F.TARGET_MEM_NO = M.MEM_NO
+			                                AND F.REQUEST_MEM_NO = #{MEM_NO}
+			                        INNER JOIN JOURNAL J
+			                                ON F.TARGET_MEM_NO = J.MEM_NO
+			                        INNER JOIN JOURNAL_DETAIL JD
+			                                ON J.JOURNAL_NO = JD.JOURNAL_NO
+			                                AND JD.JOURNAL_SEQUENCE = 1
+			                        LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
+			                                         FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+			                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
+			                                         GROUP BY JC.JOURNAL_NO) JCMT
+			                                     ON J.JOURNAL_NO = JCMT.JOURNAL_NO
+			          UNION       
+			          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, B.POST_NO, CASE WHEN LENGTH(B.TITLE) > 25
+			                                                                THEN SUBSTR(B.TITLE, 1, 25) || '....' || CASE WHEN BCMT.CNT != 0
+			                                                                                                              THEN '[' || BCMT.CNT || ']'
+			                                                                                                              ELSE '[0]'
+			                                                                                                          END
+			                                                                ELSE B.TITLE || CASE WHEN BCMT.CNT != 0
+			                                                                                     THEN '[' || BCMT.CNT || ']'
+			                                                                                     ELSE '[0]'
+			                                                                                END
+			                                                             END AS TITLE, BOARD_DATE AS POSTING_DATE, 2 AS GBN, NULL AS THUM_PHOTO_PATH, CASE WHEN LENGTH(BC.CONTENTS) > 25
+			                                                                                                                                               THEN SUBSTR(BC.CONTENTS, 1, 25) || '...'
+			                                                                                                                                               ELSE BC.CONTENTS
+			                                                                                                                                          END AS CONTENTS
+			          FROM BOARD B INNER JOIN BOARD_CMT BC
+			                               ON B.POST_NO = BC.POST_NO
+			                       INNER JOIN MEM M 
+			                               ON BC.MEM_NO = M.MEM_NO
+			                       LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
+			                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
+			                                                                              ON B.POST_NO = BC.POST_NO
+			                                                         GROUP BY BC.POST_NO) BCMT
+			                                                     ON B.POST_NO = BCMT.POST_NO
+			          WHERE BC.MEM_NO IN (SELECT TARGET_MEM_NO
+			                              FROM FOLLOW F INNER JOIN MEM M
+			                                                    ON F.TARGET_MEM_NO = M.MEM_NO
+			                                                    AND F.REQUEST_MEM_NO = #{MEM_NO})                     
+			          UNION
+			          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
+			                                                                   THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
+			                                                                                                                 THEN '[' || JCMT.CNT || ']'
+			                                                                                                                 ELSE '[0]'
+			                                                                                                             END
+			                                                                   ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
+			                                                                                        THEN '[' || JCMT.CNT || ']'
+			                                                                                        ELSE '[0]'
+			                                                                                   END
+			                                                                END AS TITLE, JOURNAL_DATE AS POSTING_DATE, 3 AS GBN, JD.PHOTO_PATH AS THUM_PHOTO_PATH, CASE WHEN LENGTH(JC.CONTENTS) > 25
+			                                                                                                                                                             THEN SUBSTR(JC.CONTENTS, 1, 25) || '...'
+			                                                                                                                                                             ELSE JC.CONTENTS
+			                                                                                                                                                        END AS CONTENTS
+			          FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+			                                 ON J.JOURNAL_NO = JC.JOURNAL_NO
+			                         INNER JOIN MEM M 
+			                                 ON JC.JOURNAL_NO = M.MEM_NO
+			                         INNER JOIN JOURNAL_DETAIL JD
+			                                 ON J.JOURNAL_NO = JD.JOURNAL_NO
+			                                 AND JD.JOURNAL_SEQUENCE = #{MEM_NO}     
+			                         LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
+			                                          FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+			                                                                 ON J.JOURNAL_NO = JC.JOURNAL_NO
+			                                          GROUP BY JC.JOURNAL_NO) JCMT
+			                                      ON J.JOURNAL_NO = JCMT.JOURNAL_NO
+			          WHERE JC.MEM_NO IN (SELECT TARGET_MEM_NO
+			                              FROM FOLLOW F INNER JOIN MEM M
+			                                                    ON F.TARGET_MEM_NO = M.MEM_NO
+			                                                    AND F.REQUEST_MEM_NO = #{MEM_NO})                        
+			          UNION
+			          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, NULL AS POST_NO, NULL AS TITLE,
+			                 TO_DATE(TO_CHAR(SYSDATE, 'YY') || '-' || TO_CHAR(M.BIRTH, 'MM-DD'), 'YY-MM-DD') AS POSTING_DATE, 4 AS GBN, NULL AS THUMB_PHOTO_PATH, NULL CONTENTS
+			          FROM FOLLOW F INNER JOIN MEM M
+			                                ON F.TARGET_MEM_NO = M.MEM_NO
+			                                AND F.REQUEST_MEM_NO = #{MEM_NO}
+			          UNION
+			          SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH, NULL AS POST_NO, NULL AS TITLE, GRADE_DATE AS POSTING_DATE,
+					                5 AS GBN, NULL AS THUMB_PHOTO_PATH, NULL AS CONTENTS
+					         FROM GRADE G INNER JOIN MEM M
+					                              ON G.MEM_NO = M.MEM_NO
+					                              AND G.GRADE_DATE IS NOT NULL
+					                              AND M.LEAVE_DATE IS NULL
+			                              INNER JOIN FOLLOW F
+			                                      ON F.TARGET_MEM_NO = M.MEM_NO
+			                                      AND F.REQUEST_MEM_NO = #{MEM_NO}) TIMELINE )
+			 ORDER BY RK ASC
 		]]>	 
 	</select>
 	
@@ -672,26 +674,24 @@
 		SELECT M.PHOTO_PATH, M.NIC, GC.GRADE_NAME, M.ACC_CNT, F.FOLLOWER_CNT, B.POST_CNT, J.JOURNAL_CNT
 		FROM MEM M INNER JOIN GRADE G
 		                   ON M.MEM_NO = G.MEM_NO
+		                   AND M.MEM_NO = #{memNo}
 		           INNER JOIN GRADE_CATEGORY GC
 		                   ON G.GRADE_NO = GC.GRADE_NO
-		           INNER JOIN (SELECT M.MEM_NO, COUNT(*) AS FOLLOWER_CNT
+		           INNER JOIN (SELECT COUNT(*) AS FOLLOWER_CNT
 		                       FROM MEM M INNER JOIN FOLLOW F
-		                                          ON M.MEM_NO = F.TARGET_MEM_NO               
-		                       WHERE M.MEM_NO = #{memNo}
-		                       GROUP BY M.MEM_NO) F
-		                   ON M.MEM_NO = F.MEM_NO
-		           INNER JOIN (SELECT M.MEM_NO, COUNT(*) AS POST_CNT
+		                                          ON M.MEM_NO = F.TARGET_MEM_NO
+		                                          AND M.MEM_NO = #{memNo}) F
+		                   ON 1 = 1
+		           INNER JOIN (SELECT COUNT(*) AS POST_CNT
 		                       FROM MEM M INNER JOIN BOARD B
 		                                          ON M.MEM_NO = B.MEM_NO
-		                       WHERE M.MEM_NO = #{memNo} 
-		                       GROUP BY M.MEM_NO) B
-		                   ON M.MEM_NO = B.MEM_NO
-		           INNER JOIN (SELECT M.MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                          AND M.MEM_NO = #{memNo}) B
+		                   ON 1 = 1
+		           INNER JOIN (SELECT COUNT(*) AS JOURNAL_CNT
 		                       FROM MEM M INNER JOIN JOURNAL J
 		                                          ON M.MEM_NO = J.MEM_NO
-		                       WHERE M.MEM_NO = #{memNo}
-		                       GROUP BY M.MEM_NO) J
-		                   ON M.MEM_NO = J.MEM_NO 		
+		                                          AND M.MEM_NO = #{memNo}) J
+		                   ON 1 = 1	
 	</select>
 	
 	<select id="myPageJournal"  parameterType="hashmap" resultType="hashmap">
@@ -1235,18 +1235,18 @@
 	
 	<select id="getNumber" parameterType="hashmap" resultType="hashmap">
 		SELECT FR.FOLLOWER_CNT, FW.FOLLOWING_CNT, BJ.BMK_JOURNAL_CNT, JC.JOURNAL_CNT, TP.TOTAL_POINT
-		FROM (SELECT F.TARGET_MEM_NO, COUNT(*) AS FOLLOWER_CNT
+		FROM (SELECT COUNT(*) AS FOLLOWER_CNT
 		      FROM FOLLOW F INNER JOIN MEM M
-		                            ON F.REQUEST_MEM_NO = M.MEM_NO
+		                            ON F.TARGET_MEM_NO = M.MEM_NO
 		                            AND M.LEAVE_DATE IS NULL
-		      WHERE F.TARGET_MEM_NO = #{MEM_NO}
-		      GROUP BY F.TARGET_MEM_NO) FR INNER JOIN (SELECT REQUEST_MEM_NO, COUNT(*) AS FOLLOWING_CNT
-		                                               FROM FOLLOW F INNER JOIN MEM M
-		                                                                     ON F.REQUEST_MEM_NO = M.MEM_NO
-		                                                                     AND M.LEAVE_DATE IS NULL
-		                                               WHERE REQUEST_MEM_NO = #{MEM_NO}
-		                                               GROUP BY REQUEST_MEM_NO) FW
-		                                           ON 1 = 1
+		                    INNER JOIN MEM M2
+				                    ON F.REQUEST_MEM_NO = M2.MEM_NO
+				                    AND M2.LEAVE_DATE IS NULL  
+		      WHERE F.TARGET_MEM_NO = #{MEM_NO}) FR INNER JOIN (SELECT COUNT(*) AS FOLLOWING_CNT
+			                                                    FROM FOLLOW F INNER JOIN MEM M
+			                                                                          ON F.REQUEST_MEM_NO = M.MEM_NO
+			                                                    WHERE REQUEST_MEM_NO = #{MEM_NO}) FW
+			                                                ON 1 = 1
 		                                 INNER JOIN (SELECT COUNT(*) AS BMK_JOURNAL_CNT
 		                                             FROM BMK
 		                                             WHERE BMK_NO IN(SELECT BMK_NO
@@ -1255,35 +1255,105 @@
 		                                                                                        AND M.LEAVE_DATE IS NULL
 		                                                             WHERE BF.MEM_NO = #{MEM_NO})) BJ
 		                                         ON 1 = 1 
-		                                 INNER JOIN (SELECT J.MEM_NO, COUNT(*) AS JOURNAL_CNT
+		                                 INNER JOIN (SELECT COUNT(*) AS JOURNAL_CNT
 		                                             FROM JOURNAL J INNER JOIN MEM M
 		                                                                    ON J.MEM_NO = M.MEM_NO
 		                                                                    AND M.LEAVE_DATE IS NULL
-		                                             WHERE J.MEM_NO = #{MEM_NO}
-		                                             GROUP BY J.MEM_NO) JC
+		                                             WHERE J.MEM_NO = #{MEM_NO}) JC
 		                                         ON 1 = 1
 		                                 INNER JOIN (SELECT A1.LIKE_POINT + A2.JOURNAL_POINT + A3.FOLLOWER_POINT AS TOTAL_POINT
-		                                             FROM (SELECT J.MEM_NO, COUNT(*) AS LIKE_POINT
+		                                             FROM (SELECT COUNT(*) AS LIKE_POINT
 		                                                   FROM JOURNAL_LIKE JL INNER JOIN JOURNAL J
 		                                                                                ON JL.JOURNAL_NO = J.JOURNAL_NO
 		                                                                                AND J.MEM_NO = #{MEM_NO}
 		                                                                        INNER JOIN MEM M
 		                                                                                ON JL.MEM_NO = M.MEM_NO
-		                                                                                AND M.LEAVE_DATE IS NULL
-		                                                   GROUP BY J.MEM_NO) A1 INNER JOIN (SELECT J.MEM_NO, COUNT(*) * 5 AS JOURNAL_POINT
+		                                                                                AND M.LEAVE_DATE IS NULL) A1 INNER JOIN (SELECT COUNT(*) * 5 AS JOURNAL_POINT
 		                                                                                     FROM JOURNAL J INNER JOIN MEM M
 		                                                                                                            ON J.MEM_NO = M.MEM_NO
 		                                                                                                            AND M.LEAVE_DATE IS NULL
-		                                                                                                            AND J.MEM_NO = #{MEM_NO}
-		                                                                                     GROUP BY J.MEM_NO) A2
+		                                                                                                            AND J.MEM_NO = #{MEM_NO}) A2
 		                                                                                 ON 1 = 1
-		                                                                         INNER JOIN (SELECT F.TARGET_MEM_NO, COUNT(*) AS FOLLOWER_POINT
+		                                                                         INNER JOIN (SELECT COUNT(*) AS FOLLOWER_POINT
 		                                                                                     FROM FOLLOW F INNER JOIN MEM M
 		                                                                                                           ON F.REQUEST_MEM_NO = M.MEM_NO
 		                                                                                                           AND M.LEAVE_DATE IS NULL
-		                                                                                                           AND F.TARGET_MEM_NO = #{MEM_NO}
-		                                                                                     GROUP BY F.TARGET_MEM_NO) A3
-		                                                                                 ON 1 = 1) TP         
-		                                        ON 1 = 1	
+		                                                                                                           AND F.TARGET_MEM_NO = #{MEM_NO}) A3
+		                                                                                 ON 1 = 1) TP  
+		                                        ON 1 = 1
+	</select>
+	
+	<select id="PJ.journalCnt2" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM JOURNAL 
+		WHERE MEM_NO = #{userNo}
+	</select>
+	
+	<select id="regionListCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM JOURNAL
+		WHERE MEM_NO = #{MEM_NO}
+		AND REGION_NO = #{regionNo}
+	</select>
+	
+	<select id="regionList" parameterType="hashmap" resultType="hashmap">
+		SELECT JOURNAL_NO, TITLE, TO_CHAR(JOURNAL_DATE, 'YYYY-MM-DD') AS JOURNAL_DATE, HIT, SUB_CATEGORY, CATEGORY, PHOTO_PATH, REGION, LIKE_CNT, PATH
+		FROM (SELECT J.JOURNAL_NO, CASE WHEN LENGTH(J.TITLE) > 25
+		                                THEN SUBSTR(J.TITLE, 1, 25) || '....' || CASE WHEN JCMT.CNT != 0
+		                                                                              THEN '[' || JCMT.CNT || ']'
+		                                                                              ELSE '[0]'
+		                                                                         END
+		                                ELSE J.TITLE || CASE WHEN JCMT.CNT != 0
+		                                                     THEN '[' || JCMT.CNT || ']'
+		                                                     ELSE '[0]'
+		                                                 END
+		                            END AS TITLE, J.JOURNAL_DATE, CASE WHEN HIT IS NULL
+		                                                               THEN 0
+		                                                               ELSE HIT
+		                                                           END AS HIT, JC.SUB_CATEGORY_NAME AS SUB_CATEGORY, JC2.SUB_CATEGORY_NAME AS CATEGORY, JD.PHOTO_PATH,
+		             JC3.SUB_CATEGORY_NAME AS REGION, CASE WHEN JLIKE.LIKE_CNT IS NULL
+		                                                   THEN 0
+		                                                   ELSE JLIKE.LIKE_CNT
+		                                              END AS LIKE_CNT, RANK() OVER(ORDER BY J.JOURNAL_DATE DESC) AS RK, H.PATH
+		      FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
+		                             ON J.CATEGORY = JC.CATEGORY_NO
+		                             AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+		                     INNER JOIN JOURNAL_CATEGORY JC2
+		                             ON JC.CATEGORY_NO = JC2.SUB_CATEGORY_NO
+		                             AND JC2.CATEGORY_NO = 0
+		                     INNER JOIN JOURNAL_DETAIL JD
+		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
+		                             AND JD.JOURNAL_SEQUENCE = 1
+		                     INNER JOIN JOURNAL_CATEGORY JC3
+		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
+		                             AND JC3.CATEGORY_NO = 1
+		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
+		                                      FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
+		                                                             ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                      GROUP BY J.JOURNAL_NO) JCMT
+		                                  ON J.JOURNAL_NO = JCMT.JOURNAL_NO
+		                     LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
+		                                      FROM JOURNAL_LIKE
+		                                      GROUP BY JOURNAL_NO) JLIKE
+		                                  ON J.JOURNAL_NO = JLIKE.JOURNAL_NO
+		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
+		                                      FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
+		                                                 ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
+		                                            FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
+		                                                                 ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                                                         INNER JOIN HASH H
+		                                                                 ON JH.HASH_NO = H.HASH_NO) J
+		                                      START WITH J.RNUM = 1
+		                                      CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
+		                                      AND PRIOR J.RNUM = J.RNUM - 1
+		                                      GROUP BY J.JOURNAL_NO) H 
+		                                  ON J.JOURNAL_NO = H.JOURNAL_NO
+                            INNER JOIN MEM M
+                            		ON J.MEM_NO = M.MEM_NO
+                            		AND M.LEAVE_DATE IS NULL
+		      WHERE J.MEM_NO = #{MEM_NO}
+              AND J.REGION_NO = #{regionNo})
+        WHERE RK BETWEEN #{startCnt} AND #{endCnt} 
+		ORDER BY RK ASC
 	</select>
 </mapper>

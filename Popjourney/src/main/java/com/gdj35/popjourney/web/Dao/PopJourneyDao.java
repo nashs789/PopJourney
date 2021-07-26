@@ -329,4 +329,22 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectOne("PJ.getNumber", params);
 	}
+
+	@Override
+	public int journalCnt2(HashMap<String, String> params) throws Throwable 
+	{
+		return  sql.selectOne("PJ.journalCnt2", params);
+	}
+
+	@Override
+	public int regionListCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectOne("PJ.regionListCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> regionList(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.selectList("PJ.regionList", params);
+	}
 }

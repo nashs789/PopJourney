@@ -330,4 +330,22 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.getNumber(params);
 	}
+
+	@Override
+	public int journalCnt2(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.journalCnt2(params);
+	}
+
+	@Override
+	public int regionListCnt(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.regionListCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> regionList(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.regionList(params);
+	}
 }

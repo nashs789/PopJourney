@@ -309,13 +309,7 @@
 		SELECT POST_NO, TITLE, CONTENTS, BOARD_DATE, HIT,CATEGORY_NO, CASE WHEN LIKE_CNT IS NULL
                                                          THEN 0
                                                          ELSE LIKE_CNT
-                                                         END AS LIKE_CNT, POST_CMT_CNT, MEM_NO, NIC, GRADE_NO, CASE WHEN MEM_POST_CNT IS NULL
-                                                                                                                    THEN 0
-                                                                                                                    ELSE MEM_POST_CNT
-                                                                                                                    END AS MEM_POST_CNT, CASE WHEN MEM_CMT_CNT IS NULL
-                                                                                                                                              THEN 0
-                                                                                                                                              ELSE MEM_CMT_CNT
-                                                                                                                                              END AS MEM_CMT_CNT,DEL
+                                                         END AS LIKE_CNT, POST_CMT_CNT, MEM_NO, NIC, GRADE_NO
 		      FROM(SELECT B.POST_NO, B.CONTENTS, BC.CATEGORY_NO, CASE WHEN LENGTH(B.TITLE) > 25
 		                                                  THEN SUBSTR(B.TITLE,1 ,25)
 		                                                  ELSE B.TITLE 
@@ -323,7 +317,7 @@
                                                                                    THEN 0
                                                                                    ELSE POST_CMT_CNT END AS POST_CMT_CNT 
                                                           , TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE,
-		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, PCNT.MEM_POST_CNT, MCCNT.MEM_CMT_CNT, M.NIC, B.DEL
+		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, B.DEL
 		           FROM BOARD B INNER JOIN MEM M
 		                                ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
 		           				INNER JOIN BOARD_CATEGORY BC
@@ -340,16 +334,7 @@
 		                        LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 		                                         FROM BOARD_LIKE
 		                                         GROUP BY POST_NO)BLIKE 
-		                                     ON B.POST_NO = BLIKE.POST_NO
-                                LEFT OUTER JOIN (SELECT MEM_NO, COUNT(*) AS MEM_POST_CNT
-		                                         FROM BOARD
-		                                         GROUP BY MEM_NO)PCNT
-		                                     ON B.MEM_NO = PCNT.MEM_NO
-                                 LEFT OUTER JOIN (SELECT MEM_NO, COUNT(*) AS MEM_CMT_CNT
-		                                         FROM BOARD_CMT
-		                                         GROUP BY MEM_NO)MCCNT
-		                                     ON B.MEM_NO = MCCNT.MEM_NO)
-                                           
+		                                     ON B.POST_NO = BLIKE.POST_NO)
 		      WHERE DEL != 0
 			      <choose>
 			      	<when test="newPostNo == 1">
@@ -360,7 +345,7 @@
 			      	</when>
 			      </choose>
 	</select>
-	<select id="editPost" parameterType="hashmap">
+	<select id="editPost" parameterType="hashmap" resultType="hashmap">
 		SELECT *
 		FROM BOARD
 		WHERE POST_NO = #{postNo}
@@ -369,9 +354,48 @@
 		UPDATE BOARD SET TITLE = #{postTitle}, CONTENTS = #{postCon}, CATEGORY_NO = #{categorySelect} 
 		WHERE POST_NO = #{editPostNo}
 	</update>
-	<delete id="postDeletes" parameterType="hashmap">
+	<update id="postDeletes" parameterType="hashmap">
 		UPDATE  BOARD SET DEL = 0
 		WHERE POST_NO = #{postNo}
+	</update>
+	<select id="nextPost" parameterType="hashmap" resultType="hashmap">
+		SELECT *
+		FROM BOARD
+		WHERE 1=1
+		AND POST_NO IN ( SELECT MIN(POST_NO) 
+		                 FROM BOARD B INNER JOIN MEM M
+                                            ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
+		                 WHERE POST_NO > #{postNo}
+		                 AND DEL !=0)
+	</select>
+	<select id="prevPost" parameterType="hashmap" resultType="hashmap">
+		SELECT *
+		FROM BOARD
+		WHERE 1=1
+		AND POST_NO IN ( SELECT MAX(POST_NO) 
+		                 FROM BOARD B INNER JOIN MEM M
+                                            ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
+		                  <![CDATA[
+		                 WHERE POST_NO < #{postNo}
+		                 AND DEL !=0
+		                 ]]> )
+	</select>
+	<select id="likeCheck" parameterType="hashmap" resultType="hashmap">
+		SELECT *
+    	FROM BOARD_LIKE
+    	WHERE MEM_NO = #{loginUserNo}
+    	AND POST_NO = #{postNo}
+	</select>
+	<insert id="addLike" parameterType="hashmap">
+		INSERT INTO BOARD_LIKE (POST_NO,MEM_NO)
+		VALUES(#{postNo},#{loginUserNo})
+	</insert>
+	<delete id="delLike" parameterType="hashmap">
+		DELETE FROM BOARD_LIKE
+		WHERE MEM_NO = #{loginUserNo} AND POST_NO = #{postNo} 
 	</delete>
-	
+	<insert id="writeCmt" parameterType="hashmap">
+		INSERT INTO BOARD_CMT (POST_CMT_NO, MEM_NO, POST_NO, CONTENTS)
+		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{cmtCon})
+	</insert>
 </mapper>
