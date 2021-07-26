@@ -326,6 +326,9 @@ public class PopJourneyController {
 	// 타임라인 - 이인복
 	@RequestMapping(value = "/editInfo")
 	public ModelAndView editInfo(ModelAndView mav) {
+		int page = 1;
+		
+		mav.addObject("page", page);
 		mav.setViewName("LIB/editInfo");
 
 		return mav;
@@ -388,6 +391,9 @@ public class PopJourneyController {
 	// 프로필 수정 페이지 - 이인복
 	@RequestMapping(value = "/editProfile")
 	public ModelAndView editProfile(ModelAndView mav) {
+		int page = 1;
+		
+		mav.addObject("page", page);
 		mav.setViewName("LIB/editProfile");
 
 		return mav;
@@ -710,9 +716,9 @@ public class PopJourneyController {
 					 modelMap.put("msg", "success");
 					 modelMap.put("mini", mini);
 				 }
-				 else
+				 else if(mini == null)
 				 {
-					 modelMap.put("msg", "failed");
+					 modelMap.put("msg", "nothing");
 				 }
 				
 			} catch (Exception e) {
@@ -1282,7 +1288,7 @@ public class PopJourneyController {
 			int page = Integer.parseInt(params.get("page"));
 			int cnt = Integer.parseInt(params.get("cnt"));
 
-			PagingBean pb = ips.getPagingBean(page, cnt, 14, 5);
+			PagingBean pb = ips.getPagingBean(page, cnt, 15, 5);
 
 			params.put("startCnt", Integer.toString(pb.getStartCount()));
 			params.put("endCnt", Integer.toString(pb.getEndCount()));

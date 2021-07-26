@@ -719,6 +719,18 @@ $(document).ready(function(){
 		findBtnPopup();
 	}); //find click end
 	
+    $("#journalBoard").on("click", function(){
+    	location.href = "journalBoard";
+    });//postBoard click end
+    
+    $("#community").on("click", function(){
+    	location.href = "community";
+    });//community click end
+  
+   	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	}); //travelWriter click end
+   	
 	$("#clientCenter").on("click", function() {
   		location.href = "clientCenterQuestion";
   	}); //clientCenter click end
@@ -803,10 +815,10 @@ function findBtnPopup()
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행게시판</li>
-                  <li>자유게시판</li>
+                  <li id="journalBoard">여행게시판</li>
+                  <li id="community">자유게시판</li>
                   <li id="travelWriter">여행작가</li>
-                  <li id="clientCenter">고객센터</li>
+				  <li id="clientCenter">고객센터</li>
                </ul>
             </nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>
