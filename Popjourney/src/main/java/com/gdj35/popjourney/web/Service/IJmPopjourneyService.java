@@ -103,4 +103,12 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> getHash(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getJournalCmt(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtAdds(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtNotf(HashMap<String, String> params) throws Throwable;
+
 }

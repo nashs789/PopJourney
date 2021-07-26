@@ -1056,11 +1056,10 @@
 	</select>
 	
 	<select id="getSequenceCnt" parameterType="hashmap" resultType="Integer">
-		SELECT J.JOURNAL_NO, COUNT(*) AS CNT
+		SELECT COUNT(*) AS CNT
 		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
 		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
 		WHERE J.JOURNAL_NO = #{journalNo}
-		GROUP BY J.JOURNAL_NO
 	</select>
 	
 	<select id="getHash" parameterType="hashmap" resultType="hashmap">
@@ -1076,5 +1075,47 @@
 		                                AND H.DEL = 1
 		WHERE J.JOURNAL_NO = #{journalNo}
 	</select>
+	
+	<select id="getCmtCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CMT_CNT
+		FROM JOURNAL_CMT JC INNER JOIN (SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH 
+		                                FROM MEM M
+		                                WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                            ON JC.MEM_NO = M.MEM_NO
+		                    INNER JOIN GRADE G
+		                            ON JC.MEM_NO = G.MEM_NO
+		                    INNER JOIN GRADE_CATEGORY GC
+		                            ON G.GRADE_NO = GC.GRADE_NO
+		WHERE JC.JOURNAL_NO = #{journalNo}
+	</select>
+	
+	<select id="getJournalCmt" parameterType="hashmap" resultType="hashmap">
+		SELECT C.JOURNAL_CMT_NO, C.MEM_NO, C.JOURNAL_NO, C.PARENTS_CMT_NO, C.CMT_CONTENTS, C.CMT_DATE, C.DEL,
+		       C.NIC, C.MEM_PHOTO_PATH, C.GRADE_NO, C.GRADE_NAME, C.RNUM
+		FROM (SELECT JC.JOURNAL_CMT_NO, JC.MEM_NO, JC.JOURNAL_NO, JC.PARENTS_CMT_NO, JC.CONTENTS AS CMT_CONTENTS,
+		             TO_CHAR(JC.CMT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CMT_DATE, JC.DEL,
+		             M.NIC, M.MEM_PHOTO_PATH, G.GRADE_NO, GC.GRADE_NAME,
+		             ROW_NUMBER() OVER(ORDER BY NVL(JC.PARENTS_CMT_NO, JC.JOURNAL_CMT_NO) DESC, JC.JOURNAL_CMT_NO ASC) AS RNUM
+		      FROM JOURNAL_CMT JC INNER JOIN (SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH 
+		                                      FROM MEM M
+		                                      WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                                  ON JC.MEM_NO = M.MEM_NO
+		                          INNER JOIN GRADE G
+		                                  ON JC.MEM_NO = G.MEM_NO
+		                          INNER JOIN GRADE_CATEGORY GC
+		                                  ON G.GRADE_NO = GC.GRADE_NO
+		      WHERE JC.JOURNAL_NO = #{journalNo}) C
+		WHERE C.RNUM BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<insert id="getCmtAdds" parameterType="hashmap">
+		INSERT INTO JOURNAL_CMT(JOURNAL_CMT_NO, MEM_NO, JOURNAL_NO, CONTENTS)
+		VALUES (JOURNAL_CMT_SEQ.NEXTVAL, #{memNo}, #{journalNo}, #{getCmtContents})
+	</insert>
+	
+	<insert id="getCmtNotf" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 1, #{journalWriteMemNo}, #{journalNo})
+	</insert>
 	
 </mapper>
