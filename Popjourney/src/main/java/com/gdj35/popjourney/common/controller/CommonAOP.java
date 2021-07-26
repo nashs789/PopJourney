@@ -32,11 +32,13 @@ public class CommonAOP {
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageFollower(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageFollowing(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageBMK(..))"
-			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageBMKDetail(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMKDetail(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*communityAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*memAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*noticeAdmin(..))"
-			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*reportAdmin(..))")
+			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*reportAdmin(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMap(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMapDetail(..))")
 	
 	/*
 	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMKDetail(..))"

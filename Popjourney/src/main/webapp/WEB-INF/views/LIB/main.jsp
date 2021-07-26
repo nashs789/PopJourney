@@ -576,6 +576,7 @@ $(document).ready(function(){
 		}//등급에 따라서 내부 관리자 보이기
 		
 		var params = $("#memForm").serialize();
+		
 		$.ajax({
 			url: "notifications",
 			data: params,
@@ -645,7 +646,6 @@ $(document).ready(function(){
 		if($(this).attr("class") == "user")
 		{
 			$("#userNo").val($(this).attr($(this).attr("class")));
-			console.log($("#userNo").val());
 			$("#userForm").submit();
 		}
 		else if($(this).attr("class") == "journal")

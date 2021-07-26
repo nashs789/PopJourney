@@ -405,7 +405,7 @@ body {
 	width: 100%;
 	margin: 5px 0px 0px 0px;
 }
-.timeline span{
+.timeline span, .timeline img{
 	cursor: pointer;
     font-weight: bold;
 }
@@ -462,7 +462,7 @@ body {
 	margin-top: 25px;
 }
 #miniNic{
-	width: 150px;
+	width: 250px;
 	height: 50px;
 	margin: 0px auto;
 }
@@ -608,9 +608,23 @@ $(document).ready(function(){
 		}
 	}); //notificationPhoto click end
 	
-	/* $(".timeline").on("click", "span", function(){
-		console.log($(this).attr("class"));
-	}); //timeline span click end */
+	$(".timeline").on("click", "span, img", function(){
+		if($(this).attr("class") == "journal")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
+		}
+		else if($(this).attr("class") == "nic")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "post")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}
+	}); //timeline span click end 
 	
 	$(".timeline").on("mouseover", ".nic", function(){
 		var x = event.clientX;
@@ -631,7 +645,7 @@ $(document).ready(function(){
 				}
 				else
 				{
-					alert("오류발생");
+					alert("정보가 없습니다");
 				}
 			}, //success end
 			error: function(error){
@@ -771,7 +785,14 @@ function makeTimeline(timeline)
 			html += "     	<div class=\"txt_area\"><span class=\"nic\" nic=\"" + time.MEM_NO + "\">" + time.NIC + "</span>님께서 위 게시물을 포스트 하셨습니다. </div>";  
 			break;
 		case 1:
-			html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			if(time.THUMB_PHOTO_PATH != null)
+			{
+				html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"resources/upload/" + time.THUMB_PHOTO_PATH + "\">";
+			}
+			else
+			{
+				html += "     			<img class=\"journal\" journal=\"" + time.POST_NO + "\" src=\"./resources/images/switzerland.jpg\">";
+			}
 			html += "     		</div>";
 			html += "     		<div class=\"last\">";
 			html += "     			<span class=\"journal\" journal=\"" + time.POST_NO + "\">" + time.TITLE + "</span><br><br>";
