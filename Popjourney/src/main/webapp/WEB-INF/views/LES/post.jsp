@@ -514,7 +514,7 @@ p {
 	display: inline-block;
 }
 
-.edit_btn, .delete_btn {
+.edit_btn, .delete_btn, .reset_btn{
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -525,7 +525,7 @@ p {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
-#cmtEditBtn, #cmtCancelBtn {
+#cmtEditBtn, #cmtCancelBtn, #replyEditBtn {
 	display: none;
 } 
 .reply_edit_btn {
@@ -551,7 +551,7 @@ p {
 	color: white;
 }
 
-.delete_btn:hover {
+.delete_btn:hover, .reset_btn:hover{
 	border: 2px solid #F1404B;
 	background-color: #F1404B;
 	color: white;
@@ -1056,7 +1056,7 @@ $(document).ready(function(){
 		$("#goForm").attr("action","postUpdate");
 		$("#goForm").submit();
 	});
-	
+	//게시글 삭제
 	$(".delete_btn").on("click", function () {
 		if(confirm("삭제하시겠습니까?")){
 			var params = $("#goForm").serialize();
@@ -1081,15 +1081,15 @@ $(document).ready(function(){
 			});
 		}
 	});
-	
+	//이전 글 이동
 	$("#prevPost").on("click", function(){
 		$("#prevPostForm").submit();
 	}); //prevPost click end
-	
+	//다음 글 이동
 	$("#nextPost").on("click", function(){
 		$("#nextPostForm").submit();
 	}); //nextPost click end
-	
+	//좋아요 버튼
 	$(".reaction").on("click","img", function(){
 		var like = $(this).attr("like");
 		var params = $("#likeForm").serialize();
@@ -1137,6 +1137,10 @@ $(document).ready(function(){
 			alert("내용을 입력하십시오.");
 			$("#cmtCon").focus();
 		} else {
+			if("${sMEM_NO}" != "") {
+				alert("로그인이 필요한 서비스입니다.");
+			} else{ //로그인 했을 때 댓글 등록
+				
 			var params = $("#cmtForm").serialize();
 			
 			$.ajax({
@@ -1158,18 +1162,92 @@ $(document).ready(function(){
 					console.log(error);
 				}
 			});
+			}
 		}
 	});
 	
-	//페이징
+	//댓글 페이징 처리
 	$(".paging").on("click", "span", function() {
 		$("#page").val($(this).attr("name"));
 		cmtReloadList();
 	});
+	
+	// 내 댓글 수정 클릭
+	$(".my_cmt_edi").on("click", function() {
+		$("#actionForm #writeBtn").hide();
+		$("#actionForm #updateBtn, #actionForm #cancelBtn").show();
+		$("#obNo").val($(this).parent().parent().attr("name"));
+		$("#cmtCon").val($(this).parent().parent().children(":nth-child(2)").html());
+	});
+	//내 댓글 수정 중 취소 버튼  클릭
+	$("#cmtCancelBtn").on("click", function() {
+		$("#cmtCon").val("");
+		$("#obNo").val("");
+		
+		$("#actionForm #writeBtn").show();
+		$("#actionForm #updateBtn, #actionForm #cancelBtn").hide();
+	});
+	//내 댓글 수정 후 수정버튼 클릭
+	$("#cmtEditBtn").on("click", function() {
+		if($.trim($("#cmtCon").val()) == "") {
+			alert("내용을 넣어주세요.");
+			$("#obCon").focus();
+		} else {
+			var params = $("#actionForm").serialize();
+			
+			$.ajax({
+				url : "testAOBUpdateAjax",
+				type : "post",
+				dataType : "json",
+				data : params,
+				success : function(res) {
+					if(res.msg == "success") {
+						$("#cancelBtn").click();
+						
+						cmtReloadList();
+					} else if(res.msg == "failed") {
+						alert("작성에 실패하였습니다.");
+					} else {
+						alert("작성중 문제가 발생하였습니다.");
+					}
+				},
+				error : function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});//cmtEditBtn end
+	//내 댓글 삭제
+	$(".my_cmt_delete").on("click", function() {
+		if(confirm("삭제하시겠습니까?")) {
+			$("#obNo").val($(this).parent().parent().attr("name"));
+			
+			var params = $("#actionForm").serialize();
+			
+			$.ajax({
+				url : "testAOBDeleteAjax",
+				type : "post",
+				dataType : "json",
+				data : params,
+				success : function(res) {
+					if(res.msg == "success") {
+						$("#obNo").val("");
+						resetVal();
+						cmtReloadList();
+					} else if(res.msg == "failed") {
+						alert("작성에 실패하였습니다.");
+					} else {
+						alert("작성중 문제가 발생하였습니다.");
+					}
+				},
+				error : function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
 });// document ready end
-
-
-
+//좋아요 화면 재구성
 function likeReload() {
 
 	console.log($(".reaction").children("ul").children("li").children("img").val());
@@ -1201,6 +1279,82 @@ function hitCnt() {
 		}//error end
 	});//ajax end
 }//likeStatus end
+
+function resetVal() {
+	$("#page").val(1);
+	$("#sg").val("0");
+	$("#st").val("");
+	$("#searchGbn").val("0");
+	$("#searchTxt").val("");
+}
+
+function cmtReloadList() {
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url : "testAOBListAjax",
+		type : "post",
+		dataType : "json",
+		data : params,
+		success : function(res) {
+			redrawList(res.list);
+			redrawPaging(res.pb);
+		},
+		error : function(request, status, error) {
+			console.log(error);
+		}
+	});
+}
+
+function redrawList(list) {
+	var html = "";
+	
+	for(var d of list) {
+		html += "<tr name=\"" + d.OB_NO + "\">";
+		html += "<td>" + d.M_NM + "</td>";
+		html += "<td>" + d.OB_CON + "</td>";
+		html += "<td>";
+		if($("#mNo").val() == d.M_NO) {
+			html += "<input type=\"button\" value=\"수정\" id=\"updateBtn\" />";
+			html += "<input type=\"button\" value=\"삭제\" id=\"deleteBtn\" />";
+		}
+		html += "</td>";
+		html += "</tr>";
+	}
+	
+	$("tbody").html(html);
+}
+
+function redrawPaging(pb) {
+	var html = "";
+	
+	html += "<span name=\"1\">처음</span>";
+	
+	if($("#page").val() == "1") {
+		html += "<span name=\"1\">이전</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() - 1) + "\">이전</span>";
+	}
+	
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#page").val() == i) {
+			html += "<span name=\"" + i + "\"><b>" + i + "</b></span>";
+		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPcount) {
+		html += "<span name=\"" + pb.maxPcount + "\">다음</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+	}
+	
+	html += "<span name=\"" + pb.maxPcount + "\">마지막</span>";
+	
+	$("#pagingWrap").html(html);
+}
+
 function popup() {
 	var popup = document.getElementById("popup");
 	var bg = document.getElementByClass("bg");
@@ -1425,7 +1579,7 @@ function popup() {
 						<div class="cmt_bottom">
 							<textarea id="cmtCon" name="cmtCon" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
 							<input type="button" class="edit_btn" id="cmtEnrollBtn" value="등  록" />
-							<input type="button" class="delete_btn" id="cmtCancelBtn" value="취  소" />
+							<input type="button" class="reset_btn" id="cmtCancelBtn" value="취  소" />
 							<input type="button" class="edit_btn" id="cmtEditBtn" value="수  정" />
 						</div>
 				</form>
@@ -1443,9 +1597,9 @@ function popup() {
 							</div>
 							<div class="cmt_box">
 								<span>답글</span>
-								<span>삭제</span>
+								<span class="my_cmt_delete">삭제</span>
 								<span class="report_btn">신고</span>
-								<span>수정</span>
+								<span class="my_cmt_edit">수정</span>
 								 
 							</div>
 						</div>
@@ -1491,10 +1645,10 @@ function popup() {
 					<div class="cmt_cmt_contents">
 						<div class="cmt_contents_right">
 							<div class="cmt_bottom">
-								<textarea class="reply"  rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea><br/>
+								<textarea class="reply" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea><br/>
 								<input type="button" class="reply_edit_btn" value="등  록" />
-								<input type="button" class="delete_btn" id="replyCancelBtn" value="취  소" />
 								<input type="button" class="reply_edit_btn" id="replyEditBtn" value="수  정" />
+								<input type="button" class="reset_btn" id="replyCancelBtn" value="취  소" />
 							</div>
 						</div>
 					</div>
