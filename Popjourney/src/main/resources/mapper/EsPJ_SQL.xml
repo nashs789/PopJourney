@@ -87,16 +87,16 @@
 			</choose>
 			<choose>
 				<when test="categoryNo == 0">
-					AND CATEGORY_NO != 1)
+					AND CATEGORY_NO != 1
 				</when>
 				<when test="categoryNo == 2">
-					AND CATEGORY_NO = 2)
+					AND CATEGORY_NO = 2
 				</when>
 				<when test="categoryNo == 3">
-					AND CATEGORY_NO = 3)
+					AND CATEGORY_NO = 3
 				</when>
 				<when test="categoryNo == 4">
-					AND CATEGORY_NO = 4)
+					AND CATEGORY_NO = 4
 				</when>
 			</choose>
 			<if test="searchTxt != null and searchTxt !=''">
@@ -109,6 +109,7 @@
 					</when>
 				</choose>
 			</if>
+			)
 	</select>
 	
 	<select id="getPostList" parameterType="hashmap" resultType="hashmap">
@@ -198,16 +199,16 @@
 			</choose>
 			<choose>
 				<when test="categoryNo == 0">
-					AND CATEGORY_NO != 1)
+					AND CATEGORY_NO != 1
 				</when>
 				<when test="categoryNo == 2">
-					AND CATEGORY_NO = 2)
+					AND CATEGORY_NO = 2
 				</when>
 				<when test="categoryNo == 3">
-					AND CATEGORY_NO = 3)
+					AND CATEGORY_NO = 3
 				</when>
 				<when test="categoryNo == 4">
-					AND CATEGORY_NO = 4)
+					AND CATEGORY_NO = 4
 				</when>
 			</choose>
 			<if test="searchTxt != null and searchTxt !=''">
@@ -220,6 +221,7 @@
 					</when>
 				</choose>
 			</if>
+			)
 		        ORDER BY DECODE(CATEGORY_NO, 1,1), RK
 	</select>
 	<select id="getPostNCnt" parameterType="hashmap" resultType="Integer">
