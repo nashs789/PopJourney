@@ -348,4 +348,16 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.regionList(params);
 	}
+
+	@Override
+	public int mail(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.mail(params);
+	}
+
+	@Override
+	public int checkCode(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.checkCode(params);
+	}
 }

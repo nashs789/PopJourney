@@ -116,4 +116,8 @@ public interface IPopJourneyService {
 	int regionListCnt(HashMap<String, String> params)throws Throwable;
 
 	List<HashMap<String, String>> regionList(HashMap<String, String> params)throws Throwable;
+
+	int mail(HashMap<String, String> params)throws Throwable;
+
+	int checkCode(HashMap<String, String> params)throws Throwable;
 }

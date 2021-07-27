@@ -789,7 +789,6 @@ a {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	loadPage2();
 
 	//로그인 상태 확인
@@ -1536,7 +1535,7 @@ function makePopup()
 							<input type="hidden" id="subCategoryNo" name="subCategoryNo" value="1"/>
 							<input type="hidden" id="SEQ" name="SEQ" value="0"/>
 							
-							<input type="text" class="search" id="searchTxt" name="searchTxt"  placeholder="검색"> 
+							<input type="text" class="search" id="searchTxt" name="searchTxt"  placeholder="검색" > 
 							<select	class="filter" id="searchGbn" name="searchGbn">
 								<option value="0">전체보기</option>
 								<option value="1">제목</option>

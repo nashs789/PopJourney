@@ -6,9 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +27,9 @@ import com.gdj35.popjourney.web.Service.IPopJourneyService;
 @Controller
 public class PopJourneyController {
 
+	@Autowired
+	private JavaMailSender mailSender;
+	
 	@Autowired
 	public IPopJourneyService ipjs;
 	
@@ -1460,6 +1466,103 @@ public class PopJourneyController {
 					 modelMap.put("regionList", regionList);
 				 }
 				 else if(cnt== 0)
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		//인증 코드 메일 보내기
+		@RequestMapping(value = "sendCodes",
+						method = RequestMethod.POST,
+						produces ="test/json;charset=UTF-8")
+		@ResponseBody
+		public String sendCodes(@RequestParam HashMap<String, String> params) throws Throwable {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			int random;
+			String code = "";
+			
+			for(int i = 0; i < 10; i++)
+			{
+				random = (int)Math.floor(Math.random()*3)+0;
+				if(random == 0)
+				{	
+					code += (int)(Math.floor(Math.random()*10)+0);
+				}
+				else if(random == 1)
+				{
+					code += (char)((int)Math.floor((Math.random() * 26 )+65));
+				}
+				else
+				{
+					code += (char)((int)Math.floor((Math.random() * 26 )+97));
+				}
+			}	
+
+			String setfrom = "PopJourney";
+			String tomail = params.get("inputEmail") + "@" + params.get("inputDomain"); // 받는 사람 이메일
+			String title = "PopJourney 회원가입 메일 인증입니다."; // 제목
+			String content = "<div>PopJourney 가입 메일입니다. </div>" + code; // 내용
+
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message,true, "UTF-8");
+
+				messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+				messageHelper.setTo(tomail); // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content, true); // 메일 내용
+
+				mailSender.send(message);
+				
+				params.put("mail", tomail);
+				params.put("title", title);
+				params.put("content", content);
+				params.put("code", code);
+				
+				int cnt = ipjs.mail(params);
+				
+				if(cnt > 0)
+				{
+					modelMap.put("msg", "success");
+				}
+				else 
+				{
+					modelMap.put("msg", "failed");
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//이메일 인증코드확인
+		@RequestMapping(value = "/checkCodes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String checkCodes(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			String mail = params.get("inputEmail") + "@" + params.get("inputDomain"); // 받는 사람 이메일
+			params.put("mail", mail);
+			
+			 try {
+				 int cnt = ipjs.checkCode(params);
+				 
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else if(cnt == 0)
 				 {
 					 modelMap.put("msg", "failed");
 				 }
