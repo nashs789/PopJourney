@@ -221,6 +221,7 @@ public class EsPopJourneyController {
 	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		
 		try {
+			int hit = iEsPopjourneyService.postHit(params);
 			HashMap<String, String> data = iEsPopjourneyService.getPost(params);
 			HashMap<String, String> prevPost = iEsPopjourneyService.prevPost(params);
 			HashMap<String, String> nextPost = iEsPopjourneyService.nextPost(params);
@@ -229,6 +230,8 @@ public class EsPopJourneyController {
 			mav.addObject("prevPost",prevPost);
 			mav.addObject("nextPost",nextPost);
 			mav.addObject("likeCheck",likeCheck);
+			
+			
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -335,9 +338,10 @@ public class EsPopJourneyController {
 		
 		try {
 			int cnt = iEsPopjourneyService.addLike(params);
-			
-			if(cnt > 0) {
+			int notf = iEsPopjourneyService.likeNotf(params);
+			if(cnt > 0 && notf > 0) {
 				modelMap.put("msg", "success");
+				System.out.println(params);
 			} else {
 				modelMap.put("msg", "failed");
 			}
@@ -372,6 +376,7 @@ public class EsPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	
 	@RequestMapping(value = "/postCmtWrites", 
 			method = RequestMethod.POST, 
 			produces = "text/json;charset=UTF-8")
@@ -388,6 +393,58 @@ public class EsPopJourneyController {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
+			}  
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	/*
+	@RequestMapping(value = "/testAOBListAjax", 
+			method = RequestMethod.POST, 
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String testAOBListAjax(
+			@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
+		
+		int cnt = iEsPopjourneyService.getCmtCnt(params);
+		
+		PagingBean pb = iPagingService.getPagingBean(page, cnt);
+		
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		
+		List<HashMap<String, String>> list = iEsPopjourneyService.getCmtList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value = "/postCmtUpdates", 
+			method = RequestMethod.POST, 
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtUpdates(
+			@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iEsPopjourneyService.updateCmt(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
 			}
 			
 		} catch (Throwable e) {
@@ -398,4 +455,32 @@ public class EsPopJourneyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	@RequestMapping(value = "/postCmtDeletes", 
+			method = RequestMethod.POST, 
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtDeletes(
+			@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iEsPopjourneyService.deleteCmt(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	*/
 }

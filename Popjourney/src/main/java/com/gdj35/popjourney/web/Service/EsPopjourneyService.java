@@ -114,6 +114,21 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.writeCmt(params);
 	}
 
+	@Override
+	public int likeNotf(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.likeNotf(params);
+	}
+
+	@Override
+	public int postHit(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.postHit(params);
+	}
+
+	@Override
+	public int getCmtCnt(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtCnt(params);
+	}
+
 	
 
 

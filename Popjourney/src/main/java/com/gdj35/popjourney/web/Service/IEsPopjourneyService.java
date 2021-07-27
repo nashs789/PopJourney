@@ -45,6 +45,12 @@ public interface IEsPopjourneyService {
 
 	public int writeCmt(HashMap<String, String> params) throws Throwable;
 
+	public int likeNotf(HashMap<String, String> params) throws Throwable;
+
+	public int postHit(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCnt(HashMap<String, String> params) throws Throwable;
+
 	
 
 

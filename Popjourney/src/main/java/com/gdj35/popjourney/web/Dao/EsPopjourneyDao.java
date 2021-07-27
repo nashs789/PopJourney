@@ -112,5 +112,20 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 		return sqlSession.insert("EsPJ.writeCmt",params);
 	}
 
+	@Override
+	public int likeNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.likeNotf", params);
+	}
+
+	@Override
+	public int postHit(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.postHit", params);
+	}
+
+	@Override
+	public int getCmtCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("EsPJ.getCmtCnt", params);
+	}
+
 
 }

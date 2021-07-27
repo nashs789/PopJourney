@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="EsPJ">
 	<select id="getPostCnt" parameterType="hashmap" resultType="Integer">
-		SELECT COUNT(*) AS CNT
+
+ SELECT COUNT(*) CNT
 		FROM(SELECT POST_NO, CATEGORY_NO, TITLE, HIT, BOARD_DATE, MEM_NO, GRADE_NO, CASE WHEN LIKE_CNT IS NULL
                                                                                  THEN 0
                                                                                  ELSE LIKE_CNT
@@ -17,7 +18,7 @@
 		                                                                      ELSE ' [' || BCMT.CMT_CNT || ']'
 		                                                                  END
 		                                                  END AS TITLE, B.HIT, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE,
-		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, RANK() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
+		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, ROW_NUMBER() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
 		           FROM BOARD B INNER JOIN MEM M
 		                                ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
 		           				INNER JOIN BOARD_CATEGORY BC
@@ -41,7 +42,7 @@
 		SELECT POST_NO, CATEGORY_NO, TITLE, HIT, BOARD_DATE, MEM_NO, GRADE_NO, CASE WHEN LIKE_CNT IS NULL
                                                                             THEN 0
                                                                             ELSE LIKE_CNT
-                                                                       END AS LIKE_CNT, NIC, RK
+                                                                       END AS LIKE_CNT, NIC, ROW_NUMBER() OVER(ORDER BY BOARD_DATE DESC) AS RK
 		      FROM(SELECT B.POST_NO, BC.CATEGORY_NO, CASE WHEN LENGTH(B.TITLE) > 25
 		                                                  THEN SUBSTR(B.TITLE,1 ,25) || CASE WHEN BCMT.CMT_CNT IS NULL
 		                                                                                     THEN ' [0]'
@@ -52,7 +53,7 @@
 		                                                                      ELSE ' [' || BCMT.CMT_CNT || ']'
 		                                                                  END
 		                                                  END AS TITLE, B.HIT, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE,
-		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, RANK() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
+		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, B.DEL
 		           FROM BOARD B INNER JOIN MEM M
 		                                ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
 		           				INNER JOIN BOARD_CATEGORY BC
@@ -69,55 +70,59 @@
 		                        LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 		                                         FROM BOARD_LIKE
 		                                         GROUP BY POST_NO)BLIKE 
-		                                     ON B.POST_NO = BLIKE.POST_NO)
-		      WHERE DEL != 0
-		      <choose>
-				<when test="gradeNo == 0">
-					AND (GRADE_NO = 1 OR GRADE_NO = 2) 
-				</when>
-				<when test="gradeNo == 2">
-					AND GRADE_NO = 2
-				</when>
-				<when test="gradeNo == 1">
-					AND GRADE_NO = 1
-				</when>
-				<when test="gradeNo == 3">
-					AND MEM_NO = #{MEM_NO}
-				</when>
-			</choose>
-			<choose>
-				<when test="categoryNo == 0">
-					AND CATEGORY_NO != 1
-				</when>
-				<when test="categoryNo == 2">
-					AND CATEGORY_NO = 2
-				</when>
-				<when test="categoryNo == 3">
-					AND CATEGORY_NO = 3
-				</when>
-				<when test="categoryNo == 4">
-					AND CATEGORY_NO = 4
-				</when>
-			</choose>
-			<if test="searchTxt != null and searchTxt !=''">
-				<choose>
-					<when test="selectFilter == 1">
-							AND TITLE LIKE '%' || #{searchTxt} || '%'
+		                                     ON B.POST_NO = BLIKE.POST_NO
+                                WHERE B.DEL !=0)
+		      WHERE 1=1
+ 				<choose>
+					<when test="gradeNo == 0">
+						AND (GRADE_NO = 1 OR GRADE_NO = 2) 
 					</when>
-					<when test="selectFilter == 2">
-							AND NIC LIKE '%' || #{searchTxt} || '%'
+					<when test="gradeNo == 2">
+						AND GRADE_NO = 2
+					</when>
+					<when test="gradeNo == 1">
+						AND GRADE_NO = 1
+					</when>
+					<when test="gradeNo == 3">
+						AND MEM_NO = #{MEM_NO}
 					</when>
 				</choose>
-			</if>
-			)
+				<choose>
+					<when test="categoryNo == 0">
+						AND CATEGORY_NO != 1
+					</when>
+					<when test="categoryNo == 2">
+						AND CATEGORY_NO = 2
+					</when>
+					<when test="categoryNo == 3">
+						AND CATEGORY_NO = 3
+					</when>
+					<when test="categoryNo == 4">
+						AND CATEGORY_NO = 4
+					</when>
+				</choose>
+	                <if test="boardSearchTxt != null and boardSearchTxt !=''">
+						<choose>
+							<when test="boardSearchFilter == 0">
+									AND NIC LIKE '%' || #{boardSearchTxt} || '%' OR TITLE LIKE '%' || #{boardSearchTxt} || '%'
+							</when>
+							<when test="boardSearchFilter == 1">
+									AND TITLE LIKE '%' || #{boardSearchTxt} || '%'
+							</when>
+							<when test="boardSearchFilter == 2">
+									AND NIC LIKE '%' || #{boardSearchTxt} || '%'
+							</when>
+						</choose>
+					</if> 
+					) 
 	</select>
 	
 	<select id="getPostList" parameterType="hashmap" resultType="hashmap">
-		SELECT *
+		 SELECT *
 		FROM(SELECT POST_NO, CATEGORY_NO, TITLE, HIT, BOARD_DATE, MEM_NO, GRADE_NO, CASE WHEN LIKE_CNT IS NULL
                                                                                  THEN 0
                                                                                  ELSE LIKE_CNT
-                                                                            END AS LIKE_CNT, NIC, RK
+                                                                            	END AS LIKE_CNT, NIC, RK
 		      FROM(SELECT B.POST_NO, BC.CATEGORY_NO, CASE WHEN LENGTH(B.TITLE) > 25
 		                                                  THEN SUBSTR(B.TITLE,1 ,25) || CASE WHEN BCMT.CMT_CNT IS NULL
 		                                                                                     THEN ' [0]'
@@ -128,7 +133,7 @@
 		                                                                      ELSE ' [' || BCMT.CMT_CNT || ']'
 		                                                                  END
 		                                                  END AS TITLE, B.HIT, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE,
-		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, RANK() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
+		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, ROW_NUMBER() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
 		           FROM BOARD B INNER JOIN MEM M
 		                                ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
 		           				INNER JOIN BOARD_CATEGORY BC
@@ -152,7 +157,7 @@
 		SELECT POST_NO, CATEGORY_NO, TITLE, HIT, BOARD_DATE, MEM_NO, GRADE_NO, CASE WHEN LIKE_CNT IS NULL
                                                                             THEN 0
                                                                             ELSE LIKE_CNT
-                                                                       END AS LIKE_CNT, NIC, RK
+                                                                       END AS LIKE_CNT, NIC, ROW_NUMBER() OVER(ORDER BY BOARD_DATE DESC) AS RK
 		      FROM(SELECT B.POST_NO, BC.CATEGORY_NO, CASE WHEN LENGTH(B.TITLE) > 25
 		                                                  THEN SUBSTR(B.TITLE,1 ,25) || CASE WHEN BCMT.CMT_CNT IS NULL
 		                                                                                     THEN ' [0]'
@@ -163,7 +168,7 @@
 		                                                                      ELSE ' [' || BCMT.CMT_CNT || ']'
 		                                                                  END
 		                                                  END AS TITLE, B.HIT, TO_CHAR(B.BOARD_DATE, 'YYYY-MM-DD') AS BOARD_DATE,
-		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, RANK() OVER(ORDER BY B.BOARD_DATE DESC) AS RK, B.DEL
+		                  M.MEM_NO, G.GRADE_NO, BLIKE.LIKE_CNT, M.NIC, B.DEL
 		           FROM BOARD B INNER JOIN MEM M
 		                                ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
 		           				INNER JOIN BOARD_CATEGORY BC
@@ -180,10 +185,10 @@
 		                        LEFT OUTER JOIN (SELECT POST_NO, COUNT(*) AS LIKE_CNT
 		                                         FROM BOARD_LIKE
 		                                         GROUP BY POST_NO)BLIKE 
-		                                     ON B.POST_NO = BLIKE.POST_NO)
-		      WHERE DEL != 0
-		      AND RK BETWEEN #{startCnt} AND #{endCnt}
-		      <choose>
+		                                     ON B.POST_NO = BLIKE.POST_NO
+                                WHERE B.DEL !=0)
+		      WHERE 1=1
+              <choose>
 				<when test="gradeNo == 0">
 					AND (GRADE_NO = 1 OR GRADE_NO = 2) 
 				</when>
@@ -211,18 +216,22 @@
 					AND CATEGORY_NO = 4
 				</when>
 			</choose>
-			<if test="searchTxt != null and searchTxt !=''">
+             <if test="boardSearchTxt != null and boardSearchTxt !=''">
 				<choose>
-					<when test="selectFilter == 1">
-							AND TITLE LIKE '%' || #{searchTxt} || '%'
+					<when test="boardSearchFilter == 0">
+							AND NIC LIKE '%' || #{boardSearchTxt} || '%' OR TITLE LIKE '%' || #{boardSearchTxt} || '%'
 					</when>
-					<when test="selectFilter == 2">
-							AND NIC LIKE '%' || #{searchTxt} || '%'
+					<when test="boardSearchFilter == 1">
+							AND TITLE LIKE '%' || #{boardSearchTxt} || '%'
+					</when>
+					<when test="boardSearchFilter == 2">
+							AND NIC LIKE '%' || #{boardSearchTxt} || '%'
 					</when>
 				</choose>
-			</if>
-			)
-		        ORDER BY DECODE(CATEGORY_NO, 1,1), RK
+			</if>       
+                    )
+                    WHERE RK BETWEEN  #{startCnt} AND #{endCnt}
+		      ORDER BY DECODE(CATEGORY_NO, 1,1), RK
 	</select>
 	<select id="getPostNCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
@@ -347,6 +356,10 @@
 			      	</when>
 			      </choose>
 	</select>
+	<update id="postHit" parameterType="hashmap">
+		UPDATE BOARD SET HIT = HIT + 1 
+		WHERE POST_NO = #{postNo}
+	</update>
 	<select id="editPost" parameterType="hashmap" resultType="hashmap">
 		SELECT *
 		FROM BOARD
@@ -392,6 +405,10 @@
 		INSERT INTO BOARD_LIKE (POST_NO,MEM_NO)
 		VALUES(#{postNo},#{loginUserNo})
 	</insert>
+	<insert id="likeNotf" parameterType="hashmap">
+		INSERT INTO NOTF (NOTF_NO,NOTF_MEM_NO,EVENT_NO,MEM_NO, GBN_NO)
+		VALUES(NOTF_SEQ.NEXTVAL,#{postMem},10,#{loginUserNo}, #{postNo})
+	</insert>
 	<delete id="delLike" parameterType="hashmap">
 		DELETE FROM BOARD_LIKE
 		WHERE MEM_NO = #{loginUserNo} AND POST_NO = #{postNo} 
@@ -400,4 +417,5 @@
 		INSERT INTO BOARD_CMT (POST_CMT_NO, MEM_NO, POST_NO, CONTENTS)
 		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{cmtCon})
 	</insert>
+	
 </mapper>
