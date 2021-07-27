@@ -400,7 +400,7 @@ a {
 	margin: 0 auto;
 }
 
-.content_area span {
+.content_area>span {
 	float: right;
 	font-size: 10pt;
 	color: black;
@@ -415,12 +415,12 @@ a {
 	position: relative;
 }
 
-.img_slide>img {
+.img_on {
 	width: 100%;
 	height: 100%;
 }
 
-.img_slide span img {
+.arrow_img {
 	width: 40px;
 	height: 40px;
 	cursor: pointer;
@@ -428,11 +428,11 @@ a {
 	border-radius: 100px;
 }
 
-.img_slide span img:hover {
+.arrow_img:hover {
 	border: 2px dotted #f37321;
 }
 
-.img_slide span {
+.left_arrow, .right_arrow {
 	top: 220px;
 	display: inline-block;
 	position: absolute;
@@ -1602,9 +1602,9 @@ input[type="radio"]:checked {
 					</div>
 					<span>1 / 19</span>
 					<div class="img_slide">
-						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" id="left"></span>
-							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on">
-						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" id="right"></span>
+						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" id="left" class="arrow_img"></span>
+							<span><img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on"></span>
+						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" id="right" class="arrow_img"></span>
 					</div>
 					<div class="txt_area">
 						<p>${data.CONTENTS}</p>
