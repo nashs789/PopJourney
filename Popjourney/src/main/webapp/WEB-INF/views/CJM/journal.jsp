@@ -1118,6 +1118,7 @@ input[type="radio"]:checked {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		static int seq = 1;
 		
 		reloadList();
 		reloadSequence();
@@ -1340,7 +1341,8 @@ input[type="radio"]:checked {
 		});
 		// 시퀀스 오른쪽 버튼 클릭
 		$("#right").on("click", function() {
-			
+			seq++;
+			reloadSequence();
 		});
 	
 	}); // document ready end..
@@ -1491,8 +1493,6 @@ input[type="radio"]:checked {
 			data: params,
 			success: function(res) {
 				drawSequence(res.sequence);
-				console.log(res.sequence);
-				console.log(res.sequence[1]);
 			},
 			error: function(request, status, error) {
 				console.log(error);
@@ -1500,11 +1500,17 @@ input[type="radio"]:checked {
 		});
 	}
 	
-	var i = 1;
+	
 	function drawSequence(sequence) {
+		$("#nextImg").html("");
 		var html = "";
+		html = "<img alt=\"사진\" src=\"./resources/upload/" + sequence[seq].JOURNAL_PHOTO_PATH + "\" class=\"img_on\">";
+		$("#nextImg").html(html);
 		
-		html = "<img alt=\"사진\" src=\"./resources/upload/" +  + "\" class=\"img_on\">";
+		$(".txt_area").html("");
+		var html2 = "";
+		html = "<p>" + sequence[seq].CONTENTS + "</p>";
+		$(".txt_area").html(html2);
 	}
 	
 </script>
@@ -1603,7 +1609,7 @@ input[type="radio"]:checked {
 					<span>1 / 19</span>
 					<div class="img_slide">
 						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" id="left"></span>
-							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on">
+							<span id="nextImg"><img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on"></span>
 						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" id="right"></span>
 					</div>
 					<div class="txt_area">
