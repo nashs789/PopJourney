@@ -474,7 +474,7 @@ a {
 	width: 80px;
 	height: 50px;
 	font-weight: bold;
-	padding-top: 8px;
+	padding-top: 13px;
 	color: black;
 }
 
@@ -515,7 +515,7 @@ a {
 	font-size: 12pt;
 	font-weight: bold;
 	color: black;
-	padding-top: 8px;
+	padding-top: 20px;
 }
 
 .hash_txt {
@@ -791,10 +791,6 @@ a {
 	resize: none;
 }
 
-#cmtCmtContents {
-	display: none;
-}
-
 .cmt_contents_right .cmt_bottom textarea, reply {
 	width: 1140px;
 	padding: 5px;
@@ -802,9 +798,6 @@ a {
 	height: 60px;
 }
 
-.cmt_contents_right>span {
-	cursor: auto;
-}
 
 .reply {
 	height: 85px;
@@ -878,7 +871,6 @@ a {
 
 .cmt_contents_right span {
 	height: auto;
-	cursor: pointer;
 	line-height: 30px;
 }
 
@@ -903,10 +895,6 @@ a {
 .cmt_cmt_date {
 	float: right;
 	margin-right: 50px;
-}
-
-#cmtEditContents {
-	display: none;
 }
 
 #footer {
@@ -1132,6 +1120,7 @@ input[type="radio"]:checked {
 	$(document).ready(function(){
 		
 		reloadList();
+		reloadSequence();
 		
 		//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 		$("#journalBoard").on("click", function() {
@@ -1152,9 +1141,6 @@ input[type="radio"]:checked {
 		
 		// 여행게시판 작성자 번호 가져오기
 		$("#journalWriteMemNo").val($(".title_area").attr("journalMno"));
-		
-		// 여행게시판 댓글 작성자 번호 가져오기
-		//$("#cmtWriteMemNo").val($(".cmt_contents").attr("cmtMemNo"));
 		
 		// 페이징 처리
 		$(".paging").on("click", "div", function() {
@@ -1187,29 +1173,174 @@ input[type="radio"]:checked {
 				});
 			}
 		});
-			console.log($(".cmt_contents").attr("cmtMemNo"));
-			console.log($(".cmt_contents").val($(".cmt_contents").attr("cmtMemNo")));
-			console.log($(".cmt_contents").attr("cmtMemNo").val));
-			console.log();
-		if($("#memNo").val() == $(".cmt_contents").attr("cmtMemNo")) {
-			$(".cmt_delete_btn").css("display", "inline-block");
-			$(".cmt_edit_btn").css("display", "inline-block");
-		} else {
-			$(".cmt_delete_btn").css("display", "none");
-			$(".cmt_edit_btn").css("display", "none");
-		}
 		
 		
-		//댓글수정
+		//댓글 수정 클릭 시
 		$("#cmtList").on("click", ".cmt_edit_btn", function() {
-			$(this).each(function() {
-				$("#cmtEditContents").css("display", "inline-block");
-			});
+			$("#cmtEditContents").remove();
+			$("#cmtCmtContents").remove();
+			$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+			var cmtNo = $("#cmtNo").val();
+			var html = "";
+			
+			html += "<div class=\"cmt_cmt_contents\" id=\"cmtEditContents\">";
+			html += "	<div class=\"cmt_contents_right\">";
+			html += "		<div class=\"cmt_bottom\">";
+			html += "			<textarea id=\"editCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+			html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" id=\"editBtn\" value=\"수  정\" />";
+			html += "		</div>";
+			html += "	</div>";
+			html += "</div>";
+		
+			$(".cmt_content_list[cmtno=" + cmtNo + "]").append(html);
+			
+		});
+		// 댓글 수정 후 수정버튼 클릭 시
+		$("#cmtList").on("click", "#editBtn", function() {
+			if($.trim($("#editCmt").val()) == "") {
+				alert("내용을 넣어주세요.");
+				$("#editCmt").focus();
+			} else {
+				$("#getCmtContents").val($("#editCmt").val());
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalCmtEdits",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						$("#cmtEditContents").remove();
+						reloadList();
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		});
+		//댓글 답글 클릭 시
+		$("#cmtList").on("click", ".add_cmt_cmt", function() {
+			if($("#memNo").val() != "") {
+				// 여행게시판 댓글 작성자 번호 가져오기
+				$("#cmtWriteMemNo").val($(this).parent().parent().parent().attr("cmtmemno"));
+
+				$("#cmtEditContents").remove();
+				$("#cmtCmtContents").remove();
+				$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+				var cmtNo = $("#cmtNo").val();
+				var html = "";
+				
+				html += "<div class=\"cmt_cmt_contents\" id=\"cmtCmtContents\">";
+				html += "	<div class=\"cmt_contents_right\">";
+				html += "		<div class=\"cmt_bottom\">";
+				html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+				html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" id=\"cmtAddBtn\" value=\"등  록\" />";
+				html += "		</div>";
+				html += "	</div>";
+				html += "</div>";
+			
+				$(".cmt_content_list[cmtno=" + cmtNo + "]").append(html);
+			} else {
+				alert("로그인 후 이용해 주시기 바랍니다.");
+			}
+			
+		});
+		// 댓글 답글 클릭 후 등록 버튼 클릭 시
+		$("#cmtList").on("click", "#cmtAddBtn", function() {
+			if($.trim($("#addCmt").val()) == "") {
+				alert("내용을 넣어주세요.");
+				$("#addCmt").focus();
+			} else {
+				$("#getCmtContents").val($("#addCmt").val());
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalCmtCmtAdds",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						$("#cmtCmtContents").remove();
+						reloadList();
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		});
+		// 댓글 삭제버튼 클릭 시
+		$("#cmtList").on("click", ".cmt_delete_btn", function() {
+			$("#cmtWriteMemNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+			if(confirm("삭제하시겠습니까?")) {
+				
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalCmtDeletes",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						if(res.msg == "success") {
+							reloadList();
+						} else if(res.msg == "failed") {
+							alert("삭제에 실패하였습니다.");
+						} else {
+							alert("삭제중 문제가 발생하였습니다.");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		});
+		// 대댓글 삭제버튼 클릭 시
+		$("#cmtList").on("click", ".cmt_cmt_delete_btn", function() {
+			$("#cmtWriteMemNo").val($(this).parent().parent().parent().attr("cmtcmtno"));
+			if(confirm("삭제하시겠습니까?")) {
+				
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalCmtCmtDeletes",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						if(res.msg == "success") {
+							reloadList();
+						} else if(res.msg == "failed") {
+							alert("삭제에 실패하였습니다.");
+						} else {
+							alert("삭제중 문제가 발생하였습니다.");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
 		});
 		
-		// 대댓글 작성
-		$("#cmtList").on("click", ".add_cmt_cmt", function() {
-			$("#cmtCmtContents").css("display", "inline-block");
+		// 유저페이지 이동
+		$("#goUserPage").on("click", function() {
+			$("#userNo").val($("#journalWriteMemNo").val());
+			
+			$("#actionForm").attr("action", "userPage");
+			$("#actionForm").submit();
+		});
+		
+		
+		// 시퀀스 왼쪽 버튼 클릭
+		$("#left").on("click", function() {
+			
+		});
+		// 시퀀스 오른쪽 버튼 클릭
+		$("#right").on("click", function() {
+			
 		});
 	
 	}); // document ready end..
@@ -1240,9 +1371,14 @@ input[type="radio"]:checked {
 			
 			if(cmt[i].PARENTS_CMT_NO == null) {
 				
-				html += "<div class=\"cmt_contents\" cmtMemNo=\"" + cmt[i].MEM_NO + "\">";
+				html += "<div class=\"cmt_content_list\" cmtno=\"" + cmt[i].JOURNAL_CMT_NO + "\">";
+				html += "<div class=\"cmt_contents\" cmtmemno=\"" + cmt[i].MEM_NO + "\" >";
 				html += "	<div class=\"cmt_contents_left\">";
-				html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[i].MEM_PHOTO_PATH + "\">";
+				if(cmt[i].MEM_PHOTO_PATH != null) {
+					html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[i].MEM_PHOTO_PATH + "\">";
+				} else {
+					html += "<img alt=\"프로필\" src=\"./resources/images/profile3.png\">";
+				}
 				html += "	</div>";
 				html += "	<div class=\"cmt_contents_right\">";
 				html += "		<strong>" + cmt[i].NIC + "</strong><span class=\"cmt_date\">" + cmt[i].CMT_DATE + "</span><br />";
@@ -1256,31 +1392,24 @@ input[type="radio"]:checked {
 				html += "		</div>";
 				html += "		<div class=\"cmt_box\">";
 				html += "			<span class=\"add_cmt_cmt\">답글</span>";
-				html += "			<span class=\"cmt_delete_btn\">삭제</span>";
+				if($("#memNo").val() == cmt[i].MEM_NO) {
+					html += "			<span class=\"cmt_delete_btn\">삭제</span>";
+				} else {
+					html += "<span></span>";
+				}
 				html += "			<span class=\"report_btn\">신고</span>";
-				html += "			<span class=\"cmt_edit_btn\">수정</span>";
+				if($("#memNo").val() == cmt[i].MEM_NO) {
+					html += "			<span class=\"cmt_edit_btn\">수정</span>";
+				} else {
+					html += "<span></span>";
+				}
 				html += "		</div>";
 				html += "	</div>";
 				html += "</div>";
-				html += "<div class=\"cmt_cmt_contents\" id=\"cmtEditContents\">";
-				html += "	<div class=\"cmt_contents_right\">";
-				html += "		<div class=\"cmt_bottom\">";
-				html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
-				html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" value=\"등  록\" />";
-				html += "		</div>";
-				html += "	</div>";
-				html += "</div>";
-				html += "<div class=\"cmt_cmt_contents\" id=\"cmtCmtContents\">";
-				html += "	<div class=\"cmt_contents_right\">";
-				html += "		<div class=\"cmt_bottom\">";
-				html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
-				html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" value=\"등  록\" />";
-				html += "		</div>";
-				html += "	</div>";
 				html += "</div>";
 				for(j = 0 ; j < cmt.length ; j++) {
 					if(cmt[i].JOURNAL_CMT_NO == cmt[j].PARENTS_CMT_NO) {
-						html += "<div class=\"cmt_cmt_contents\">";
+						html += "<div class=\"cmt_cmt_contents\" cmtcmtno=\"" + cmt[j].JOURNAL_CMT_NO + "\" cmtcmtmemno=\"" + cmt[j].MEM_NO + "\">";
 						html += "	<div class=\"cmt_contents_left\">";
 						html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[j].MEM_PHOTO_PATH + "\">";
 						html += "	</div>";
@@ -1296,9 +1425,18 @@ input[type="radio"]:checked {
 						html += "		</div>";
 						html += "		<div class=\"cmt_box\">";
 						html += "           <span></span>";
-						html += "			<span>삭제</span>";
+						if($("#memNo").val() == cmt[j].MEM_NO) {
+							html += "			<span class=\"cmt_cmt_delete_btn\">삭제</span>";
+						} else {
+							html += "<span></span>";
+						}
 						html += "			<span class=\"report_btn\">신고</span>";
-						html += "			<span>수정</span>";
+						if($("#memNo").val() == cmt[j].MEM_NO) {
+							html += "			<span class=\"cmt_cmt_edit_btn\">수정</span>";
+						}
+						else {
+							html += "<span></span>";
+						}
 						html += "		</div>";
 						html += "	</div>";
 						html += "</div>";
@@ -1341,8 +1479,34 @@ input[type="radio"]:checked {
 		$(".paging").html(html);
 		
 	}
-
-
+	
+	function reloadSequence() {
+		
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "journalgetSequences",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				drawSequence(res.sequence);
+				console.log(res.sequence);
+				console.log(res.sequence[1]);
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		});
+	}
+	
+	var i = 1;
+	function drawSequence(sequence) {
+		var html = "";
+		
+		html = "<img alt=\"사진\" src=\"./resources/upload/" +  + "\" class=\"img_on\">";
+	}
+	
 </script>
 </head>
 <body>
@@ -1426,6 +1590,8 @@ input[type="radio"]:checked {
 					<input type="hidden" id="getCmtContents" name="getCmtContents"/>
 					<input type="hidden" id="journalWriteMemNo" name="journalWriteMemNo" />
 					<input type="hidden" id="cmtWriteMemNo" name="cmtWriteMemNo" />
+					<input type="hidden" id="cmtNo" name="cmtNo" />
+					<input type="hidden" id="userNo" name="userNo" />
 				</form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
@@ -1436,9 +1602,9 @@ input[type="radio"]:checked {
 					</div>
 					<span>1 / 19</span>
 					<div class="img_slide">
-						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
+						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" id="left"></span>
 							<img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on">
-						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
+						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" id="right"></span>
 					</div>
 					<div class="txt_area">
 						<p>${data.CONTENTS}</p>
@@ -1481,7 +1647,7 @@ input[type="radio"]:checked {
 						</div>
 					</div>
 					<div class="follow_btn_area">
-						<input type="button" class="go_user_page"
+						<input type="button" id="goUserPage"
 							value="여 행 일 지&nbsp;&nbsp;&nbsp;&nbsp;모 아 보 기 &nbsp;&nbsp;&nbsp;&nbsp;&#62;" />
 					</div>
 				</div>
