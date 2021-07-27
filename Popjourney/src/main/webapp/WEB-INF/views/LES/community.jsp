@@ -244,8 +244,13 @@ body {
 	margin: 17px 20px 13px 0px;
 	width: 40px;
 	cursor: pointer;
+	background-color: #2e3459;
+    border-radius: 5px;
 }
 
+.search_icon:hover {
+    background-color: #fcba03;
+}
 input[type='text']:focus, input[type='password']:focus, select:focus {
 	outline-color: #fcba03;
 }
@@ -578,18 +583,6 @@ a {
 	height: 29px;
 }
 
-.board_search>.search_icon {
-	float: right;
-	margin: 17px 0px 13px 0px;
-	height: 39px;
-	cursor: pointer;
-	background-color: #2e3459;
-	border-radius: 5px;
-}
-
-.board_search>.search_icon:hover {
-	background-color: #fcba03;
-}
 
 .paging_wrap {
 	width: 100%;
@@ -660,7 +653,10 @@ $(document).ready(function() {
 		$(".logins, .sub_area").css("display","inline-block");
 		$(".btns, .sub_profile").css("display","none");
 	}
-	
+	//관리자 외 내부관리자 X
+	if("${sMEM_NO}" != "1"){
+		$("#admin").css("display","none");
+	}
 	$(".login_btn").on("click", function () {
 		if($.trim($("#inputID").val())==""){
 			alert("아이디를 입력해 주세요.");
@@ -687,8 +683,8 @@ $(document).ready(function() {
 	
 	$("#categoryNo").val(0);
 	$("#gradeNo").val(0);
-	if("${param.selectFilter}" != ""){
-		$("#selectFilter").val("${param.selectFilter}");
+	if("${param.boardSearchFilter}" != ""){
+		$("#boardSearchFilter").val("${param.boardSearchFilter}");
 	} 
 	reloadList();
 	makePathInfo();
@@ -718,14 +714,12 @@ $(document).ready(function() {
 	
 	$("#searchBtn").on("click", function () {
 		$("#page").val(1);
-		$("#searchOldTxt").val($("#searchTxt").val());
 		reloadList();
 		makePathInfo();
 	});
 	
 	$(".paging").on("click", "span", function () {
 		$("#page").val($(this).attr("name"));
-		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 		makePathInfo();
 	});	
@@ -760,6 +754,7 @@ $(document).ready(function() {
 		} else {
 			$(this).css("color","#f37321");
 			$(".gradeNo").children("img").css("cursor","pointer");
+			$("#page").val(1);
 			reloadList();
 		}
 	}); //order_list li  end
@@ -770,6 +765,7 @@ $(document).ready(function() {
 		if($("#categoryNo").val() != 1){ //전체보기, 여행꿀팁, Q&A, 잡담
 			console.log($(this).children());
 			$(this).children("img").css("background-color","#f37321");
+			$("#page").val(1);
 			reloadList();
 		} else {
 			$("#postAll").children("span").children("img").css("background-color","#f37321");
@@ -1031,14 +1027,14 @@ function makePage(pb)
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-				type="text" class="search" placeholder="검색">
-				<select class="filter">
-				<option value="0">통합검색</option>
-				<option value="1">여행일지</option>
-				<option value="2">자유게시판</option>
-				<option value="3">닉네임</option>
-			</select>
+			<img alt="search" src="./resources/images/search.png" class="search_icon" />
+				<input type="text" class="search" name="searchTxt" placeholder="검색">
+				<select class="filter" name="searchfilter">
+					<option value="0">통합검색</option>
+					<option value="1">여행일지</option>
+					<option value="2">자유게시판</option>
+					<option value="3">닉네임</option>
+				</select>
 		</div>
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
@@ -1151,8 +1147,8 @@ function makePage(pb)
 							<input type="hidden" id="gradeNo" name="gradeNo" value=""/>
 							<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 							<input type="hidden" id="memGradeNo" name="memGradeNo" value="${sGRADE_NO}"/>
-				<input type="text" class="search" name="searchTxt" placeholder="검색" value="${param.searchTxt}"> 
-						<select class="filter" id="selectFilter" name="selectFilter">
+				<input type="text" class="search" name="boardSearchTxt" placeholder="검색" value="${param.searchTxt}"> 
+						<select class="filter" id="boardSearchFilter" name="boardSearchFilter">
 							<option value="0">통합검색</option>
 							<option value="1">제목</option>
 							<option value="2">닉네임</option>
