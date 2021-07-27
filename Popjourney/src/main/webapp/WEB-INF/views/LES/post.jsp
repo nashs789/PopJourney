@@ -1248,6 +1248,26 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
+	// 메인검색창 넘어가는 부분(동기)
+	$(".search_icon").on("click", function() {
+		if($("#mainSearchFilter").val() == 0) {
+			$("#goSearch").attr("action", "search");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 1) {
+			$("#goSearch").attr("action", "searchTravelDiary");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 2) {
+			$("#goSearch").attr("action", "searchHashtag");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 3) {
+			$("#goSearch").attr("action", "searchCommunity");
+			$("#goSearch").submit();
+		} else {
+			$("#goSearch").attr("action", "searchNic");
+			$("#goSearch").submit();
+		}
+	});
 });// document ready end
 //좋아요 첫화면 구성
 function likeLoad() {
@@ -1303,7 +1323,7 @@ function resetVal() {
 	$("#page").val(1);
 }
 
-function cmtReloadList() {
+/* function cmtReloadList() {
 	var params = $("#cmtForm").serialize();
 	
 	$.ajax({
@@ -1330,7 +1350,7 @@ function redrawList(list) {
 		html += "	<img alt=\"프로필\" src=\"./resources/images/profile2.png\">";
 		html += "</div>";
 		html += "<div class=\"cmt_contents_right\">";
-		html += "	<strong>"+ cmtList.NIC +"</strong><span class=\"cmt_date\">${data.BOARD_DATE}</span><br />";
+		html += "	<strong>"+ cmtList.NIC +"</strong><span class=\"cmt_date\">" + cmtList.BOARD_DATE + "</span><br />";
 		html += "	<span><img alt=\"등급" src=\"./resources/images/grade.png\"> </span>";
 		html += "<span>";
 		if(cmtList.GRADE_NO == "0") {
@@ -1389,7 +1409,7 @@ function redrawPaging(pb) {
 	html += "<span name=\"" + pb.maxPcount + "\">마지막</span>";
 	
 	$("#pagingWrap").html(html);
-}
+} */
 
 function popup() {
 	var popup = document.getElementById("popup");
@@ -1519,14 +1539,17 @@ function reportPopup() {
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-            <img alt="search" src="./resources/images/search.png" class="search_icon"/>
-            <input type="text" class="search" placeholder="검색">
-            <select class="filter">
-               <option value="0">통합검색</option>
-               <option value="1">여행일지</option>
-               <option value="2">자유게시판</option>
-               <option value="3">닉네임</option>
-            </select>
+            <form action="#" id="goSearch" method="post" >
+				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+				<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+					<option value="0" selected="selected">통합검색</option>
+					<option value="1">여행일지</option>
+					<option value="2">해시태그</option>
+					<option value="3">자유게시판</option>
+					<option value="4">닉네임</option>
+				</select>
+			</form>
          </div>
          <form action="userPage" id="userForm" method="post">
 			<input type="hidden" id="userNo" name="userNo" value="${data.MEM_NO}"/>
