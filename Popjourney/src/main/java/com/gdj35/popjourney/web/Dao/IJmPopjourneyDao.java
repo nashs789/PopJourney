@@ -121,6 +121,8 @@ public interface IJmPopjourneyDao {
 
 	public int getCmtDeletes(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getSequence(HashMap<String, String> params) throws Throwable;
+
 
 
 

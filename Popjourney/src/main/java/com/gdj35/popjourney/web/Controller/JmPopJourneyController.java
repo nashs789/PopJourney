@@ -1370,6 +1370,50 @@ public class JmPopJourneyController {
 	
 	}
 	
+	@RequestMapping(value="/journalCmtCmtDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalCmtCmtDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getCmtDeletes(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	@RequestMapping(value="/journalgetSequences", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalgetSequences(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		List<HashMap<String, String>> sequence = iJmPopjourneyService.getSequence(params);
+		
+		modelMap.put("sequence", sequence);
+		
+		System.out.println("journalgetSequencesParams >> " + params);
+		System.out.println("sequence >> " + sequence);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
 	// 여행일지 작성페이지
 	@RequestMapping(value = "/journalWrite")
 	public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {

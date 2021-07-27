@@ -302,4 +302,9 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getCmtDeletes(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSequence(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getSequence(params);
+	}
+
 }

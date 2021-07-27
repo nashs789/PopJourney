@@ -301,4 +301,9 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.update("JmPJ.getCmtDeletes", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSequence(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getSequence", params);
+	}
+
 }

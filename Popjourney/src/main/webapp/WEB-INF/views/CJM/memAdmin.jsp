@@ -739,12 +739,11 @@
 				});
 				
 				// 회원프로필 이동
-				
 				$("#list_wrap tbody").on("click", "td:not(:first-child):not(:last-child)", function() {
-						$("#userNo").val($(this).parent().attr("mno"));
-						
-						$("#actionForm").attr("action", "userPage");
-						$("#actionForm").submit();
+					$("#userNo").val($(this).parent().attr("mno"));
+					
+					$("#actionForm").attr("action", "userPage");
+					$("#actionForm").submit();
 				});
 				
 				
