@@ -648,6 +648,26 @@ $(document).ready(function(){
 		alert("글을 삭제합니다. // 팝업창 : 예, 아니오 로 만들기");
 	});
 	
+	// 메인검색창 넘어가는 부분(동기)
+	$(".search_icon").on("click", function() {
+		if($("#mainSearchFilter").val() == 0) {
+			$("#goSearch").attr("action", "search");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 1) {
+			$("#goSearch").attr("action", "searchTravelDiary");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 2) {
+			$("#goSearch").attr("action", "searchHashtag");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 3) {
+			$("#goSearch").attr("action", "searchCommunity");
+			$("#goSearch").submit();
+		} else {
+			$("#goSearch").attr("action", "searchNic");
+			$("#goSearch").submit();
+		}
+	});
+	
 });//document.ready end
 </script>
 </head>
@@ -701,13 +721,17 @@ $(document).ready(function(){
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-				<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input type="text" class="search" placeholder="검색"> 
-				<select class="filter">
-					<option value="0">통합검색</option>
+			<form action="#" id="goSearch" method="post" >
+				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+				<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+					<option value="0" selected="selected">통합검색</option>
 					<option value="1">여행일지</option>
-					<option value="2">자유게시판</option>
-					<option value="3">닉네임</option>
+					<option value="2">해시태그</option>
+					<option value="3">자유게시판</option>
+					<option value="4">닉네임</option>
 				</select>
+			</form>
 		</div>
 		<div id="path_info">
 			<span> <img alt="메인페이지" src="./resources/images/home.png" class="home_icon">
