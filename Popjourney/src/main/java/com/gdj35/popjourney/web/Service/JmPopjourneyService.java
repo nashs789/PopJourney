@@ -307,4 +307,29 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getSequence(params);
 	}
 
+	@Override
+	public int getJournalDeletes(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalDeletes(params);
+	}
+
+	@Override
+	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.likeCheck(params);
+	}
+
+	@Override
+	public int addLike(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addLike(params);
+	}
+
+	@Override
+	public int likeNotf(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.likeNotf(params);
+	}
+
+	@Override
+	public int delLike(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.delLike(params);
+	}
+
 }

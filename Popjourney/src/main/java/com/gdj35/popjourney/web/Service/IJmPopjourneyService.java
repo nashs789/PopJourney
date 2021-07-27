@@ -123,4 +123,14 @@ public interface IJmPopjourneyService {
 
 	public List<HashMap<String, String>> getSequence(HashMap<String, String> params) throws Throwable;
 
+	public int getJournalDeletes(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable;
+
+	public int addLike(HashMap<String, String> params) throws Throwable;
+
+	public int likeNotf(HashMap<String, String> params) throws Throwable;
+
+	public int delLike(HashMap<String, String> params) throws Throwable;
+
 }

@@ -1157,4 +1157,31 @@
 		                  AND JD.JOURNAL_NO = #{journalNo}
 		WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
 	</select>
+	
+	<update id="getJournalDeletes" parameterType="hashmap">
+		UPDATE JOURNAL SET DEL = 0
+		WHERE JOURNAL_NO = #{journalNo}
+	</update>
+	
+	<select id="likeCheck" parameterType="hashmap" resultType="hashmap">
+    	SELECT MEM_NO, JOURNAL_NO, LIKE_DATE
+		FROM JOURNAL_LIKE
+		WHERE MEM_NO = #{memNo}
+		AND JOURNAL_NO = #{journalNo}
+	</select>
+	
+	<insert id="addLike" parameterType="hashmap">
+		INSERT INTO JOURNAL_LIKE (MEM_NO, JOURNAL_NO)
+		VALUES(#{memNo}, #{journalNo})
+	</insert>
+	
+	<insert id="likeNotf" parameterType="hashmap">
+		INSERT INTO NOTF (NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES(NOTF_SEQ.NEXTVAL, #{memNo}, 9, #{journalWriteMemNo}, #{journalNo})
+	</insert>
+	
+	<delete id="delLike" parameterType="hashmap">
+		DELETE FROM JOURNAL_LIKE
+		WHERE MEM_NO = #{memNo} AND JOURNAL_NO = #{journalNo}
+	</delete>
 </mapper>

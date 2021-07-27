@@ -306,4 +306,29 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.selectList("JmPJ.getSequence", params);
 	}
 
+	@Override
+	public int getJournalDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getJournalDeletes", params);
+	}
+
+	@Override
+	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.likeCheck", params);
+	}
+
+	@Override
+	public int addLike(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addLike", params);
+	}
+
+	@Override
+	public int likeNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.likeNotf", params);
+	}
+
+	@Override
+	public int delLike(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("JmPJ.delLike", params);
+	}
+
 }
