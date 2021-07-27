@@ -631,6 +631,65 @@ a {
 #following{
 	background-color: #f37321;
 }
+.logins {
+   display: inline-block;
+   vertical-align: top;
+   width: 470px;
+   height: 70px;
+   text-align: right;
+   background-color: #FFFFFF;
+}
+.sub_login1 {
+   display: block;
+   position: relative;
+   width: 100%;
+   height: 55px;
+}
+.sub_login2 {
+   display: block;
+    width: calc(100% - 75px);
+    height: 15px;
+    line-height: 10px;
+    text-align: right;
+    padding-right: 75px;
+}
+.sub_login2 span {
+   position: relative;
+   width: 10px;
+   font-size: 12px;
+   font-weight: 600;
+   cursor: pointer;
+   margin-left: 10px;
+}
+.sub_login2 span:hover {
+   color: #fcba03;
+}
+#inputID, #inputPW {
+   float: right;
+   width: 100px;
+   height: 25px;
+   margin-top: 20px;
+   margin-left: 5px;
+}
+#loginBtn {
+   float: right;
+   margin: 20px 20px 0px 5px;
+   width: 50px;
+   height: 30px;
+   background-color: #2e3459;
+   font-weight: bold;
+   font-size: 12px;
+   color: #FFFFFF;
+   text-align: center;
+   line-height: 26px;
+}
+#loginBtn:hover{
+   color: #FFFFFF;
+   background-color: #f37321;
+}
+input[type='text']:focus, input[type='password']:focus{
+	outline-color: #fcba03;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -670,7 +729,7 @@ $(document).ready(function(){
 			success: function(result){
 				var html = "";
 				
-				if(result.msg == "success")
+				if(result.msg == "success") 
 				{
 					html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우</li>";
 				}
@@ -844,7 +903,7 @@ $(document).ready(function(){
 		}); //ajax end 
 	}); //paging_wrap click end
 	
-	$(".login_btn").on("click", function(){  //로그인 버튼 클릭
+	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
 			popupText = "아이디를 입력하세요.";
@@ -1227,6 +1286,46 @@ function makeNotification(notification)
 	$("#cnt").prepend(html1);
 	$("#notification tbody").html(html);
 } //makeNotification end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html +="	   <div class=\"popup_entity_txt\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
+}//findBtnPopup end
 </script>
 </head>
 <form action="#" id="memForm" method="post">
@@ -1297,6 +1396,19 @@ function makeNotification(notification)
 							</li>
 						</ul>
 					</div>
+					<div class="logins">
+                     <div class="sub_login1">
+                     	<form action="#" id="loginForm">
+	                        <input type="button" id="loginBtn" value="로그인" />
+	                        <input type="password" id="inputPW" name="inputPW" placeholder="PW" />
+	                        <input type="text" id="inputID" name="inputID" placeholder="ID" />
+                        </form>
+                     </div>
+                     <div class="sub_login2">
+                        <span id="join">회원가입</span>
+                        <span id="find">ID/PW 찾기</span>
+                     </div>
+                  </div>
 				</div>
 				<!-- 호버시 메뉴 생성 -->
 			</div>

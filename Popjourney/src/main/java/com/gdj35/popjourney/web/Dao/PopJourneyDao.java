@@ -347,4 +347,15 @@ public class PopJourneyDao implements IPopJourneyDao {
 	{
 		return sql.selectList("PJ.regionList", params);
 	}
+
+	@Override
+	public int mail(HashMap<String, String> params) throws Throwable 
+	{
+		return sql.insert("PJ.mail", params);
+	}
+
+	@Override
+	public int checkCode(HashMap<String, String> params) throws Throwable {
+		return sql.selectOne("PJ.checkCode", params);
+	}
 }

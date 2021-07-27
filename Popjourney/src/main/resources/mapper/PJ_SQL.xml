@@ -38,7 +38,7 @@
 	<insert id="join" parameterType="hashmap"> 
 		INSERT INTO MEM(MEM_NO, ID, PW, PHONE, EMAIL, EMAIL_CONFIRM, NAME, TELCOM, PHOTO_PATH,
          			    NIC, INTRO, BIRTH, SEX, KEYWORD_NO, MARKETING, JOIN_DATE, KEYWORD)
-		VALUES(MEM_SEQ.NEXTVAL, #{inputID}, #{inputPW}, #{phone}, #{email}, #{inputCode}, #{inputName},
+		VALUES(MEM_SEQ.NEXTVAL, #{inputID}, #{inputPW}, #{phone}, #{email}, 1, #{inputName},
 			   #{selectTelcom}, #{photoPath} ,#{inputNic}, #{inputIntro}, #{birth}, #{sex}, #{selectKeyword},
 			   #{marketing}, SYSDATE, #{inputKeyword})
 	</insert>
@@ -1355,5 +1355,17 @@
               AND J.REGION_NO = #{regionNo})
         WHERE RK BETWEEN #{startCnt} AND #{endCnt} 
 		ORDER BY RK ASC
+	</select>
+	
+	<insert id="mail" parameterType="hashmap">
+		INSERT INTO SEND_EMAIL(SEND_NO, EMAIL, TITLE, CONTENTS, RECEIVE, CONFIRM_CODE)
+		VALUES(SEND_SEQ.NEXTVAL, #{mail}, #{title}, #{content}, 1, #{code})
+	</insert>
+	
+	<select id="checkCode" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM SEND_EMAIL
+		WHERE EMAIL = #{mail}
+		AND CONFIRM_CODE = #{inputCode}
 	</select>
 </mapper>

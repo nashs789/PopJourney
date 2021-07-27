@@ -381,6 +381,7 @@ select{
    color: white;
 }
 .bg {
+	position: fixed;
 	display: inline-block;
 	width: 100%;
 	height: 1434px;
@@ -488,31 +489,33 @@ $(document).ready(function(){
 		}
 	}); //inputPhone keypress end
 	
-	$("#sendCode").on("click", function(){ //이메일 인증 코드발송 버튼 클릭시
-		if($.trim($("#inputEmail").val()) == "")
-		{
-			popupText = "이메일을 입력하세요.";
-			commonPopup(popupText);
-			$("#inputEmail").focus();
-			return false;
-		}
-		else if($.trim($("#inputDomain").val()) == "")
-		{
-			popupText = "이메일 주소를 입력하세요.";
-			commonPopup(popupText);
-			$("#inputDomain").focus();
-			return false;
-		}
-		
-		$("#codeWrap").show();
-	}); //sendCode click end
-	
 	$("#ckCode").on("click", function(){ //이메일 인증 확인버튼 클릭
-		//이메일 인증코드 확인작업 yes or no
 		
-		popupText = "인증되었습니다.";
-		commonPopup(popupText);
-		$("#approvalCode").val(1);
+		var params = $("#infoForm").serialize();
+		
+		$.ajax({
+			url: "checkCodes",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					popupText = "인증 되었습니다.";
+					commonPopup(popupText);
+					$("#approvalCode").val(1);
+				}
+				else
+				{
+					popupText = "인증에 실패하였습니다.";
+					commonPopup(popupText);
+				} 
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
 	});
 	
 	$("#selectDomain").change(function(){  //도메인 셀렉터 선택시 텍스트창으로 값 이동
@@ -668,6 +671,76 @@ $(document).ready(function(){
 		}//if ~ else end
 	}); //nextBtn click end
 	
+	$("#sendCode").on("click", function(){
+		if($.trim($("#inputEmail").val()) == "")
+		{
+			popupText = "이메일을 입력하세요.";
+			commonPopup(popupText);
+			$("#inputEmail").focus();
+		}
+		else if($.trim($("#inputDomain").val()) == "")
+		{
+			popupText = "이메일 주소를 입력하세요.";
+			commonPopup(popupText);
+			$("#inputDomain").focus();
+		}
+		else
+		{
+			$("#codeWrap").show();
+			var params = $("#infoForm").serialize();
+			
+			$.ajax({
+				url: "sendCodes",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+					if(result.msg == "success")
+					{
+						popupText = "메일이 전송되었습니다.";
+						commonPopup(popupText);
+					}
+					else
+					{
+						popupText = "메일 전송에 실패 하였습니다.";
+						commonPopup(popupText);
+					} 
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end 
+		}
+	}); //sendCode click end
+	
+	$("#reSend").on("click", function(){
+		var params = $("#infoForm").serialize();
+		
+		$.ajax({
+			url: "sendCodes",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					popupText = "메일이 전송되었습니다.";
+					commonPopup(popupText);
+				}
+				else
+				{
+					popupText = "메일 전송에 실패 하였습니다.";
+					commonPopup(popupText);
+				} 
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	});//reSend click end
+	
 	$("#preBtn").on("click", function(){ //이전버튼 클릭
 		location.href = "terms";
 	}); //preBtn click end
@@ -739,6 +812,9 @@ $(document).ready(function(){
 
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
+	$(".popup").remove();
+	$(".bg").remove();
+	
 	var html = "";
 	
 	html +="<div class=\"popup\">";
@@ -786,6 +862,7 @@ function findBtnPopup()
 </script>
 </head>
 <body>
+<input type="hidden" id="approvalCode" value="0"/>
 <form action="#" id="Form">
 	<input type="hidden" id="valueStorage" name="storage"/>
 </form>
@@ -920,9 +997,9 @@ function findBtnPopup()
 						</select>
 						<input type="button" value="코드발송" id="sendCode"/>
 						<div id="codeWrap">
-							<input type="text" id="inputCode" placeholder="인증번호를 입력하세요"/>
+							<input type="text" id="inputCode" name="inputCode" placeholder="인증번호를 입력하세요"/>
 					  	    <input type="button" id="ckCode" value="확 인"/>
-					    	<input type="button" value="재발송"/>
+					    	<input type="button" id="reSend" value="재발송"/>
 						</div>
 					</div>
 					
@@ -944,7 +1021,6 @@ function findBtnPopup()
 					<input type="text" id="inputKeyword" name="inputKeyword" placeholder="키워드를 입력하세요."/>
 				</div>
 				<input type="hidden" id="marketing" name="marketing" value="${data.marketing}"/>
-				<input type="hidden" name="inputCode" id="approvalCode" value="0"/>
 			</form>
 			
 			<div id="btnWrap">
