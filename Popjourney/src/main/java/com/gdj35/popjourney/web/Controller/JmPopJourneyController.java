@@ -1203,7 +1203,7 @@ public class JmPopJourneyController {
 	// 여행일지 세부페이지
 	@RequestMapping(value = "/journal")
 	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		
+		System.out.println("journalParams >> " + params);
 		// 여행일지 세부페이지의 메인데이터
 		HashMap<String, String> data = iJmPopjourneyService.getJournal(params);
 		// 여행일지 세부페이지의 메모데이터
@@ -1226,7 +1226,7 @@ public class JmPopJourneyController {
 		mav.addObject("cnt", cnt);
 		mav.addObject("hash", hash);
 		mav.addObject("page", page);
-		mav.addObject("likeCheck",likeCheck);
+		mav.addObject("likeCheck", likeCheck);
 		//mav.addObject("journalWriterMemNo", data.get("MEM_NO"));
 		
 		System.out.println("journalParams >> " + params);
@@ -1236,6 +1236,7 @@ public class JmPopJourneyController {
 		System.out.println("cnt >> " + cnt);
 		System.out.println("hash >> " + hash);
 		System.out.println("page >> " + page);
+		System.out.println("likeCheck >> " + likeCheck);
 		
 		mav.setViewName("CJM/journal");
 		

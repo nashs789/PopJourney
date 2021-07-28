@@ -1361,7 +1361,7 @@ function makePopup()
 </form>
 <form action="journal" id="goJournalForm" method="post">
    <input type="hidden" id="journalNo" name="journalNo"/>
-   <input type="hidden" id="memNo" name="memNo" val="${sMEM_NO}"/>
+   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
 <form action="userPage" id="userForm" method="post">
    <input type="hidden" id="userNo" name="userNo"/>

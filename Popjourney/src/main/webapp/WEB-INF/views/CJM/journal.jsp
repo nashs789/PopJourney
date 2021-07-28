@@ -1443,7 +1443,6 @@ input[type="radio"]:checked {
 			console.log(like);
 			//console.log(params);
 			if(like == 0){ //좋아요 x : 좋아요 기능
-				console.log("좋아요!");
 				$.ajax({
 					url:"journalLikes", 
 					type: "post",
@@ -1452,6 +1451,7 @@ input[type="radio"]:checked {
 					success: function(res){
 						if(res.msg == "success")
 						{
+							console.log("좋");
 							likeReload();
 						}
 					}, //success end
@@ -1469,6 +1469,7 @@ input[type="radio"]:checked {
 					success: function(res){
 						if(res.msg == "success")
 						{
+							console.log("취소");
 							likeReload();
 						}
 					}, //success end
