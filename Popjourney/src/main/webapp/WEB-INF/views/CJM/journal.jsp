@@ -726,7 +726,6 @@ a {
 	position: relative;
 	height: 70px;
 	border-bottom: 1px solid #ccc;
-	cursor: pointer;
 }
 .journal_nav > span {
 	margin: 0px;
@@ -1128,7 +1127,7 @@ input[type="radio"]:checked {
     cursor: pointer;
 }
 
-.post_page {
+.journal_page {
 	width: 1280px;
 	height: 50px;
 	display: inline-block;
@@ -1136,13 +1135,13 @@ input[type="radio"]:checked {
 	border-top: 1px solid #ccc;
 	cursor: pointer;
 }
-.post_label {
+.journal_label {
 	width: 300px;
 	text-align: center;
 	font-size: 10pt;
 	position: absolute;
 }
-.post_label_title {
+.journal_label_title {
 	width: 700px;
 	position: relative;
 	margin-left: 580px;
@@ -1479,6 +1478,15 @@ input[type="radio"]:checked {
 				});//ajax end
 			}
 		});
+		
+		//이전 글 이동
+		$("#prevPost").on("click", function(){
+			$("#prevPostForm").submit();
+		}); //prevPost click end
+		//다음 글 이동
+		$("#nextPost").on("click", function(){
+			$("#nextPostForm").submit();
+		}); //nextPost click end
 	}); // document ready end..
 
 	function reloadList() {
@@ -1655,13 +1663,17 @@ input[type="radio"]:checked {
 	//좋아요 첫화면 구성
 	function likeLoad() {
 		if("${likeCheck.JOURNAL_NO}" !="") {//좋아요 o
-			$(".reaction").children("ul").children("li").children("img").attr("like","1");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
+			$("#likeImg").attr("like","1");
+			$("#likeImg").css("background-color","#f37321");
+/* 			$(".reaction").children("ul").children("li").children("img").attr("like","1");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321"); */
 			$(".likeText").css("color","#f37321");
 			console.log("좋아요! 클릭");
 		} else { //좋아요 x
-			$(".reaction").children("ul").children("li").children("img").attr("like","0");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459");
+			$("#likeImg").attr("like","0");
+			$("#likeImg").css("background-color","#2e3459");
+/* 			$(".reaction").children("ul").children("li").children("img").attr("like","0");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459"); */
 			$(".likeText").css("color","#2e3459");
 			console.log("좋아요 xx");
 		}
@@ -1672,13 +1684,17 @@ input[type="radio"]:checked {
 		var color = window.getComputedStyle(img).backgroundColor;
 		
 		if(color=="rgb(46, 52, 89)") {//남색 클릭: 좋아요 추가
-			$(".reaction").children("ul").children("li").children("img").attr("like","1");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
+			/* $(".reaction").children("ul").children("li").children("img").attr("like","1");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321"); */
+			$("#likeImg").attr("like","1");
+			$("#likeImg").css("background-color","#f37321");
 			$(".likeText").css("color","#f37321");
 			console.log("좋아요! 클릭");
 		} else { //주황 클릭: 좋아요 취소 
-			$(".reaction").children("ul").children("li").children("img").attr("like","0");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459");
+			/* $(".reaction").children("ul").children("li").children("img").attr("like","0");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459"); */
+			$("#likeImg").attr("like","0");
+			$("#likeImg").css("background-color","#2e3459");
 			$(".likeText").css("color","#2e3459");
 			console.log("좋아요 xx");
 		}
@@ -1772,6 +1788,16 @@ input[type="radio"]:checked {
 					<input type="hidden" id="userNo" name="userNo" />
 					<input type="hidden" id="photoCnt" name="photoCnt" value="${cnt}" />
 				</form>
+				<form action="#" id="prevJournalForm" method="post">
+					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.POST_NO}"/>
+					<input type="hidden" id="pNewJournalNo" name="newJournalNo" value="1"/>
+					<input type="hidden" id="ploginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
+			   </form>
+			   <form action="#" id="nextJournalForm" method="post">
+			   		<input type="hidden" id="nextJournalNo" name="JournalNo" value="${nextJournal.POST_NO}"/>
+					<input type="hidden" id="nNewJournalNo" name="newJournalNo" value="1"/>
+					<input type="hidden" id="nloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
+			   </form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
 				</div>
@@ -1850,14 +1876,18 @@ input[type="radio"]:checked {
 						</div>
 					</c:when>
 				</c:choose> --%>
-				<div class="post_page">
-            		<div class="post_label">이전글</div>
-            		<div class="post_label_title" id="prevPost">제목</div>
+				<div class="Journal_page">
+            		<div class="Journal_label">이전글</div>
+            		<div class="Journal_label_title" id="prevJournal">${prevJournal.TITLE}</div>
             	</div>
-            	<div class="post_page">
-            		<div class="post_label">다음글</div>
-            		<div class="post_label_title" id="nextPost">제목</div>
-            	</div>
+            	<c:choose>
+            		<c:when test="${!empty nextJournal.TITLE}">
+		            	<div class="Journal_page">
+		            		<div class="Journal_label">다음글</div>
+		            		<div class="Journal_label_title" id="nextJournal">${nextJournal.TITLE}</div>
+		            	</div>
+            		</c:when>
+            	</c:choose>
 				<div class="reaction">
 					<ul>
 						<li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li>

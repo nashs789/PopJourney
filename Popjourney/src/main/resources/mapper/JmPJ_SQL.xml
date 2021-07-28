@@ -1118,7 +1118,7 @@
 	
 	<insert id="getCmtNotf" parameterType="hashmap">
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
-		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 1, #{journalWriteMemNo}, #{journalNo})
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 1, #{journalWriteMemNo}, JOURNAL_CMT_SEQ.CURRVAL)
 	</insert>
 	
 	<update id="getCmtEdits" parameterType="hashmap">
@@ -1133,12 +1133,12 @@
 	
 	<insert id="getCmtCmtNotf" parameterType="hashmap">
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
-		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 3, #{journalWriteMemNo}, #{journalNo})
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 3, #{journalWriteMemNo}, JOURNAL_CMT_SEQ.CURRVAL)
 	</insert>
 	
 	<insert id="getCmtCmtNotf2" parameterType="hashmap">
 		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
-		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 5, #{cmtWriteMemNo}, #{journalNo})
+		VALUES (NOTF_SEQ.NEXTVAL, #{memNo}, 5, #{cmtWriteMemNo}, JOURNAL_CMT_SEQ.CURRVAL)
 	</insert>
 	
 	<update id="getCmtDeletes" parameterType="hashmap">
