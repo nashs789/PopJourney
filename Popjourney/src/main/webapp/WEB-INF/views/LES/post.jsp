@@ -1099,33 +1099,6 @@ $(document).ready(function(){
 	}//if end -> 로그인 상태여부에 따른 처리
 	
 	likeLoad();
-	// 로그인 기능
-	$(".login_btn").on("click", function () {
-		if($.trim($("#inputID").val())==""){
-			alert("아이디를 입력해 주세요.");
-			$("#inputID").focus();
-		} else if ($.trim($("#inputPW").val())=="") {
-			alert("비밀번호를 입력해 주세요.");
-			$("#inputPW").focus();
-		} else {
-			var params = $("#loginForm").serialize();
-			$.ajax({
-				url:"logins", 
-				type: "post", 
-				dataType: "json", 
-				data : params, 
-				success: function(res){
-						location.reload();
-						$("#loginUserNo").val("${sMEM_NO}");
-						console.log($("#loginUserNo").val());
-				}, 
-				error: function (request, status, error) {
-					console.log(error);
-				}
-			});
-		}
-		$("#postForm").submit();
-	});//login_btn end
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$(".logo_photo").on("click", function() {
   		location.href = "main";
@@ -1164,7 +1137,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#loginBtn").on("click", function(){  //로그인 버튼 클릭
+	$(".login_btn").on("click", function(){  //로그인 버튼 클릭
 		if($.trim($("#inputID").val()) == "")
 		{
 			popupText = "아이디를 입력하세요.";
