@@ -425,8 +425,8 @@ svg{
 .bg {
 	display: inline-block;
 	width: 100%;
-	height: 1552px;
-	position: absolute;
+	height: 100%;
+	position: fixed;
 	top: 0px;
 	left: 0px;
 	background-color: #000000;
