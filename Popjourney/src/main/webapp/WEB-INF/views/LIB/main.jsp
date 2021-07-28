@@ -1251,6 +1251,7 @@ function makeRankBoard(yearData, monthData, weekData)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 	<div id="wrap">
          <!-- header부분 고정 -->

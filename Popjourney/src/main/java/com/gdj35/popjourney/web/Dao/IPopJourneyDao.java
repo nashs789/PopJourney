@@ -121,4 +121,6 @@ public interface IPopJourneyDao {
 
 	int checkCode(HashMap<String, String> params)throws Throwable;
 
+	int upgrade(HashMap<String, String> params)throws Throwable;
+
 }

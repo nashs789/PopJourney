@@ -35,6 +35,11 @@
 		AND MEM_NO != #{MEM_NO}
 	</select>
 	
+	<update id="delete" parameterType="hashmap">
+		UPDATE MEM SET LEAVE_DATE = SYSDATE
+		WHERE MEM_NO = #{MEM_NO}
+	</update>
+	
 	<insert id="join" parameterType="hashmap"> 
 		INSERT INTO MEM(MEM_NO, ID, PW, PHONE, EMAIL, EMAIL_CONFIRM, NAME, TELCOM, PHOTO_PATH,
          			    NIC, INTRO, BIRTH, SEX, KEYWORD_NO, MARKETING, JOIN_DATE, KEYWORD)
@@ -870,7 +875,6 @@
 		SELECT COUNT(*) AS CNT
 		FROM BMK_FOLDER
 		WHERE MEM_NO = #{MEM_NO}
-		GROUP BY MEM_NO 
 	</select>
 	
 	<insert id="addBMK" parameterType="hashmap">
@@ -1370,4 +1374,9 @@
 		WHERE EMAIL = #{mail}
 		AND CONFIRM_CODE = #{inputCode}
 	</select>
+	
+	<update id="upgrade" parameterType="hashmap">
+		UPDATE GRADE SET APPLY = 0
+		WHERE MEM_NO = #{MEM_NO}	
+	</update>
 </mapper>

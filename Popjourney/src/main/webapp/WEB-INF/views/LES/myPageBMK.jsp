@@ -805,19 +805,22 @@ input[type="radio"]:checked {
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var path = "";
+	
+	var html = "";  
 	
 	if("${sPHOTO_PATH}" != "")
 	{
 		path = "resources/upload/" + "${sPHOTO_PATH}";
 		
 		$("#profilePhoto").attr("src", path);
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	else
 	{
 		path = "./resources/images/profile.png";
-
 		$("#profilePhoto").attr("src", path);
+		path = "./resources/images/profile3.png";
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	
 	if("${sGRADE_NO}" == "0")
@@ -825,9 +828,6 @@ $(document).ready(function(){
 		$("#admin").show();
 	}
 
-	var html = "";  
-	
-	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
 	html += "<div>${sNIC}</div>";
 	html += "<span>${sINTRO}</span>"; 
 	
@@ -1423,6 +1423,7 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>

@@ -358,4 +358,9 @@ public class PopJourneyDao implements IPopJourneyDao {
 	public int checkCode(HashMap<String, String> params) throws Throwable {
 		return sql.selectOne("PJ.checkCode", params);
 	}
+
+	@Override
+	public int upgrade(HashMap<String, String> params) throws Throwable {
+		return sql.update("PJ.upgrade", params);
+	}
 }

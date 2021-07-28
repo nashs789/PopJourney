@@ -423,6 +423,28 @@ select{
 .btns>ul>li {
 	margin-right: 10px;
 }
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
 #admin{
 	display:none;
 }
@@ -759,6 +781,10 @@ $(document).ready(function(){
 		}); //ajax end
   	}); //logoutBtn click end
   	
+  	$("#delBtn").on("click", function(){
+  		checkPopup();
+  	});
+  	
 	$("#preBtn").on("click", function(){ //이전버튼 클릭
 		location.href = "main";
 	}); //preBtn click end
@@ -803,7 +829,52 @@ $(document).ready(function(){
 		location.href = "myPageBMK";
 	}); //bookmarkPhoto click end
 });//document ready end 
-
+function checkPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup\">";
+	html +="	   <div class=\"popup_entity_txt\">정말로 탈퇴 하시겠습니까?</div>";
+	html +="       <div class=\"btn_list\">";
+	html +="       		<a id=\"ok\">확인</a>";
+	html +="      		<a id=\"cancel\">취소</a>";
+	html +="       </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancel").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
+	
+	$("#ok").on("click", function(){ 
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "deletes",
+			data: params,
+			dataType:"json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					location.href="main";
+				}
+				else
+				{
+					popupText = "탈퇴에 실패하였습니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //cancelImg click end
+}//findBtnPopup end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
 	var html = "";
@@ -959,6 +1030,7 @@ function makeNotification(notification)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
@@ -1125,7 +1197,7 @@ function makeNotification(notification)
 				<input id="nextBtn" type="button" value="Next"/>
 			</div>
 		</div>
-		
+		<div id="deleteMem"><input type="button" id="delBtn" value="회원탈퇴"/></div>
 		<div id="footer">
             <p>
                POPJOURNEY<br/>
