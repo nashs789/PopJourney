@@ -230,8 +230,8 @@
 	
 	<select id="notification" parameterType="hashmap" resultType="hashmap">
 		SELECT READ, PHOTO_PATH, NOTF_NO, EVENT_NO, NOTF_MEM_NO, REQUEST, MEM_NO, GBN_NO, NOTF_DATE, JOURNAL_NO, JTITLE, JCONTENTS, POST_NO, BTITLE, BCONTENTS, JCJOURNAL_NO, JCTITLE,
-		       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, QTITLE, SYSDATE, LIKE_TITLE,
-		       LIKE_TITLE2
+       JUP_CONTENTS, BCPOST_NO, BCTITLE, BUP_CONTENTS, UPJCONTENTS, JCCMEM_NO, DOWNJCONTENTS, CCJOURNAL_NO, UPBCONTENTS, BCCMEM_NO, DOWNBCONTENTS, CCPOST_NO, NOTF_DATE2, QTITLE, SYSDATE, LIKE_TITLE,
+       LIKE_TITLE2
 		FROM(SELECT READ, NOTF_NO, NF.EVENT_NO, NF.NOTF_MEM_NO, M.NIC AS REQUEST, NF.MEM_NO, NF.GBN_NO, TO_CHAR(NOTF_DATE, 'YYYY-MM-DD') AS NOTF_DATE, JCMT.JOURNAL_NO, JCMT.JTITLE,  
 		     JCMT.JCONTENTS, BCMT.POST_NO, BCMT.BTITLE, BCMT.BCONTENTS, JCCMT.JCJOURNAL_NO, JCCMT.JCTITLE, JCCMT.JUP_CONTENTS, BCCMT.BCPOST_NO,
 		     BCCMT.BCTITLE, BCCMT.BUP_CONTENTS, JCCMT2.UPJCONTENTS, JCCMT2.JCCMEM_NO, JCCMT2.DOWNJCONTENTS, JCCMT2.CCJOURNAL_NO, BCCMT2.UPBCONTENTS, BCCMT2.BCCMEM_NO, 
@@ -239,7 +239,7 @@
 		                                                                                                  THEN SUBSTR(Q.TITLE, 1, 25) || '...'
 		                                                                                                  ELSE Q.TITLE || '...'
 		                                                                                             END AS QTITLE, 
-		     RANK() OVER(PARTITION BY NF.MEM_NO ORDER BY TO_CHAR(NF.NOTF_DATE, 'YYYY-MM-DD HH:MMI:SS')DESC) AS RK, JLIKE.LIKE_TITLE, BLIKE.LIKE_TITLE2
+		     ROW_NUMBER() OVER(PARTITION BY NF.MEM_NO ORDER BY NF.NOTF_NO DESC) AS RK, JLIKE.LIKE_TITLE, BLIKE.LIKE_TITLE2
 		     FROM NOTF NF INNER JOIN MEM M --알람주체
 		                          ON NF.NOTF_MEM_NO = M.MEM_NO
 		                          AND M.LEAVE_DATE IS NULL
@@ -254,7 +254,8 @@
 		                                                                                 ELSE J.TITLE
 		                                                                            END AS JTITLE
 		                                   FROM JOURNAL_CMT JC INNER JOIN JOURNAL J
-		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCMT
+		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO
+                                                                       AND JC.PARENTS_CMT_NO IS NULL) JCMT
 		                               ON NF.GBN_NO = JCMT.JOURNAL_CMT_NO
 		                               AND NF.EVENT_NO = 1
 		                  LEFT OUTER JOIN (SELECT BC.POST_NO, BC.POST_CMT_NO, CASE WHEN LENGTH(BC.CONTENTS) > 25
@@ -266,12 +267,13 @@
 		                                                                                 ELSE B.TITLE
 		                                                                            END AS BTITLE
 		                                   FROM BOARD_CMT BC INNER JOIN BOARD B
-		                                                             ON BC.POST_NO = B.POST_NO) BCMT
+		                                                             ON BC.POST_NO = B.POST_NO
+                                                                     AND BC.POST_CMT_NO IS NULL) BCMT
 		                               ON NF.GBN_NO = BCMT.POST_CMT_NO
 		                               AND NF.EVENT_NO = 2
-		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, CASE WHEN LENGTH(JC2.CONTENTS) > 25
-		                                                                                                 THEN SUBSTR(JC2.CONTENTS, 1, 25) || '....'
-		                                                                                                 ELSE JC2.CONTENTS
+		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, CASE WHEN LENGTH(JC.CONTENTS) > 25
+		                                                                                                 THEN SUBSTR(JC.CONTENTS, 1, 25) || '....'
+		                                                                                                 ELSE JC.CONTENTS
 		                                                                                             END AS JUP_CONTENTS, 
 		                                                                                            CASE WHEN LENGTH(J.TITLE) > 25
 		                                                                                                 THEN SUBSTR(J.TITLE, 1, 25) || '....'

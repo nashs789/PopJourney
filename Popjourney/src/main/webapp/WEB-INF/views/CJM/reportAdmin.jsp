@@ -57,79 +57,6 @@
 				height: 35px;
 				margin-top: 18px;
 			}
-			.btns { /* .logins와 연동  */
-				display: inline-block;
-			    vertical-align: top;
-			    width: 470px;
-			    height: 70px;
-			    text-align: right;
-			    background-color: #FFFFFF;
-			}
-			.btns img {
-				width: 40px;
-				margin-right: 20px;
-				margin-top: 15px;
-				cursor: pointer;
-			}
-			.bell_icon {
-				margin-left: 160px;
-			}
-			.logins {
-				display: none;
-				vertical-align: top;
-				width: 470px;
-				height: 70px;
-				text-align: right;
-				background-color: #FFFFFF;
-			}
-			.sub_login1 {
-				display: block;
-				position: relative;
-				width: 100%;
-				height: 55px;
-			}
-			.sub_login2 {
-				display: block;
-			    width: calc(100% - 75px);
-			    height: 15px;
-			    line-height: 10px;
-			    text-align: right;
-			    padding-right: 75px;
-			}
-			.sub_login2 span {
-				position: relative;
-				width: 10px;
-				font-size: 12px;
-				font-weight: 600;
-				cursor: pointer;
-				margin-left: 10px;
-			}
-			.sub_login2 span:hover {
-				color: #f37321;
-			}
-			.login {
-				float: right;
-				width: 100px;
-				height: 25px;
-				margin-top: 20px;
-				margin-left: 5px;
-			}
-			.login_btn {
-				float: right;
-				margin: 20px 20px 0px 5px;
-				width: 50px;
-				height: 30px;
-				background-color: #2e3459;
-				font-weight: bold;
-				font-size: 12px;
-				color: #FFFFFF;
-				text-align: center;
-				line-height: 26px;
-				cursor: pointer;
-			}
-			.login_btn:hover{
-				background-color: #294a37;
-			}
 			.banner {
 				width: 100%;
 				height: 70px;
@@ -714,19 +641,14 @@
 							<div class="site_name">우리들의 여행일지</div>
 						</div>
 						<div class="btns"> <!-- 밑에 logins와 연동 -->
-							<img alt="bell" src="./resources/images/bell.png" class="bell_icon">
-							<img alt="bookmark" src="./resources/images/bmk.png">
-							<img alt="프로필" src="./resources/images/profile.png">
+
 						</div>
 						<div class="logins">
 							<div class="sub_login1">
-								<input type="button" class="login_btn" value="로그인" />
-								<input type="password" class="login" placeholder="PW" />
-								<input type="text" class="login" placeholder="ID" />
+
 							</div>
 							<div class="sub_login2">
-								<span>회원가입</span>
-								<span>ID/PW 찾기</span>
+
 							</div>
 						</div>
 					</div>
