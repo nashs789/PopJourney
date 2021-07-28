@@ -1214,9 +1214,8 @@ public class JmPopJourneyController {
 		List<HashMap<String, String>> hash = iJmPopjourneyService.getHash(params);
 		// 좋아요
 		HashMap<String, String> likeCheck = iJmPopjourneyService.likeCheck(params);
-		// 일지 이전글
-		
-		// 일지 다음글
+		// 조회수
+		int hit = iJmPopjourneyService.journalHit(params);
 		
 		int page = 1;
 		

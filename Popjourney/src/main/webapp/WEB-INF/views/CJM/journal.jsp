@@ -1127,26 +1127,6 @@ input[type="radio"]:checked {
     cursor: pointer;
 }
 
-.journal_page {
-	width: 1280px;
-	height: 50px;
-	display: inline-block;
-	line-height: 50px;
-	border-top: 1px solid #ccc;
-	cursor: pointer;
-}
-.journal_label {
-	width: 300px;
-	text-align: center;
-	font-size: 10pt;
-	position: absolute;
-}
-.journal_label_title {
-	width: 700px;
-	position: relative;
-	margin-left: 580px;
-	font-weight: bold;
-}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
@@ -1479,14 +1459,6 @@ input[type="radio"]:checked {
 			}
 		});
 		
-		//이전 글 이동
-		$("#prevPost").on("click", function(){
-			$("#prevPostForm").submit();
-		}); //prevPost click end
-		//다음 글 이동
-		$("#nextPost").on("click", function(){
-			$("#nextPostForm").submit();
-		}); //nextPost click end
 	}); // document ready end..
 
 	function reloadList() {
@@ -1665,15 +1637,11 @@ input[type="radio"]:checked {
 		if("${likeCheck.JOURNAL_NO}" !="") {//좋아요 o
 			$("#likeImg").attr("like","1");
 			$("#likeImg").css("background-color","#f37321");
-/* 			$(".reaction").children("ul").children("li").children("img").attr("like","1");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321"); */
 			$(".likeText").css("color","#f37321");
 			console.log("좋아요! 클릭");
 		} else { //좋아요 x
 			$("#likeImg").attr("like","0");
 			$("#likeImg").css("background-color","#2e3459");
-/* 			$(".reaction").children("ul").children("li").children("img").attr("like","0");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459"); */
 			$(".likeText").css("color","#2e3459");
 			console.log("좋아요 xx");
 		}
@@ -1684,21 +1652,34 @@ input[type="radio"]:checked {
 		var color = window.getComputedStyle(img).backgroundColor;
 		
 		if(color=="rgb(46, 52, 89)") {//남색 클릭: 좋아요 추가
-			/* $(".reaction").children("ul").children("li").children("img").attr("like","1");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321"); */
 			$("#likeImg").attr("like","1");
 			$("#likeImg").css("background-color","#f37321");
 			$(".likeText").css("color","#f37321");
 			console.log("좋아요! 클릭");
 		} else { //주황 클릭: 좋아요 취소 
-			/* $(".reaction").children("ul").children("li").children("img").attr("like","0");
-			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459"); */
 			$("#likeImg").attr("like","0");
 			$("#likeImg").css("background-color","#2e3459");
 			$(".likeText").css("color","#2e3459");
 			console.log("좋아요 xx");
 		}
 	}	
+	
+	//조회수
+	function hitCnt() {
+		console.log(params);
+		$.ajax({
+			url:"journalHits", 
+			type: "post",
+			dataType: "json",
+			data : params,
+			success: function(res){
+
+			}, //success end
+			error: function (request, status, error) {
+				console.log(error);
+			}//error end
+		});//ajax end
+	}//likeStatus end
 	
 </script>
 </head>
@@ -1789,12 +1770,12 @@ input[type="radio"]:checked {
 					<input type="hidden" id="photoCnt" name="photoCnt" value="${cnt}" />
 				</form>
 				<form action="#" id="prevJournalForm" method="post">
-					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.POST_NO}"/>
+					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.JOURNAL_NO}"/>
 					<input type="hidden" id="pNewJournalNo" name="newJournalNo" value="1"/>
 					<input type="hidden" id="ploginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
 			   </form>
 			   <form action="#" id="nextJournalForm" method="post">
-			   		<input type="hidden" id="nextJournalNo" name="JournalNo" value="${nextJournal.POST_NO}"/>
+			   		<input type="hidden" id="nextJournalNo" name="JournalNo" value="${nextJournal.JOURNAL_NO}"/>
 					<input type="hidden" id="nNewJournalNo" name="newJournalNo" value="1"/>
 					<input type="hidden" id="nloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
 			   </form>
@@ -1876,18 +1857,6 @@ input[type="radio"]:checked {
 						</div>
 					</c:when>
 				</c:choose> --%>
-				<div class="Journal_page">
-            		<div class="Journal_label">이전글</div>
-            		<div class="Journal_label_title" id="prevJournal">${prevJournal.TITLE}</div>
-            	</div>
-            	<c:choose>
-            		<c:when test="${!empty nextJournal.TITLE}">
-		            	<div class="Journal_page">
-		            		<div class="Journal_label">다음글</div>
-		            		<div class="Journal_label_title" id="nextJournal">${nextJournal.TITLE}</div>
-		            	</div>
-            		</c:when>
-            	</c:choose>
 				<div class="reaction">
 					<ul>
 						<li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li>

@@ -1184,4 +1184,9 @@
 		DELETE FROM JOURNAL_LIKE
 		WHERE MEM_NO = #{memNo} AND JOURNAL_NO = #{journalNo}
 	</delete>
+	
+	<update id="journalHit" parameterType="hashmap">
+		UPDATE JOURNAL SET HIT = HIT + 1 
+		WHERE JOURNAL_NO = #{journalNo}
+	</update>
 </mapper>

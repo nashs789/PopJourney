@@ -331,4 +331,9 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.delete("JmPJ.delLike", params);
 	}
 
+	@Override
+	public int journalHit(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.journalHit", params);
+	}
+
 }

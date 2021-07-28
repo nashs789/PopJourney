@@ -332,4 +332,9 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.delLike(params);
 	}
 
+	@Override
+	public int journalHit(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.journalHit(params);
+	}
+
 }
