@@ -1573,4 +1573,43 @@ public class PopJourneyController {
 					
 				return mapper.writeValueAsString(modelMap);
 		}
+		
+		//인증 코드 메일 보내기
+		@RequestMapping(value = "sendIDs",
+						method = RequestMethod.POST,
+						produces ="test/json;charset=UTF-8")
+		@ResponseBody
+		public String sendIDs(@RequestParam HashMap<String, String> params) throws Throwable {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			String email = params.get("inputEmail") + "@" + params.get("inputDomain");
+			params.put("email", email);
+
+			HashMap<String, String> data = ipjs.findID(params);
+
+			String setfrom = "PopJourney";
+			String tomail = params.get("inputEmail") + "@" + params.get("inputDomain"); // 받는 사람 이메일
+			String title = "PopJourney 아이디 찾기"; // 제목
+			String content = "<div>회원님의 아이디는" + data.get("ID")+ " 입니다. </div>"; // 내용
+			
+			
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message,true, "UTF-8");
+
+				messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+				messageHelper.setTo(tomail); // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content, true); // 메일 내용
+
+				mailSender.send(message);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			return mapper.writeValueAsString(modelMap);
+		}
+		
 }

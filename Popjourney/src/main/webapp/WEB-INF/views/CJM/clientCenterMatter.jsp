@@ -755,7 +755,8 @@
 					else if($(this).attr("class") == "journal")
 					{
 						$("#journalNo").val($(this).attr($(this).attr("class")));
-						$("#journalForm").submit();
+						$("#actionForm").attr("action", "journal");
+						$("#actionForm").submit();
 					}
 					else if($(this).attr("class") == "post")
 					{
@@ -1230,7 +1231,7 @@
 	<body>
 	<form action="#" id="memForm">
 		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
-		<!-- <input type="hidden" id="page" name="page" value="1"/> -->
+		<input type="hidden" id="page" name="page" value="1"/>
 		<input type="hidden" id="GBN" name="GBN" value="1"/>
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	</form>
@@ -1239,9 +1240,6 @@
 	</form>
 	<form action="userPage" id="userForm" method="post">
 		<input type="hidden" id="userNo" name="userNo" value=""/>
-	</form>
-	<form action="journal" id="journalForm" method="post">
-		<input type="hidden" id="journalNo" name="journalNo" value=""/>
 	</form>
 	<form action="post" id="postForm" method="post">
 		<input type="hidden" id="postNo" name="postNo" value=""/>
@@ -1329,6 +1327,7 @@
 			</div>
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="journalNo" name="journalNo" value=""/>
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 					<input type="hidden" id="nic" name="nic" value="${sNIC}" />
 					<input type="hidden" id="qNo" name="qNo" />

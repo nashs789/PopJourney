@@ -1032,6 +1032,7 @@ function makeProfilePopup(mini, x, y)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+	<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>

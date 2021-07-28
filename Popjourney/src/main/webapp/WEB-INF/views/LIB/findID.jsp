@@ -368,6 +368,9 @@ select{
 	color: red;
 	padding-bottom: 3px;
 }
+table{
+	border-collapse: collapse;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
@@ -518,9 +521,21 @@ $(document).ready(function(){
 		findBtnPopup();
 	}); //find click end
 	
+	 $("#journalBoard").on("click", function(){
+    	location.href = "journalBoard";
+    });//postBoard click end
+    
+    $("#community").on("click", function(){
+    	location.href = "community";
+    });//community click end
+  
+   	$("#travelWriter").on("click", function() {
+  		location.href = "travelWriterRank";
+  	}); //travelWriter click end
+   	
 	$("#clientCenter").on("click", function() {
   		location.href = "clientCenterQuestion";
-  	}); //clientCenter click end	
+  	}); //clientCenter click end
   	
 }); //document ready end
 
@@ -612,7 +627,23 @@ function findIDPopup(ID, name)
 		$(this).css("cursor", "default");
 		$(this).css("color", "white");
 		$(this).css("background-color", "#2e3459");
-		$(this).parent().parent().children(":nth-child(4)").css("display", "inline")
+		$(this).parent().parent().children(":nth-child(4)").css("display", "inline");
+	
+		var params = $("#infoForm").serialize();
+		
+		$.ajax({
+			url: "sendIDs",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+					location.href="main";
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end  
 	}); //table send_btn click end
 	
 	$("#cancelImg").on("click", function(){ 
@@ -650,10 +681,10 @@ function findIDPopup(ID, name)
             </div>
             <nav class="menu">
                <ul>
-                  <li>여행게시판</li>
-                  <li>자유게시판</li>
+                  <li id="journalBoard">여행게시판</li>
+                  <li id="community">자유게시판</li>
                   <li id="travelWriter">여행작가</li>
-                  <li id="clientCenter">고객센터</li>
+				  <li id="clientCenter">고객센터</li>
                </ul>
             </nav>
             <img alt="search" src="./resources/images/search.png" class="search_icon"/>

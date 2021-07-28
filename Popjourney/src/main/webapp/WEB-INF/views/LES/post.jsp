@@ -1219,6 +1219,7 @@ $(document).ready(function(){
 		var like = $(this).attr("like");
 		var params = $("#likeForm").serialize();
 		console.log(like);
+		console.log(params);
 		//console.log(params);
 		if(like == 0){ //좋아요 x : 좋아요 기능
 			console.log("좋아요!");

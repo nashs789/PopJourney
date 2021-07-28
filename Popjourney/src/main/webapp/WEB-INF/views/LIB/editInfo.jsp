@@ -953,6 +953,7 @@ function makeNotification(notification)
 	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
 <form action="journal" id="journalForm" method="post">
+	<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
 </form>
 <form action="post" id="postForm" method="post">
