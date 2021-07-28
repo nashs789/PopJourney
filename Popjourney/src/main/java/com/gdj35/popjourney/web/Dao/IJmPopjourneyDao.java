@@ -133,7 +133,6 @@ public interface IJmPopjourneyDao {
 
 	public int delLike(HashMap<String, String> params) throws Throwable;
 
-
-
+	public int journalHit(HashMap<String, String> params) throws Throwable;
 
 }
