@@ -387,7 +387,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 
 .sub_area img {
 	width: 100%;
-	height: 350px;
 }
 
 .sub_profile>div {
