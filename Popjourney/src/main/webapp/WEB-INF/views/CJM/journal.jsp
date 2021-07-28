@@ -620,7 +620,6 @@ a {
 }
 
 .btn_list {
-	display:none;
 	width: 1280px;
 	height: 70px;
 	text-align: center;
@@ -719,10 +718,6 @@ a {
 
 .sidebar::-webkit-scrollbar {
 	display: none !important;
-}
-
-.sidebar .journal_nav:nth-child(1) {
-	background-color: #ffd666;
 }
 
 .journal_nav {
@@ -895,6 +890,24 @@ a {
 .cmt_cmt_date {
 	float: right;
 	margin-right: 50px;
+}
+.add_cmt_cmt {
+	cursor: pointer;
+}
+.report_btn {
+	cursor: pointer;
+}
+.cmt_edit_btn {
+	cursor: pointer;
+}
+.cmt_delete_btn {
+	cursor: pointer;
+}
+.cmt_cmt_edit_btn {
+	cursor: pointer;
+}
+.cmt_cmt_delete_btn {
+	cursor: pointer;
 }
 
 #footer {
@@ -1114,14 +1127,37 @@ input[type="radio"]:checked {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.post_page {
+	width: 1280px;
+	height: 50px;
+	display: inline-block;
+	line-height: 50px;
+	border-top: 1px solid #ccc;
+	cursor: pointer;
+}
+.post_label {
+	width: 300px;
+	text-align: center;
+	font-size: 10pt;
+	position: absolute;
+}
+.post_label_title {
+	width: 700px;
+	position: relative;
+	margin-left: 580px;
+	font-weight: bold;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
 <script type="text/javascript">
+	var seq = 0;
+	var photoCnt = 1;
 	$(document).ready(function(){
-		static int seq = 1;
-		
+		var cnt = $("#photoCnt").val();
 		reloadList();
 		reloadSequence();
+		likeLoad();
 		
 		//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 		$("#journalBoard").on("click", function() {
@@ -1151,27 +1187,32 @@ input[type="radio"]:checked {
 		
 		// 댓글작성
 		$("#addBtn").on("click", function() {
-			if($.trim($("#cmtContents").val()) == "") {
-				alert("내용을 넣어주세요.");
-				$("#cmtContents").focus();
+			if($("#memNo").val() == "") {
+				alert("로그인 후 이용 바랍니다.");
+				$("#cmtContents").val("");
 			} else {
-				$("#getCmtContents").val($("#cmtContents").val());
-				var params = $("#actionForm").serialize();
-				
-				$.ajax({
-					url: "journalCmtAdds",
-					type: "post",
-					dataType: "json",
-					data: params,
-					success: function(res) {
-						$("#cmtList").val("");
-						$("#cmtContents").val("");
-						reloadList();
-					},
-					error: function(request, status, error) {
-						console.log(error);
-					}
-				});
+				if($.trim($("#cmtContents").val()) == "") {
+					alert("내용을 넣어주세요.");
+					$("#cmtContents").focus();
+				} else {
+					$("#getCmtContents").val($("#cmtContents").val());
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "journalCmtAdds",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							$("#cmtList").val("");
+							$("#cmtContents").val("");
+							reloadList();
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				}
 			}
 		});
 		
@@ -1334,17 +1375,110 @@ input[type="radio"]:checked {
 			$("#actionForm").submit();
 		});
 		
-		
+		// 메모 기본 css
+		$(".sidebar .journal_nav:nth-child(1)").css("background-color", "#ffd666");
 		// 시퀀스 왼쪽 버튼 클릭
 		$("#left").on("click", function() {
-			
+			seq--;
+			photoCnt--;
+			if(seq == -1) {
+				seq = cnt - 1;
+				photoCnt = cnt;
+				$(".sidebar .journal_nav:nth-child(1)").css("background-color", "")
+				$(".sidebar .journal_nav:nth-child(" + photoCnt + ")").css("background-color", "#ffd666");
+				reloadSequence();
+			} else {
+				$(".sidebar .journal_nav:nth-child(" + (photoCnt + 1) + ")").css("background-color", "");
+				$(".sidebar .journal_nav:nth-child(" + photoCnt + ")").css("background-color", "#ffd666");
+				reloadSequence();
+			}
 		});
 		// 시퀀스 오른쪽 버튼 클릭
 		$("#right").on("click", function() {
 			seq++;
-			reloadSequence();
+			photoCnt++
+			if(seq == cnt) {
+				seq = 0;
+				photoCnt = 1;
+				$(".sidebar .journal_nav:nth-child(" + cnt + ")").css("background-color", "");
+				$(".sidebar .journal_nav:nth-child(" + photoCnt + ")").css("background-color", "#ffd666");
+				reloadSequence();
+			} else {
+				$(".sidebar .journal_nav:nth-child(" + (photoCnt - 1) + ")").css("background-color", "");
+				$(".sidebar .journal_nav:nth-child(" + photoCnt + ")").css("background-color", "#ffd666");
+				reloadSequence();
+			}
 		});
 	
+		$(".del_btn").on("click", function() {
+			if(confirm("삭제하시겠습니까?")) {
+				
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalDeletes",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						if(res.msg == "success") {
+							location.href = "journalBoard";
+						} else if(res.msg == "failed") {
+							alert("삭제에 실패하였습니다.");
+						} else {
+							alert("삭제중 문제가 발생하였습니다.");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		});
+		
+		//좋아요 버튼
+		$(".reaction").on("click","img", function(){
+			var like = $(this).attr("like");
+			var params = $("#actionForm").serialize();
+			console.log(like);
+			//console.log(params);
+			if(like == 0){ //좋아요 x : 좋아요 기능
+				$.ajax({
+					url:"journalLikes", 
+					type: "post",
+					dataType: "json",
+					data : params,
+					success: function(res){
+						if(res.msg == "success")
+						{
+							console.log("좋");
+							likeReload();
+						}
+					}, //success end
+					error: function (request, status, error) {
+						console.log(error);
+					}//error end
+				});//ajax end
+			} else if(like == 1) { //좋아요 o : 좋아요 취소기능
+				console.log("좋아요 취소");
+				$.ajax({
+					url:"journalLikeCancles", 
+					type: "post",
+					dataType: "json",
+					data : params,
+					success: function(res){
+						if(res.msg == "success")
+						{
+							console.log("취소");
+							likeReload();
+						}
+					}, //success end
+					error: function (request, status, error) {
+						console.log(error);
+					}//error end
+				});//ajax end
+			}
+		});
 	}); // document ready end..
 
 	function reloadList() {
@@ -1509,9 +1643,46 @@ input[type="radio"]:checked {
 		
 		$(".txt_area").html("");
 		var html2 = "";
-		html = "<p>" + sequence[seq].CONTENTS + "</p>";
+		html2 = "<p>" + sequence[seq].CONTENTS + "</p>";
 		$(".txt_area").html(html2);
+		
+		$(".photo_cnt").html("");
+		var html3 = "";
+		html3 = photoCnt;
+		$(".photo_cnt").html(html3);
 	}
+	
+	//좋아요 첫화면 구성
+	function likeLoad() {
+		if("${likeCheck.JOURNAL_NO}" !="") {//좋아요 o
+			$(".reaction").children("ul").children("li").children("img").attr("like","1");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
+			$(".likeText").css("color","#f37321");
+			console.log("좋아요! 클릭");
+		} else { //좋아요 x
+			$(".reaction").children("ul").children("li").children("img").attr("like","0");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459");
+			$(".likeText").css("color","#2e3459");
+			console.log("좋아요 xx");
+		}
+	}
+	//좋아요 화면 재구성
+	function likeReload() {
+		var img = document.getElementById("likeImg");
+		var color = window.getComputedStyle(img).backgroundColor;
+		
+		if(color=="rgb(46, 52, 89)") {//남색 클릭: 좋아요 추가
+			$(".reaction").children("ul").children("li").children("img").attr("like","1");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#f37321");
+			$(".likeText").css("color","#f37321");
+			console.log("좋아요! 클릭");
+		} else { //주황 클릭: 좋아요 취소 
+			$(".reaction").children("ul").children("li").children("img").attr("like","0");
+			$(".reaction").children("ul").children("li").children("img").css("background-color","#2e3459");
+			$(".likeText").css("color","#2e3459");
+			console.log("좋아요 xx");
+		}
+	}	
 	
 </script>
 </head>
@@ -1580,8 +1751,9 @@ input[type="radio"]:checked {
 		</div>
 		<div class="title_area" journalMno="${data.MEM_NO}">
 			<div class="title_left">
-				<strong>${data.TITLE}</strong><br /> <br /> <br /> <span>작성일</span> <span>${data.JOURNAL_DATE}</span>
+				<strong>${data.TITLE}</strong><br /> <br /> <br /> <span>일지번호</span><span>${data.JOURNAL_NO}</span><span>작성일</span> <span>${data.JOURNAL_DATE}</span>
 				<span>조회</span><span>${data.HIT}</span> <span>좋아요</span><span>${data.JOURNAL_LIKE_CNT}</span> <span>댓글</span><span>${data.JOURNAL_CMT_CNT}</span>
+				<span>시작일</span><span>${data.START_DATE}</span><span>종료일</span><span>${data.END_DATE}</span>
 			</div>
 			<div class="title_right">
 				<span class="report_btn">신고하기</span>
@@ -1598,6 +1770,7 @@ input[type="radio"]:checked {
 					<input type="hidden" id="cmtWriteMemNo" name="cmtWriteMemNo" />
 					<input type="hidden" id="cmtNo" name="cmtNo" />
 					<input type="hidden" id="userNo" name="userNo" />
+					<input type="hidden" id="photoCnt" name="photoCnt" value="${cnt}" />
 				</form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
@@ -1606,10 +1779,10 @@ input[type="radio"]:checked {
 					<div class="img_nav">
 						<a>&#60;</a> <a>&#62;</a>
 					</div>
-					<span>1 / 19</span>
+					<span>/ ${cnt}</span> <span class="photo_cnt"></span>
 					<div class="img_slide">
 						<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" id="left" class="arrow_img"></span>
-							<span><img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on"></span>
+							<span id="nextImg"><img alt="사진" src="./resources/upload/${data.JOURNAL_PHOTO_PATH}" class="img_on"></span>
 						<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" id="right" class="arrow_img"></span>
 					</div>
 					<div class="txt_area">
@@ -1660,7 +1833,7 @@ input[type="radio"]:checked {
 			</div>
 			<div class="sidebar">
 				<c:forEach items="${memoData}" var="d" varStatus="status">
-					<div class="journal_nav">
+					<div class="journal_nav" num="${status.count}">
 						<div class="idx">${status.count}</div>
 						<span>
 							<p>${d.MEMO}</p>
@@ -1669,13 +1842,25 @@ input[type="radio"]:checked {
 				</c:forEach>
 			</div>
 			<div class="post_bottom">
-				<div class="btn_list">
-					<input type="button" class="edit_btn" value="수  정" />
-					<input type="button" class="del_btn" value="삭  제" />
-				</div>
+				<%-- <c:choose>
+					<c:when test="${sMEM_NO eq param.journalWriterMemNo}">
+						<div class="btn_list">
+							<input type="button" class="edit_btn" value="수  정" />
+							<input type="button" class="del_btn" value="삭  제" />
+						</div>
+					</c:when>
+				</c:choose> --%>
+				<div class="post_page">
+            		<div class="post_label">이전글</div>
+            		<div class="post_label_title" id="prevPost">제목</div>
+            	</div>
+            	<div class="post_page">
+            		<div class="post_label">다음글</div>
+            		<div class="post_label_title" id="nextPost">제목</div>
+            	</div>
 				<div class="reaction">
 					<ul>
-						<li><img alt="좋아요" src="./resources/images/like.png"><br />좋아요</li>
+						<li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li>
 						<li><img alt="북마크" src="./resources/images/bmrk.png"><br />북마크</li>
 					</ul>
 				</div>

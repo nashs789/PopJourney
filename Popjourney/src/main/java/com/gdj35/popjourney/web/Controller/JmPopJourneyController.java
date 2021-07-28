@@ -3,7 +3,6 @@ package com.gdj35.popjourney.web.Controller;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -1204,7 +1203,7 @@ public class JmPopJourneyController {
 	// 여행일지 세부페이지
 	@RequestMapping(value = "/journal")
 	public ModelAndView journal(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		
+		System.out.println("journalParams >> " + params);
 		// 여행일지 세부페이지의 메인데이터
 		HashMap<String, String> data = iJmPopjourneyService.getJournal(params);
 		// 여행일지 세부페이지의 메모데이터
@@ -1213,6 +1212,8 @@ public class JmPopJourneyController {
 		int cnt = iJmPopjourneyService.getSequenceCnt(params);  // 이거 왜 안되지..
 		// 여행일지 세부페이지의 해시태그
 		List<HashMap<String, String>> hash = iJmPopjourneyService.getHash(params);
+		// 좋아요
+		HashMap<String, String> likeCheck = iJmPopjourneyService.likeCheck(params);
 		
 		int page = 1;
 		
@@ -1222,15 +1223,20 @@ public class JmPopJourneyController {
 		
 		mav.addObject("data", data);
 		mav.addObject("memoData", memoData);
-		mav.addObject("cnt", String.valueOf(cnt));
+		mav.addObject("cnt", cnt);
 		mav.addObject("hash", hash);
 		mav.addObject("page", page);
+		mav.addObject("likeCheck", likeCheck);
+		//mav.addObject("journalWriterMemNo", data.get("MEM_NO"));
+		
+		System.out.println("journalParams >> " + params);
 		
 		System.out.println("data >> " + data);
 		System.out.println("memoData >> " + memoData);
 		System.out.println("cnt >> " + cnt);
 		System.out.println("hash >> " + hash);
 		System.out.println("page >> " + page);
+		System.out.println("likeCheck >> " + likeCheck);
 		
 		mav.setViewName("CJM/journal");
 		
@@ -1412,6 +1418,77 @@ public class JmPopJourneyController {
 		 
 		return mapper.writeValueAsString(modelMap);
 	
+	}
+	
+	@RequestMapping(value="/journalDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getJournalDeletes(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	@RequestMapping(value = "/journalLikes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalLikes(@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.addLike(params);
+			int notf = iJmPopjourneyService.likeNotf(params);
+			if(cnt > 0 && notf > 0) {
+				modelMap.put("msg", "success");
+				System.out.println(params);
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg","error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/journalLikeCancles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalLikeCancles(@RequestParam HashMap<String, String> params, ModelAndView modelAndView) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		try {
+			int delcnt = iJmPopjourneyService.delLike(params);
+
+			if(delcnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg","error");
+		}
+
+		return mapper.writeValueAsString(modelMap);
 	}
 	
 	// 여행일지 작성페이지
