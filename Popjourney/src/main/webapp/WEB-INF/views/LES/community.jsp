@@ -973,13 +973,13 @@ $(document).ready(function() {
   	});
 	
 	$("#searchBtn").on("click", function () {
-		$("#page").val(1);
+		$("#Pages").val(1);
 		reloadList();
 		makePathInfo();
 	});
 	
 	$(".paging").on("click", "span", function () {
-		$("#page").val($(this).attr("name"));
+		$("#Pages").val($(this).attr("name"));
 		reloadList();
 		makePathInfo();
 	});	
@@ -1014,7 +1014,7 @@ $(document).ready(function() {
 		} else {
 			$(this).css("color","#f37321");
 			$(".gradeNo").children("img").css("cursor","pointer");
-			$("#page").val(1);
+			$("#Pages").val(1);
 			reloadList();
 		}
 	}); //order_list li  end
@@ -1025,7 +1025,7 @@ $(document).ready(function() {
 		if($("#categoryNo").val() != 1){ //전체보기, 여행꿀팁, Q&A, 잡담
 			console.log($(this).children());
 			$(this).children("img").css("background-color","#f37321");
-			$("#page").val(1);
+			$("#Pages").val(1);
 			reloadList();
 		} else {
 			$("#postAll").children("span").children("img").css("background-color","#f37321");
@@ -1287,24 +1287,24 @@ function makePage(pb)
 {
 	var html = "<span name=\"1\"><<</span>";
 	
-	if($("#page").val() == "1") {
+	if($("#Pages").val() == "1") {
 		html += "<span name=\"1\"><</span>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
+		html += "<span name=\"" + ($("#Pages").val() - 1) + "\">&lt;</span>";
 	}
 	
 	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-		if($("#page").val() == i) {
+		if($("#Pages").val() == i) {
 			html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
 		} else {
 			html += "<span name=\"" + i + "\">" + i + "</span>";
 		}
 	}
 	
-	if($("#page").val() == pb.maxPcount) {
+	if($("#Pages").val() == pb.maxPcount) {
 		html += "<span name=\"" + pb.maxPcount + "\">></span>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+		html += "<span name=\"" + ($("#Pages").val() * 1 + 1) + "\">></span>";
 	}
 	
 	html += "<span name=\"" + pb.maxPcount + "\">>></span>";
@@ -1628,7 +1628,7 @@ function makeNotification(notification)
 					<div class="board_search">
 					<form action="#" id="boardForm">
 						<img alt="search" src="./resources/images/search.png" class="search_icon" id="searchBtn"/>
-							<input type="hidden" id="page" name="page" value="${page}"/>
+							<input type="hidden" id="Pages" name="Pages" value="${Pages}"/>
 							<input type="hidden" id="nfirstPage" name="nfirstPage" value="1"/> <!-- n이 붙은건 공지 페이지 -->
 							<input type="hidden" id="nlastPage" name="nlastPage" value="5"/>
 							<input type="hidden" id="categoryNo" name="categoryNo" value=""/>

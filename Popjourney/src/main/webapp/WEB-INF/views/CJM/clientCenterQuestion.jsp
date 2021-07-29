@@ -193,7 +193,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #F37321;
+				color: #fcba03;
 			}
 			.search {
 				float: right;
@@ -735,7 +735,8 @@
 					else if($(this).attr("class") == "journal")
 					{
 						$("#journalNo").val($(this).attr($(this).attr("class")));
-						$("#journalForm").submit();
+						$("#actionForm").attr("action", "journal");
+						$("#actionForm").submit();
 					}
 					else if($(this).attr("class") == "post")
 					{
@@ -1140,10 +1141,8 @@
 	<form action="userPage" id="userForm" method="post">
 		<input type="hidden" id="userNo" name="userNo" value=""/>
 	</form>
-	<form action="journal" id="journalForm" method="post">
-		<input type="hidden" id="journalNo" name="journalNo" value=""/>
-	</form>
 	<form action="post" id="postForm" method="post">
+		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>
@@ -1229,6 +1228,7 @@
 			</div>
 			<div id="container">
 				<form action="#" id="actionForm" method="post">
+					<input type="hidden" id="journalNo" name="journalNo" value=""/>
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 					<input type="hidden" id="FAQCnt" name="FAQCnt" />
 					<input type="hidden" id="firstCnt" name="firstCnt" />

@@ -78,7 +78,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #f37321;
+				color: #fcba03;
 			}
 			.search {
 				float: right;

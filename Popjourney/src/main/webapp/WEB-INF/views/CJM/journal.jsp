@@ -625,6 +625,7 @@ a {
 	text-align: center;
 }
 
+
 .btn_list input {
 	display: inline-block;
 }
@@ -926,6 +927,136 @@ a {
 	height: 80px;
 }
 
+.bmk_popup .btn_list {
+	width: 100%;
+	height: 70px;
+	text-align: center;
+}
+#yes:hover, #no:hover {
+	cursor: pointer;
+}
+.bmk_popup {
+	display: inline-block;
+	width: 600px;
+	background-color: #fcfcfc;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	position: fixed;
+	top: calc(50% - 335px);
+	left: calc(50% - 300px);
+	z-index: 500;
+	font-size: 12pt;
+	border-radius: 10px;
+	font-size: 0px;
+	border: 0px;
+}
+.bmk_popup .popup_contents_txt {
+	font-size: 9pt;
+	font-weight: bold;
+	width: 540px;
+	margin: 30px auto 30px auto;
+}
+
+.bmk_popup .popup_contents_txt>div>span {
+	margin-top: 12px;
+}
+
+.bmk_popup .popup_contents_txt>div:first-child {
+	font-size: 18pt;
+	padding-bottom: 7px;
+	border-bottom: 2px solid #f37321;
+}
+.bmk_popup .radio_title {
+	margin-top: 15px;
+}
+
+.bmk_popup input[type='radio'], input[type='radio']:checked {
+	appearance: none;
+	width: 0.8rem;
+	height: 0.8rem;
+	border-radius: 100%;
+	margin-right: 0.1rem;
+}
+
+.bmk_popup input[type="radio"] {
+	background-color: white;
+	border: 2px solid #f37321;
+}
+
+.bmk_popup input[type="radio"]:checked {
+	background-color: #f37321;
+}
+
+.bmk_popup .folder_radio {
+	text-align: center;
+	margin: 15px 0;
+}
+
+.bmk_popup .folder_radio_box {
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	padding: 0 10px 5px 10px;
+	margin: 0 20px;
+	width: 118px;
+}
+
+.bmk_popup .folder_radio img {
+	width: 100px;
+	height: 100px;
+}
+
+.bmk_popup .folder_radio input[type=radio]:checked+label {
+	color: #000;
+}
+.bmk_popup .popup_contents_txt div:first-child  span {
+	float: right;
+	font-size: 10pt;
+}
+.bmk_popup .pop_name {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	width: 527px;
+}
+
+.bmk_popup .pop_memo {
+	resize: none;
+	margin-top: 10px;
+	width: 530px;
+}
+
+.bmk_popup .asterisk {
+	color: red;
+	font-weight: bold;
+	margin-right: 5px;
+	padding-top: 2px;
+}
+.bmk_popup .btn_list span {
+	text-decoration: none;
+	display: inline-block;
+	text-align: center;
+	width: 270px;
+	height: 50px;
+	padding: 10px 15px 10px 15px;
+	font-size: 12pt;
+	color: #f37321;
+	font-weight: bold;
+	line-height: 50px;
+}
+
+.bmk_popup .btn_list span:first-child, .bmk_popup .alert_btn_list2 span:first-child {
+	border-radius: 0 0 0 10px;
+}
+
+.bmk_popup .btn_list span:last-child, .bmk_popup .alert_btn_list2 span:last-child {
+	border-radius: 0 0 10px 0;
+}
+
+.bmk_popup .btn_list span:hover, .bmk_popup .alert_btn_list span:hover, .bmk_popup .alert_btn_list2 span:hover
+	{
+	background-color: #f37321;
+	color: white;
+}
+
 .popup {
 	display:none;
 	width: 600px;
@@ -946,7 +1077,7 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	height: 435px;
+	/* height: 435px; */
 	margin: 30px auto 0 auto;
 }
 
@@ -1082,6 +1213,16 @@ input[type="radio"]:checked {
 .bg {
 	position: fixed;
     display: none; 
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    background-color: #000000;
+    z-index: 400;
+    opacity: 0.2;
+}
+.bmk_bg {
+	position: fixed;
+    display: inline-block;
     width: 100%;
     height: 100%;
     top: 0px;
@@ -1459,6 +1600,54 @@ input[type="radio"]:checked {
 			}
 		});
 		
+		// bmkcheck = 0 (북마크 체크 안한 상태) , 1 (북마크 체크되있는 상태)
+		$("#bmkBtn").on("click", function() {
+			if($("#memNo").val() == "") {
+				alert("로그인 후 이용 바랍니다.");
+			} else {
+				if($("#bmkBtn").attr("bmkcheck") == 0) {
+					roadBmkFolder();
+					$("#wrap").on("click", "#no", function() {
+						$(".bmk_popup").remove();
+						$(".bmk_bg").remove();
+					});
+					$("#wrap").on("click", ".folder_radio_box", function() {
+						var bmkNo = $(this).attr("bmkno");
+						$("#bmkNo").val(bmkNo);
+						console.log("bmkNo >> " + $("#bmkNo").val());
+					});
+		
+					$("#wrap").on("click", "#yes", function() {
+						if($(".folder_radio_box:checked").each == false) {
+							alert("폴더를 선택해주세요.");
+						} else {
+							var params = $("#actionForm").serialize();
+							
+							$.ajax({
+								url: "journalBmkAdds",
+								type: "post",
+								dataType: "json",
+								data: params,
+								success: function(res) {
+									$(".bmk_popup").remove();
+									$(".bmk_bg").remove();
+									$("#bmkBtn").css("background-color", "rgb(243, 115, 33)");
+									$("#bmkBtn").attr("bmkcheck","1");
+								},
+								error: function(request, status, error) {
+									console.log(error);
+								}
+							}); // ajax end..
+						}
+						
+					});
+				} else {
+					alert("das");
+				}
+				
+			}
+		});
+		
 	}); // document ready end..
 
 	function reloadList() {
@@ -1681,6 +1870,54 @@ input[type="radio"]:checked {
 		});//ajax end
 	}//likeStatus end
 	
+	function roadBmkFolder() {
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "journalBmkLists",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				drawBmkFolder(res.bmkList);
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		});
+	}
+	
+	function drawBmkFolder(bmkList) {
+	   var html = "";
+	   
+	   html += "<div class=\"bmk_popup\">";
+	   html += "<div>";
+	   html += "<div class=\"popup_contents_txt\">";
+	   html += "<div>";
+	   html += "북마크 저장<span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
+	   html += "</div>";
+	   html += "<div class=\"radio_title\">";
+	   html += "<span>폴더 선택</span> <span class=\"asterisk\">&#42;</span>";
+	   html += "</div>";
+	   html += "<div class=\"folder_radio\">";
+	   for(d of bmkList) {
+		   html += "<div class=\"folder_radio_box\" bmkno=\"" + d.BMK_NO + "\">";
+		   html += "<input type=\"radio\" id=\"folder_radio" + d.RNUM + "\" value=\"" + d.RNUM + "\" name=\"folder_img\"><br/>";
+		   html += "<label for=\"folder_radio" + d.RNUM + "\"><img src=\"./resources/images/backpack" + d.FOLDER_IMG + ".png\"></label>";
+		   html += "<div>" + d.FOLDER_NAME + "</div>";
+		   html += "</div>";
+	   }
+	   html += "</div>";
+	   html += "</div>";
+	   html += "<div class=\"btn_list\">";
+	   html += "<span id=\"yes\">확 인</span><span id=\"no\">취 소</span>";               
+	   html += "</div>";
+	   html += "</div>";
+	   html += "</div>";
+	   html += "<div class=\"bmk_bg\"></div>"
+	   
+	   $("#wrap").append(html);
+	}
 </script>
 </head>
 <body>
@@ -1768,6 +2005,7 @@ input[type="radio"]:checked {
 					<input type="hidden" id="cmtNo" name="cmtNo" />
 					<input type="hidden" id="userNo" name="userNo" />
 					<input type="hidden" id="photoCnt" name="photoCnt" value="${cnt}" />
+					<input type="hidden" id="bmkNo" name="bmkNo" />
 				</form>
 				<form action="#" id="prevJournalForm" method="post">
 					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.JOURNAL_NO}"/>
@@ -1860,7 +2098,7 @@ input[type="radio"]:checked {
 				<div class="reaction">
 					<ul>
 						<li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li>
-						<li><img alt="북마크" src="./resources/images/bmrk.png"><br />북마크</li>
+						<li><img alt="북마크" src="./resources/images/bmrk.png" id="bmkBtn" bmkcheck="0"><br />북마크</li>
 					</ul>
 				</div>
 			</div>

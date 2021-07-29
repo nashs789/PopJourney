@@ -1426,7 +1426,7 @@ $(document).ready(function(){
 		else if($(this).attr("class") == "post")
 		{
 			$("#postNo").val($(this).attr($(this).attr("class")));
-			$("#postForm").submit();
+			$("#postForm1").submit();
 		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
 	}); //notification tbody span tr click end
 	
@@ -1842,7 +1842,7 @@ function findBtnPopup()
 	<form action="journal" id="journalForm" method="post">
 		<input type="hidden" id="journalNo" name="journalNo" value=""/>
 	</form>
-	<form action="post" id="postForm" method="post">
+	<form action="post" id="postForm1" method="post">
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>

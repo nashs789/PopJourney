@@ -102,11 +102,11 @@ public class EsPopJourneyController {
 	// 자유게시판
 	@RequestMapping(value = "/community")
 	public ModelAndView community(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		int page = 1;
-		if (params.get("page") != null) {
-			page = Integer.parseInt(params.get("page"));
+		int Pages = 1;
+		if (params.get("Pages") != null) {
+			Pages = Integer.parseInt(params.get("Pages"));
 		}
-		mav.addObject("page", page);
+		mav.addObject("Pages", Pages);
 		mav.setViewName("LES/community");
 		
 		return mav;
@@ -120,10 +120,10 @@ public class EsPopJourneyController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
-		int page = Integer.parseInt(params.get("page"));
+		int Pages = Integer.parseInt(params.get("Pages"));
 		
 		int cnt = iEsPopjourneyService.getPostCnt(params);
-		PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+		PagingBean pb = iPagingService.getPagingBean(Pages, cnt, 20, 5);
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 		
@@ -155,10 +155,10 @@ public class EsPopJourneyController {
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			
-			int page = Integer.parseInt(params.get("page"));
+			int Pages = Integer.parseInt(params.get("Pages"));
 			
 			int cnt = iEsPopjourneyService.getPostNCnt(params);
-			PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+			PagingBean pb = iPagingService.getPagingBean(Pages, cnt, 20, 5);
 			params.put("startCnt", Integer.toString(pb.getStartCount()));
 			params.put("endCnt", Integer.toString(pb.getEndCount()));
 			try {
@@ -189,10 +189,10 @@ public class EsPopJourneyController {
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			
-			int page = Integer.parseInt(params.get("page"));
+			int Pages = Integer.parseInt(params.get("Pages"));
 			
 			int cnt = iEsPopjourneyService.getPostCMTCnt(params);
-			PagingBean pb = iPagingService.getPagingBean(page, cnt, 20, 5);
+			PagingBean pb = iPagingService.getPagingBean(Pages, cnt, 20, 5);
 			params.put("startCnt", Integer.toString(pb.getStartCount()));
 			params.put("endCnt", Integer.toString(pb.getEndCount()));
 			try {

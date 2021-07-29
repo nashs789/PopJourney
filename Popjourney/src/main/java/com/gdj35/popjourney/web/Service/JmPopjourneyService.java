@@ -337,4 +337,14 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.journalHit(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBmkList(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBmkList(params);
+	}
+
+	@Override
+	public int addBmk(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.addBmk(params);
+	}
+
 }
