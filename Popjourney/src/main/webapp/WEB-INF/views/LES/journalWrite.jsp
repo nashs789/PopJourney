@@ -524,11 +524,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 	height: 20px;
 	cursor: pointer;
 }
-
-.left_arrow {
-	margin-left: 10px;
-}
-
 .date_nav span {
 	top: 3px;
 	position: relative;
@@ -868,7 +863,7 @@ a {
 #inputContents{
 	width: 1000px;
 	height: 600px;
-	overflow-y:auto;
+	white-space: pre-wrap;
 }
 </style>
 <script type="text/javascript"
@@ -1432,7 +1427,9 @@ function makeNotification(notification)
 							</ul>
 					</nav>
 				</div>
-				<input type="text" id="inputContents" name="inputContents"/>
+				<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
+				<textarea rows="50" cols="15" id="inputContents" name="inputContents"/></textarea>
+				<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
 			</div>
 			<div class="spot_area">
 				<div class="title_top">
