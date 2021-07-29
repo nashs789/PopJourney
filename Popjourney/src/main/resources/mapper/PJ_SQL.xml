@@ -723,6 +723,7 @@
 		      FROM JOURNAL J INNER JOIN JOURNAL_CATEGORY JC
 		                             ON J.CATEGORY = JC.CATEGORY_NO
 		                             AND J.SUB_CATEGORY = JC.SUB_CATEGORY_NO
+		                              AND J.DEL = 1
 		                     INNER JOIN JOURNAL_CATEGORY JC2
 		                             ON JC.CATEGORY_NO = JC2.SUB_CATEGORY_NO
 		                             AND JC2.CATEGORY_NO = 0
@@ -766,6 +767,7 @@
 		FROM JOURNAL J INNER JOIN MEM M
 							   ON J.MEM_NO = M.MEM_NO
 		WHERE J.MEM_NO = #{MEM_NO}
+		AND J.DEL = 1
 		AND M.LEAVE_DATE IS NULL
 		GROUP BY J.MEM_NO
 	</select>
@@ -1379,4 +1381,24 @@
 		UPDATE GRADE SET APPLY = 0
 		WHERE MEM_NO = #{MEM_NO}	
 	</update>
+	
+	<insert id="addJournal" parameterType="hashmap">
+		INSERT INTO JOURNAL(JOURNAL_NO, MEM_NO, CATEGORY, SUB_CATEGORY, TITLE, START_DATE, END_DATE, REGION_NO)
+		VALUES(JOURNAL_SEQ.NEXTVAL, #{MEM_NO}, #{inputCategory}, #{inputSubCategory}, #{inputTitle}, #{startDate}, #{endDate}, #{regionNo})
+	</insert>
+	
+	<insert id="addJournalDetail" parameterType="hashmap">
+		INSERT INTO JOURNAL_DETAIL(JOURNAL_NO, JOURNAL_SEQUENCE, PHOTO_PATH, MEMO, CONTENTS)
+		VALUES(JOURNAL_SEQ.CURRVAL, #{journalSequence}, #{inputPhoto}, #{inputMemo}, #{inputContents})
+	</insert>
+	
+	<insert id="addHash" parameterType="hashmap">
+		INSERT INTO HASH(HASH_NO, HASH_NAME)
+		VALUES(HASH_SEQ.NEXTVAL, #{inputHashtag})
+	</insert>
+	
+	<insert id="addJournalHash" parameterType="hashmap">
+		INSERT INTO JOURNAL_HASH(JOURNAL_NO, HASH_NO)
+		VALUES(JOURNAL_SEQ.CURRVAL, HASH_SEQ.CURRVAL)	
+	</insert>
 </mapper>

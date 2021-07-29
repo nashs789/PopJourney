@@ -868,17 +868,13 @@ public class PopJourneyController {
 
 		int page = Integer.parseInt(params.get("page"));
 		int cnt = ipjs.journalCnt(params);
-		System.out.println("######################3");
 		
 		PagingBean pb = ips.getPagingBean(page, cnt, 15, 5);
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
-		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7");
 
 		 try {
-			 System.out.println("************************************");
 			 List<HashMap<String, String>> myPage = ipjs.myPageJournal(params);
 
 			 if(myPage != null)
@@ -891,12 +887,10 @@ public class PopJourneyController {
 			 {
 				 modelMap.put("msg", "failed");
 			 }
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		} catch (Exception e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
 		return mapper.writeValueAsString(modelMap);
 	}
 	
@@ -1647,15 +1641,61 @@ public class PopJourneyController {
 				return mapper.writeValueAsString(modelMap);
 		}
 		
-		
 		// 여행일지 작성페이지
 		@RequestMapping(value = "/journalWrite")
 		public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 			
+			mav.addObject("startDate", params.get("startDate"));
+			mav.addObject("endDate", params.get("endDate"));
+			mav.addObject("regionNo", params.get("regionNo"));
 			mav.setViewName("LES/journalWrite");
 			
 			return mav;
 		}
 		
+		//등급 신청
+		@RequestMapping(value = "/addJournals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String addJournals(@RequestParam HashMap<String, String> params,
+								  @RequestParam List<String> contents,
+								  @RequestParam List<String> memo,
+								  @RequestParam List<String> photo) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
 
+			String arr[] = params.get("inputHashtag").split("#");
+			
+			 try {
+				 ipjs.addJournal(params);
+				 
+				 for(int i = 0; i < contents.size(); i++)
+				 {
+					 if(contents.get(i) == "" || memo.get(i) == "" || photo.get(i) == "")
+					 {
+						 break;
+					 }
+					 params.put("journalSequence", Integer.toString(i));
+					 params.put("inputContents", contents.get(i));
+					 params.put("inputMemo", memo.get(i));
+					 params.put("inputPhoto", photo.get(i));
+					 
+					 ipjs.addJournalDetail(params);
+				 }
+				 
+				for(int i = 1; i < arr.length; i++)
+				{
+					params.put("inputHashtag", arr[i]);
+					
+					ipjs.addHash(params);
+					ipjs.addJournalHash(params);
+				}
+					
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}	
 }
