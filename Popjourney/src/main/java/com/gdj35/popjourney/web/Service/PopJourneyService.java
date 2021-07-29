@@ -366,4 +366,28 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.upgrade(params);
 	}
+
+	@Override
+	public void addJournal(HashMap<String, String> params) throws Throwable 
+	{
+		ipjd.addJournal(params);
+	}
+
+	@Override
+	public void addJournalDetail(HashMap<String, String> params) throws Throwable 
+	{
+		ipjd.addJournalDetail(params);
+	}
+
+	@Override
+	public void addHash(HashMap<String, String> params) throws Throwable 
+	{
+		ipjd.addHash(params);
+	}
+
+	@Override
+	public void addJournalHash(HashMap<String, String> params) throws Throwable 
+	{
+		ipjd.addJournalHash(params);
+	}
 }

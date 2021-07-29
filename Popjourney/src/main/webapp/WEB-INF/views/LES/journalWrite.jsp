@@ -448,7 +448,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 #container {
 	display: block;
 	width: 1000px;
-	height: 2500px;
 	margin: 0 auto;
 }
 
@@ -471,10 +470,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 	padding-left: 30px;
 }
 
-.input_title {
+.input_title, .input_memo {
 	font-size: 18pt;
 	color: #2e3459;
-	border: none;
 	padding: 5px 0 5px;
 }
 
@@ -528,36 +526,9 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
     position: absolute;
     margin-left: 100px;
 }
-.left_arrow {
-	margin-left: 10px;
-	position: relative;
-}
-
-.right_arrow {
-	position: relative;
-    margin-right: 0px;
-    margin-left: 900px;
-}
-
-.img_slide .left_arrow {
-    margin-left: -75px;
-}
-
-.img_slide .right_arrow {
-	margin-left: 28px;
-}
-
-.left_arrow, .right_arrow {
-	top: 220px;
-    display: inline-block;
-}
-
-.arrow_img {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border: 2px dotted #2e3459;
-    border-radius: 100px;
+.date_nav ul li:first-child{
+	background-color: #2e3459;
+	color: white;
 }
 
 .date_nav {
@@ -647,7 +618,7 @@ a {
 	text-align: left;
 }
 
-.edit_btn, .del_btn, .enroll_btn, .cancel_btn, .add_btn {
+ .enroll_btn, .cancel_btn  {
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -658,29 +629,15 @@ a {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
-.add_btn{
-	margin-left: 10px;
-	width: 60px;
-	vertical-align: top;
-}
-.edit_btn, .del_btn {
-	float: right;
-	margin-left: 30px;
-}
 
 .enroll_btn, .cancel_btn {
 	margin: 0 auto;
 }
-
-.del_btn {
-	margin-right: 100px;
-}
-
 .enroll_btn {
 	margin-right: 40px;
 }
 
-.edit_btn:hover, .enroll_btn:hover, .add_btn:hover {
+.enroll_btn:hover{
 	border: 2px solid #2e3459;
 	background-color: #2e3459;
 	color: white;
@@ -910,11 +867,28 @@ a {
 	height: 600px;
 	white-space: pre-wrap;
 }
+#att{
+	display:none;
+}
+#photo{
+	margin-top: 20px;
+	width: 1000px;
+	height: 660px;
+}
+#fileName{
+	font-size: 12pt;
+}
 </style>
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="resources/script/jquery/jquery.form.js"/></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	var index = 0;
+	var photo = ["", "", "", "", ""];
+	var memo = ["메모1", "메모2", "메모3", "메모4", "메모5"];
+	var contents = ["1번일지", "2번일지", "3번일지", "4번일지", "5번일지"];
+	
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
 	//로그인 상태 확인
@@ -1014,7 +988,58 @@ $(document).ready(function() {
 		$(".category_filter").html(html);
 	});//pref_filter change end
 	
-
+	$(".date_nav ul").on("click", "li", function(){
+		console.log(photo);
+		$(".date_nav ul li").css("background-color", "white");
+		$(".date_nav ul li").css("color", "black");
+		
+		contents[index] = $("#inputContents").val();
+		memo[index] = $(".input_memo").val();
+		
+		index = $(this).attr($(this).attr("class"));
+		$("#inputContents").val(contents[index]);
+		$(".input_memo").val(memo[index]);
+		$("#fileName").html(photo[index].substring(20));
+		
+		if(photo[index] != "")
+		{
+			var html = "";
+			var path = "resources/upload/"+ photo[index];
+			html = "<img src=\""+path+"\" id=\"photo\"/>";
+			$("#photoArea").html(html);
+		}
+		else
+		{
+			$("#photoArea").html("");
+		}
+		
+		if($(this).attr($(this).attr("class")) == 0)
+		{
+			$(".date_nav ul li:first-child").css("background-color", "#2e3459");
+			$(".date_nav ul li:first-child").css("color", "white");
+		}
+		else if($(this).attr($(this).attr("class")) == 1)
+		{
+			$(".date_nav ul li:nth-child(2)").css("background-color", "#2e3459");
+			$(".date_nav ul li:nth-child(2)").css("color", "white");
+		}
+		else if($(this).attr($(this).attr("class")) == 2)
+		{
+			$(".date_nav ul li:nth-child(3)").css("background-color", "#2e3459");
+			$(".date_nav ul li:nth-child(3)").css("color", "white");
+		}
+		else if($(this).attr($(this).attr("class")) == 3)
+		{
+			$(".date_nav ul li:nth-child(4)").css("background-color", "#2e3459");
+			$(".date_nav ul li:nth-child(4)").css("color", "white");
+		}
+		else
+		{
+			$(".date_nav ul li:last-child").css("background-color", "#2e3459");
+			$(".date_nav ul li:last-child").css("color", "white");
+		}
+	}); //date_nav ul click end
+	
 	$("#notification tbody").on("click", "span, tr, img", function(){
 		if($(this).attr("class") == "notRead")
 		{
@@ -1102,6 +1127,40 @@ $(document).ready(function() {
 	});//inputPW, inputID 
 	//keypress end 엔터시 로그인 버튼 클릭
 	
+	$("#photoBtn").on("click", function(){
+		$("#att").click();
+	}); //photoBtn
+	
+	$("#att").on("change", function() {
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") + 1));
+		
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+				success : function(res) {
+				if(res.result == "SUCCESS") {
+					// 올라간 파일명 저장
+					if(res.fileName.length > 0) 
+					{
+						photo[index] = res.fileName[0];
+						
+						var path = "resources/upload/"+res.fileName[0];
+						html = "<img src=\""+path+"\" id=\"photo\"/>";
+						$("#photoArea").html(html);
+					}
+				} 
+				else 
+				{
+					alert("파일 업로드중 문제 발생");
+				}
+			},
+			error : function() {
+				alert("파일 업로드중 문제 발생");
+			}
+		}); // ajaxForm end
+		fileForm.submit();
+	}); //att change end
+	
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
 		if($("#profileSlidedown").css("display") == "block")
@@ -1126,6 +1185,43 @@ $(document).ready(function() {
 			$("#notification").css("display", "inline-block");
 		}
 	}); //notificationPhoto click end
+	
+	$(".enroll_btn").on("click", function(){
+		
+		var c = "#contents";
+		var m = "#memo";
+		var p = "#photo";
+		
+		for(var i = 0; i < 5; i++)
+		{
+			c += i;
+			m += i;
+			p += i;
+			
+			$(c).val(contents[i]);
+			$(m).val(memo[i]);
+			$(p).val(photo[i]);
+						
+			c = "#contents";
+			m = "#memo";
+			p = "#photo";
+		}
+		var params = $("#addJournalForm").serialize()
+		
+		$.ajax({
+			url: "addJournals",
+			data: params,
+			dataType:"json",
+			type: "post",
+			success:function(result)
+			{
+				
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //enroll_btn click end
 	
 	$("#journalBoard").on("click", function(){
     	location.href = "journalBoard";
@@ -1364,6 +1460,10 @@ function makeNotification(notification)
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 	</form>
+	<form id="fileForm" action="fileUploadAjax" method="post" enctype="multipart/form-data">
+		<input type="file" name="att" id="att" /> <!-- attach : 첨부 -->
+	</form>
+	
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1448,6 +1548,28 @@ function makeNotification(notification)
 			</span> &nbsp;>&nbsp;&nbsp;일지 작성
 		</div>
 		<div id="container">
+		<form action="journalBoard" id="addJournalForm" method="post">
+			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+			
+			<input type="hidden" id="contents0" name="contents"/>
+			<input type="hidden" id="memo0" name="memo"/>
+			<input type="hidden" id="photo0" name="photo"/>
+			
+			<input type="hidden" id="contents1" name="contents"/>
+			<input type="hidden" id="memo1" name="memo"/>
+			<input type="hidden" id="photo1" name="photo"/>
+			
+			<input type="hidden" id="contents2" name="contents"/>
+			<input type="hidden" id="memo2" name="memo"/>
+			<input type="hidden" id="photo2" name="photo"/>
+			
+			<input type="hidden" id="contents3" name="contents"/>
+			<input type="hidden" id="memo3" name="memo"/>
+			<input type="hidden" id="photo3" name="photo"/>
+			
+			<input type="hidden" id="contents4" name="contents"/>
+			<input type="hidden" id="memo4" name="memo"/>
+			<input type="hidden" id="photo4" name="photo"/>
 			<div class="title_area">
 				<div class="title_top">
 					<strong class="title_font">1. 제목 입력</strong> <span>필수 입력 사항</span>
@@ -1464,23 +1586,21 @@ function makeNotification(notification)
 				<div class="schedule">
 					<nav class="date_nav">
 							<ul>
-								<li>DIARY 1</li>
-								<li>DIARY 2</li>
-								<li>DIARY 3</li>
-								<li>DIARY 4</li>
-								<li>DIARY 5</li>
+								<li class="diary" diary="0">DIARY 1</li>
+								<li class="diary" diary="1">DIARY 2</li>
+								<li class="diary" diary="2">DIARY 3</li>
+								<li class="diary" diary="3">DIARY 4</li>
+								<li class="diary" diary="4">DIARY 5</li>
 							</ul>
 					</nav>
 				</div>
 				<div class="write_area">
-					<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" class="arrow_img"></span>
-					<span class="text_area"><textarea rows="50" cols="15" id="inputContents" name="inputContents"/ class="text_area_style"></textarea></span>
-					<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" class="arrow_img"></span>
+					<span class="text_area"><textarea rows="50" cols="15" id="inputContents" class="text_area_style"></textarea></span>
 				</div>
 			</div>
 			<div class="spot_area">
 				<div class="title_top">
-					<strong class="title_font">3. 메모</strong> <span>필수 입력 사항</span>
+					<strong class="title_font">3. 메모 & 사진 추가</strong> <span>필수 입력 사항</span>
 				</div>
 				<div class="help">
 					<span>일정 선택 후 수정, 삭제가 가능합니다.&#9;일정은 하나씩 선택하십시오</span>
@@ -1488,19 +1608,18 @@ function makeNotification(notification)
 				<div class="schedule">
 					<nav class="date_nav">
 							<ul>
-								<li>DIARY 1</li>
-								<li>DIARY 2</li>
-								<li>DIARY 3</li>
-								<li>DIARY 4</li>
-								<li>DIARY 5</li>
+								<li class="diary" diary="0">DIARY 1</li>
+								<li class="diary" diary="1">DIARY 2</li>
+								<li class="diary" diary="2">DIARY 3</li>
+								<li class="diary" diary="3">DIARY 4</li>
+								<li class="diary" diary="4">DIARY 5</li>
 							</ul>
 					</nav>
 				</div>
-				<input type="text" class="input_title" placeholder="여행일지 제목"
+				<input type="text" class="input_memo" placeholder="메모"
 						size="50" maxlength="10" autofocus required />
-				<input type="button" class="add_btn" value="추 가" />
-				<input type="button" class="del_btn" value="삭  제" /> <input
-					type="button" class="edit_btn" value="수  정" />
+				<input type="button" value="사진 추가" id="photoBtn"/><span id="fileName"></span>
+				<div id="photoArea"></div>
 			</div>
 			<div class="hash_area">
 				<div class="title_top">
@@ -1524,13 +1643,17 @@ function makeNotification(notification)
 						</select>
 					</div>
 					<div class="hash">
-						<label>해시태그<input type="text" class="hash_input" size="70" maxlength="70" placeholder="#해시태그1#해시태그2"></label>
+						<label>해시태그<input type="text" class="hash_input" name="inputHashtag" size="70" maxlength="70" placeholder="#해시태그1#해시태그2"></label>
 					</div>
 				</div>
 				<div class="enroll_area">
 					<input type="button" class="enroll_btn" value="등 록" /> <input type="button" class="cancel_btn" value="취 소" />
 				</div>
 			</div>
+		   <input type="hidden" id="startDate" name="startDate" value="${startDate }"/>
+		   <input type="hidden" id="endDate" name="endDate" value="${endDate }"/>
+		   <input type="hidden" id="regionNo" name="regionNo" value="${regionNo }"/>
+		</form>
 		</div>
 		<div id="footer">
 			<p>
@@ -1539,6 +1662,5 @@ function makeNotification(notification)
 			</p>
 		</div>
 	</div>
-	
 </body>
 </html>

@@ -901,6 +901,11 @@ $(document).ready(function(){
    //keypress end 엔터시 로그인 버튼 클릭
    
    $("#write").on("click", function(){
+	   if("${sMEM_NO}" == "")
+	   {
+		   alert("로그인이 필요한 서비스 입니다.");
+		   return false;
+	   }
       makePopup();
    });//write click end
    
@@ -1342,8 +1347,7 @@ function makePopup()
       else
       {
          $("#regionNo").val($("#regionSelect[id='regionSelect'] option:selected").val());
-         
-         //$("#writeForm").submit();
+         $("#writeForm").submit();
       }
    });//goWrite click end
    
@@ -1355,6 +1359,7 @@ function makePopup()
 </script>
 </head>
 <form action="journalWrite" id="writeForm" method="post">
+	<input type="hidden" id="inputJournalNo" name="inputJournalNo"/>
    <input type="hidden" id="startDate" name="startDate"/>
    <input type="hidden" id="endDate" name="endDate"/>
    <input type="hidden" id="regionNo" name="regionNo"/>
