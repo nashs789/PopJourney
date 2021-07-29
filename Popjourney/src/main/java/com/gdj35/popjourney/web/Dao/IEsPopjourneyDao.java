@@ -33,10 +33,6 @@ public interface IEsPopjourneyDao {
 
 	public HashMap<String, String> editPost(HashMap<String, String> params) throws Throwable;
 
-	public HashMap<String, String> nextPost(HashMap<String, String> params) throws Throwable;
-
-	public HashMap<String, String> prevPost(HashMap<String, String> params) throws Throwable;
-
 	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable;
 
 	public int addLike(HashMap<String, String> params) throws Throwable;
@@ -51,8 +47,20 @@ public interface IEsPopjourneyDao {
 
 	public int getCmtCnt(HashMap<String, String> params) throws Throwable;
 
-	
+	public List<HashMap<String, String>> getPostCmt(HashMap<String, String> params) throws Throwable;
 
+	public int getCmtAdds(HashMap<String, String> params) throws Throwable;
 
+	public int getCmtNotf(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtEdits(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtAdds(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtNotf(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtCmtNotf2(HashMap<String, String> params) throws Throwable;
+
+	public int getCmtDeletes(HashMap<String, String> params) throws Throwable;
 
 }

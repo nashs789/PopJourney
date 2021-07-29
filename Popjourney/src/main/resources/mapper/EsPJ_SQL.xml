@@ -373,28 +373,6 @@
 		UPDATE  BOARD SET DEL = 0
 		WHERE POST_NO = #{postNo}
 	</update>
-	<select id="nextPost" parameterType="hashmap" resultType="hashmap">
-		SELECT *
-		FROM BOARD
-		WHERE 1=1
-		AND POST_NO IN ( SELECT MIN(POST_NO) 
-		                 FROM BOARD B INNER JOIN MEM M
-                                            ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
-		                 WHERE POST_NO > #{postNo}
-		                 AND DEL !=0)
-	</select>
-	<select id="prevPost" parameterType="hashmap" resultType="hashmap">
-		SELECT *
-		FROM BOARD
-		WHERE 1=1
-		AND POST_NO IN ( SELECT MAX(POST_NO) 
-		                 FROM BOARD B INNER JOIN MEM M
-                                            ON B.MEM_NO = M.MEM_NO AND LEAVE_DATE IS NULL
-		                  <![CDATA[
-		                 WHERE POST_NO < #{postNo}
-		                 AND DEL !=0
-		                 ]]> )
-	</select>
 	<select id="likeCheck" parameterType="hashmap" resultType="hashmap">
 		SELECT *
     	FROM BOARD_LIKE
@@ -413,9 +391,72 @@
 		DELETE FROM BOARD_LIKE
 		WHERE MEM_NO = #{loginUserNo} AND POST_NO = #{postNo} 
 	</delete>
-	<insert id="writeCmt" parameterType="hashmap">
-		INSERT INTO BOARD_CMT (POST_CMT_NO, MEM_NO, POST_NO, CONTENTS)
-		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{cmtCon})
+	
+	<select id="getCmtCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM BOARD_CMT BC INNER JOIN (SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH, G.GRADE_NO, GC.GRADE_NAME
+		                              FROM MEM M INNER JOIN GRADE G
+		                                                 ON M.MEM_NO = G.MEM_NO
+		                                         INNER JOIN GRADE_CATEGORY GC
+		                                                 ON G.GRADE_NO = GC.GRADE_NO
+		                              WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                          ON BC.MEM_NO = M.MEM_NO
+		WHERE BC.POST_NO = #{postNo}
+		AND BC.DEL = 1
+	</select>
+	
+	<select id="getPostCmt" parameterType="hashmap" resultType="hashmap">
+		SELECT B.POST_CMT_NO, B.MEM_NO, B.POST_NO, B.PARENTS_CMT_NO, B.CMT_CONTENTS, B.CMT_DATE, B.DEL, 
+		       B.NIC, B.MEM_PHOTO_PATH, B.GRADE_NO, B.GRADE_NAME, B.RNUM
+		FROM (SELECT BC.POST_CMT_NO, BC.MEM_NO, BC.POST_NO, BC.PARENTS_CMT_NO, BC.CONTENTS AS CMT_CONTENTS, 
+		             TO_CHAR(BC.CMT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CMT_DATE, BC.DEL, 
+		             M.NIC, M.MEM_PHOTO_PATH, M.GRADE_NO, M.GRADE_NAME,
+		             ROW_NUMBER() OVER(ORDER BY NVL(BC.PARENTS_CMT_NO, BC.POST_CMT_NO) DESC, BC.POST_CMT_NO ASC) AS RNUM
+		      FROM BOARD_CMT BC INNER JOIN (SELECT M.MEM_NO, M.NIC, M.PHOTO_PATH AS MEM_PHOTO_PATH, G.GRADE_NO, GC.GRADE_NAME
+		                                    FROM MEM M INNER JOIN GRADE G
+		                                                       ON M.MEM_NO = G.MEM_NO
+		                                               INNER JOIN GRADE_CATEGORY GC
+		                                                       ON G.GRADE_NO = GC.GRADE_NO
+		                                    WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) M
+		                                ON BC.MEM_NO = M.MEM_NO
+		      WHERE BC.POST_NO = #{postNo} 
+		      AND BC.DEL = 1) B
+		WHERE B.RNUM BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<insert id="getCmtAdds" parameterType="hashmap">
+		INSERT INTO BOARD_CMT(POST_CMT_NO, MEM_NO, POST_NO, CONTENTS)
+		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{getCmtContents})
 	</insert>
+	
+	<insert id="getCmtNotf" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{loginUserNo}, 2, #{postWriteMemNo}, POST_CMT_SEQ.CURRVAL)
+	</insert>
+	
+	<update id="getCmtEdits" parameterType="hashmap">
+		UPDATE BOARD_CMT SET CONTENTS = #{getCmtContents}
+		WHERE POST_CMT_NO = #{cmtNo}
+	</update>
+	
+	<insert id="getCmtCmtAdds" parameterType="hashmap">
+		INSERT INTO BOARD_CMT(POST_CMT_NO, MEM_NO, POST_NO, PARENTS_CMT_NO, CONTENTS)
+		VALUES (POST_CMT_SEQ.NEXTVAL, #{loginUserNo}, #{postNo}, #{cmtNo}, #{getCmtContents})
+	</insert>
+	
+	<insert id="getCmtCmtNotf" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{loginUserNo}, 4, #{postWriteMemNo}, POST_CMT_SEQ.CURRVAL)
+	</insert>
+	
+	<insert id="getCmtCmtNotf2" parameterType="hashmap">
+		INSERT INTO NOTF(NOTF_NO, NOTF_MEM_NO, EVENT_NO, MEM_NO, GBN_NO)
+		VALUES (NOTF_SEQ.NEXTVAL, #{loginUserNo}, 6, #{cmtWriteMemNo}, POST_CMT_SEQ.CURRVAL)
+	</insert>
+	
+	<update id="getCmtDeletes" parameterType="hashmap">
+		UPDATE BOARD_CMT SET DEL = 0
+		WHERE POST_CMT_NO = #{cmtWriteMemNo}
+	</update>
 	
 </mapper>

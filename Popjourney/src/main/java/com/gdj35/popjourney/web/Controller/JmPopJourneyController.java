@@ -1216,6 +1216,8 @@ public class JmPopJourneyController {
 		HashMap<String, String> likeCheck = iJmPopjourneyService.likeCheck(params);
 		// 조회수
 		int hit = iJmPopjourneyService.journalHit(params);
+		// 북마크 폴더 갯수 체크
+		int bmkFolderCnt = iJmPopjourneyService.getBmkFolderCnt(params);
 		
 		int page = 1;
 		
@@ -1229,6 +1231,7 @@ public class JmPopJourneyController {
 		mav.addObject("hash", hash);
 		mav.addObject("page", page);
 		mav.addObject("likeCheck", likeCheck);
+		mav.addObject("bmkFolderCnt", bmkFolderCnt);
 		//mav.addObject("journalWriterMemNo", data.get("MEM_NO"));
 		
 		System.out.println("journalParams >> " + params);
@@ -1239,6 +1242,7 @@ public class JmPopJourneyController {
 		System.out.println("hash >> " + hash);
 		System.out.println("page >> " + page);
 		System.out.println("likeCheck >> " + likeCheck);
+		System.out.println("bmkFolderCnt >> " + bmkFolderCnt);
 		
 		mav.setViewName("CJM/journal");
 		
@@ -1432,8 +1436,9 @@ public class JmPopJourneyController {
 		
 		try {
 			int cnt = iJmPopjourneyService.getJournalDeletes(params);
+			int cnt2 = iJmPopjourneyService.getJournalBmkDeletes(params);
 			
-			if(cnt > 0) {
+			if(cnt > 0 || cnt2 > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
@@ -1523,6 +1528,63 @@ public class JmPopJourneyController {
 			int addBmk = iJmPopjourneyService.addBmk(params);
 
 			if(addBmk > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.put("msg","error");
+		}
+
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/journalGetBmkNos", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalGetBmkNos(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			HashMap<String, String> getBmkNo = iJmPopjourneyService.getBmkno(params);
+			if(getBmkNo != null) {
+				modelMap.put("msg", "nullx");
+				modelMap.put("getBmkNo", getBmkNo);
+				
+				System.out.println("getBmkNo >> " + getBmkNo);
+			} else {
+				modelMap.put("msg", "nullo");
+				modelMap.put("getBmkNo", getBmkNo);
+				
+				System.out.println("getBmkNo >> " + getBmkNo);
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		
+		System.out.println("journalGetBmkNosParams >> " + params);
+		
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	@RequestMapping(value = "/journalBmkDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String journalBmkDeletes(@RequestParam HashMap<String, String> params, ModelAndView modelAndView) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+
+		try {
+			int deleteBmk = iJmPopjourneyService.deleteBmk(params);
+
+			if(deleteBmk > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");

@@ -347,4 +347,25 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.addBmk(params);
 	}
 
+	@Override
+	public int deleteBmk(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.deleteBmk(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBmkno(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBmkno(params);
+	}
+
+	@Override
+	public int getBmkFolderCnt(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getBmkFolderCnt(params);
+	}
+
+	@Override
+	public int getJournalBmkDeletes(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getJournalBmkDeletes(params);
+	}
+
+
 }
