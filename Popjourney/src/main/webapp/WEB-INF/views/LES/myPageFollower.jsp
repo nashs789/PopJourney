@@ -523,8 +523,6 @@ hr {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	cursor: pointer;
 }
-
-
 #footer {
 	display: block;
 	width: 100%;
@@ -552,18 +550,21 @@ hr {
 <script type="text/javascript">
 $(document).ready(function(){
 	var path = "";
+	var html = "";  
 	
 	if("${sPHOTO_PATH}" != "")
 	{
 		path = "resources/upload/" + "${sPHOTO_PATH}";
 		
 		$("#profilePhoto").attr("src", path);
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	else
 	{
 		path = "./resources/images/profile.png";
-
 		$("#profilePhoto").attr("src", path);
+		path = "./resources/images/profile3.png";
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	
 	if("${sGRADE_NO}" == "0")
@@ -571,9 +572,6 @@ $(document).ready(function(){
 		$("#admin").show();
 	}
 	
-	var html = "";  
-	
-	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
 	html += "<div>${sNIC}</div>";
 	html += "<span>${sINTRO}</span>"; 
 	
@@ -955,6 +953,7 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>

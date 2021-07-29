@@ -360,4 +360,10 @@ public class PopJourneyService implements IPopJourneyService {
 	{
 		return ipjd.checkCode(params);
 	}
+
+	@Override
+	public int upgrade(HashMap<String, String> params) throws Throwable 
+	{
+		return ipjd.upgrade(params);
+	}
 }

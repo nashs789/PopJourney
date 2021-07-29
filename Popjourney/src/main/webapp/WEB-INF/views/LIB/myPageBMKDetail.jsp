@@ -825,28 +825,28 @@ input[type="radio"]:checked {
 <script type="text/javascript">
 $(document).ready(function(){
 	var path = "";
+	var html = "";  
 	
 	if("${sPHOTO_PATH}" != "")
 	{
 		path = "resources/upload/" + "${sPHOTO_PATH}";
 		
 		$("#profilePhoto").attr("src", path);
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	else
 	{
 		path = "./resources/images/profile.png";
-
 		$("#profilePhoto").attr("src", path);
+		path = "./resources/images/profile3.png";
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	
 	if("${sGRADE_NO}" == "0")
 	{
 		$("#admin").show();
 	}
-	
-	var html = "";  
-	
-	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
+
 	html += "<div>${sNIC}</div>";
 	html += "<span>${sINTRO}</span>"; 
 	
@@ -1335,6 +1335,7 @@ function makeNotification(notification)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>

@@ -532,40 +532,150 @@ a {
 #admin{
 	display: none;	
 }
+#intro{
+	font-size: 12pt;
+}
+#point{
+	font-size: 10pt;
+}
+input[type='button']{
+	padding: 4px 0px;
+	background-color: white;
+	border: 2px solid #2e3459;
+	border-radius: 20px;
+	height: 35px;
+	cursor: pointer;
+	width: 80px;
+	margin-left: 10px;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	font-weight: bold;
+}
+input[type='button']:hover{
+	color: white;
+	background-color: #2e3459;
+}
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var path = "";
+	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
+	var html = "";  
 	
 	if("${sPHOTO_PATH}" != "")
 	{
 		path = "resources/upload/" + "${sPHOTO_PATH}";
 		
 		$("#profilePhoto").attr("src", path);
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	else
 	{
 		path = "./resources/images/profile.png";
-
 		$("#profilePhoto").attr("src", path);
+		path = "./resources/images/profile3.png";
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	
 	if("${sGRADE_NO}" == "0")
 	{
 		$("#admin").show();
 	}
-
-	var html = "";  
 	
-	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
-	html += "<div>${sNIC}</div>";
-	html += "<span>${sINTRO}</span>"; 
+	html += "<div>${sNIC}";
+	if("${sGRADE_NO}" == "0")
+	{
+		html += "[관리자]";
+	}
+	else if("${sGRADE_NO}" == "1")
+	{
+		html += "[여행꾼]";
+	}
+	else
+	{
+		html += "[여행작가]";
+	}
+	html +="</div>";
+	html += "<div id=\"intro\">${sINTRO}</div>";
+	html += "<sapn id=\"point\">여행점수: ${sPOINT}  <input type=\"button\" id=\"upgradeBtn\" value=\"작가 신청\"/></span>";
 	
 	$(".info").html(html);
 
  	var params = $("#memForm").serialize();
-	
+
 	$.ajax({
 		url: "myPageJournals",
 		data: params,
@@ -587,7 +697,7 @@ $(document).ready(function(){
 		}//error end
 	}); //ajax end 
 	
-	var params = $("#memForm").serialize();
+	params = $("#memForm").serialize();
 	
 	$.ajax({
 		url: "notifications",
@@ -610,6 +720,38 @@ $(document).ready(function(){
 			console.log(error);
 		} // error end
 	}); //ajax end 
+	
+	$(".info").on("click", "#upgradeBtn", function(){
+		var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "upgrades",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					popupText = "신청 완료.";
+					commonPopup(popupText);
+				}
+				else if(result.msg == "notEnough")
+				{
+					popupText = "100점 이상되어야 합니다.";
+					commonPopup(popupText);
+				}
+				else
+				{
+					popupText = "오류 발생.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //info upgradeBtn click end
 	
 	$(".paging_wrap").on("click", "span", function() {
 		$("#page").val($(this).attr("name"));
@@ -823,6 +965,25 @@ function makeGallery(myPage)
 	}
 	$(".gallery").html(html);
 }
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function makePage(pb)
 {
 	var html = "<span name=\"1\"><<</span>";
@@ -963,6 +1124,8 @@ function makeNotification(notification)
 <body>
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+	<input type="hidden" id="point" name="point" value="${sPOINT}"/>
+	<input type="hidden" id="grade" name="grade" value="${sGRADE_NO}"/>
 	<input type="hidden" id="page" name="page" value="${page}"/>
 	<input type="hidden" id="GBN" name="GBN" value="1"/>
 	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
@@ -972,6 +1135,7 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>

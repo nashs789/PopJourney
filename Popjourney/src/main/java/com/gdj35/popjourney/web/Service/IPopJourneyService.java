@@ -120,4 +120,6 @@ public interface IPopJourneyService {
 	int mail(HashMap<String, String> params)throws Throwable;
 
 	int checkCode(HashMap<String, String> params)throws Throwable;
+
+	int upgrade(HashMap<String, String> params)throws Throwable;
 }

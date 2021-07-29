@@ -674,18 +674,21 @@ hr {
 $(document).ready(function(){
 	var boxName =""; //체크박스 class이름 담을곳
 	var path = "";
+	var html = "";  
 	
 	if("${sPHOTO_PATH}" != "")
 	{
 		path = "resources/upload/" + "${sPHOTO_PATH}";
 		
 		$("#profilePhoto").attr("src", path);
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	else
 	{
 		path = "./resources/images/profile.png";
-
 		$("#profilePhoto").attr("src", path);
+		path = "./resources/images/profile3.png";
+		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 	}
 	
 	if("${sGRADE_NO}" == "0")
@@ -695,9 +698,6 @@ $(document).ready(function(){
 	
 	var params = $("#memForm").serialize();
 	
-	var html = "";  
-	
-	html += "<img alt=\"profile\" src=\"resources/upload/${sPHOTO_PATH}\"class=\"profile_img\">";
 	html += "<div>${sNIC}</div>";
 	html += "<span>${sINTRO}</span>"; 
 	
@@ -1198,6 +1198,7 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
@@ -1208,7 +1209,7 @@ function makeNotification(notification)
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">

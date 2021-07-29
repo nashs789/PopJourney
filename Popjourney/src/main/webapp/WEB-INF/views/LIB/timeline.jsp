@@ -626,6 +626,44 @@ $(document).ready(function(){
 		}
 	}); //timeline span click end 
 	
+	$("#notification tbody").on("click", "span, tr, img", function(){
+		if($(this).attr("class") == "notRead")
+		{
+			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
+	
+		    var params = $("#notificationForm").serialize();
+			
+			$.ajax({
+				url: "reads",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end  
+		} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
+		
+		if($(this).attr("class") == "user")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#journalForm").submit();
+		}
+		else if($(this).attr("class") == "post")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
+	}); //notification tbody span tr click end
+	
 	$(".timeline").on("mouseover", ".nic", function(){
 		var x = event.clientX;
 	    var y = event.clientY; 
@@ -1037,6 +1075,7 @@ function makeProfilePopup(mini, x, y)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 	<div id="wrap">
          <!-- header부분 고정 -->

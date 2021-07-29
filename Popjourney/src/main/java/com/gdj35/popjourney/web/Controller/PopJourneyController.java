@@ -807,11 +807,11 @@ public class PopJourneyController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
-		session.invalidate();
-
 		 try {
 			 
 			 int cnt = ipjs.delete(params);
+			 
+			 session.invalidate();
 			 
 			 if(cnt != 0)
 			 {
@@ -868,14 +868,17 @@ public class PopJourneyController {
 
 		int page = Integer.parseInt(params.get("page"));
 		int cnt = ipjs.journalCnt(params);
+		System.out.println("######################3");
 		
 		PagingBean pb = ips.getPagingBean(page, cnt, 15, 5);
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7");
 
 		 try {
-			 
+			 System.out.println("************************************");
 			 List<HashMap<String, String>> myPage = ipjs.myPageJournal(params);
 
 			 if(myPage != null)
@@ -888,12 +891,12 @@ public class PopJourneyController {
 			 {
 				 modelMap.put("msg", "failed");
 			 }
-			
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		} catch (Exception e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
 		return mapper.writeValueAsString(modelMap);
 	}
 	
@@ -1612,4 +1615,47 @@ public class PopJourneyController {
 			return mapper.writeValueAsString(modelMap);
 		}
 		
+		//등급 신청
+		@RequestMapping(value = "/upgrades", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String upgrades(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			if(Integer.parseInt(params.get("point")) < 100 && Integer.parseInt(params.get("grade")) == 1)
+			{
+				modelMap.put("msg", "notEnough");
+				return mapper.writeValueAsString(modelMap);
+			}
+			
+			 try {
+				 int cnt = ipjs.upgrade(params);
+				 
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else if(cnt == 0)
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}
+		
+		
+		// 여행일지 작성페이지
+		@RequestMapping(value = "/journalWrite")
+		public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+			
+			mav.setViewName("LES/journalWrite");
+			
+			return mav;
+		}
+		
+
 }

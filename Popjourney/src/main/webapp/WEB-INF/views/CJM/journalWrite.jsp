@@ -433,6 +433,19 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 	margin-left: 10px;
 }
 
+.img_slide .left_arrow {
+    margin-left: -75px;
+}
+
+.img_slide .right_arrow {
+	margin-left: 28px;
+}
+
+.left_arrow, .right_arrow {
+	top: 220px;
+    display: inline-block;
+    position: absolute;
+}
 .date_nav span {
 	top: 3px;
 	position: relative;
