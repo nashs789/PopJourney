@@ -1530,7 +1530,7 @@ input[type="radio"]:checked {
 			}
 		});
 	
-		$(".del_btn").on("click", function() {
+		$("#wrap").on("click", ".del_btn", function() {
 			if(confirm("삭제하시겠습니까?")) {
 				
 				var params = $("#actionForm").serialize();
@@ -1599,11 +1599,13 @@ input[type="radio"]:checked {
 				});//ajax end
 			}
 		});
-		
 		// bmkcheck = 0 (북마크 체크 안한 상태) , 1 (북마크 체크되있는 상태)
+		getBmkNo();
 		$("#bmkBtn").on("click", function() {
 			if($("#memNo").val() == "") {
 				alert("로그인 후 이용 바랍니다.");
+			} else if($("#bmkCnt").val() == 0) {
+				alert("북마크 폴더를 생성해주세요.");
 			} else {
 				if($("#bmkBtn").attr("bmkcheck") == 0) {
 					roadBmkFolder();
@@ -1621,6 +1623,7 @@ input[type="radio"]:checked {
 						if($(".folder_radio_box:checked").each == false) {
 							alert("폴더를 선택해주세요.");
 						} else {
+							console.log("북마크 완료");
 							var params = $("#actionForm").serialize();
 							
 							$.ajax({
@@ -1632,6 +1635,7 @@ input[type="radio"]:checked {
 									$(".bmk_popup").remove();
 									$(".bmk_bg").remove();
 									$("#bmkBtn").css("background-color", "rgb(243, 115, 33)");
+									$(".bmkText").css("color", "rgb(243, 115, 33)");
 									$("#bmkBtn").attr("bmkcheck","1");
 								},
 								error: function(request, status, error) {
@@ -1642,12 +1646,36 @@ input[type="radio"]:checked {
 						
 					});
 				} else {
-					alert("das");
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "journalBmkDeletes",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							$("#bmkBtn").css("background-color", "");
+							$(".bmkText").css("color", "");
+							$("#bmkBtn").attr("bmkcheck","0");
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					}); // ajax end..
 				}
 				
 			}
 		});
 		
+		if($("#memNo").val() == $("#journalWriteMemNo").val()) {
+			var html = "";
+			console.log(".!!!");
+			html += "<div class=\"btn_list\">";
+			html += "<input type=\"button\" class=\"edit_btn\" value=\"수  정\" />";
+			html += "<input type=\"button\" class=\"del_btn\" value=\"삭  제\" />";
+			html += "</div>";
+			$(".bnt_lists").html(html);
+		}
 	}); // document ready end..
 
 	function reloadList() {
@@ -1918,6 +1946,36 @@ input[type="radio"]:checked {
 	   
 	   $("#wrap").append(html);
 	}
+	
+	function getBmkNo() {
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "journalGetBmkNos",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				if(res.msg == "nullx") {
+					$("#bmkBtn").attr("bmkno", res.getBmkNo.BMK_NO);
+					$("#bmkNo").val(res.getBmkNo.BMK_NO);
+					
+					$("#bmkBtn").attr("bmkcheck", 1);
+					$("#bmkBtn").css("background-color", "rgb(243, 115, 33)");
+					$(".bmkText").css("color", "rgb(243, 115, 33)");
+				} else if(res.msg == "nullo") {
+					$("#bmkBtn").attr("bmkcheck", 0);
+					$("#bmkBtn").css("background-color", "");
+					$(".bmkText").css("color", "");
+				} else {
+					console.log("에러발생");
+				}
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -2006,6 +2064,7 @@ input[type="radio"]:checked {
 					<input type="hidden" id="userNo" name="userNo" />
 					<input type="hidden" id="photoCnt" name="photoCnt" value="${cnt}" />
 					<input type="hidden" id="bmkNo" name="bmkNo" />
+					<input type="hidden" id="bmkCnt" name="bmkCnt" value="${bmkFolderCnt}" />
 				</form>
 				<form action="#" id="prevJournalForm" method="post">
 					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.JOURNAL_NO}"/>
@@ -2087,18 +2146,11 @@ input[type="radio"]:checked {
 				</c:forEach>
 			</div>
 			<div class="post_bottom">
-				<%-- <c:choose>
-					<c:when test="${sMEM_NO eq param.journalWriterMemNo}">
-						<div class="btn_list">
-							<input type="button" class="edit_btn" value="수  정" />
-							<input type="button" class="del_btn" value="삭  제" />
-						</div>
-					</c:when>
-				</c:choose> --%>
+				<div class="bnt_lists"></div>
 				<div class="reaction">
 					<ul>
 						<li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li>
-						<li><img alt="북마크" src="./resources/images/bmrk.png" id="bmkBtn" bmkcheck="0"><br />북마크</li>
+						<li><img alt="북마크" src="./resources/images/bmrk.png" id="bmkBtn" bmkcheck="0" bmkno=""><br /><span class="bmkText">북마크</span></li>
 					</ul>
 				</div>
 			</div>

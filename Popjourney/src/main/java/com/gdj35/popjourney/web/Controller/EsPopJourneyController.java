@@ -220,17 +220,24 @@ public class EsPopJourneyController {
 	@RequestMapping(value = "/post")
 	public ModelAndView post(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		
+		int pages = 1;
+		
+		if(params.get("pages") != null) {
+			pages = Integer.parseInt(params.get("pages"));
+		}
+		
 		try {
 			int hit = iEsPopjourneyService.postHit(params);
 			HashMap<String, String> data = iEsPopjourneyService.getPost(params);
-			HashMap<String, String> prevPost = iEsPopjourneyService.prevPost(params);
-			HashMap<String, String> nextPost = iEsPopjourneyService.nextPost(params);
 			HashMap<String, String> likeCheck = iEsPopjourneyService.likeCheck(params);
-			mav.addObject("data",data);
-			mav.addObject("prevPost",prevPost);
-			mav.addObject("nextPost",nextPost);
-			mav.addObject("likeCheck",likeCheck);
 			
+			mav.addObject("data", data);
+			mav.addObject("likeCheck", likeCheck);
+			mav.addObject("pages", pages);
+			
+			System.out.println("data >> " + data);
+			System.out.println("likeCheck >> " + likeCheck);
+			System.out.println("pages >> " + pages);
 			
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -376,111 +383,163 @@ public class EsPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-	
-	@RequestMapping(value = "/postCmtWrites", 
-			method = RequestMethod.POST, 
-			produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="/postCmts", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String postCmtWrites(
-			@RequestParam HashMap<String, String> params) throws Throwable {
+	public String postCmts(@RequestParam HashMap<String, String> params) throws Throwable {
+
 		ObjectMapper mapper = new ObjectMapper();
+		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		int pages = Integer.parseInt(params.get("pages"));
 		
-		try {
-			int cnt = iEsPopjourneyService.writeCmt(params);
-			
-			if(cnt > 0) {
-				modelMap.put("msg", "success");
-			} else {
-				modelMap.put("msg", "failed");
-			}  
-			
-		} catch (Throwable e) {
-			e.printStackTrace();
-			
-			modelMap.put("msg", "error");
-		}
+		int cmtCnt = iEsPopjourneyService.getCmtCnt(params);
 		
-		return mapper.writeValueAsString(modelMap);
-	}
-	/*
-	@RequestMapping(value = "/testAOBListAjax", 
-			method = RequestMethod.POST, 
-			produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String testAOBListAjax(
-			@RequestParam HashMap<String, String> params) throws Throwable {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> modelMap = new HashMap<String, Object>();
-		int page = Integer.parseInt(params.get("page"));
-		
-		int cnt = iEsPopjourneyService.getCmtCnt(params);
-		
-		PagingBean pb = iPagingService.getPagingBean(page, cnt);
+		PagingBean pb = iPagingService.getPagingBean(pages, cmtCnt, 10, 5);
 		
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 		
-		List<HashMap<String, String>> list = iEsPopjourneyService.getCmtList(params);
+		// 여행일지 세부페이지의 댓글
+		List<HashMap<String, String>> cmt = iEsPopjourneyService.getPostCmt(params);
 		
-		modelMap.put("list", list);
 		modelMap.put("pb", pb);
+		modelMap.put("cmt", cmt);
 		
+		System.out.println("postCmtsParams >> " + params);
+		System.out.println("cmt >> " + cmt);
+		 
 		return mapper.writeValueAsString(modelMap);
-	}
 	
-	@RequestMapping(value = "/postCmtUpdates", 
-			method = RequestMethod.POST, 
-			produces = "text/json;charset=UTF-8")
+	}	
+	
+	@RequestMapping(value="/postCmtAdds", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String postCmtUpdates(
-			@RequestParam HashMap<String, String> params) throws Throwable {
+	public String postCmtAdds(@RequestParam HashMap<String, String> params) throws Throwable {
+		
 		ObjectMapper mapper = new ObjectMapper();
+		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			int cnt = iEsPopjourneyService.updateCmt(params);
+		
+			int cnt = iEsPopjourneyService.getCmtAdds(params);
+			
+			int cnt2 = iEsPopjourneyService.getCmtNotf(params);
+			
+			if(cnt > 0 || cnt2 > 0) {
+				
+				modelMap.put("msg", "success");
+			} else {
+				
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	@RequestMapping(value="/postCmtEdits", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtEdits(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iEsPopjourneyService.getCmtEdits(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
 			}
-			
 		} catch (Throwable e) {
 			e.printStackTrace();
-			
 			modelMap.put("msg", "error");
 		}
 		
 		return mapper.writeValueAsString(modelMap);
+		
 	}
 	
-	@RequestMapping(value = "/postCmtDeletes", 
-			method = RequestMethod.POST, 
-			produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="/postCmtCmtAdds", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String postCmtDeletes(
-			@RequestParam HashMap<String, String> params) throws Throwable {
+	public String postCmtCmtAdds(@RequestParam HashMap<String, String> params) throws Throwable {
+		System.out.println("postCmtCmtAdds >> " + params);
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
-		
 		try {
-			int cnt = iEsPopjourneyService.deleteCmt(params);
+			int cnt = iEsPopjourneyService.getCmtCmtAdds(params);
+			int cnt2 = iEsPopjourneyService.getCmtCmtNotf(params);
+			int cnt3 = iEsPopjourneyService.getCmtCmtNotf2(params);
+			
+			if(cnt > 0 || cnt2 > 0 || cnt3 > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	@RequestMapping(value="/postCmtDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		 
+		try {
+			int cnt = iEsPopjourneyService.getCmtDeletes(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
 			}
-			
 		} catch (Throwable e) {
 			e.printStackTrace();
-			
 			modelMap.put("msg", "error");
 		}
 		
 		return mapper.writeValueAsString(modelMap);
+	
 	}
-	*/
+	
+	@RequestMapping(value="/postCmtCmtDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String postCmtCmtDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iEsPopjourneyService.getCmtDeletes(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
 }

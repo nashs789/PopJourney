@@ -84,16 +84,6 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 	}
 
 	@Override
-	public HashMap<String, String> nextPost(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.nextPost(params);
-	}
-
-	@Override
-	public HashMap<String, String> prevPost(HashMap<String, String> params) throws Throwable {
-		return iEsPopjourneyDao.prevPost(params);
-	}
-
-	@Override
 	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
 		return iEsPopjourneyDao.likeCheck(params);
 	}
@@ -129,7 +119,44 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.getCmtCnt(params);
 	}
 
-	
+	@Override
+	public List<HashMap<String, String>> getPostCmt(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getPostCmt(params);
+	}
 
+	@Override
+	public int getCmtAdds(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtAdds(params);
+	}
+
+	@Override
+	public int getCmtNotf(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtNotf(params);
+	}
+
+	@Override
+	public int getCmtEdits(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtEdits(params);
+	}
+
+	@Override
+	public int getCmtCmtAdds(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtCmtAdds(params);
+	}
+
+	@Override
+	public int getCmtCmtNotf(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtCmtNotf(params);
+	}
+
+	@Override
+	public int getCmtCmtNotf2(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtCmtNotf2(params);
+	}
+
+	@Override
+	public int getCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtDeletes(params);
+	}
 
 }

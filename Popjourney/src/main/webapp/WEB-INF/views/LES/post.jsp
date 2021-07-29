@@ -17,6 +17,7 @@ body {
 	font-size: 0px;
 	font-family: 'Black Han Sans', sans-serif;
 	min-width: 1480px;
+	background-color: #f9f9f9;
 }
 
 /* 여기서부터 헤더 레이아웃 */
@@ -467,6 +468,7 @@ p {
 .profile_info img {
 	margin-left: 450px;
 	width: 120px;
+	border-radius: 50%;
 }
 
 .info {
@@ -591,28 +593,6 @@ p {
 	color: white;
 }
 
-.post_page {
-	width: 1280px;
-	height: 50px;
-	display: inline-block;
-	line-height: 50px;
-	border-top: 1px solid #ccc;
-	cursor: pointer;
-}
-
-.post_label {
-	width: 300px;
-	text-align: center;
-	font-size: 10pt;
-	position: absolute;
-}
-
-.post_label_title {
-	width: 700px;
-	position: relative;
-	margin-left: 580px;
-	font-weight: bold;
-}
 
 .reaction {
 	width: 1280px;
@@ -739,6 +719,7 @@ p {
 .cmt_contents_left img {
 	width: 50px;
 	height: 50px;
+	border-radius: 50%;
 }
 
 .cmt_contents_right {
@@ -760,7 +741,6 @@ p {
 
 .cmt_contents_right span {
 	height: auto;
-	cursor: pointer;
 	line-height: 30px;
 }
 
@@ -1029,10 +1009,64 @@ input[type="radio"]:checked {
    background-color: #f37321;
    color: white;
 }
+.paging { 
+    font-size: 0;
+    text-align: center;
+    margin: 40px 0px 60px 0px;
+}  
+.paging div {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12pt; 
+    font-weight: bold;
+    text-decoration: none;
+}   
+.paging_btn {
+    background-color: none;
+    color: #2e3459;
+    letter-spacing:-5px;
+    font-size: 12pt;
+}
+.paging div.num {           
+    color: #2e3459;
+}
+.paging div:first-child {
+    margin-left: 0;
+} 
+.paging div.num:hover,
+.paging div.num.on,
+.paging div.paging_btn:hover  {
+    color: #F1404B;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.add_cmt_cmt {
+	cursor: pointer;
+}
+.report_btn {
+	cursor: pointer;
+}
+.cmt_edit_btn {
+	cursor: pointer;
+}
+.cmt_delete_btn {
+	cursor: pointer;
+}
+.cmt_cmt_edit_btn {
+	cursor: pointer;
+}
+.cmt_cmt_delete_btn {
+	cursor: pointer;
+}
+
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	reloadList();
+	
 	if("${sMEM_NO}" == "${data.MEM_NO}") {
 		$(".btns").css("display","inline-block");
 		$(".logins").css("display","none");
@@ -1206,14 +1240,6 @@ $(document).ready(function(){
 			});
 		}
 	});
-	//이전 글 이동
-	$("#prevPost").on("click", function(){
-		$("#prevPostForm").submit();
-	}); //prevPost click end
-	//다음 글 이동
-	$("#nextPost").on("click", function(){
-		$("#nextPostForm").submit();
-	}); //nextPost click end
 	//좋아요 버튼
 	$(".reaction").on("click","img", function(){
 		var like = $(this).attr("like");
@@ -1255,120 +1281,6 @@ $(document).ready(function(){
 					console.log(error);
 				}//error end
 			});//ajax end
-		}
-	});
-	//댓글 작성버튼
-	$("#cmtEnrollBtn").on("click", function() {
-		if($.trim($("#cmtCon").val()) == "") {
-			alert("내용을 입력하십시오.");
-			$("#cmtCon").focus();
-		} else {
-			if("${sMEM_NO}" != "") {
-				alert("로그인이 필요한 서비스입니다.");
-			} else{ //로그인 했을 때 댓글 등록
-				
-			var params = $("#cmtForm").serialize();
-			
-			$.ajax({
-				url : "postCmtWrites",
-				type : "post",
-				dataType : "json",
-				data : params,
-				success : function(res) {
-					if(res.msg == "success") {
-						$("#cmtCon").val("");
-						console.log("작성완료");
-					} else if(res.msg == "failed") {
-						alert("작성에 실패하였습니다.");
-					} else {
-						alert("작성중 문제가 발생하였습니다.");
-					}
-				},
-				error : function(request, status, error) {
-					console.log(error);
-				}
-			});
-			}
-		}
-	});
-	
-	//댓글 페이징 처리
-	$(".paging").on("click", "span", function() {
-		$("#page").val($(this).attr("name"));
-		cmtReloadList();
-	});
-	
-	// 내 댓글 수정 클릭
-	$(".my_cmt_edit").on("click", function() {
-		$("#cmtEnrollBtn").hide();
-		$("#cmtEditBtn, #cmtCancelBtn").show();
-		$("#cmtloginUserNo").val($(this).parent().parent().parent().attr("name"));
-		$("#cmtCon").val($(this).parent().parent().children().html());
-	});
-	//내 댓글 수정 중 취소 버튼  클릭
-	$("#cmtCancelBtn").on("click", function() {
-		$("#cmtCon").val("");
-		$("#cmtloginUserNo").val("");
-		$("#cmtEnrollBtn").show();
-		$("#cmtEditBtn, #cmtCancelBtn").hide();
-	});
-	//내 댓글 수정 후 수정버튼 클릭
-	$("#cmtEditBtn").on("click", function() {
-		if($.trim($("#cmtCon").val()) == "") {
-			alert("내용을 넣어주세요.");
-			$("#cmtCon").focus();
-		} else {
-			var params = $("#cmtForm").serialize();
-			
-			$.ajax({
-				url : "postCmtUpdates",
-				type : "post",
-				dataType : "json",
-				data : params,
-				success : function(res) {
-					if(res.msg == "success") {
-						$("#cmtCancelBtn").click();
-						
-						cmtReloadList();
-					} else if(res.msg == "failed") {
-						alert("작성에 실패하였습니다.");
-					} else {
-						alert("작성중 문제가 발생하였습니다.");
-					}
-				},
-				error : function(request, status, error) {
-					console.log(error);
-				}
-			});
-		}
-	});//cmtEditBtn end
-	//내 댓글 삭제
-	$(".my_cmt_delete").on("click", function() {
-		if(confirm("삭제하시겠습니까?")) {
-			$("#cmtloginUserNo").val($(this).parent().parent().attr("name"));
-			
-			var params = $("#cmtForm").serialize();
-			
-			$.ajax({
-				url : "postCmtDeletes",
-				type : "post",
-				dataType : "json",
-				data : params,
-				success : function(res) {
-					if(res.msg == "success") {
-						$("#cmtloginUserNo").val("");
-						resetVal();
-						cmtReloadList();
-					} else if(res.msg == "failed") {
-						alert("작성에 실패하였습니다.");
-					} else {
-						alert("작성중 문제가 발생하였습니다.");
-					}
-				},
-				error : function(request, status, error) {
-					console.log(error);
-				}
-			});
 		}
 	});
 	
@@ -1500,6 +1412,199 @@ $(document).ready(function(){
 			} //error end
 		}); //ajax end
   	}); //logoutBtn click end
+  	
+  	
+ 	// 페이징 처리
+	$(".paging").on("click", "div", function() {
+		$($("#pages").val($(this).attr("pages")));
+		reloadList();
+	});
+  	
+	// 댓글작성
+	$("#addBtn").on("click", function() {
+		if($("#loginUserNo").val() == "") {
+			alert("로그인 후 이용 바랍니다.");
+			$("#cmtContents").val("");
+		} else {
+			if($.trim($("#cmtContents").val()) == "") {
+				alert("내용을 넣어주세요.");
+				$("#cmtContents").focus();
+			} else {
+				$("#getCmtContents").val($("#cmtContents").val());
+				var params = $("#goForm").serialize();
+				
+				$.ajax({
+					url: "postCmtAdds",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						$("#cmtList").val("");
+						$("#cmtContents").val("");
+						reloadList();
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				});
+			}
+		}
+	});
+	
+	// 자유게시판 작성자 번호 가져오기
+	$("#postWriteMemNo").val($(".title_area").attr("postMno"));
+	
+	//댓글 수정 클릭 시
+	$("#cmtList").on("click", ".cmt_edit_btn", function() {
+		$("#cmtEditContents").remove();
+		$("#cmtCmtContents").remove();
+		$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+		var cmtNo = $("#cmtNo").val();
+		var html = "";
+		
+		html += "<div class=\"cmt_cmt_contents\" id=\"cmtEditContents\">";
+		html += "	<div class=\"cmt_contents_right\">";
+		html += "		<div class=\"cmt_bottom\">";
+		html += "			<textarea id=\"editCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+		html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" id=\"editBtn\" value=\"수  정\" />";
+		html += "		</div>";
+		html += "	</div>";
+		html += "</div>";
+	
+		$(".cmt_content_list[cmtno=" + cmtNo + "]").append(html);
+		
+	});
+	// 댓글 수정 후 수정버튼 클릭 시
+	$("#cmtList").on("click", "#editBtn", function() {
+		if($.trim($("#editCmt").val()) == "") {
+			alert("내용을 넣어주세요.");
+			$("#editCmt").focus();
+		} else {
+			$("#getCmtContents").val($("#editCmt").val());
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url: "postCmtEdits",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					$("#cmtEditContents").remove();
+					reloadList();
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
+	//댓글 답글 클릭 시
+	$("#cmtList").on("click", ".add_cmt_cmt", function() {
+		if($("#memNo").val() != "") {
+			// 여행게시판 댓글 작성자 번호 가져오기
+			$("#cmtWriteMemNo").val($(this).parent().parent().parent().attr("cmtmemno"));
+
+			$("#cmtEditContents").remove();
+			$("#cmtCmtContents").remove();
+			$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+			var cmtNo = $("#cmtNo").val();
+			var html = "";
+			
+			html += "<div class=\"cmt_cmt_contents\" id=\"cmtCmtContents\">";
+			html += "	<div class=\"cmt_contents_right\">";
+			html += "		<div class=\"cmt_bottom\">";
+			html += "			<textarea id=\"addCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+			html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" id=\"cmtAddBtn\" value=\"등  록\" />";
+			html += "		</div>";
+			html += "	</div>";
+			html += "</div>";
+		
+			$(".cmt_content_list[cmtno=" + cmtNo + "]").append(html);
+		} else {
+			alert("로그인 후 이용해 주시기 바랍니다.");
+		}
+		
+	});
+	// 댓글 답글 클릭 후 등록 버튼 클릭 시
+	$("#cmtList").on("click", "#cmtAddBtn", function() {
+		if($.trim($("#addCmt").val()) == "") {
+			alert("내용을 넣어주세요.");
+			$("#addCmt").focus();
+		} else {
+			$("#getCmtContents").val($("#addCmt").val());
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url: "postCmtCmtAdds",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					$("#cmtCmtContents").remove();
+					reloadList();
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
+	// 댓글 삭제버튼 클릭 시
+	$("#cmtList").on("click", ".cmt_delete_btn", function() {
+		$("#cmtWriteMemNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+		if(confirm("삭제하시겠습니까?")) {
+			
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url: "postCmtDeletes",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					if(res.msg == "success") {
+						reloadList();
+					} else if(res.msg == "failed") {
+						alert("삭제에 실패하였습니다.");
+					} else {
+						alert("삭제중 문제가 발생하였습니다.");
+					}
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
+	// 대댓글 삭제버튼 클릭 시
+	$("#cmtList").on("click", ".cmt_cmt_delete_btn", function() {
+		$("#cmtWriteMemNo").val($(this).parent().parent().parent().attr("cmtcmtno"));
+		if(confirm("삭제하시겠습니까?")) {
+			
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url: "postCmtCmtDeletes",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					if(res.msg == "success") {
+						reloadList();
+					} else if(res.msg == "failed") {
+						alert("삭제에 실패하였습니다.");
+					} else {
+						alert("삭제중 문제가 발생하였습니다.");
+					}
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
+	
+  	
 });// document ready end
 //좋아요 첫화면 구성
 function likeLoad() {
@@ -1552,96 +1657,9 @@ function hitCnt() {
 }//likeStatus end
 
 function resetVal() {
-	$("#page").val(1);
+	$("#pages").val(1);
 }
 
-/* function cmtReloadList() {
-	var params = $("#cmtForm").serialize();
-	
-	$.ajax({
-		url : "postCmtLists",
-		type : "post",
-		dataType : "json",
-		data : params,
-		success : function(res) {
-			redrawList(res.list);
-			redrawPaging(res.pb);
-		},
-		error : function(request, status, error) {
-			console.log(error);
-		}
-	});
-}
-
-function redrawList(list) {
-	var html = "";
-	"+  +"
-	for(var d of cmtList) {
-		html += "<div class=\"cmt_contents\">";
-		html += "<div class=\"cmt_contents_left\">";
-		html += "	<img alt=\"프로필\" src=\"./resources/images/profile2.png\">";
-		html += "</div>";
-		html += "<div class=\"cmt_contents_right\">";
-		html += "	<strong>"+ cmtList.NIC +"</strong><span class=\"cmt_date\">" + cmtList.BOARD_DATE + "</span><br />";
-		html += "	<span><img alt=\"등급" src=\"./resources/images/grade.png\"> </span>";
-		html += "<span>";
-		if(cmtList.GRADE_NO == "0") {
-			html += "관리자";
-		} else if(cmtList.GRADE_NO == "1") {
-			html += "여행꾼";
-		} else if(cmtList.GRADE_NO == "2") {
-			html += "여행작가";
-		}
-		html +="</span>";
-		html += "	<div class=\"cmt_txt\">";
-		html += "		<p>"+ cmtList.CONTENTS+"</p>";
-		html += "	</div>";
-		html += "	<div class=\"cmt_box\">";
-		html += "		<span class=\"my_cmt_reply\">답글</span>";
-		html += "		<span class=\"my_cmt_delete\">삭제</span>";
-		html += "		<span class=\"report_btn\">신고</span>";
-		html += "		<span class=\"my_cmt_edit\">수정</span>";
-		html += "	</div>";
-		html += "</div>";
-		html += "</div>";
-	}
-	if($("loginUserNo").val() != cmtList.MEM_NO){
-		$(".my_cmt_delete").css("display","none");
-		$(".my_cmt_edit").css("display","none");
-	}
-	$(".cmt_list").html(html);
-	
-}
-
-function redrawPaging(pb) {
-	var html = "";
-	
-	html += "<span name=\"1\">처음</span>";
-	
-	if($("#page").val() == "1") {
-		html += "<span name=\"1\">이전</span>";
-	} else {
-		html += "<span name=\"" + ($("#page").val() - 1) + "\">이전</span>";
-	}
-	
-	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-		if($("#page").val() == i) {
-			html += "<span name=\"" + i + "\"><b>" + i + "</b></span>";
-		} else {
-			html += "<span name=\"" + i + "\">" + i + "</span>";
-		}
-	}
-	
-	if($("#page").val() == pb.maxPcount) {
-		html += "<span name=\"" + pb.maxPcount + "\">다음</span>";
-	} else {
-		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
-	}
-	
-	html += "<span name=\"" + pb.maxPcount + "\">마지막</span>";
-	
-	$("#pagingWrap").html(html);
-} */
 
 function popup() {
 	var popup = document.getElementById("popup");
@@ -1827,6 +1845,143 @@ function findBtnPopup()
 		$(".bg").remove();
 	}); //cancelImg click end
 }//findBtnPopup end
+
+
+function reloadList() {
+	var params = $("#goForm").serialize();
+	
+	$.ajax({
+		url: "postCmts",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			drawCmt(res.cmt);
+			drawPaging(res.pb);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+	}); // ajax end..
+} // reloadList() end..
+
+function drawCmt(cmt) {
+
+	var html = "";
+	
+	for(i = 0 ; i < cmt.length ; i++) {
+		
+		if(cmt[i].PARENTS_CMT_NO == null) {
+			
+			html += "<div class=\"cmt_content_list\" cmtno=\"" + cmt[i].POST_CMT_NO + "\">";
+			html += "<div class=\"cmt_contents\" cmtmemno=\"" + cmt[i].MEM_NO + "\" >";
+			html += "	<div class=\"cmt_contents_left\">";
+			if(cmt[i].MEM_PHOTO_PATH != null) {
+				html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[i].MEM_PHOTO_PATH + "\">";
+			} else {
+				html += "<img alt=\"프로필\" src=\"./resources/images/profile3.png\">";
+			}
+			html += "	</div>";
+			html += "	<div class=\"cmt_contents_right\">";
+			html += "		<strong>" + cmt[i].NIC + "</strong><span class=\"cmt_date\">" + cmt[i].CMT_DATE + "</span><br />";
+			if(cmt[i].GRADE_NO == 2) {
+				html += "	<span><img alt=\"등급\" src=\"./resources/images/grade.png\"> </span><span>" + cmt[i].GRADE_NAME + "</span>";
+			} else {
+				html += "	<span>" + cmt[i].GRADE_NAME + "</span>";
+			}
+			html += "		<div class=\"cmt_txt\">";
+			html += "			<p>" + cmt[i].CMT_CONTENTS + "</p>";
+			html += "		</div>";
+			html += "		<div class=\"cmt_box\">";
+			html += "			<span class=\"add_cmt_cmt\">답글</span>";
+			if($("#loginUserNo").val() == cmt[i].MEM_NO) {
+				html += "			<span class=\"cmt_delete_btn\">삭제</span>";
+			} else {
+				html += "<span></span>";
+			}
+			html += "			<span class=\"report_btn\">신고</span>";
+			if($("#loginUserNo").val() == cmt[i].MEM_NO) {
+				html += "			<span class=\"cmt_edit_btn\">수정</span>";
+			} else {
+				html += "<span></span>";
+			}
+			html += "		</div>";
+			html += "	</div>";
+			html += "</div>";
+			html += "</div>";
+			for(j = 0 ; j < cmt.length ; j++) {
+				if(cmt[i].POST_CMT_NO == cmt[j].PARENTS_CMT_NO) {
+					html += "<div class=\"cmt_cmt_contents\" cmtcmtno=\"" + cmt[j].POST_CMT_NO + "\" cmtcmtmemno=\"" + cmt[j].MEM_NO + "\">";
+					html += "	<div class=\"cmt_contents_left\">";
+					html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[j].MEM_PHOTO_PATH + "\">";
+					html += "	</div>";
+					html += "	<div class=\"cmt_contents_right\">";
+					html += "		<strong>" + cmt[j].NIC + "</strong><span class=\"cmt_cmt_date\">" + cmt[j].CMT_DATE + "</span><br />";
+										if(cmt[j].GRADE_NO == 2) {
+					html += "			<span><img alt=\"등급\" src=\"./resources/images/grade.png\"></span><span>" + cmt[j].GRADE_NAME + "</span>";
+										} else {
+					html += "			<span>" + cmt[j].GRADE_NAME + "</span>";
+										}
+					html += "		<div class=\"cmt_txt\">";
+					html += "			<p>" + cmt[j].CMT_CONTENTS + "</p>";
+					html += "		</div>";
+					html += "		<div class=\"cmt_box\">";
+					html += "           <span></span>";
+					if($("#loginUserNo").val() == cmt[j].MEM_NO) {
+						html += "			<span class=\"cmt_cmt_delete_btn\">삭제</span>";
+					} else {
+						html += "<span></span>";
+					}
+					html += "			<span class=\"report_btn\">신고</span>";
+					if($("#loginUserNo").val() == cmt[j].MEM_NO) {
+						html += "			<span class=\"cmt_cmt_edit_btn\">수정</span>";
+					}
+					else {
+						html += "<span></span>";
+					}
+					html += "		</div>";
+					html += "	</div>";
+					html += "</div>";
+				}
+			}
+		}
+	}
+		                                                                                                              
+	$("#cmtList").html(html);
+	
+} // drawCmt(cmt) end..
+
+function drawPaging(pb) {
+	var html = "";
+	
+	html += "<div class=\"paging_btn\" pages=\"1\"><<</div>";
+	
+	if($("#pages").val() == "1") {
+		html += "<div class=\"paging_btn\" pages=\"1\"><</div>";
+	} else {
+		html += "<div class=\"paging_btn\" pages=\"" + ($("#pages").val() - 1) + "\"><</div>";
+	}
+	
+	for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
+		if($("#pages").val() == i) {
+			html += "<div class=\"num on\" pages=\"" + i + "\">" + i + "</div>";
+		} else {
+			html += "<div class=\"num\" pages=\"" + i + "\">" + i + "</div>";
+		}
+	}
+	
+	if($("#pages").val() == pb.maxPcount) {
+		html += "<div class=\"paging_btn\" pages=\"" + pb.maxPcount + "\">></div>";
+	} else {
+		html += "<div class=\"paging_btn\" pages=\"" + ($("#pages").val() * 1 + 1) + "\">></div>";
+	}
+	
+	html += "<div class=\"paging_btn\" pages=\"" + pb.maxPcount + "\">>></div>";
+	
+	$(".paging").html(html);
+	
+}
+
 </script>
    </head>
    <body>
@@ -1846,16 +2001,6 @@ function findBtnPopup()
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>
-	<form action="#" id="prevPostForm" method="post">
-		<input type="hidden" id="prevPostNo" name="postNo" value="${prevPost.POST_NO}"/>
-		<input type="hidden" id="pNewPostNo" name="newPostNo" value="1"/>
-		<input type="hidden" id="ploginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-   </form>
-   <form action="#" id="nextPostForm" method="post">
-   		<input type="hidden" id="nextPostNo" name="postNo" value="${nextPost.POST_NO}"/>
-		<input type="hidden" id="nNewPostNo" name="newPostNo" value="1"/>
-		<input type="hidden" id="nloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-   </form>
    <form action="#" id="likeForm" method="post">
    		<input type="hidden" id="lLoginUserNo" name="loginUserNo" value="${sMEM_NO}"/> 
    		<input type="hidden" id="likePostNo" name="postNo" value="${data.POST_NO}"/>
@@ -1912,9 +2057,6 @@ function findBtnPopup()
 							<input type="password" class="login" id="inputPW" name="inputPW" placeholder="PW" /> 
 							<input type="text" class="login" id="inputID" name="inputID" placeholder="ID" />
 						</form>
-						<form action="#" id="postForm" method="post">
-							<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-						</form>
 					</div>
 					<div class="sub_login2">
                         <span id="join">회원가입</span>
@@ -1954,9 +2096,14 @@ function findBtnPopup()
 			<input type="hidden" name="postTitle" value="${data.TITLE}"/>
 			<input type="hidden" name="postCategoryNo" value="${data.CATEGORY_NO}"/>
 			<input type="hidden" name="postContents" value="${data.CONTENTS}"/>
-			<input type="hidden" name="page" value="${param.page}" />
+			<input type="hidden" id="pages" name="pages" value="${pages}" />
 			<input type="hidden" name="searchFilter" value="${param.searchFilter}" />
 			<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+			<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
+			<input type="hidden" id="getCmtContents" name="getCmtContents"/>
+			<input type="hidden" id="postWriteMemNo" name="postWriteMemNo" />
+			<input type="hidden" id="cmtWriteMemNo" name="cmtWriteMemNo" />
+			<input type="hidden" id="cmtNo" name="cmtNo" />
 		 </form>
 		<div id="path_info">
 			<span> 
@@ -1982,7 +2129,7 @@ function findBtnPopup()
 			&nbsp;>&nbsp;&nbsp;${data.TITLE}
 			
 		</div>
-		<div class= "title_area">
+		<div class= "title_area" postMno="${data.MEM_NO}">
 			<div class="title_left">
 				<strong>${data.TITLE}</strong><br />
 				
@@ -2053,18 +2200,6 @@ function findBtnPopup()
             		<input type="button" id="postEditBtn" class="edit_btn" value="수  정" />
             		<input type="button" class="delete_btn" value="삭  제" />
             	</div>
-            	<div class="post_page">
-            		<div class="post_label">이전글</div>
-            		<div class="post_label_title" id="prevPost">${prevPost.TITLE}</div>
-            	</div>
-            	<c:choose>
-            		<c:when test="${!empty nextPost.TITLE}">
-		            	<div class="post_page">
-		            		<div class="post_label">다음글</div>
-		            		<div class="post_label_title" id="nextPost">${nextPost.TITLE}</div>
-		            	</div>
-		            </c:when>
-            	</c:choose>
             	<div class="reaction">
             		<ul><li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li></ul>
             	</div>
@@ -2073,47 +2208,11 @@ function findBtnPopup()
 				<div class="cmt_top">
 					<span>댓글 </span><span>${data.POST_CMT_CNT}</span><span> 개</span>
 				</div>
-				<form action="#" id="cmtForm" method="post">
-					<input type="hidden" id="cmtPostNo" name="postNo" value="${data.POST_NO}"/>
-					<input type="hidden" id="cmtloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-						<div class="cmt_bottom">
-							<textarea id="cmtCon" name="cmtCon" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-							<input type="button" class="edit_btn" id="cmtEnrollBtn" value="등  록" />
-							<input type="button" class="reset_btn" id="cmtCancelBtn" value="취  소" />
-							<input type="button" class="edit_btn" id="cmtEditBtn" value="수  정" />
-						</div>
-				</form>
-				<div class="cmt_list">
-					<div class="cmt_cmt_contents">
-						<div class="cmt_contents_left">
-							<img alt="프로필" src="./resources/images/profile2.png">
-						</div>
-						<div class="cmt_contents_right">
-							<strong>닉네임</strong><span class="cmt_cmt_date">2021-05-25</span><br /> <span><img
-								alt="등급" src="./resources/images/grade.png"> </span><span>여행작가</span>
-							<div class="cmt_txt">
-								<p>청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
-									있는가</p>
-							</div>
-							<div class="cmt_box">
-								<span>답글</span>
-								<span>삭제</span>
-								<span class="report_btn">신고</span>
-								<span>수정</span>
-							</div>
-						</div>
-					</div>
-					<div class="cmt_cmt_contents">
-						<div class="cmt_contents_right">
-							<div class="cmt_bottom">
-								<textarea class="reply" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea><br/>
-								<input type="button" class="reply_edit_btn" value="등  록" />
-								<input type="button" class="reply_edit_btn" id="replyEditBtn" value="수  정" />
-								<input type="button" class="reset_btn" id="replyCancelBtn" value="취  소" />
-							</div>
-						</div>
-					</div>
+				<div class="cmt_bottom">
+					<textarea id="cmtContents" name="cmtContents" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
+					<input type="button" class="edit_btn" id="addBtn" value="등  록" />
 				</div>
+				<div class="cmt_list" id="cmtList"></div>
 				<div class="paging"></div>
 			</div>
             </div>    

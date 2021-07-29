@@ -1201,4 +1201,28 @@
 		INSERT INTO BMK (BMK_NO, JOURNAL_NO)
 		VALUES(#{bmkNo}, #{journalNo})
 	</insert>
+	
+	<select id="getBmkno" parameterType="hashmap" resultType="hashmap">
+		SELECT BF.BMK_NO, BF.MEM_NO, BF.FOLDER_NAME, BF.FOLDER_IMG, B.JOURNAL_NO
+		FROM BMK_FOLDER BF INNER JOIN BMK B
+		                           ON BF.BMK_NO = B.BMK_NO
+		                          AND B.JOURNAL_NO = #{journalNo}
+		WHERE BF.MEM_NO = #{memNo}
+	</select>
+	
+	<delete id="deleteBmk" parameterType="hashmap">
+		DELETE FROM BMK
+		WHERE BMK_NO = #{bmkNo} AND JOURNAL_NO = #{journalNo}
+	</delete>
+	
+	<select id="getBmkFolderCnt" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+		FROM BMK_FOLDER
+		WHERE MEM_NO = #{memNo}
+	</select>
+	
+	<delete id="getJournalBmkDeletes" parameterType="hashmap">
+		DELETE FROM BMK
+		WHERE JOURNAL_NO = #{journalNo}
+	</delete>
 </mapper>

@@ -346,4 +346,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.insert("JmPJ.addBmk", params);
 	}
 
+	@Override
+	public int deleteBmk(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("JmPJ.deleteBmk", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBmkno(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getBmkno", params);
+	}
+
+	@Override
+	public int getBmkFolderCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getBmkFolderCnt", params);
+	}
+
+	@Override
+	public int getJournalBmkDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("JmPJ.getJournalBmkDeletes", params);
+	}
+
 }

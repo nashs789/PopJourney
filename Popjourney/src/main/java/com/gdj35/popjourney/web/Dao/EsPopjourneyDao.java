@@ -83,16 +83,6 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 	}
 
 	@Override
-	public HashMap<String, String> nextPost(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("EsPJ.nextPost", params);
-	}
-
-	@Override
-	public HashMap<String, String> prevPost(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("EsPJ.prevPost", params);
-	}
-
-	@Override
 	public HashMap<String, String> likeCheck(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("EsPJ.likeCheck", params);
 	}
@@ -127,5 +117,44 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 		return sqlSession.selectOne("EsPJ.getCmtCnt", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getPostCmt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("EsPJ.getPostCmt", params);
+	}
+
+	@Override
+	public int getCmtAdds(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.getCmtAdds", params);
+	}
+
+	@Override
+	public int getCmtNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.getCmtNotf", params);
+	}
+
+	@Override
+	public int getCmtEdits(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("EsPJ.getCmtEdits", params);
+	}
+
+	@Override
+	public int getCmtCmtAdds(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.getCmtCmtAdds", params);
+	}
+
+	@Override
+	public int getCmtCmtNotf(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.getCmtCmtNotf", params);
+	}
+
+	@Override
+	public int getCmtCmtNotf2(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("EsPJ.getCmtCmtNotf2", params);
+	}
+
+	@Override
+	public int getCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("EsPJ.getCmtDeletes", params);
+	}
 
 }

@@ -139,4 +139,13 @@ public interface IJmPopjourneyService {
 
 	public int addBmk(HashMap<String, String> params) throws Throwable;
 
+	public int deleteBmk(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getBmkno(HashMap<String, String> params) throws Throwable;
+
+	public int getBmkFolderCnt(HashMap<String, String> params) throws Throwable;
+
+	public int getJournalBmkDeletes(HashMap<String, String> params) throws Throwable;
+
+
 }
