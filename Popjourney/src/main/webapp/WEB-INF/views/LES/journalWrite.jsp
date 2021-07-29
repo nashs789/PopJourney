@@ -498,7 +498,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 }
 .date_area {
 	width: 100%;
-	height: 900px;
+	height: 650px;
 	margin-top: 100px;
 }
 
@@ -513,6 +513,51 @@ input[type='text']:focus, input[type='password']:focus, select:focus, textarea:f
 	margin-bottom: 30px;
 	font-size: 12pt;
 	font-weight: 900;
+}
+
+.write_area {
+	display: inline-block;
+}
+.text_area {
+	display: inline-block;
+}
+#inputContents {
+	resize: none;
+    width: 700px;
+    height: 400px;
+    position: absolute;
+    margin-left: 100px;
+}
+.left_arrow {
+	margin-left: 10px;
+	position: relative;
+}
+
+.right_arrow {
+	position: relative;
+    margin-right: 0px;
+    margin-left: 900px;
+}
+
+.img_slide .left_arrow {
+    margin-left: -75px;
+}
+
+.img_slide .right_arrow {
+	margin-left: 28px;
+}
+
+.left_arrow, .right_arrow {
+	top: 220px;
+    display: inline-block;
+}
+
+.arrow_img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: 2px dotted #2e3459;
+    border-radius: 100px;
 }
 
 .date_nav {
@@ -860,7 +905,7 @@ a {
 	width: 600px;
 	height: 80px;
 }
-#inputContents{
+.text_area_style{
 	width: 1000px;
 	height: 600px;
 	white-space: pre-wrap;
@@ -1427,9 +1472,11 @@ function makeNotification(notification)
 							</ul>
 					</nav>
 				</div>
-				<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png"></span>
-				<textarea rows="50" cols="15" id="inputContents" name="inputContents"/></textarea>
-				<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png"></span>
+				<div class="write_area">
+					<span class="left_arrow"><img alt="왼쪽" src="./resources/images/left_arrow.png" class="arrow_img"></span>
+					<span class="text_area"><textarea rows="50" cols="15" id="inputContents" name="inputContents"/ class="text_area_style"></textarea></span>
+					<span class="right_arrow"><img alt="오른쪽" src="./resources/images/right_arrow.png" class="arrow_img"></span>
+				</div>
 			</div>
 			<div class="spot_area">
 				<div class="title_top">
