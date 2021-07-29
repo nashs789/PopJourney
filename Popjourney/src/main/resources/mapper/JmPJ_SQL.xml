@@ -1189,4 +1189,16 @@
 		UPDATE JOURNAL SET HIT = HIT + 1 
 		WHERE JOURNAL_NO = #{journalNo}
 	</update>
+	
+	<select id="getBmkList" parameterType="hashmap" resultType="hashmap">
+		SELECT BMK_NO, MEM_NO, FOLDER_NAME, FOLDER_IMG,
+		       ROW_NUMBER() OVER(ORDER BY BMK_NO ASC) AS RNUM
+		FROM BMK_FOLDER
+		WHERE MEM_NO = #{memNo}
+	</select>
+	
+	<insert id="addBmk" parameterType="hashmap">
+		INSERT INTO BMK (BMK_NO, JOURNAL_NO)
+		VALUES(#{bmkNo}, #{journalNo})
+	</insert>
 </mapper>

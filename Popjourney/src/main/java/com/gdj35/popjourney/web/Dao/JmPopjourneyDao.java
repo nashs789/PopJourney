@@ -336,4 +336,14 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.update("JmPJ.journalHit", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBmkList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("JmPJ.getBmkList", params);
+	}
+
+	@Override
+	public int addBmk(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("JmPJ.addBmk", params);
+	}
+
 }

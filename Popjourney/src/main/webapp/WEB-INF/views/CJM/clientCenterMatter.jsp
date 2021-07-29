@@ -356,7 +356,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #F37321;
+				color: #fcba03;
 			}
 			.search {
 				float: right;
@@ -927,14 +927,14 @@
 				
 				// 검색 처리
 				$("#questionSearchIcon").on("click", function() {
-					$("#page").val(1);
+					$("#Pages").val(1);
 					$("#searchOldTxt").val($("#searchTxt").val());
 					reloadList();
 				});
 				
 				// 페이징 처리
 				$(".paging").on("click", "div", function() {
-					$($("#page").val($(this).attr("page")));
+					$($("#Pages").val($(this).attr("Pages")));
 					$("#searchTxt").val($("#searchTxt").val());
 					reloadList();
 				});
@@ -1050,29 +1050,29 @@
 			function drawPaging(pb) {
 				var html = "";
 				
-				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				html += "<div class=\"paging_btn\" Pages=\"1\"><<</div>";
 				
-				if($("#page").val() == "1") {
-					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				if($("#Pages").val() == "1") {
+					html += "<div class=\"paging_btn\" Pages=\"1\"><</div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() - 1) + "\"><</div>";
 				}
 				
 				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-					if($("#page").val() == i) {
-						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					if($("#Pages").val() == i) {
+						html += "<div class=\"num on\" Pages=\"" + i + "\">" + i + "</div>";
 					} else {
-						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+						html += "<div class=\"num\" Pages=\"" + i + "\">" + i + "</div>";
 					}
 				}
 				
-				if($("#page").val() == pb.maxPcount) {
-					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				if($("#Pages").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">></div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() * 1 + 1) + "\">></div>";
 				}
 				
-				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">>></div>";
 				
 				$(".paging").html(html);
 				
@@ -1230,7 +1230,7 @@
 	</head>
 	<body>
 	<form action="#" id="memForm">
-		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 		<input type="hidden" id="page" name="page" value="1"/>
 		<input type="hidden" id="GBN" name="GBN" value="1"/>
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
@@ -1242,6 +1242,7 @@
 		<input type="hidden" id="userNo" name="userNo" value=""/>
 	</form>
 	<form action="post" id="postForm" method="post">
+		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>
@@ -1331,7 +1332,7 @@
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 					<input type="hidden" id="nic" name="nic" value="${sNIC}" />
 					<input type="hidden" id="qNo" name="qNo" />
-					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="Pages" name="Pages" value="${Pages}" />
 					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
 					<div class="client_center_search">
 						<div class="client_center_name">

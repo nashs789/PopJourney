@@ -377,7 +377,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #F37321;
+				color: #fcba03;
 			}
 			.menu ul li a {
 				display: inline-block;
@@ -486,7 +486,7 @@
 				padding: 30px 0 0 45px;
 				display: table;
 			}
-			.post {
+			.search_post {
 				float: left;
 				width: 340px;
 				height: 390px;
@@ -496,7 +496,7 @@
 				color: black;
 				cursor: pointer;
 			}
-			.post:hover {
+			.search_post:hover {
 				box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 			}
 			.thumb {
@@ -1209,6 +1209,35 @@
 					$("#actionForm").attr("action", "searchNic");
 					$("#actionForm").submit();
 				});
+				
+				// 여행게시판 이동
+				$("#journalGallery").on("click", ".search_post", function() {
+					$("#journalNo").val($(this).attr("journalno"));
+					
+					$("#journalForm").attr("action", "journal");
+					$("#journalForm").submit();
+				});
+				// 여행게시판(해시) 이동
+				$("#HashGallery").on("click", ".search_post", function() {
+					$("#journalNo").val($(this).attr("journalno"));
+					
+					$("#journalForm").attr("action", "journal");
+					$("#journalForm").submit();
+				});
+				// 자유게시판 이동
+				$(".board_list").on("click", "tr", function() {
+					$("#postNo").val($(this).attr("postNo"));
+					
+					$("#postForm").attr("action", "post");
+					$("#postForm").submit();
+				});
+				// 회원프로필 이동
+				$(".search_nic").on("click", "tr", function() {
+					$("#userNo").val($(this).attr("memNo"));
+					
+					$("#userForm").attr("action", "userPage");
+					$("#userForm").submit();
+				});
 			
 				
 	
@@ -1425,7 +1454,7 @@
 				var html = "";
 				
 				for(d of journalList) {
-					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "<div class=\"search_post\" journalNo=\"" + d.JOURNAL_NO + "\">";
 					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
 					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
 					html += "	<div class=\"post_info\">";
@@ -1478,7 +1507,7 @@
 				var html = "";
 				
 				for(d of hashList) {
-					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "<div class=\"search_post\" journalNo=\"" + d.JOURNAL_NO + "\">";
 					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
 					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
 					html += "	<div class=\"post_info\">";
@@ -1615,8 +1644,10 @@
 	</form>
 	<form action="journal" id="journalForm" method="post">
 		<input type="hidden" id="journalNo" name="journalNo" value=""/>
+		<input type="hidden" id="memNo" name="memNo" />
 	</form>
 	<form action="post" id="postForm" method="post">
+		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>
@@ -1726,7 +1757,7 @@
 						<c:choose>
 							<c:when test="${journalCnt > 0}">
 								<c:forEach var="data" items="${journalList}">
-									<div class="post" journalNo="${data.JOURNAL_NO}">
+									<div class="search_post" journalNo="${data.JOURNAL_NO}">
 										<span class="thumb"><img alt="썸네일"
 												src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
 										<div class="post_info">
@@ -1769,7 +1800,7 @@
 						<c:choose>
 							<c:when test="${hashCnt > 0}">
 								<c:forEach var="data" items="${hashList}">
-									<div class="post" journalHNo="${data.JOURNAL_NO}">
+									<div class="search_post" journalno="${data.JOURNAL_NO}">
 										<span class="thumb"><img alt="썸네일"
 												src="./resources/upload/${data.JOURNAL_PHOTO_PATH}"></span>
 										<div class="post_info">

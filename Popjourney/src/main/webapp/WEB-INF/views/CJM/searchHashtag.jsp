@@ -464,7 +464,7 @@
 				padding: 30px 0 0 45px;
 				display: table;
 			}
-			.post {
+			.search_post {
 				float: left;
 				width: 340px;
 				height: 390px;
@@ -474,7 +474,7 @@
 				color: black;
 				cursor: pointer;
 			}
-			.post:hover {
+			.search_post:hover {
 				box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 			}
 			.thumb {
@@ -841,7 +841,7 @@
 				
 				// 페이징 처리
 				$(".paging").on("click", "div", function() {
-					$($("#page").val($(this).attr("page")));
+					$($("#Pages").val($(this).attr("Pages")));
 					$("#searchTxt").val($("#searchTxt").val());
 					$("#allCkbox").prop("checked", false);
 					reloadList();
@@ -856,7 +856,7 @@
 						$("#actionForm").attr("action", "searchTravelDiary");
 						$("#actionForm").submit();
 					} else if($("#mainSearchFilter").val() == 2) {
-						$("#page").val(1);
+						$("#Pages").val(1);
 						$("#mainSearchOldTxt").val($("#mainSearchTxt").val());
 						reloadList();
 					} else if($("#mainSearchFilter").val() == 3) {
@@ -866,6 +866,14 @@
 						$("#actionForm").attr("action", "searchNic");
 						$("#actionForm").submit();
 					}
+				});
+				
+				// 여행게시판(해시) 이동
+				$("#HashGallery").on("click", ".search_post", function() {
+					$("#journalNo").val($(this).attr("journalno"));
+					
+					$("#journalForm").attr("action", "journal");
+					$("#journalForm").submit();
 				});
 			}); // document ready end..
 			
@@ -1055,7 +1063,7 @@
 				var html = "";
 				
 				for(d of list) {
-					html += "<div class=\"post\" journalNo=\"" + d.JOURNAL_NO + "\">";
+					html += "<div class=\"search_post\" journalNo=\"" + d.JOURNAL_NO + "\">";
 					html += "	<span class=\"thumb\"><img alt=\"썸네일\"";
 					html += "			src=\"./resources/upload/" + d.JOURNAL_PHOTO_PATH + "\"></span>";
 					html += "	<div class=\"post_info\">";
@@ -1087,29 +1095,29 @@
 			function drawPaging(pb) {
 				var html = "";
 				
-				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				html += "<div class=\"paging_btn\" Pages=\"1\"><<</div>";
 				
-				if($("#page").val() == "1") {
-					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				if($("#Pages").val() == "1") {
+					html += "<div class=\"paging_btn\" Pages=\"1\"><</div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() - 1) + "\"><</div>";
 				}
 				
 				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-					if($("#page").val() == i) {
-						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					if($("#Pages").val() == i) {
+						html += "<div class=\"num on\" Pages=\"" + i + "\">" + i + "</div>";
 					} else {
-						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+						html += "<div class=\"num\" Pages=\"" + i + "\">" + i + "</div>";
 					}
 				}
 				
-				if($("#page").val() == pb.maxPcount) {
-					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				if($("#Pages").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">></div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() * 1 + 1) + "\">></div>";
 				}
 				
-				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">>></div>";
 				
 				$(".paging").html(html);
 			}
@@ -1118,7 +1126,7 @@
 	<body>
 	<form action="#" id="memForm">
 		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
-		<input type="hidden" id="page" name="page" value="${page}"/>
+		<input type="hidden" id="page" name="page" value="1"/>
 		<input type="hidden" id="GBN" name="GBN" value="1"/>
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	</form>
@@ -1130,8 +1138,10 @@
 	</form>
 	<form action="journal" id="journalForm" method="post">
 		<input type="hidden" id="journalNo" name="journalNo" value=""/>
+		<input type="hidden" id="memNo" name="memNo" value="" />
 	</form>
 	<form action="post" id="postForm" method="post">
+		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	</form>
@@ -1221,7 +1231,7 @@
 				</form>
 				<div class="search_area">
 				<form action="#" id="actionForm" method="post">
-					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="Pages" name="Pages" value="${Pages}" />
 					<input type="hidden" id="mainSearchOldTxt" value="${param.mainSearchTxt}" />
 					<input type="hidden" id="journalNo" name="journalNo" />
 					<div class="sub_search">

@@ -576,7 +576,7 @@
 					}//등급에 따라서 내부 관리자 보이기
 					
 					var params = $("#memForm").serialize();
-					
+					console.log(params);
 					$.ajax({
 						url: "notifications",
 						data: params,
@@ -778,16 +778,9 @@
 					}); //ajax end
 			  	}); //logoutBtn click end
 				
-				/* // 검색 처리
-				$(".search_btn").on("click", function() {
-					$("#page").val(1);
-					$("#searchOldTxt").val($("#searchTxt").val());
-					reloadList();
-				}); */
-				
 				// 페이징 처리
 				$(".paging").on("click", "div", function() {
-					$($("#page").val($(this).attr("page")));
+					$($("#Pages").val($(this).attr("Pages")));
 					$("#searchTxt").val($("#searchTxt").val());
 					reloadList();
 				});
@@ -802,7 +795,7 @@
 				
 				// 검색처리
 				$("#searchBtn").on("click", function() {
-					$("#page").val(1);
+					$("#Pages").val(1);
 					$("#sTxt").val($("#searchTxt").val());
 					console.log($("#sTxt").val());
 					reloadList();
@@ -1025,29 +1018,29 @@
 			function drawPaging(pb) {
 				var html = "";
 				
-				html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+				html += "<div class=\"paging_btn\" Pages=\"1\"><<</div>";
 				
-				if($("#page").val() == "1") {
-					html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+				if($("#Pages").val() == "1") {
+					html += "<div class=\"paging_btn\" Pages=\"1\"><</div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() - 1) + "\"><</div>";
 				}
 				
 				for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-					if($("#page").val() == i) {
-						html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+					if($("#Pages").val() == i) {
+						html += "<div class=\"num on\" Pages=\"" + i + "\">" + i + "</div>";
 					} else {
-						html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+						html += "<div class=\"num\" Pages=\"" + i + "\">" + i + "</div>";
 					}
 				}
 				
-				if($("#page").val() == pb.maxPcount) {
-					html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+				if($("#Pages").val() == pb.maxPcount) {
+					html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">></div>";
 				} else {
-					html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+					html += "<div class=\"paging_btn\" Pages=\"" + ($("#Pages").val() * 1 + 1) + "\">></div>";
 				}
 				
-				html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+				html += "<div class=\"paging_btn\" Pages=\"" + pb.maxPcount + "\">>></div>";
 				
 				$(".paging").html(html);
 				
@@ -1058,7 +1051,7 @@
 	<body>
 	<form action="#" id="memForm">
 		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
-		<input type="hidden" id="page" name="page" value="${page}"/>
+		<input type="hidden" id="page" name="page" value="1"/>
 		<input type="hidden" id="GBN" name="GBN" value="1"/>
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	</form>
@@ -1158,7 +1151,7 @@
 			<div id="container">
 				<!-- 여기서 부터 랭킹 -->
 				<form action="#" id="actionForm" method="post">
-					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="Pages" name="Pages" value="${Pages}" />
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 					<input type="hidden" id="userNo" name="userNo" />
 					<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />

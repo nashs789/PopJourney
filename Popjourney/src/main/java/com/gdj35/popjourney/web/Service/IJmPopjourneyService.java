@@ -135,4 +135,8 @@ public interface IJmPopjourneyService {
 
 	public int journalHit(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getBmkList(HashMap<String, String> params) throws Throwable;
+
+	public int addBmk(HashMap<String, String> params) throws Throwable;
+
 }
