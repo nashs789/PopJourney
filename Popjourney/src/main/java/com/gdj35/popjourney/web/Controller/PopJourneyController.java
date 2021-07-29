@@ -1647,4 +1647,15 @@ public class PopJourneyController {
 				return mapper.writeValueAsString(modelMap);
 		}
 		
+		
+		// 여행일지 작성페이지
+		@RequestMapping(value = "/journalWrite")
+		public ModelAndView journalWrite(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+			
+			mav.setViewName("LES/journalWrite");
+			
+			return mav;
+		}
+		
+
 }

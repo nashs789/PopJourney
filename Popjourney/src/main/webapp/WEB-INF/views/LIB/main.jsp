@@ -143,6 +143,7 @@ body {
    color: #FFFFFF;
    text-align: center;
    line-height: 26px;
+   cursor: pointer;
 }
 #loginBtn:hover{
    color: #FFFFFF;
