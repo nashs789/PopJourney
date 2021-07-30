@@ -1380,7 +1380,7 @@ public class PopJourneyController {
 			
 			 try {
 				 int cntList = ipjs.journalListCnt(params);
-				 int page = Integer.parseInt(params.get("page"));
+				 int page = Integer.parseInt(params.get("page2"));
 				 PagingBean pb = ips.getPagingBean(page, cntList, 15, 5);
 				 
 

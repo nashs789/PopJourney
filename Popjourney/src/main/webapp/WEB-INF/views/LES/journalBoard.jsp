@@ -526,7 +526,7 @@ a {
    padding: 30px 0 0 45px;
 }
 
-.post {
+.post2 {
    float: left;
    width: 340px;
    height: 390px;
@@ -536,7 +536,7 @@ a {
    color: black;
 }
 
-.post:hover {
+.post2:hover {
    box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 }
 
@@ -785,6 +785,137 @@ a {
 .journal, .thumb, .user{
    cursor: pointer;
 }
+
+.popup2 {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt2 {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list2 a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list2 a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list2 a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list2 a:hover {
+   background-color: #f37321;
+   color: white;
+}
+#cancelImg{
+	margin-top: 10px;
+	width: 30px;
+	margin-left: 135px;
+	cursor: pointer;
+}
+#notification{
+ 	 display:none;
+     width: 600px;
+     box-shadow: 0px 0px 1px 1px #444444;
+     position: absolute;
+     right: 10px;
+     z-index: 300;
+     font-size: 10pt;
+}
+.read{
+    background-color: #d1d1e0;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+.notRead{
+	background-color: #a3a3c2;
+	height: 50px;
+	border-bottom: 1px solid black;
+}
+#notification table{
+	border-collapse: collapse;
+}
+
+#notification table tr th:first-child{
+	text-align: center;
+}
+
+#notification tr th{
+	text-align: left;
+}
+
+#notification tr th img{
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+    margin-top: 5px;
+    border-radius: 50%;
+}
+
+#notification tfoot tr{
+	background-color: #48486a;
+	color: white;
+}
+   
+#notification tfoot tr th{
+	text-align: center;
+	cursor: pointer;
+}
+
+#notification tfoot tr th:hover{
+	background-color: #a4a4c1;
+}
+
+#notification table tr th span{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#notification table tr th span:hover{
+	color: blue;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -849,7 +980,69 @@ $(document).ready(function(){
                                                                                                
       $(".top_area").prepend(html);
       $(".sub_profile").css("display", "block");
+      
+      var params = $("#memForm").serialize();
+		
+		$.ajax({
+			url: "notifications",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					makeNotification(result.notification);
+				}
+				else
+				{
+					popupText = "오류가 발생했습니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
    }//if end -> 로그인 상태여부에 따른 처리
+   
+   $("#notification tbody").on("click", "span, tr, img", function(){
+		if($(this).attr("class") == "notRead")
+		{
+			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
+	
+		    var params = $("#notificationForm").serialize();
+			
+			$.ajax({
+				url: "reads",
+				data: params,
+				dataType: "json",
+				type: "post",
+				success:function(result)
+				{
+				}, //success end
+				error: function(request, status, error) {
+					console.log(error);
+				} // error end
+			}); //ajax end  
+		} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
+		
+		if($(this).attr("class") == "user")
+		{
+			$("#userNo").val($(this).attr($(this).attr("class")));
+			$("#userForm").submit();
+		}
+		else if($(this).attr("class") == "journal")
+		{
+			$("#journalNo").val($(this).attr($(this).attr("class")));
+			$("#goJournalForm").submit();
+		}
+		else if($(this).attr("class") == "post")
+		{
+			$("#postNo").val($(this).attr($(this).attr("class")));
+			$("#postForm").submit();
+		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
+	}); //notification tbody span tr click end
    
    $("#loginBtn").on("click", function(){  //로그인 버튼 클릭
       if($.trim($("#inputID").val()) == "")
@@ -922,20 +1115,33 @@ $(document).ready(function(){
    }); //profilePhoto click end
    //프로필 사진 클릭 시 하위메뉴 나왔다 사라졌다 & 알람 팝업은 안보이도록
    
+   	$("#notificationPhoto").on("click", function(){
+		$("#profileSlidedown").css("display", "none");
+		if($("#notification").css("display") == "block")
+		{
+			$("#notification").css("display", "none");
+		}
+		else
+		{
+			$("#notification").css("display", "inline-block");
+		}
+	}); //notificationPhoto click end
+	//알람 아이콘 클릭 시 알람 팝업 나왔다 사라졌다 & 프로필 하위메뉴는 안보이도록
+   
    $(".paging").on("click", "span", function() {
-      $("#page").val($(this).attr("name"));
-      $("#startCnt").val(1 + (($("#page").val()-1)) * 15);
-      $("#endCnt").val($("#page").val()*15);
+      $("#page2").val($(this).attr("name"));
+      $("#startCnt").val(1 + (($("#page2").val()-1)) * 15);
+      $("#endCnt").val($("#page2").val()*15);
       
       loadPage();
    }); //paging_wrap click end
    
    $(".search_icon").on("click", function(){   
       loadPage2();
-      $("#page").val(1);
+      $("#page2").val(1);
    }); //search_icon click end
    
-   $(".gallery").on("click", ".post span, strong, img", function(){
+   $(".gallery").on("click", ".post2 span, strong, img", function(){
       if($(this).attr("class") == "journal" || $(this).attr("class") == "thumb")
       {
          $("#journalNo").val($(this).attr($(this).attr("class")));
@@ -972,8 +1178,7 @@ $(document).ready(function(){
          $(".traveler img").css("background-color", "#f37321");
       }
       
-      $("#page").val(1);
-      $("#page").val(1);
+      $("#page2").val(1);
       loadPage2();
    }); //left_nav click end
    
@@ -1048,7 +1253,7 @@ $(document).ready(function(){
       }
       
       $("#SEQ").val($(this).attr("id").substring(4));
-      $("#page").val(1);
+      $("#page2").val(1);
       loadPage2();
    });//right_nav click li end
    
@@ -1060,9 +1265,57 @@ $(document).ready(function(){
       preID = "#";
       $(this).css("color", "red");
       preID += $(this).attr("id");
-      $("#page").val(1);
+      $("#page2").val(1);
       loadPage2();
    }); //c_top li ul click li end
+   
+   $("#community").on("click", function(){
+   	location.href = "community";
+   });//community click end
+ 
+  	$("#travelWriter").on("click", function() {
+ 		location.href = "travelWriterRank";
+ 	}); //travelWriter click end
+  	
+	$("#clientCenter").on("click", function() {
+ 		location.href = "clientCenterQuestion";
+ 	}); //clientCenter click end
+	
+ 	$("#admin").on("click", function() {
+ 		location.href = "memAdmin";
+ 	}); //admin click end
+ 	
+ 	$("#myPage").on("click", function(){
+ 		location.href = "myPage";
+	}); //find click endmyPage
+ 	
+ 	$("#timeline").on("click", function(){
+ 		location.href = "timeline";
+ 	}); //timeline click end
+ 	
+ 	$("#editProfile").on("click", function(){
+ 		location.href = "editProfile";
+ 	}); //editProfile click end
+ 	
+	$("#editInfo").on("click", function(){
+		location.href = "editInfo";
+ 	}); //editInfo click end
+ 	
+	$("#join").on("click", function(){  //회원가입 버튼 클릭
+		location.href="terms";
+	}); // join click end
+	
+	$("#find").on("click", function(){
+		findBtnPopup();
+	}); //find click end
+	
+	$("#notificationMore").on("click", function(){
+		location.href="notification";
+	}); //notificationMore click end
+	
+	$("#bookmarkPhoto").on("click", function(){
+		location.href = "myPageBMK";
+	}); //bookmarkPhoto click end
    
    $("#logoutBtn").on("click", function(){
       $.ajax({
@@ -1126,7 +1379,7 @@ function makeJournalList(list)
       
       for(var data of list)
       {
-         html += "   <div class=\"post\">";
+         html += "   <div class=\"post2\">";
          html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.THUMB + "\"></span>";
          html += "      <div class=\"post_info\">";
          html += "         <p>";
@@ -1184,23 +1437,23 @@ function makePage()
 {
    var html = "<span name=\"1\"><<</span>";
    
-   if($("#page").val() == "1") {
+   if($("#page2").val() == "1") {
       html += "<span name=\"1\"><</span>";
    } else {
-      html += "<span name=\"" + ($("#page").val() - 1) + "\">&lt;</span>";
+      html += "<span name=\"" + ($("#page2").val() - 1) + "\">&lt;</span>";
    }
    
-   if($("#endPCnt").val() == $("#page").val() && $("#endPCnt").val() != $("#maxCnt").val())
+   if($("#endPCnt").val() == $("#page2").val() && $("#endPCnt").val() != $("#maxCnt").val())
    {
       $("#startPCnt").val(($("#startPCnt").val()*1)+1);
       $("#endPCnt").val(($("#endPCnt").val()*1)+1);
    }
-   else if($("#startPCnt").val() == $("#page").val() && $("#startPCnt").val() != 1)
+   else if($("#startPCnt").val() == $("#page2").val() && $("#startPCnt").val() != 1)
    {
       $("#startPCnt").val($("#startPCnt").val()-1);
       $("#endPCnt").val($("#endPCnt").val()-1);
    }
-   else if($("#page").val() == $("#maxCnt").val())
+   else if($("#page2").val() == $("#maxCnt").val())
    {
       $("#startPCnt").val($("#maxCnt").val() - 4);
       $("#endPCnt").val($("#maxCnt").val());
@@ -1210,24 +1463,24 @@ function makePage()
          $("#startPCnt").val(1);
       }
    }
-   else if($("#page").val() == 1)
+   else if($("#page2").val() == 1)
    {
       $("#startPCnt").val(1);
       $("#endPCnt").val($("#endPCnt").val());
    }
    
    for(var i = $("#startPCnt").val() * 1 ; i <= $("#endPCnt").val() * 1 ; i++) {
-      if($("#page").val() == i) {
+      if($("#page2").val() == i) {
          html += "<span class=\"on\" name=\"" + i + "\">" + i + "</span>";
       } else {
          html += "<span name=\"" + i + "\">" + i + "</span>";
       }
    }   
 
-   if($("#page").val() == $("#maxCnt").val()) {
+   if($("#page2").val() == $("#maxCnt").val()) {
       html += "<span name=\"" + $("#maxCnt").val() + "\">></span>";
    } else {
-      html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">></span>";
+      html += "<span name=\"" + ($("#page2").val() * 1 + 1) + "\">></span>";
    }
    
    html += "<span name=\"" + $("#maxCnt").val() + "\">>></span>";
@@ -1283,6 +1536,153 @@ function loadPage2()
       } //error end
    }); //ajax end
 }
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup2\">";
+	html	 +="	 <div class=\"popup_entity_txt2\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list2\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup2\">";
+	html +="	   <div class=\"popup_entity_txt2\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list2\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg").remove();
+	}); //cancelImg click end
+}//findBtnPopup end
+function makeNotification(notification)
+{
+	var html = ""; //알림 표현용
+	var readCnt = 0;
+	var html1 = "";  //알림 개수 표현용
+	
+	for(noti of notification)
+	{
+		if(noti.READ == 1)
+		{
+			html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+			readCnt++;
+		}
+		else
+		{
+			html += "<tr class=\"read\" read=\"" + noti.NOTF_NO + "\">";
+		}
+		
+		var path ="";
+		
+		if(noti.PHOTO_PATH != null)
+		{
+			path = "resources/upload/"+noti.PHOTO_PATH;
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
+		}
+		
+		switch(noti.EVENT_NO)
+		{
+			case 0:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 1:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;	
+			case 2:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 3:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 4:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 5:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.JCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.JCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 6:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.BCCMEM_NO + "\"></th>";
+				html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.BCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 7:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 남기셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 8:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 수정 하셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 9:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [여행일지]<span class=\"journal\" journal=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			case 10:
+				html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+				html +=" 	<th>내가 작성한 [게시글]<span class=\"post\" post=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE2 + "</span> 를 좋아요 누르셨습니다.</th>";
+				html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+				html +=" </tr>";
+				break;
+			default:
+				console.log("여긴 뭐넣을까?");
+		}
+	}
+	
+	html1 = "<div id=\"notificationTxt\">" + readCnt + "<div>";
+
+	$("#cnt").prepend(html1);
+	$("#notification tbody").html(html);
+} //makeNotification end
 function makePopup()
 {
    var html = "";
@@ -1377,8 +1777,22 @@ function makePopup()
    <input type="hidden" id="journalNo" name="journalNo"/>
    <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
 </form>
+<form action="#" id="memForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+	<input type="hidden" id="page" name="page" value="1"/>
+	<input type="hidden" id="GBN" name="GBN" value="1"/>
+	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+</form>
+<form action="#" id="notificationForm">
+	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
+</form>
 <form action="userPage" id="userForm" method="post">
-   <input type="hidden" id="userNo" name="userNo"/>
+	<input type="hidden" id="userNo" name="userNo" value=""/>
+</form>
+<form action="post" id="postForm" method="post">
+	<input type="hidden" id="postNo" name="postNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 <body>
    <div id="wrap">
@@ -1387,25 +1801,42 @@ function makePopup()
          <div class="banner">
             <div class="top">
                <div class="logo_area">
-                  <a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+                  <a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
                   <div class="site_name">우리들의 여행일지</div>
                </div>
                <div class="btns">
                   <ul>
-                  <li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
-                     <div id="noCnt"></div>
-                     </li>
-                     <li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
-                     <li><img alt="프로필" src="" id="profilePhoto">
-                        <ul id="profileSlidedown">
-                           <li id="myPage">마이 페이지</li>
-                           <li id="timeline">타임라인</li>
-                           <li id="editProfile">프로필 수정</li>
-                           <li id="editInfo">회원정보 수정</li>
-                           <li id="logoutBtn">로그아웃</li>
-                        </ul>
-                     </li>
-                  </ul>
+						<li><img alt="bell" src="./resources/images/bell.png" id="notificationPhoto">
+							<div id="cnt"></div>
+							<div id="notification">
+								<table border="1">
+									<colgroup>
+										<col width="100px">
+										<col width="350px">
+										<col width="150px">
+									</colgroup>
+									<tbody>	
+
+									</tbody>
+
+									<tfoot>
+										<tr>
+											<th colspan="3" id="notificationMore">...더보기</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div></li>
+							<li><img alt="bookmark" src="./resources/images/bmk.png" id="bookmarkPhoto"></li>
+							<li><img alt="프로필" src="" id="profilePhoto">
+								<ul id="profileSlidedown">
+									<li id="myPage">마이 페이지</li>
+									<li id="timeline">타임라인</li>
+									<li id="editProfile">프로필 수정</li>
+									<li id="editInfo">회원정보 수정</li>
+									<li id="logoutBtn">로그아웃</li>
+								</ul>
+							</li>
+						</ul>
                </div>
                <div class="logins">
                      <div class="sub_login1">
@@ -1539,7 +1970,7 @@ function makePopup()
                   <img alt="search" src="./resources/images/search.png" class="search_icon" /> 
                   <form action="#" id="journalForm">
                      <input type="hidden" id="cnt" name="cnt"/>
-                     <input type="hidden" id="page" name="page" value="1"/>
+                     <input type="hidden" id="page2" name="page2" value="1"/>
                      <input type="hidden" id="startCnt" name="startCnt"/>
                      <input type="hidden" id="endCnt" name="endCnt"/>
                      <input type="hidden" id="maxCnt" name="maxCnt"/>
