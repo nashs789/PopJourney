@@ -789,8 +789,8 @@
 				$("#writerRank").on("click", "tr", function() {
 					$("#userNo").val($(this).attr("mno"));
 					
-					$("#actionForm").attr("action", "userPage");
-					$("#actionForm").submit();
+					$("#userForm").attr("action", "userPage");
+					$("#userForm").submit();
 				});
 				
 				// 검색처리
@@ -1153,7 +1153,6 @@
 				<form action="#" id="actionForm" method="post">
 					<input type="hidden" id="Pages" name="Pages" value="${Pages}" />
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
-					<input type="hidden" id="userNo" name="userNo" />
 					<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 					<input type="hidden" id="sTxt" name="sTxt" value="${param.sTxt}" />
 				</form>

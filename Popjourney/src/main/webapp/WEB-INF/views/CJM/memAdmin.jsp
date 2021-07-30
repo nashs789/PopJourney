@@ -407,12 +407,6 @@
 			.article {
 				font-size: 13pt;
 			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #F37321;
-			}
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
@@ -509,6 +503,9 @@
 				});
 				
 				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#journalBoard").on("click", function() {
+			  		location.href = "journalBoard";
+			  	});
 				$("#community").on("click", function() {
 					location.href = "community";
 				});
@@ -633,11 +630,6 @@
 					
 				});
 				
-				/* $(".popupDel").on("click", function() {
-					popupDel();
-				}); */
-				
-				
 				// 등급설정 버튼
 				$("#list_wrap tbody").on("click", ".grade_btn", function() {
 					$(".bg_grade").show();
@@ -671,21 +663,6 @@
 					
 					$("#actionForm").attr("action", "userPage");
 					$("#actionForm").submit();
-				});
-				
-				
-				// 성별 오/내림차순
-				$("#sex").on("click", function() {
-					$("#sortGbn").val(1);
-					
-					if($("#sexGbn").val() == 1) {
-						//reloadListSex();
-						$("#sexGbn").val(2);
-					} else {
-						//reloadListSex();
-						$("#sexGbn").val(1);
-					}
-					reloadList();
 				});
 				
 				// 메인검색창 넘어가는 부분(동기)
@@ -745,23 +722,23 @@
 						html += "<tr mno=\"" + d.MEM_NO + "\" class=\"leave\">";
 					}				
 					html += "<td><input type=\"checkbox\" class=\"ckbox\" name=\"ckJournalNo\" value=\"" + d.MEM_NO + "\"/></td>";
-					html += "<td id=\"mNo\" class=\"clickTr\">" + d.MEM_NO + "</td>";
-					html += "<td class=\"clickTr\">" + d.ID + "</td>";
-					html += "<td class=\"clickTr\">" + d.NIC + "</td>";
-					html += "<td class=\"clickTr\">" + d.NAME + "</td>";
-					html += "<td class=\"clickTr\">" + d.SEX + "</td>";
-					html += "<td class=\"clickTr\">" + d.AGE + "</td>";
-					html += "<td class=\"clickTr\">" + d.EMAIL + "</td>";
-					html += "<td class=\"clickTr\">" + d.PHONE + "</td>";
-					html += "<td class=\"clickTr\">" + d.GRADE_NAME + "</td>";
-					html += "<td class=\"clickTr\">" + d.JOIN_DATE + "</td>";
-					html += "<td class=\"clickTr\">" + d.LEAVE_DATE + "</td>";
-					html += "<td class=\"clickTr\">" + d.POST_SUM + "</td>"; // 게시글수
-					html += "<td class=\"clickTr\">" + d.LIKE_SUM + "</td>"; // 좋아요수
-					html += "<td class=\"clickTr\">" + d.FOLLOW_SUM + "</td>"; // 팔로워수
-					html += "<td class=\"clickTr\">" + d.REPORT_CNT +"</td>"; // 누적신고수
-					html += "<td class=\"clickTr\">" + d.ACC_CNT + "</td>";
-					html += "<td class=\"clickTr\"></td>"; // 등업신청유무
+					html += "<td id=\"mNo\">" + d.MEM_NO + "</td>";
+					html += "<td>" + d.ID + "</td>";
+					html += "<td>" + d.NIC + "</td>";
+					html += "<td>" + d.NAME + "</td>";
+					html += "<td>" + d.SEX + "</td>";
+					html += "<td>" + d.AGE + "</td>";
+					html += "<td>" + d.EMAIL + "</td>";
+					html += "<td>" + d.PHONE + "</td>";
+					html += "<td>" + d.GRADE_NAME + "</td>";
+					html += "<td>" + d.JOIN_DATE + "</td>";
+					html += "<td>" + d.LEAVE_DATE + "</td>";
+					html += "<td>" + d.POST_SUM + "</td>"; // 게시글수
+					html += "<td>" + d.LIKE_SUM + "</td>"; // 좋아요수
+					html += "<td>" + d.FOLLOW_SUM + "</td>"; // 팔로워수
+					html += "<td>" + d.REPORT_CNT +"</td>"; // 누적신고수
+					html += "<td>" + d.ACC_CNT + "</td>";
+					html += "<td>" + d.APPLY + "</td>"; // 등업신청유무
 					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
@@ -865,7 +842,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li id="journalBoard">여행일지</li>
 						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -893,8 +870,6 @@
 					<div class="sub_search">
 						검색 :
 							<input type="hidden" id="page" name="page" value="${page}" />
-							<input type="hidden" id="sortGbn" name="sortGbn" value="${sortGbn}" />
-							<input type="hidden" id="sexGbn" name="sexGbn" value="${sexGbn}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 							<input type="hidden" id="userNos" name="userNos" value="" /> <!-- 체크박스용  -->
 							<input type="hidden" id="userNo" name="userNo" /> <!-- 프로필페이지용 -->
@@ -941,18 +916,18 @@
 									<th>아이디</th>
 									<th>닉네임</th>
 									<th>이름</th>
-									<th class="click_article" id="sex">성별↕</th>
-									<th class="click_article">나이↕</th>
+									<th>성별</th>
+									<th>나이</th>
 									<th>이메일</th>
 									<th>전화번호</th>
-									<th class="click_article">등급↕</th>
-									<th class="click_article">가입일↕</th>
-									<th class="click_article">탈퇴일↕</th>
-									<th class="click_article">게시글↕</th>
-									<th class="click_article">좋아요↕</th>
-									<th class="click_article">팔로워↕</th>
-									<th class="click_article">누적신고↕</th>
-									<th class="click_article">접속수↕</th>
+									<th>등급</th>
+									<th>가입일</th>
+									<th>탈퇴일</th>
+									<th>게시글</th>
+									<th>좋아요</th>
+									<th>팔로워</th>
+									<th>누적신고</th>
+									<th>접속수</th>
 									<th>등업신청</th>
 									<th>비고</th>
 								</tr>
