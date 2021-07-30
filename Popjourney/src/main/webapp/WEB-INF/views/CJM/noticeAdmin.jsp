@@ -715,7 +715,7 @@
 		    </div>
 		</div>
 		<div class="popupDel2">
-	   		<div class="popup_entity_txt">삭제할 일지가 없습니다.</div>
+	   		<div class="popup_entity_txt">삭제할 공지사항이 없습니다.</div>
 	        <div class="btn_list">
 		    	<span id="ok">OK</span>
 		    </div>

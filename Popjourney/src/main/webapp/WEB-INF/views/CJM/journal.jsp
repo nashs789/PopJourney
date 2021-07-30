@@ -484,17 +484,6 @@ a {
 	cursor: pointer;
 }
 
-.map_wrap {
-	margin: auto;
-	padding-top: 30px;
-	width: 80%;
-	height: 300px;
-}
-
-.map_wrap img {
-	width: 100%;
-	height: 300px;
-}
 
 
 .content_area {
@@ -2611,9 +2600,6 @@ input[type="radio"]:checked {
 					<input type="hidden" id="bmkNo" name="bmkNo" />
 					<input type="hidden" id="bmkCnt" name="bmkCnt" value="${bmkFolderCnt}" />
 				</form>
-				<div class="map_wrap">
-					<img alt="지도" src="./resources/images/path.png">
-				</div>
 				<div class="content_area">
 					<div class="img_nav">
 						<a>&#60;</a> <a>&#62;</a>
