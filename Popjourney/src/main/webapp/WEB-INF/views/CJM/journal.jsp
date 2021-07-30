@@ -1462,7 +1462,7 @@ input[type="radio"]:checked {
 			else if($(this).attr("class") == "journal")
 			{
 				$("#journalNo").val($(this).attr($(this).attr("class")));
-				$("#journalForm").submit();
+				$("#actionForm").submit();
 			}
 			else if($(this).attr("class") == "post")
 			{
@@ -1605,7 +1605,7 @@ input[type="radio"]:checked {
 		
 		// 페이징 처리
 		$(".paging").on("click", "div", function() {
-			$($("#page").val($(this).attr("page")));
+			$($("#pages").val($(this).attr("pages")));
 			reloadList();
 		});
 		
@@ -2024,6 +2024,11 @@ input[type="radio"]:checked {
 			html += "</div>";
 			$(".bnt_lists").html(html);
 		}
+		
+		$(".edit_btn").on("click", function() {
+			$("#actionForm").attr("action", "journalUpdate");
+			$("#actionForm").submit();
+		});
 	}); // document ready end..
 	
 	function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
@@ -2287,29 +2292,29 @@ input[type="radio"]:checked {
 	function drawPaging(pb) {
 		var html = "";
 		
-		html += "<div class=\"paging_btn\" page=\"1\"><<</div>";
+		html += "<div class=\"paging_btn\" pages=\"1\"><<</div>";
 		
-		if($("#page").val() == "1") {
-			html += "<div class=\"paging_btn\" page=\"1\"><</div>";
+		if($("#pages").val() == "1") {
+			html += "<div class=\"paging_btn\" pages=\"1\"><</div>";
 		} else {
-			html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() - 1) + "\"><</div>";
+			html += "<div class=\"paging_btn\" pages=\"" + ($("#pages").val() - 1) + "\"><</div>";
 		}
 		
 		for(var i = pb.startPcount ; i <= pb.endPcount ; i++) {
-			if($("#page").val() == i) {
-				html += "<div class=\"num on\" page=\"" + i + "\">" + i + "</div>";
+			if($("#pages").val() == i) {
+				html += "<div class=\"num on\" pages=\"" + i + "\">" + i + "</div>";
 			} else {
-				html += "<div class=\"num\" page=\"" + i + "\">" + i + "</div>";
+				html += "<div class=\"num\" pages=\"" + i + "\">" + i + "</div>";
 			}
 		}
 		
-		if($("#page").val() == pb.maxPcount) {
-			html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">></div>";
+		if($("#pages").val() == pb.maxPcount) {
+			html += "<div class=\"paging_btn\" pages=\"" + pb.maxPcount + "\">></div>";
 		} else {
-			html += "<div class=\"paging_btn\" page=\"" + ($("#page").val() * 1 + 1) + "\">></div>";
+			html += "<div class=\"paging_btn\" pages=\"" + ($("#pages").val() * 1 + 1) + "\">></div>";
 		}
 		
-		html += "<div class=\"paging_btn\" page=\"" + pb.maxPcount + "\">>></div>";
+		html += "<div class=\"paging_btn\" pages=\"" + pb.maxPcount + "\">>></div>";
 		
 		$(".paging").html(html);
 		
@@ -2493,10 +2498,6 @@ input[type="radio"]:checked {
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
-<form action="journal" id="journalForm" method="post">
-	<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
-	<input type="hidden" id="journalNo" name="journalNo" value=""/>
-</form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
@@ -2600,7 +2601,7 @@ input[type="radio"]:checked {
 				<form action="#" id="actionForm" method="post">
 					<input type="hidden" id="journalNo" name="journalNo" value="${param.journalNo}" />
 					<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
-					<input type="hidden" id="page" name="page" value="${page}" />
+					<input type="hidden" id="pages" name="pages" value="${pages}" />
 					<input type="hidden" id="getCmtContents" name="getCmtContents"/>
 					<input type="hidden" id="journalWriteMemNo" name="journalWriteMemNo" />
 					<input type="hidden" id="cmtWriteMemNo" name="cmtWriteMemNo" />
@@ -2610,16 +2611,6 @@ input[type="radio"]:checked {
 					<input type="hidden" id="bmkNo" name="bmkNo" />
 					<input type="hidden" id="bmkCnt" name="bmkCnt" value="${bmkFolderCnt}" />
 				</form>
-				<form action="#" id="prevJournalForm" method="post">
-					<input type="hidden" id="prevJournalNo" name="JournalNo" value="${prevJournal.JOURNAL_NO}"/>
-					<input type="hidden" id="pNewJournalNo" name="newJournalNo" value="1"/>
-					<input type="hidden" id="ploginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-			   </form>
-			   <form action="#" id="nextJournalForm" method="post">
-			   		<input type="hidden" id="nextJournalNo" name="JournalNo" value="${nextJournal.JOURNAL_NO}"/>
-					<input type="hidden" id="nNewJournalNo" name="newJournalNo" value="1"/>
-					<input type="hidden" id="nloginUserNo" name="loginUserNo" value="${sMEM_NO}"/>
-			   </form>
 				<div class="map_wrap">
 					<img alt="지도" src="./resources/images/path.png">
 				</div>

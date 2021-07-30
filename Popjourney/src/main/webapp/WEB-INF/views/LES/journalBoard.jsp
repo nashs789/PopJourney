@@ -1332,7 +1332,7 @@ $(document).ready(function(){
      }); //logoutBtn click end
      
 	// 메인검색창 넘어가는 부분
-	$(".search_icon").on("click", function() {
+	$("#searchIcon").on("click", function() {
 		if($("#mainSearchFilter").val() == 0) {
 			$("#goSearch").attr("action", "search");
 			$("#goSearch").submit();
@@ -1884,7 +1884,7 @@ function makePopup()
             </ul>
          </nav>
          <form action="#" id="goSearch" method="post" >
-			<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+			<img alt="search" src="./resources/images/search.png" class="search_icon" id="searchIcon"/>
 			<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
 			<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
 				<option value="0" selected="selected">통합검색</option>
