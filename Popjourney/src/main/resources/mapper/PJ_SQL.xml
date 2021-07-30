@@ -272,8 +272,7 @@
 		                                                                                 ELSE B.TITLE
 		                                                                            END AS BTITLE
 		                                   FROM BOARD_CMT BC INNER JOIN BOARD B
-		                                                             ON BC.POST_NO = B.POST_NO
-                                                                     AND BC.POST_CMT_NO IS NULL) BCMT
+		                                                             ON BC.POST_NO = B.POST_NO) BCMT
 		                               ON NF.GBN_NO = BCMT.POST_CMT_NO
 		                               AND NF.EVENT_NO = 2
 		                  LEFT OUTER JOIN (SELECT JC.JOURNAL_CMT_NO, JC.JOURNAL_NO AS JCJOURNAL_NO, CASE WHEN LENGTH(JC.CONTENTS) > 25
