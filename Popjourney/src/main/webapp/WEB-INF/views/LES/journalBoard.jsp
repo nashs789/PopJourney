@@ -1157,7 +1157,16 @@ function makeJournalList(list)
          html += "         </p>";
          html += "      </div>";
          html += "      <div class=\"post_profile\">";
-         html += "         <img class=\"user\" user=\"" + data.MEM_NO + "\" alt=\"작성자\" src=\"resources/upload/" + data.PHOTO_PATH + "\"> <span class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</br>(" + data.GRADE + ")</span>";
+         html += "         <img class=\"user\" user=\"" + data.MEM_NO + "\" alt=\"작성자\"";
+         if(data.PHOTO_PATH != null)
+         {
+             html += " 			src=\"resources/upload/" + data.PHOTO_PATH + "\">";        	 
+         }
+          else
+         {
+             html += " 			src=\"./resources/images/profile3.png\">";
+         }
+         html += " 			<span class=\"user\" user=\"" + data.MEM_NO + "\">" + data.NIC + "</br>(" + data.GRADE + ")</span>";
          html += "         <div>";
          html += "            <div>";
          html += "               <span>조회수</span> <span class=\"cnt\">" + data.HIT + "</span> <span>좋아요</sp";

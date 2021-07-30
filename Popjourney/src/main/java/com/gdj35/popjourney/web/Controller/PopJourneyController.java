@@ -496,22 +496,20 @@ public class PopJourneyController {
 					ipjs.accCnt(params);
 				}
 				
-				HashMap<String, String> data = ipjs.getNumber(params);
-				
 				session.setAttribute("sMEM_NO", loginInfo.get("MEM_NO"));
 				session.setAttribute("sGRADE_NO", loginInfo.get("GRADE_NO"));
 				session.setAttribute("sNIC", loginInfo.get("NIC"));
 				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
 				session.setAttribute("sINTRO", loginInfo.get("INTRO"));
 				
+				HashMap<String, String> data = ipjs.getNumber(params);
+
 				session.setAttribute("sFOLLOWER", data.get("FOLLOWER_CNT")); //팔로워 숫자
 				session.setAttribute("sFOLLOWING", data.get("FOLLOWING_CNT")); //팔로잉 숫자
 				session.setAttribute("sBMK", data.get("BMK_JOURNAL_CNT")); //북마크 안에 일지 숫자
 				session.setAttribute("sJOURNAL", data.get("JOURNAL_CNT")); //작성한 일지 숫자
 				session.setAttribute("sPOINT", data.get("TOTAL_POINT")); //여행작가 점수
 
-				//modelMap.put("GRADE_NO", loginInfo.get("GRADE_NO"));
-				//modelMap.put("NIC", loginInfo.get("NIC")); 필요없는거 같아서 주석해놈
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
@@ -1383,7 +1381,6 @@ public class PopJourneyController {
 			 try {
 				 int cntList = ipjs.journalListCnt(params);
 				 int page = Integer.parseInt(params.get("page"));
-				 System.out.println("으아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ"+cntList);
 				 PagingBean pb = ips.getPagingBean(page, cntList, 15, 5);
 				 
 
@@ -1615,13 +1612,13 @@ public class PopJourneyController {
 		public String upgrades(@RequestParam HashMap<String, String> params) throws Throwable {
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> modelMap = new HashMap<String, Object>();
-			
-			if(Integer.parseInt(params.get("point")) < 100 && Integer.parseInt(params.get("grade")) == 1)
+
+			if(Integer.parseInt(params.get("point")) < 100)
 			{
 				modelMap.put("msg", "notEnough");
 				return mapper.writeValueAsString(modelMap);
 			}
-			
+
 			 try {
 				 int cnt = ipjs.upgrade(params);
 				 
@@ -1653,7 +1650,7 @@ public class PopJourneyController {
 			return mav;
 		}
 		
-		//등급 신청
+		//여행일지 작성
 		@RequestMapping(value = "/addJournals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 		@ResponseBody
 		public String addJournals(@RequestParam HashMap<String, String> params,
@@ -1698,4 +1695,42 @@ public class PopJourneyController {
 					
 				return mapper.writeValueAsString(modelMap);
 		}	
+		
+		// 마이페이지 썸네일
+		@RequestMapping(value = "/myPage")
+		public ModelAndView myPage(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {		
+			
+			 mav.setViewName("LES/myPage");
+
+			return mav;
+		}
+		
+		//인증 코드 메일 보내기
+		@RequestMapping(value = "checkPoints",
+						method = RequestMethod.POST,
+						produces ="test/json;charset=UTF-8")
+		@ResponseBody
+		public String checkPoints(@RequestParam HashMap<String, String> params) throws Throwable {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			try {
+				HashMap<String, String> data = ipjs.getNumber(params);
+				
+				if(data != null)
+				 {
+					 modelMap.put("msg", "success");
+					 modelMap.put("data", data);
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			return mapper.writeValueAsString(modelMap);
+		}
 }

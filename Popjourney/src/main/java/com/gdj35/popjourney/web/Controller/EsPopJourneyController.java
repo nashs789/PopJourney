@@ -29,19 +29,6 @@ public class EsPopJourneyController {
 	@Autowired //인복
 	public IPopJourneyService ipjs;
 
-	// 마이페이지 썸네일
-	@RequestMapping(value = "/myPage")
-	public ModelAndView myPage(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
-		int page = 1;
-		if (params.get("page") != null) {
-			page = Integer.parseInt(params.get("page"));
-		}
-		mav.addObject("page", page);
-		mav.setViewName("LES/myPage");
-
-		return mav;
-	}
-
 	// 마이페이지 북마크
 	@RequestMapping(value = "/myPageBMK")
 	public ModelAndView myPageBMK(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {

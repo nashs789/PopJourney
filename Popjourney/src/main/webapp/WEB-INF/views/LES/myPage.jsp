@@ -633,46 +633,6 @@ input[type='button']:hover{
 $(document).ready(function(){
 	var path = "";
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
-	var html = "";  
-	
-	if("${sPHOTO_PATH}" != "")
-	{
-		path = "resources/upload/" + "${sPHOTO_PATH}";
-		
-		$("#profilePhoto").attr("src", path);
-		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
-	}
-	else
-	{
-		path = "./resources/images/profile.png";
-		$("#profilePhoto").attr("src", path);
-		path = "./resources/images/profile3.png";
-		html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
-	}
-	
-	if("${sGRADE_NO}" == "0")
-	{
-		$("#admin").show();
-	}
-	
-	html += "<div>${sNIC}";
-	if("${sGRADE_NO}" == "0")
-	{
-		html += "[관리자]";
-	}
-	else if("${sGRADE_NO}" == "1")
-	{
-		html += "[여행꾼]";
-	}
-	else
-	{
-		html += "[여행작가]";
-	}
-	html +="</div>";
-	html += "<div id=\"intro\">${sINTRO}</div>";
-	html += "<sapn id=\"point\">여행점수: ${sPOINT}  <input type=\"button\" id=\"upgradeBtn\" value=\"작가 신청\"/></span>";
-	
-	$(".info").html(html);
 
  	var params = $("#memForm").serialize();
 
@@ -698,7 +658,7 @@ $(document).ready(function(){
 	}); //ajax end 
 	
 	params = $("#memForm").serialize();
-	
+	console.log(params);
 	$.ajax({
 		url: "notifications",
 		data: params,
@@ -721,7 +681,93 @@ $(document).ready(function(){
 		} // error end
 	}); //ajax end 
 	
+	$.ajax({
+		url: "checkPoints",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			$("#point").val(result.data.TOTAL_POINT);
+			
+			if(result.msg == "success")
+			{
+				var html = "";
+				
+				if("${sPHOTO_PATH}" != "")
+				{
+					path = "resources/upload/" + "${sPHOTO_PATH}";
+					
+					$("#profilePhoto").attr("src", path);
+					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
+				}
+				else
+				{
+					path = "./resources/images/profile.png";
+					$("#profilePhoto").attr("src", path);
+					path = "./resources/images/profile3.png";
+					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
+				}
+				
+				if("${sGRADE_NO}" == "0")
+				{
+					$("#admin").show();
+				}
+				
+				html += "<div>${sNIC}";
+				if("${sGRADE_NO}" == "0")
+				{
+					html += "[관리자]";
+				}
+				else if("${sGRADE_NO}" == "1")
+				{
+					html += "[여행꾼]";
+				}
+				else
+				{
+					html += "[여행작가]";
+				}
+				
+				html +="</div>";
+				html += "<div id=\"intro\">${sINTRO}</div>";
+				html += "<sapn id=\"point\">여행점수: " + result.data.TOTAL_POINT + "  <input type=\"button\" id=\"upgradeBtn\" value=\"작가 신청\"/></span>";
+				
+				$(".info").html(html);
+				
+				html = "";
+				
+				html += "<li><img alt=\"thumbnail\" id=\"myPageImg\" src=\"./resources/images/flag.png\"><br />여행일지</li>";
+				html += "<li><img alt=\"map\" id=\"map\" src=\"./resources/images/map.png\"><br />&nbsp;&nbsp;" + result.data.JOURNAL_CNT + "</li>";
+				
+				$("#left_menu").html(html);
+				
+				
+				html = "";
+				
+				html += "<li><img alt=\"bookmark\" id=\"bookmark\" src=\"./resources/images/bmrk.png\"><br />북마크" + result.data.BMK_JOURNAL_CNT + "</li>";
+				html += "<li><img alt=\"follower\" id=\"follower\" src=\"./resources/images/follower.png\"><br />팔로워" + result.data.FOLLOWER_CNT + "</li>";
+				html += "<li><img alt=\"following\" id=\"following\" src=\"./resources/images/following.png\"><br />팔로잉" + result.data.FOLLOWING_CNT + "</li>";
+						
+				$(".right_menu").html(html);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
 	$(".info").on("click", "#upgradeBtn", function(){
+		if("${sGRADE_NO}" == 2)
+		{
+			alert("이미 여행작가 입니다.");
+			return false;
+		}
+	
 		var params = $("#memForm").serialize();
 		
 		$.ajax({
@@ -848,19 +894,19 @@ $(document).ready(function(){
 		$("#journalForm").submit();
 	}); //post click span end
 	
-	$("#map").on("click", function(){
+	$("#left_menu").on("click", "#map", function(){
 		location.href = "myPageMap";
 	});//map click end
 	
-	$("#bookmark").on("click", function(){
+	$(".right_menu").on("click", "#bookmark", function(){
 		location.href = "myPageBMK";
 	});//map click end
 	
-	$("#follower").on("click", function(){
+	$(".right_menu").on("click","#follower", function(){
 		location.href = "myPageFollower";
 	}); //follower click end
 	
-	$("#following").on("click", function(){
+	$(".right_menu").on("click", "#following", function(){
 		location.href = "myPageFollowing";
 	}); //following click end
 	
@@ -910,7 +956,7 @@ $(document).ready(function(){
 			type: "post",
 			dataType: "json",
 			success: function(result) {
-				location.reload();
+				location.href ="main";
 			}, //success end
 			error: function(request, status, error) {
 				console.log(error);
@@ -1124,10 +1170,10 @@ function makeNotification(notification)
 <body>
 <form action="#" id="memForm">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="point" name="point" value="${sPOINT}"/>
 	<input type="hidden" id="grade" name="grade" value="${sGRADE_NO}"/>
-	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="page" name="page" value="1"/>
 	<input type="hidden" id="GBN" name="GBN" value="1"/>
+	<input type="hidden" id="point" name="point"/>
 	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 </form>
 <form action="userPage" id="userForm" method="post">
@@ -1216,16 +1262,10 @@ function makeNotification(notification)
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_menu">
-							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL}</li>
+							
 						</ul>
 						<ul class="right_menu">
-							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									${sBMK}</li>
-							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
-									${sFOLLOWER}</li>
-							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
-									${sFOLLOWING}</li>
+							
 						</ul>
 					</nav>
 				</div> <!-- board_menu end -->

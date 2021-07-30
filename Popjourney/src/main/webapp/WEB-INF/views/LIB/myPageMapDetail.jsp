@@ -665,6 +665,26 @@ h2 {
     filter: blur(2px);
   }
 }
+#upgradeBtn {
+    padding: 4px 0px;
+    background-color: white;
+    border: 2px solid #2e3459;
+    border-radius: 20px;
+    height: 35px;
+    cursor: pointer;
+    width: 80px;
+    margin-left: 10px;
+    box-shadow: rgb(0 0 0 / 9%) 0 6px 9px 0;
+    font-weight: bold;
+}
+
+#upgradeBtn:hover{
+	color: white;
+	background-color: #2e3459;
+}
+#point, #intro{
+	font-size: 10pt;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -691,11 +711,6 @@ $(document).ready(function() {
 	{
 		$("#admin").show();
 	}
-
-	html += "<div>${sNIC}</div>";
-	html += "<span>${sINTRO}</span>"; 
-	
-	$(".info").html(html);
 	
 	loadPage();
 	
@@ -711,6 +726,86 @@ $(document).ready(function() {
 			if(result.msg == "success")
 			{
 				makeNotification(result.notification);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
+	$.ajax({
+		url: "checkPoints",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				$("#point").val(result.data.TOTAL_POINT);
+				
+				var html = "";
+				
+				if("${sPHOTO_PATH}" != "")
+				{
+					path = "resources/upload/" + "${sPHOTO_PATH}";
+					
+					$("#profilePhoto").attr("src", path);
+					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
+				}
+				else
+				{
+					path = "./resources/images/profile.png";
+					$("#profilePhoto").attr("src", path);
+					path = "./resources/images/profile3.png";
+					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
+				}
+				
+				if("${sGRADE_NO}" == "0")
+				{
+					$("#admin").show();
+				}
+				
+				html += "<div>${sNIC}";
+				if("${sGRADE_NO}" == "0")
+				{
+					html += "[관리자]";
+				}
+				else if("${sGRADE_NO}" == "1")
+				{
+					html += "[여행꾼]";
+				}
+				else
+				{
+					html += "[여행작가]";
+				}
+				
+				html +="</div>";
+				html += "<div id=\"intro\">${sINTRO}</div>";
+				html += "<sapn id=\"point\">여행점수: " + result.data.TOTAL_POINT + "  <input type=\"button\" id=\"upgradeBtn\" value=\"작가 신청\"/></span>";
+				
+				$(".info").html(html);
+				
+				html = "";
+				
+				html += "<li><img alt=\"thumbnail\" id=\"myPageImg\" src=\"./resources/images/flag.png\"><br />여행일지</li>";
+				html += "<li><img alt=\"map\" id=\"map\" src=\"./resources/images/map.png\"><br />&nbsp;&nbsp;" + result.data.JOURNAL_CNT + "</li>";
+				
+				$("#left_group").html(html);
+				
+				
+				html = "";
+				
+				html += "<li><img alt=\"bookmark\" id=\"bookmark\" src=\"./resources/images/bmrk.png\"><br />북마크" + result.data.BMK_JOURNAL_CNT + "</li>";
+				html += "<li><img alt=\"follower\" id=\"follower\" src=\"./resources/images/follower.png\"><br />팔로워" + result.data.FOLLOWER_CNT + "</li>";
+				html += "<li><img alt=\"following\" id=\"following\" src=\"./resources/images/following.png\"><br />팔로잉" + result.data.FOLLOWING_CNT + "</li>";
+						
+				$(".right_group").html(html);
 			}
 			else
 			{
@@ -748,6 +843,42 @@ $(document).ready(function() {
 			$("#notification").css("display", "inline-block");
 		}
 	}); //notificationPhoto click end
+	
+	$(".info").on("click", "#upgradeBtn", function(){
+		if("${sGRADE_NO}" == 2)
+		{
+			alert("이미 여행작가 입니다.");
+			return false;
+		}
+
+		var params = $("#memForm").serialize();
+
+		$.ajax({
+			url: "upgrades",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					alert("신청완료");
+				}
+				else if(result.msg == "notEnough")
+				{
+					alert("100점 이상 되어야 합니다");
+				}
+				else
+				{
+					popupText = "오류 발생.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
+	}); //info upgradeBtn click end
 	
 	$("#notification tbody").on("click", "span, tr, img", function(){
 		if($(this).attr("class") == "notRead")
@@ -797,19 +928,19 @@ $(document).ready(function() {
 		loadPage();
 	}); //paging_wrap click end
 	
-	$("#myPageImg").on("click", function(){
+	$("#left_group").on("click", "#myPageImg", function(){
 		location.href = "myPage";
-	});//map click end
+	}); //myPageImg click end
 	
-	$("#bookmark").on("click", function(){
+	$(".right_group").on("click", "#bookmark", function(){
 		location.href = "myPageBMK";
-	});//map click end
+	});//bookmark click end
 	
-	$("#follower").on("click", function(){
+	$(".right_group").on("click", "#follower", function(){
 		location.href = "myPageFollower";
-	}); //follower click end
+	}); //following click end
 	
-	$("#following").on("click", function(){
+	$(".right_group").on("click", "#following", function(){
 		location.href = "myPageFollowing";
 	}); //following click end
 	
@@ -1092,6 +1223,7 @@ function makeNotification(notification)
 	<input type="hidden" id="page" name="page" value="1"/>
 	<input type="hidden" id="GBN" name="GBN" value="1"/>
 	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
+	<input type="hidden" id="point" name="point"/>
 </form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
@@ -1181,16 +1313,10 @@ function makeNotification(notification)
 				<div class="board_menu">
 					<nav class="menu_nav">
 						<ul id="left_group">
-							<li><img alt="thumbnail" id="myPageImg" src="./resources/images/flag.png"><br />여행일지</li>
-							<li><img alt="map" id="map" id="mapOn" src="./resources/images/map.png"><br />&nbsp;&nbsp;${sJOURNAL }</li>
+
 						</ul>
 						<ul class="right_group">
-							<li><img alt="bookmark" id="bookmark" src="./resources/images/bmrk.png"><br />북마크
-									${sBMK }</li>
-							<li><img alt="follower" id="follower" src="./resources/images/follower.png"><br />팔로워
-									${sFOLLOWER }</li>
-							<li><img alt="following" id="following" src="./resources/images/following.png"><br />팔로잉
-									${sFOLLOWING }</li>
+
 						</ul>
 					</nav>
 				</div>

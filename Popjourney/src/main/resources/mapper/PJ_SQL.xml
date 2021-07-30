@@ -1256,12 +1256,15 @@
 			                                                    WHERE REQUEST_MEM_NO = #{MEM_NO}) FW
 			                                                ON 1 = 1
 		                                 INNER JOIN (SELECT COUNT(*) AS BMK_JOURNAL_CNT
-		                                             FROM BMK
-		                                             WHERE BMK_NO IN(SELECT BMK_NO
-		                                                             FROM BMK_FOLDER BF INNER JOIN MEM M
-		                                                                                         ON BF.MEM_NO = M.MEM_NO
-		                                                                                        AND M.LEAVE_DATE IS NULL
-		                                                             WHERE BF.MEM_NO = #{MEM_NO})) BJ
+												 	 FROM BMK B INNER JOIN JOURNAL J
+											 		                    ON B.JOURNAL_NO = J.JOURNAL_NO
+													                   AND J.DEL = 1
+													            INNER JOIN MEM M
+													                    ON J.MEM_NO = M.MEM_NO
+													                    AND M.LEAVE_DATE IS NULL
+													 WHERE BMK_NO IN(SELECT BMK_NO
+													                 FROM BMK_FOLDER BF
+													                 WHERE BF.MEM_NO = #{MEM_NO})) BJ
 		                                         ON 1 = 1 
 		                                 INNER JOIN (SELECT COUNT(*) AS JOURNAL_CNT
 		                                             FROM JOURNAL J INNER JOIN MEM M
