@@ -348,12 +348,6 @@
 			.article th {
 				font-size: 10pt;
 			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #f37321;
-			}
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
@@ -451,6 +445,9 @@
 				});
 				
 				// 페이지 상단 배너 메뉴
+				$("#journalBoard").on("click", function() {
+			  		location.href = "journalBoard";
+			  	});
 				$("#community").on("click", function() {
 					location.href = "community";
 				});
@@ -596,13 +593,13 @@
 					}
 				});
 				
-				/* // 여행일지 세부페이지 이동
-				$("#list_wrap tbody").on("click", "tr", function() {
-					$("#journalNoS").val($(this).attr("jno"));
+				// 여행일지 세부페이지 이동
+				$("#list_wrap tbody").on("click", "td:not(:first-child):not(:last-child)", function() {
+					$("#journalNo").val($(this).parent().attr("jno"));
 					
-					$("#actionForm").attr("action", "주소");
+					$("#actionForm").attr("action", "journal");
 					$("#actionForm").submit();
-				}); */
+				});
 				
 			}); // document ready end..
 			
@@ -734,7 +731,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li id="journalBoard">여행일지</li>
 						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -761,10 +758,10 @@
 					</div>
 					<div class="sub_search">
 						검색 :
-						<input type="hidden" id="journalNoS" name="journalNoS" />
 						<input type="hidden" id="page" name="page" value="${page}" />
 						<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 						<input type="hidden" id="journalNo" name="journalNo" value="" />
+						<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}" />
 						<select class="search_filter" id="searchFilter" name="searchFilter">
 								<option value="0" selected="selected">통합검색</option>
 								<option value="1">닉네임</option>
@@ -798,13 +795,13 @@
 									<th><input type="checkbox" class="ckbox" id="allCkbox"/></th>
 		            				<th>일지번호</th>
 		            				<th>닉네임</th>
-		            				<th class="click_article">선호도↕</th>
-		            				<th class="click_article">카테고리↕</th>
+		            				<th>선호도</th>
+		            				<th>카테고리</th>
 		            				<th>제목</th>
-		            				<th class="click_article">등급↕</th>
-		            				<th class="click_article">작성일↕</th>
-		            				<th class="click_article">조회↕</th>
-		            				<th class="click_article">좋아요↕</th>
+		            				<th>등급</th>
+		            				<th>작성일</th>
+		            				<th>조회</th>
+		            				<th>좋아요</th>
 		            				<th>비고</th>
 		            			</tr>
 							</thead>

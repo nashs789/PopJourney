@@ -25,11 +25,18 @@
 	
 	<select id="getMemList" parameterType="hashmap" resultType="hashmap">
 		SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, M.SEX, M.AGE, M.EMAIL, M.PHONE, M.GRADE_NAME, M.JOIN_DATE, M.LEAVE_DATE, NVL(M.JB_SUM, 0) AS POST_SUM, 
-		       NVL(M.LIKE_SUM, 0) AS LIKE_SUM, NVL(M.F_CNT, 0) AS FOLLOW_SUM, NVL(M.REPORT_CNT, 0) AS REPORT_CNT, M.ACC_CNT, M.RNUM
+		       NVL(M.LIKE_SUM, 0) AS LIKE_SUM, NVL(M.F_CNT, 0) AS FOLLOW_SUM, NVL(M.REPORT_CNT, 0) AS REPORT_CNT, M.ACC_CNT, M.RNUM, M.APPLY
 		FROM (SELECT M.MEM_NO, M.ID, M.NIC, M.NAME, CC.CODE_N AS SEX, ROUND(TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BIRTH)) / 12 + 1) AS AGE, M.EMAIL,
 		             REGEXP_REPLACE(M.PHONE, '(.{3})(.+)(.{4})', '\1-\2-\3') AS PHONE, GC.GRADE_NAME,
 		             TO_CHAR(M.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE, NVL(TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD'), '-') AS LEAVE_DATE, 
-		             JB_CNT.JB_SUM, LIKE_CNT.LIKE_SUM, CNT.F_CNT, R.REPORT_CNT, M.ACC_CNT, ROW_NUMBER() OVER(ORDER BY M.MEM_NO DESC) AS RNUM
+		             JB_CNT.JB_SUM, LIKE_CNT.LIKE_SUM, CNT.F_CNT, R.REPORT_CNT, M.ACC_CNT, ROW_NUMBER() OVER(ORDER BY M.MEM_NO DESC) AS RNUM,
+		             CASE WHEN G.APPLY = 0
+		                  THEN '등업대기'
+		                  WHEN G.APPLY = 1
+		                  THEN '-'
+		                  WHEN G.APPLY = 2
+		                  THEN '등업완료'
+		             END AS APPLY
 		      FROM MEM M INNER JOIN GRADE G
 		                         ON M.MEM_NO = G.MEM_NO
 		                 INNER JOIN GRADE_CATEGORY GC
@@ -89,18 +96,6 @@
 		      </if>
 		      ) M
 		WHERE M.RNUM BETWEEN #{startCnt} AND #{endCnt}
-		<choose>
-	      	<when test="sortGbn eq 1">
-	      		<choose>
-	      			<when test="sexGbn eq 1">
-	      				ORDER BY M.SEX ASC, M.RNUM ASC
-	      			</when>
-	      			<otherwise>
-	      				ORDER BY M.SEX DESC, M.RNUM ASC
-	      			</otherwise>
-	      		</choose>
-	      	</when>
-	    </choose>
 	</select>
 	
 	<update id="deleteMem" parameterType="hashmap">

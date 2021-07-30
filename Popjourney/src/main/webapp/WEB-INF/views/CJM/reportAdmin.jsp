@@ -278,12 +278,6 @@
 			.article th {
 				font-size: 10pt;
 			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #f37321;
-			}
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
@@ -422,6 +416,9 @@
 					location.href = "main";
 				});
 				
+				$("#journalBoard").on("click", function() {
+			  		location.href = "journalBoard";
+			  	});
 				$("#community").on("click", function() {
 					location.href = "community";
 				});
@@ -520,8 +517,8 @@
 				});
 				
 				/* // 공지사항 세부페이지 이동
-				$("#list_wrap tbody").on("click", "tr", function() {
-					$("#reportNo").val($(this).attr("pno"));
+				$("#list_wrap tbody").on("click", "td::not(:last-child)", function() {
+					$("#reportNo").val($(this).parent().attr("pno"));
 					
 					$("#actionForm").attr("action", "주소");
 					$("#actionForm").submit();
@@ -656,7 +653,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li id="journalBoard">여행일지</li>
 						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -712,12 +709,12 @@
 								<thead>
 									<tr class="article">
 			            				<th>신고번호</th>
-			            				<th class="click_article">신고사유↕</th>
+			            				<th>신고사유</th>
 			            				<th>내용</th>
 			            				<th>신고회원</th>
 			            				<th>처리회원</th>
-			            				<th class="click_article">등록일↕</th>
-			            				<th class="click_article">처리일↕</th>
+			            				<th>등록일</th>
+			            				<th>처리일</th>
 			            				<th>비고</th>
 			            			</tr>
 								</thead>

@@ -301,7 +301,6 @@ public class JmPopJourneyController {
 			
 			try {
 				int cnt = iJmPopjourneyService.updateCmt(params);
-				//int cnt2 = iJmPopjourneyService.updateMatter(params);
 				int cnt2 = iJmPopjourneyService.addMatterNotf2(params);
 				
 				System.out.println("CMTParams >> " + params);
@@ -411,8 +410,6 @@ public class JmPopJourneyController {
 	public ModelAndView memAdmin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 
 		int page = 1;
-		int sortGbn = 0;
-		int sexGbn = 1;
 
 		if (params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
@@ -427,8 +424,6 @@ public class JmPopJourneyController {
 		}
 
 		mav.addObject("page", page);
-		mav.addObject("sortGbn", sortGbn);
-		mav.addObject("sexGbn", sexGbn);
 		
 		mav.setViewName("CJM/memAdmin");
 
@@ -459,15 +454,6 @@ public class JmPopJourneyController {
 		String today = sdf.format(new Date());
 		String startDay = "2021-01-01";
 		
-		// 회원관리 오/내림차순 공통 (0:기본, 1:성별, 2:나이, 3:등급, 4:가입일, 5:탈퇴일, 6:게시글, 7:좋아요, 8:팔로워, 9:누적신고, 10:접속수)
-		int sortGbn = Integer.parseInt(params.get("sortGbn"));
-		modelMap.put("sortGbn", sortGbn);
-		
-		// 회원관리 - 오름차순/내림차순 -> 성별  sex=1(남자) sex=2(여자)
-		int sexGbn = Integer.parseInt(params.get("sexGbn"));
-		//List<HashMap<String, String>> sex = iJmPopjourneyService.getSex(params);
-		modelMap.put("sexGbn", sexGbn);
-			
 		modelMap.put("list", list);
 		modelMap.put("pb", pb);
 		modelMap.put("today", today);
@@ -481,8 +467,6 @@ public class JmPopJourneyController {
 		System.out.println("params >> " + params);
 		System.out.println("startDay >> " + startDay);
 		System.out.println("today >> " + today);
-		System.out.println("sex >> " + sexGbn);
-		System.out.println("sortGbn >>" + sortGbn);
 		 
 		return mapper.writeValueAsString(modelMap);
 	

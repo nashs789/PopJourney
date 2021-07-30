@@ -349,12 +349,6 @@
 			.article {
 				font-size: 13pt;
 			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #f37321;
-			}
 			.ckbox {
 			 	height: 15px;
 			 	width: 15px;
@@ -454,6 +448,9 @@
 				});
 				
 				// 상단배너 -> 여행일지 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#journalBoard").on("click", function() {
+			  		location.href = "journalBoard";
+			  	});
 				$("#community").on("click", function() {
 					location.href = "community";
 				});
@@ -598,13 +595,25 @@
 					}
 				});
 				
-				/* // 공지사항 세부페이지 이동
-				$("#list_wrap tbody").on("click", "tr", function() {
-					$("#postNoS").val($(this).attr("pno"));
+				// 자유게시판 세부페이지 이동
+				$("#list_wrap tbody").on("click", "td:not(:first-child):not(:last-child)", function() {
+					$("#postNo").val($(this).parent().attr("pno"));
 					
-					$("#actionForm").attr("action", "주소");
+					$("#actionForm").attr("action", "post");
 					$("#actionForm").submit();
-				}); */
+				});
+				
+				// 수정버튼
+				$("#wrap").on("click", ".edit_btn", function() {
+					$("#postNo").val($(this).parent().parent().attr("pno"));
+					
+					$("#actionForm").attr("action","postUpdate");
+					$("#actionForm").submit();
+				});
+				
+				$(".notice_write_btn").on("click", function() {
+					location.href = "postWrite";
+				});
 				
 			}); // document ready end..
 			
@@ -738,7 +747,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행일지</li>
+						<li id="journalBoard">여행일지</li>
 						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>
@@ -765,10 +774,11 @@
 					</div>
 						<div class="sub_search">
 							검색 :
-							<input type="hidden" id="postNoS" name="postNoS" />
 							<input type="hidden" id="page" name="page" value="${page}" />
 							<input type="hidden" id="searchOldTxt" value="${param.searchTxt}" />
 							<input type="hidden" id="postNo" name="postNo" value="" />
+							<input type="hidden" id="newPostNo" name="newPostNo" value="1" />
+							<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 							<input class="search_date" type="date" id="searchDate1" name="searchDate1" value="${param.searchDate1}" /><span>부터</span> 
 							<input class="search_date" type="date" id="searchDate2" name="searchDate2" value="${param.searchDate2}" /><span>까지</span> 
 							<input class="search_txt" type="text" id="searchTxt" name="searchTxt" value="${param.searchTxt}" placeholder="제목을 입력하세요." />
@@ -798,9 +808,9 @@
 									<th>제목</th>
 									<th>등급</th>
 									<th>닉네임</th>
-									<th class="click_article">작성일↕</th>
-									<th class="click_article">조회↕</th>
-									<th class="click_article">좋아요↕</th>
+									<th>작성일</th>
+									<th>조회</th>
+									<th>좋아요</th>
 									<th>비고</th>
 								</tr>
 							</thead>
