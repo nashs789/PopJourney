@@ -1203,17 +1203,17 @@ public class JmPopJourneyController {
 		// 북마크 폴더 갯수 체크
 		int bmkFolderCnt = iJmPopjourneyService.getBmkFolderCnt(params);
 		
-		int page = 1;
+		int pages = 1;
 		
-		if(params.get("page") != null) {
-			page = Integer.parseInt(params.get("page"));
+		if(params.get("pages") != null) {
+			pages = Integer.parseInt(params.get("pages"));
 		}
 		
 		mav.addObject("data", data);
 		mav.addObject("memoData", memoData);
 		mav.addObject("cnt", cnt);
 		mav.addObject("hash", hash);
-		mav.addObject("page", page);
+		mav.addObject("pages", pages);
 		mav.addObject("likeCheck", likeCheck);
 		mav.addObject("bmkFolderCnt", bmkFolderCnt);
 		//mav.addObject("journalWriterMemNo", data.get("MEM_NO"));
@@ -1224,7 +1224,7 @@ public class JmPopJourneyController {
 		System.out.println("memoData >> " + memoData);
 		System.out.println("cnt >> " + cnt);
 		System.out.println("hash >> " + hash);
-		System.out.println("page >> " + page);
+		System.out.println("pages >> " + pages);
 		System.out.println("likeCheck >> " + likeCheck);
 		System.out.println("bmkFolderCnt >> " + bmkFolderCnt);
 		
@@ -1241,11 +1241,11 @@ public class JmPopJourneyController {
 		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		 
-		int page = Integer.parseInt(params.get("page"));
+		int pages = Integer.parseInt(params.get("pages"));
 		
 		int cmtCnt = iJmPopjourneyService.getCmtCnt(params);
 		
-		PagingBean pb = iPagingService.getPagingBean(page, cmtCnt, 10, 5);
+		PagingBean pb = iPagingService.getPagingBean(pages, cmtCnt, 10, 5);
 		
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
