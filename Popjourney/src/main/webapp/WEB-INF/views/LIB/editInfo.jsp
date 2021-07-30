@@ -209,13 +209,13 @@ select{
    width: 600px;
    height: 80px;
 }
-#search {
+.search {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 250px;
    height: 29px;
 }   
-#filter {
+.filter {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 100px;
@@ -448,6 +448,11 @@ select{
 #admin{
 	display:none;
 }
+#mainSearchTxt{
+	height: 30px;
+	margin-top: 20px;
+}
+</style>
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">

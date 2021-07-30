@@ -258,13 +258,22 @@ public class PopJourneyController {
 		HashMap<String, String> data = ipjs.findID(params);
 
 		if (data != null) {
-			String star = "";
+			String ID;
+			if(data.get("ID").length() > 4)
+			{
+				String star = "";
 
-			for (int i = 0; i < data.get("ID").length() - 4; i++) {
-				star += "*";
+				for (int i = 0; i < data.get("ID").length() - 4; i++) {
+					star += "*";
+				}
+
+				 ID = data.get("FIRST") + star + data.get("LAST");
 			}
-
-			String ID = data.get("FIRST") + star + data.get("LAST");
+			else
+			{
+				ID = data.get("ID");
+			}
+			
 			modelMap.put("ID", ID);
 			modelMap.put("NAME", data.get("NAME"));
 			modelMap.put("msg", "success");
@@ -1732,5 +1741,15 @@ public class PopJourneyController {
 			}
 
 			return mapper.writeValueAsString(modelMap);
+		}
+		
+		// 마이페이지 썸네일
+		@RequestMapping(value = "/journalUpdate")
+		public ModelAndView journalUpdate(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {		
+			
+			 //journalNo, memNo
+			 mav.setViewName("LIB/journalUpdate");
+
+			return mav;
 		}
 }

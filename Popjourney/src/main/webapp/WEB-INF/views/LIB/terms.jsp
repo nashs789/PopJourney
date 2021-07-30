@@ -279,13 +279,13 @@ input[type='button']:hover{
    width: 600px;
    height: 80px;
 }
-#search {
+.search {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 250px;
    height: 29px;
 }   
-#filter {
+.filter {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 100px;
@@ -355,10 +355,10 @@ input[type='button']:hover{
    color: white;
 }
 .bg {
+	position: fixed;
 	display: inline-block;
 	width: 100%;
-	height: 2010px;
-	position: absolute;
+	height: 100%;
 	top: 0px;
 	left: 0px;
 	background-color: #000000;

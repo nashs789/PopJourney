@@ -304,9 +304,18 @@ $(document).ready(function(){
 		}
 		var path = ""; //사진경로 담아줄 변수
 		
-		path = "resources/upload/" + "${sPHOTO_PATH}";
-		$("#profilePhoto").attr("src", path);
+		if("${sPHOTO_PATH}" != "")
+		{
+			path = "resources/upload/" + "${sPHOTO_PATH}";
+			
+			$("#profilePhoto").attr("src", path);
+		}
+		else
+		{
+			path = "./resources/images/profile.png";
 
+			$("#profilePhoto").attr("src", path);
+		}//if ~ else end
 		var params = $("#memForm").serialize();
 		
 		$.ajax({

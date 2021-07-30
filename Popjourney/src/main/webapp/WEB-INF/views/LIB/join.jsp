@@ -305,13 +305,13 @@ select{
    width: 600px;
    height: 80px;
 }
-#search {
+.search {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 250px;
    height: 29px;
 }   
-#filter {
+.filter {
    float: right;
    margin: 20px 20px 20px 0px; 
    width: 100px;
@@ -384,8 +384,7 @@ select{
 	position: fixed;
 	display: inline-block;
 	width: 100%;
-	height: 1434px;
-	position: absolute;
+	height: 100%;
 	top: 0px;
 	left: 0px;
 	background-color: #000000;
@@ -404,6 +403,10 @@ select{
 	width: 30px;
 	margin-left: 135px;
 	cursor: pointer;
+}
+#mainSearchTxt{
+	height: 30px;
+	margin-top: 20px;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
