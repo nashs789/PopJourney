@@ -1498,6 +1498,50 @@ $(document).ready(function(){
 			});
 		}
 	});
+	//대댓글 수정 클릭 시
+	$("#cmtList").on("click", ".cmt_cmt_edit_btn", function() {
+		$("#cmtEditContents").remove();
+		$("#cmtCmtContents").remove();
+		$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtcmtnos"));
+		var cmtNo = $("#cmtNo").val();
+		var html = "";
+		
+		html += "<div class=\"cmt_cmt_contents\" id=\"cmtEditContents\">";
+		html += "	<div class=\"cmt_contents_right\">";
+		html += "		<div class=\"cmt_bottom\">";
+		html += "			<textarea id=\"editCmt\" class=\"reply\"  rows=\"8\" cols=\"150\" placeholder=\"댓글을 입력하십시오\"></textarea>";
+		html += "			<br/><input type=\"button\" class=\"reply_edit_btn\" id=\"editBtn\" value=\"수  정\" />";
+		html += "		</div>";
+		html += "	</div>";
+		html += "</div>";
+	
+		$(".cmt_cmt_contents_list[cmtcmtnos=" + cmtNo + "]").append(html);
+		
+	});
+	// 대댓글 수정 후 수정버튼 클릭 시
+	$("#cmtList").on("click", "#editBtn", function() {
+		if($.trim($("#editCmt").val()) == "") {
+			alert("내용을 넣어주세요.");
+			$("#editCmt").focus();
+		} else {
+			$("#getCmtContents").val($("#editCmt").val());
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url: "postCmtEdits",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					$("#cmtEditContents").remove();
+					reloadList();
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	});
 	//댓글 답글 클릭 시
 	$("#cmtList").on("click", ".add_cmt_cmt", function() {
 		if($("#memNo").val() != "") {
@@ -1911,9 +1955,14 @@ function drawCmt(cmt) {
 			html += "</div>";
 			for(j = 0 ; j < cmt.length ; j++) {
 				if(cmt[i].POST_CMT_NO == cmt[j].PARENTS_CMT_NO) {
+					html += "<div class=\"cmt_cmt_contents_list\" cmtcmtnos=\"" + cmt[j].POST_CMT_NO + "\">";
 					html += "<div class=\"cmt_cmt_contents\" cmtcmtno=\"" + cmt[j].POST_CMT_NO + "\" cmtcmtmemno=\"" + cmt[j].MEM_NO + "\">";
 					html += "	<div class=\"cmt_contents_left\">";
-					html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[j].MEM_PHOTO_PATH + "\">";
+					if(cmt[j].MEM_PHOTO_PATH != null) {
+						html += "		<img alt=\"프로필\" src=\"./resources/upload/" + cmt[j].MEM_PHOTO_PATH + "\">";
+					} else {
+						html += "<img alt=\"프로필\" src=\"./resources/images/profile3.png\">";
+					}
 					html += "	</div>";
 					html += "	<div class=\"cmt_contents_right\">";
 					html += "		<strong>" + cmt[j].NIC + "</strong><span class=\"cmt_cmt_date\">" + cmt[j].CMT_DATE + "</span><br />";
@@ -1941,6 +1990,7 @@ function drawCmt(cmt) {
 					}
 					html += "		</div>";
 					html += "	</div>";
+					html += "</div>";
 					html += "</div>";
 				}
 			}
@@ -2168,7 +2218,14 @@ function drawPaging(pb) {
          	<div class="sub_profile">
          			<div class="profile_info">
 	         			<div>
-	         				<img alt="profile" src="./resources/images/profile2.png" class="profile_img">
+	         				<c:choose>
+								<c:when test="${data.MEM_PHOTO_PATH eq null}">
+									<img alt="profile" src="./resources/images/profile3.png" class="profile_img">									
+								</c:when>
+								<c:otherwise>
+									<img alt="profile" src="./resources/upload/${data.MEM_PHOTO_PATH}" class="profile_img">
+								</c:otherwise>
+							</c:choose>
 	         			</div>
 	         			<div class="info">
 	         				<span>${data.NIC}</span>
