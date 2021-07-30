@@ -532,6 +532,25 @@ $(document).ready(function(){
   		location.href = "clientCenterQuestion";
   	}); //clientCenter click end
   	
+	// 메인검색창 넘어가는 부분
+	$(".search_icon").on("click", function() {
+		if($("#mainSearchFilter").val() == 0) {
+			$("#goSearch").attr("action", "search");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 1) {
+			$("#goSearch").attr("action", "searchTravelDiary");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 2) {
+			$("#goSearch").attr("action", "searchHashtag");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 3) {
+			$("#goSearch").attr("action", "searchCommunity");
+			$("#goSearch").submit();
+		} else {
+			$("#goSearch").attr("action", "searchNic");
+			$("#goSearch").submit();
+		}
+	});
 }); //document ready end
 function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
 {
@@ -718,15 +737,17 @@ function findBtnPopup()
                   <li id="clientCenter">고객센터</li>
                </ul>
             </nav>
-            <img alt="search" src="./resources/images/search.png" class="search_icon"/>
-            <input type="text" id="search" placeholder="검색">
-            <select id="filter">
-			   <option value="0" selected="selected">통합검색</option>
-			   <option value="1">여행일지</option>
-			   <option value="2">해시태그</option>
-			   <option value="3">자유게시판</option>
-			   <option value="4">닉네임</option>
-			</select>
+            <form action="#" id="goSearch" method="post" >
+				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+				<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+					<option value="0" selected="selected">통합검색</option>
+					<option value="1">여행일지</option>
+					<option value="2">해시태그</option>
+					<option value="3">자유게시판</option>
+					<option value="4">닉네임</option>
+				</select>
+			</form>
          </div>
 		
 		<div id="container">

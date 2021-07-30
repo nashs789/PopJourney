@@ -615,10 +615,9 @@ a {
 	top: calc(50% - 250px);
 	left: calc(50% - 300px);
 	z-index: 500;
-	font-size: 12pt;
 	border-radius: 10px;
-	font-size: 0px;
 	border: 0px;
+	color:black;
 }
 
 .popup_contents_txt {
@@ -820,6 +819,9 @@ input[type="radio"]:checked {
 }
 #point, #intro{
 	font-size: 10pt;
+}
+#yes, #no, #add{
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -1211,6 +1213,26 @@ $(document).ready(function(){
 			} //error end
 		}); //ajax end
   	}); //logoutBtn click end
+  	
+	// 메인검색창 넘어가는 부분
+	$(".search_icon").on("click", function() {
+		if($("#mainSearchFilter").val() == 0) {
+			$("#goSearch").attr("action", "search");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 1) {
+			$("#goSearch").attr("action", "searchTravelDiary");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 2) {
+			$("#goSearch").attr("action", "searchHashtag");
+			$("#goSearch").submit();
+		} else if($("#mainSearchFilter").val() == 3) {
+			$("#goSearch").attr("action", "searchCommunity");
+			$("#goSearch").submit();
+		} else {
+			$("#goSearch").attr("action", "searchNic");
+			$("#goSearch").submit();
+		}
+	});
 }); //document ready end
 function makeBMK(BMK)
 {
@@ -1363,7 +1385,7 @@ function editBMK()
 	html += "    </div>";
 	html += "<div class=\"bg\"></div>"
 	
-	$("#wrap").append(html);
+	$("#footer").append(html);
 
  	var params = $("#BMKForm").serialize();
 
@@ -1564,9 +1586,6 @@ function makeNotification(notification)
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
 </form>
-<form action="#" id="editForm">
-	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
-	<input type="hidden" id="BMKNO" name="BMKNO" value=""/>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -1621,14 +1640,17 @@ function makeNotification(notification)
 					<li id="admin">내부관리자</li>
 				</ul>
 			</nav>
-			<img alt="search" src="./resources/images/search.png" class="search_icon" /> <input
-				type="text" class="search" placeholder="검색"> <select
-				class="filter">
-				<option value="0">통합검색</option>
-				<option value="1">여행일지</option>
-				<option value="2">자유게시판</option>
-				<option value="3">닉네임</option>
-			</select>
+			<form action="#" id="goSearch" method="post" >
+				<img alt="search" src="./resources/images/search.png" class="search_icon"/>
+				<input type="text" class="search" id="mainSearchTxt" name="mainSearchTxt" value="${param.mainSearchTxt}" placeholder="검색">
+				<select class="filter" id="mainSearchFilter" name="mainSearchFilter" >
+					<option value="0" selected="selected">통합검색</option>
+					<option value="1">여행일지</option>
+					<option value="2">해시태그</option>
+					<option value="3">자유게시판</option>
+					<option value="4">닉네임</option>
+				</select>
+			</form>
 		</div>
 		<div class="sub_profile">
 			<div class="info">
@@ -1669,6 +1691,9 @@ function makeNotification(notification)
 			</div>
 		</div>
 	</div>
+<form action="#" id="editForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
+	<input type="hidden" id="BMKNO" name="BMKNO" value=""/>
 	<div id="footer">
 		<p>
 			POPJOURNEY<br /> GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br />

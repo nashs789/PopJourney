@@ -665,7 +665,7 @@
 					$("#actionForm").submit();
 				});
 				
-				// 메인검색창 넘어가는 부분(동기)
+				// 메인검색창 넘어가는 부분
 				$(".search_icon").on("click", function() {
 					if($("#mainSearchFilter").val() == 0) {
 						$("#goSearch").attr("action", "search");

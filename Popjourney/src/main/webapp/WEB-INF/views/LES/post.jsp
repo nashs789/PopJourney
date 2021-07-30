@@ -1647,8 +1647,6 @@ $(document).ready(function(){
 			});
 		}
 	});
-	
-  	
 });// document ready end
 //좋아요 첫화면 구성
 function likeLoad() {
