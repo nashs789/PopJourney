@@ -886,8 +886,8 @@ a {
 $(document).ready(function() {
 	var index = 0;
 	var photo = ["", "", "", "", ""];
-	var memo = ["메모1", "메모2", "메모3", "메모4", "메모5"];
-	var contents = ["1번일지", "2번일지", "3번일지", "4번일지", "5번일지"];
+	var memo = ["", "", "", "", ""];
+	var contents = ["", "", "", "", ""];
 	
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
@@ -943,6 +943,46 @@ $(document).ready(function() {
 			} // error end
 		}); //ajax end 
 	}//if end -> 로그인 상태여부에 따른 처리
+	
+	var params = $("#journalForm").serialize();
+	
+	$.ajax({
+		url: "journalUpdateDetails",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			$(".input_title").val(result.data.TITLE);
+			
+			var i = 0;
+			
+			for(plz of result.data2)
+			{
+				contents[i] = plz.CONTENTS;
+				memo[i] = plz.MEMO;
+				photo[i] = plz.PHOTO_PATH;
+				i++;
+			}
+			
+			$("#inputContents").val(contents[0]);
+			var path = "resources/upload/"+photo[0];
+			html = "<img src=\""+path+"\" id=\"photo\"/>";
+			$("#photoArea").html(html);
+			$(".input_memo").val(memo[0]);
+			
+			var hash = result.data.PATH.split(",");
+			var hashtag ="";
+			for(var i = 0; i < hash.length; i++)
+			{
+				hashtag += "#" + hash[i];
+			}
+			$(".hash_input").val(hashtag);
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
 	
 	$(".pref_filter").on("change", function(){
 		var html = "";
@@ -1206,10 +1246,12 @@ $(document).ready(function() {
 			m = "#memo";
 			p = "#photo";
 		}
-		var params = $("#addJournalForm").serialize()
+		var params = $("#addJournalForm").serialize();
+		console.log(params);
+		alert("!");
 		
 		$.ajax({
-			url: "addJournals",
+			url: "updateJournals",
 			data: params,
 			dataType:"json",
 			type: "post",
@@ -1473,7 +1515,7 @@ function makeNotification(notification)
 	</form>
 	<form action="journal" id="journalForm" method="post">
 		<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
-		<input type="hidden" id="journalNo" name="journalNo" value=""/>
+		<input type="hidden" id="journalNo" name="journalNo" value="${journalNo}"/>
 	</form>
 	<form action="post" id="postForm" method="post">
 		<input type="hidden" id="postNo" name="postNo" value=""/>
@@ -1573,6 +1615,7 @@ function makeNotification(notification)
 		<div id="container">
 		<form action="journalBoard" id="addJournalForm" method="post">
 			<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>
+			<input type="hidden" id="JOURNAL_NO" name="JOURNAL_NO" value="${journalNo}"/>
 			
 			<input type="hidden" id="contents0" name="contents"/>
 			<input type="hidden" id="memo0" name="memo"/>
@@ -1642,7 +1685,8 @@ function makeNotification(notification)
 				<input type="text" class="input_memo" placeholder="메모"
 						size="50" maxlength="10" autofocus required />
 				<input type="button" value="사진 추가" id="photoBtn"/><span id="fileName"></span>
-				<div id="photoArea"></div>
+				<div id="photoArea">
+				</div>
 			</div>
 			<div class="hash_area">
 				<div class="title_top">
@@ -1666,7 +1710,7 @@ function makeNotification(notification)
 						</select>
 					</div>
 					<div class="hash">
-						<label>해시태그<input type="text" class="hash_input" name="inputHashtag" size="70" maxlength="70" placeholder="#해시태그1#해시태그2"></label>
+						<label>해시태그<input type="text" disabled="disabled" class="hash_input" name="inputHashtag" size="70" maxlength="70" placeholder="#해시태그1#해시태그2"></label>
 					</div>
 				</div>
 				<div class="enroll_area">

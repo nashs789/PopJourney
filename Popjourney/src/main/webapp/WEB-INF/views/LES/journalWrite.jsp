@@ -886,8 +886,8 @@ a {
 $(document).ready(function() {
 	var index = 0;
 	var photo = ["", "", "", "", ""];
-	var memo = ["메모1", "메모2", "메모3", "메모4", "메모5"];
-	var contents = ["1번일지", "2번일지", "3번일지", "4번일지", "5번일지"];
+	var memo = ["", "", "", "", ""];
+	var contents = ["", "", "", "", ""];
 	
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
@@ -1187,7 +1187,12 @@ $(document).ready(function() {
 	}); //notificationPhoto click end
 	
 	$(".enroll_btn").on("click", function(){
-		
+		if($.trim($(".input_title").val()) == "")
+		{
+			alert("제목 비어있음");
+			return false;
+		}
+			
 		var c = "#contents";
 		var m = "#memo";
 		var p = "#photo";

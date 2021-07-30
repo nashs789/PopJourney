@@ -131,4 +131,12 @@ public interface IPopJourneyDao {
 
 	void addJournalHash(HashMap<String, String> params)throws Throwable;
 
+	HashMap<String, String> getJournalDetail(HashMap<String, String> params)throws Throwable;
+
+	List<HashMap<String, String>> getJournalDetail2(HashMap<String, String> params)throws Throwable;
+
+	void updateJournal(HashMap<String, String> params)throws Throwable;
+
+	void updateJournalDetail(HashMap<String, String> params)throws Throwable;
+
 }

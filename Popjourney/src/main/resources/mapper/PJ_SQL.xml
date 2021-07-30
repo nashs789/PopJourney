@@ -1403,4 +1403,45 @@
 		INSERT INTO JOURNAL_HASH(JOURNAL_NO, HASH_NO)
 		VALUES(JOURNAL_SEQ.CURRVAL, HASH_SEQ.CURRVAL)	
 	</insert>
+	
+	<select id="getJournalDetail" parameterType="hashmap" resultType="hashmap">
+		SELECT J.TITLE, J.CATEGORY, J.SUB_CATEGORY, H.PATH
+		FROM JOURNAL J INNER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
+		                                      FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
+		                                                 ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
+		                                            FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
+		                                                                 ON J.JOURNAL_NO = JH.JOURNAL_NO
+		                                                         INNER JOIN HASH H
+		                                                                 ON JH.HASH_NO = H.HASH_NO) J
+		                                      START WITH J.RNUM = 1
+		                                      CONNECT BY PRIOR J.JOURNAL_NO = J.JOURNAL_NO
+		                                      AND PRIOR J.RNUM = J.RNUM - 1
+		                                      GROUP BY J.JOURNAL_NO) H 
+		                       ON J.JOURNAL_NO = H.JOURNAL_NO
+		                       AND J.DEL = 1
+		                       AND J.MEM_NO = #{memNo}
+		                       AND J.JOURNAL_NO = #{journalNo}
+	</select>
+	
+	<select id="getJournalDetail2" parameterType="hashmap" resultType="hashmap">
+		SELECT JOURNAL_SEQUENCE, PHOTO_PATH, CONTENTS, MEMO
+		FROM JOURNAL J INNER JOIN JOURNAL_DETAIL JD
+		                       ON J.JOURNAL_NO = JD.JOURNAL_NO
+		                       AND J.DEL = 1
+		WHERE J.MEM_NO = #{memNo}
+		AND J.JOURNAL_NO = #{journalNo}
+		ORDER BY JOURNAL_SEQUENCE ASC
+	</select>
+	
+	<update id="updateJournal" parameterType="hashmap">
+		UPDATE JOURNAL SET TITLE = #{inputTitle}, CATEGORY = #{inputCategory}, SUB_CATEGORY = #{inputSubCategory}
+		WHERE MEM_NO = #{MEM_NO}
+		AND JOURNAL_NO =#{JOURNAL_NO}
+	</update>
+	
+	<update id="updateJournalDetail" parameterType="hashmap">
+		UPDATE JOURNAL_DETAIL SET PHOTO_PATH = #{inputPhoto}, CONTENTS = #{inputContents}, MEMO = #{inputMemo}
+		WHERE JOURNAL_NO = #{JOURNAL_NO}
+		AND JOURNAL_SEQUENCE = #{journalSequence}	
+	</update>
 </mapper>

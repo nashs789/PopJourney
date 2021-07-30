@@ -453,7 +453,6 @@ select{
 	margin-top: 20px;
 }
 </style>
-</style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"/></script>
 <script type="text/javascript">
 $(document).ready(function(){

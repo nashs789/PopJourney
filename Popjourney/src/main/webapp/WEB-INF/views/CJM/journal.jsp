@@ -732,7 +732,7 @@ a {
 	display: inline-block;
 }
 
-.edit_btn, .del_btn {
+.edit_btn, .del_btn, #addBtn {
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -761,7 +761,7 @@ a {
 	margin-right: 60px;
 }
 
-.edit_btn:hover, .reply_edit_btn:hover {
+.edit_btn:hover, .reply_edit_btn:hover, #addBtn:hover {
 	border: 2px solid #2e3459;
 	background-color: #2e3459;
 	color: white;
@@ -796,6 +796,10 @@ a {
 }
 
 .reaction ul li:hover img {
+	background-color: #f37321;
+}
+
+#likeImg:hover{
 	background-color: #f37321;
 }
 
@@ -2702,7 +2706,7 @@ input[type="radio"]:checked {
 				</div>
 				<div class="cmt_bottom">
 					<textarea id="cmtContents" name="cmtContents" rows="8" cols="150" placeholder="댓글을 입력하십시오"></textarea>
-					<input type="button" class="edit_btn" id="addBtn" value="등  록" />
+					<input type="button" id="addBtn" value="등  록" />
 				</div>
 				<div class="cmt_list" id="cmtList"></div>
 				<div class="paging"></div>

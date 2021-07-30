@@ -1748,12 +1748,10 @@ function makePopup()
    
    $(".start_date").on("change", function(){
       $("#startDate").val($(".start_date").val());
-      console.log($("#startDate").val());
    })//start_date change end
    
    $(".end_date").on("change", function(){
       $("#endDate").val($(".end_date").val());
-      console.log($("#endDate").val());
    })//start_date change end
    
    $("#goWrite").on("click", function(){
@@ -1769,14 +1767,14 @@ function makePopup()
       {
          alert("시작일이 종료일보다 클 수 없음");
       }
-      else if($("#regionSelect").val() == "17")
+      else if($("#regionSelect[id='regionSelect'] option:selected").val() == "17")
       {
          alert("지역을 입력하세요.");
       }
       else
       {
-         $("#regionNo").val($("#regionSelect[id='regionSelect'] option:selected").val());
-         $("#writeForm").submit();
+    	  $("#regionNo").val($("#regionSelect[id='regionSelect'] option:selected").val());
+          $("#writeForm").submit();
       }
    });//goWrite click end
    
@@ -1791,7 +1789,7 @@ function makePopup()
 	<input type="hidden" id="inputJournalNo" name="inputJournalNo"/>
    <input type="hidden" id="startDate" name="startDate"/>
    <input type="hidden" id="endDate" name="endDate"/>
-   <input type="hidden" id="regionNo" name="regionNo"/>
+   <input type="hidden" id="regionNo" name="regionNo" value=17/>
 </form>
 <form action="journal" id="goJournalForm" method="post">
    <input type="hidden" id="journalNo" name="journalNo"/>

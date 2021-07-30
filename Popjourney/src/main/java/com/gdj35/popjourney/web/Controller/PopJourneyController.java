@@ -1746,10 +1746,69 @@ public class PopJourneyController {
 		// 마이페이지 썸네일
 		@RequestMapping(value = "/journalUpdate")
 		public ModelAndView journalUpdate(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {		
-			
-			 //journalNo, memNo
+					
+			 mav.addObject("journalNo", params.get("journalNo"));
 			 mav.setViewName("LIB/journalUpdate");
 
 			return mav;
 		}
+		
+		//여행일지 수정 상세보기 가져오기
+		@RequestMapping(value = "journalUpdateDetails",
+						method = RequestMethod.POST,
+						produces ="test/json;charset=UTF-8")
+		@ResponseBody
+		public String journalUpdateDetails(@RequestParam HashMap<String, String> params) throws Throwable {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			try {
+				HashMap<String, String> data = ipjs.getJournalDetail(params);
+				modelMap.put("data", data);
+				
+				List<HashMap<String, String>> data2 = ipjs.getJournalDetail2(params);
+				modelMap.put("data2", data2);
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+
+			return mapper.writeValueAsString(modelMap);
+		}
+		
+		//여행일지 수정
+		@RequestMapping(value = "/updateJournals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String updateJournals(@RequestParam HashMap<String, String> params,
+								     @RequestParam List<String> contents,
+								     @RequestParam List<String> memo,
+								     @RequestParam List<String> photo) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 ipjs.updateJournal(params);
+				 
+				 for(int i = 0; i < contents.size(); i++)
+				 {
+					 if(contents.get(i) == "" || memo.get(i) == "" || photo.get(i) == "")
+					 {
+						 break;
+					 }
+					 params.put("journalSequence", Integer.toString(i));
+					 params.put("inputContents", contents.get(i));
+					 params.put("inputMemo", memo.get(i));
+					 params.put("inputPhoto", photo.get(i));
+					 
+					 ipjs.updateJournalDetail(params);
+				 }
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}	
 }
