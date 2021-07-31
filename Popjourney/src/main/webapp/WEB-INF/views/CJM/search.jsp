@@ -1772,7 +1772,14 @@
 											</p>
 										</div>
 										<div class="post_profile">
-											<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+											<c:choose>
+												<c:when test="${!empty data.MEM_PHOTO_PATH}">
+													<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+												</c:when>
+												<c:otherwise>
+													<img alt="작성자" src="./resources/images/profile3.png"> <span>${data.NIC}</span>
+												</c:otherwise>
+											</c:choose>
 											<div>
 												<div>
 													<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>
@@ -1815,7 +1822,14 @@
 											</p>
 										</div>
 										<div class="post_profile">
-											<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+											<c:choose>
+												<c:when test="${!empty data.MEM_PHOTO_PATH}">
+													<img alt="작성자" src="./resources/upload/${data.MEM_PHOTO_PATH}"> <span>${data.NIC}</span>
+												</c:when>
+												<c:otherwise>
+													<img alt="작성자" src="./resources/images/profile3.png"> <span>${data.NIC}</span>
+												</c:otherwise>
+											</c:choose>
 											<div>
 												<div>
 													<span>조회수</span> <span class="cnt">${data.HIT}</span> <span>좋아요</span>

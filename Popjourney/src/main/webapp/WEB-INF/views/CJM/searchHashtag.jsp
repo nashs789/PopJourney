@@ -1078,7 +1078,11 @@
 					html += "		</p>";
 					html += "	</div>";
 					html += "	<div class=\"post_profile\">";
-					html += "		<img alt=\"작성자\" src=\"./resources/upload/" + d.MEM_PHOTO_PATH + "\"> <span>" + d.NIC + "</span>";
+					if(d.MEM_PHOTO_PATH != null) {
+						html += "		<img alt=\"작성자\" src=\"./resources/upload/" + d.MEM_PHOTO_PATH + "\"> <span>" + d.NIC + "</span>";
+					} else {
+						html += "		<img alt=\"작성자\" src=\"./resources/images/profile3.png\"> <span>" + d.NIC + "</span>";						
+					}
 					html += "		<div>";
 					html += "			<div>";
 					html += "				<span>조회수</span> <span class=\"cnt\">" + d.HIT + "</span> <span>좋아요</span>";
