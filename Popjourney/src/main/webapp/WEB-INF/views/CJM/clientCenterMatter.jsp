@@ -569,17 +569,10 @@
 			}
 			#list_wrap tbody tr td {
 				font-size: 9pt;
-				font-weight: 300;
 				text-align: center;
 			}
 			.article {
 				font-size: 13pt;
-			}
-			.click_article {
-				cursor: pointer;
-			}
-			.click_article:hover {
-				color: #F37321;
 			}
 			.matter_title {
 				text-align: left;
@@ -1367,7 +1360,7 @@
 									<th>문의번호</th>
 									<th>작성자</th>
 									<th>제목</th>
-									<th class="click_article">작성일↕</th>
+									<th>작성일</th>
 									<th>답변유무</th>
 								</tr>
 							</thead>

@@ -2008,7 +2008,7 @@ input[type="radio"]:checked {
 			}
 		});
 		
-		if($("#memNo").val() == $("#journalWriteMemNo").val()) {
+		if($("#memNo").val() == $("#journalWriteMemNo").val() || $("#memNo").val() == 1) {
 			var html = "";
 			console.log(".!!!");
 			html += "<div class=\"btn_list\">";
