@@ -1129,10 +1129,15 @@ $(document).ready(function(){
 	//알람 아이콘 클릭 시 알람 팝업 나왔다 사라졌다 & 프로필 하위메뉴는 안보이도록
    
    $(".paging").on("click", "span", function() {
-      $("#page2").val($(this).attr("name"));
-      $("#startCnt").val(1 + (($("#page2").val()-1)) * 15);
-      $("#endCnt").val($("#page2").val()*15);
-      
+	   $("#page2").val($(this).attr("name"));
+	   $("#startCnt").val(1 + (($("#page2").val()-1)) * 15);
+	   $("#endCnt").val($("#page2").val()*15);
+	   
+	   if($(this).attr("id") == "goFirstPage")
+		{
+		   loadPage2();
+		}
+	   
       loadPage();
    }); //paging_wrap click end
    
@@ -1455,7 +1460,7 @@ function makeJournalList(list)
 }
 function makePage()
 {
-   var html = "<span name=\"1\"><<</span>";
+   var html = "<span id=\"goFirstPage\" name=\"1\"><<</span>";
    
    if($("#page2").val() == "1") {
       html += "<span name=\"1\"><</span>";

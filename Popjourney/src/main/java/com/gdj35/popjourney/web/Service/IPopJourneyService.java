@@ -139,4 +139,5 @@ public interface IPopJourneyService {
 
 	void updateJournalDetail(HashMap<String, String> params)throws Throwable;
 
+	int report(HashMap<String, String> params)throws Throwable;
 }

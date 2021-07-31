@@ -1182,8 +1182,24 @@ $(document).ready(function(){
   		location.href = "memAdmin";
   	});
 	$(".report_btn").on("click", function(){
+		if("${sMEM_NO}" == "")
+		{
+			alert("로그인이 필요한 기능입니다.");
+			return false;
+		}
+			
 		reportPopup();
 	}); 
+	
+	$(".container_wrap").on("click", ".report_btn", function(){
+		if("${sMEM_NO}" == "")
+		{
+			alert("로그인이 필요한 기능입니다.");
+			return false;
+		}
+			
+		reportPopup();
+	});
 
 	$(".follow_btn_area").on("click", "input[type='button']", function(){
 		if("${sMEM_NO}" != "${data.MEM_NO}") {
@@ -1267,8 +1283,7 @@ $(document).ready(function(){
 	$(".reaction").on("click","img", function(){
 		var like = $(this).attr("like");
 		var params = $("#likeForm").serialize();
-		console.log(like);
-		console.log(params);
+
 		//console.log(params);
 		if(like == 0){ //좋아요 x : 좋아요 기능
 			console.log("좋아요!");
@@ -1643,6 +1658,7 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
 	// 대댓글 삭제버튼 클릭 시
 	$("#cmtList").on("click", ".cmt_cmt_delete_btn", function() {
 		$("#cmtWriteMemNo").val($(this).parent().parent().parent().attr("cmtcmtno"));
@@ -1704,7 +1720,6 @@ function likeReload() {
 }	
 //조회수
 function hitCnt() {
-	console.log(params);
 	$.ajax({
 		url:"postHits", 
 		type: "post",
@@ -1757,31 +1772,74 @@ function reportPopup() {
 		html += "	</div>";
 		html += "	<div class=\"report_radio\">";
 		html += "		<div class=\"report_radio_box\">";
-		html += "			<input type=\"radio\" id=\"report_radio0\" name=\"report_reason\"><label for=\"report_radio0\">욕설 </label>";
+		html += "			<input type=\"radio\" id=\"report_radio0\" value=\"0\"name=\"report_reason\"><label for=\"report_radio0\">욕설 </label>";
 		html += "		</div>";
 		html += "		<div class=\"report_radio_box\">";
-		html += "			<input type=\"radio\" id=\"report_radio1\" name=\"report_reason\"><label for=\"report_radio1\">비방</label>";
+		html += "			<input type=\"radio\" id=\"report_radio1\" value=\"1\" name=\"report_reason\"><label for=\"report_radio1\">비방</label>";
 		html += "		</div>";
 		html += "	    <div class=\"report_radio_box\">";
-		html += "		    <input type=\"radio\" id=\"report_radio2\" name=\"report_reason\"><label for=\"report_radio2\">정치적 발언</label>";
+		html += "		    <input type=\"radio\" id=\"report_radio2\" value=\"2\" name=\"report_reason\"><label for=\"report_radio2\">정치적 발언</label>";
 		html += "	    </div>";
 		html += "	    <div class=\"report_radio_box\">";
-		html += "		    <input type=\"radio\" id=\"report_radio3\" name=\"report_reason\"><label for=\"report_radio3\">외설적 언어</label>";
+		html += "		    <input type=\"radio\" id=\"report_radio3\" value=\"3\" name=\"report_reason\"><label for=\"report_radio3\">외설적 언어</label>";
 		html += "	    </div>";
 		html += "	    <div class=\"report_radio_box\">";
-		html += "		    <input type=\"radio\" id=\"report_radio4\" name=\"report_reason\"><label for=\"report_radio4\">기타</label>";
+		html += "		    <input type=\"radio\" id=\"report_radio4\" value=\"4\" name=\"report_reason\"><label for=\"report_radio4\">기타</label>";
 		html += "	    </div>";
 		html += "	</div>";
 		html += "	<div>";
-		html += "		상세 내용 <span class= \"asterisk\">&#42;</span><br /> <textarea class=\"pop_memo\" rows=\"3\" cols=\"73\"  placeholder=\"자세하게 적어주십시오\" ></textarea>";
+		html += "		상세 내용 <span class= \"asterisk\">&#42;</span><br /> <textarea class=\"pop_memo\" name=\"inputContents\" rows=\"3\" cols=\"73\"  placeholder=\"자세하게 적어주십시오\" ></textarea>";
 		html += "	</div>";
 		html += "</div>";
 		html += "	<span class=\"submit_btn\">확 인</span> <span class=\"close_btn\">취 소</span>";
 		html += "</div>";
 		html += "</div>";
 		html += "<div class=\"bg\"></div>";
+		
+		
+		$("#pop").html(html);
 
-	$("#pop").html(html);
+		$(".submit_btn").on("click", function(){
+			if(isNaN($(":radio[name='report_reason']:checked").val())) 
+			{
+				alert("신고 사유를 선택하세요.");
+			}
+			else if($.trim($(".pop_memo").val()) =="")
+			{
+				alert("내용을 입력하세요.");
+			}
+			else
+			{
+				var params = $("#reportForm").serialize();
+				console.log(params);
+				 $.ajax({
+					url: "reports",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(result) {
+						if(result.msg == "success")
+						{
+							$(".popup").remove();
+							$(".bg").remove();
+							alert("신고 되었습니다.");
+						}
+						else
+						{
+							alert("실패하였습니다");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				}); 
+			}
+		}); //.submit_btn click end
+		
+		$("#pop").on("click", ".close_btn", function(){
+			$(".popup").remove();
+			$(".bg").remove();
+		}); //.close_btn click end
 }//reportPopup end
 function makeNotification(notification)
 {
@@ -2064,7 +2122,7 @@ function drawPaging(pb) {
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	</form>
 	<form action="" id="tempForm">
-		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${data.MEM_NO}"/>
+		<input type="hidden" name="MEM_NO" value="${data.MEM_NO}"/>
 	</form>
 	<form action="#" id="notificationForm">
 		<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
@@ -2075,7 +2133,7 @@ function drawPaging(pb) {
 	<form action="post" id="postForm1" method="post">
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
-		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
+		<input type="hidden" name="loginUserNo" value="${sMEM_NO}" />
 	</form>
    <form action="#" id="likeForm" method="post">
    		<input type="hidden" id="lLoginUserNo" name="loginUserNo" value="${sMEM_NO}"/> 
@@ -2306,7 +2364,11 @@ function drawPaging(pb) {
                GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br/>
                Copyright© POPJOURNEY. All Rights Reserved.
             </p>
-         </div>      
-         <div id="pop"></div>   
+         </div> 
+         <form action="#" id="reportForm">
+       		 <input type="hidden" name="MEM_NO" value="${sMEM_NO}" />
+       		 <input type="hidden" name="writeMemNo" value="${data.MEM_NO}"/>
+        	 <div id="pop"></div>   
+         </form>
    </body>
 </html>

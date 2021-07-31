@@ -408,4 +408,9 @@ public class PopJourneyDao implements IPopJourneyDao {
 	public void updateJournalDetail(HashMap<String, String> params) throws Throwable {
 		sql.update("PJ.updateJournalDetail", params);	
 	}
+
+	@Override
+	public int report(HashMap<String, String> params) throws Throwable {
+		return sql.insert("PJ.report", params);	
+	}
 }

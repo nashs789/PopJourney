@@ -1454,4 +1454,9 @@
 		WHERE JOURNAL_NO = #{JOURNAL_NO}
 		AND JOURNAL_SEQUENCE = #{journalSequence}	
 	</update>
+	
+	<insert id="report" parameterType="hashmap">
+		INSERT INTO REPORT(REPORT_NO, REASON_NO,  REQUEST_MEM_NO, TARGET_MEM_NO, CONTENTS)
+		VALUES (REPORT_SEQ.NEXTVAL, #{report_reason}, #{MEM_NO}, #{writeMemNo}, #{inputContents})
+	</insert>
 </mapper>

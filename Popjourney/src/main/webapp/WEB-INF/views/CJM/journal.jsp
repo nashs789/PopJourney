@@ -1137,6 +1137,19 @@ a {
 	font-weight: bold;
 	line-height: 50px;
 }
+.submit_btn, .close_btn {
+	text-decoration: none;
+	display: table-cell;
+	text-align: center;
+	width: 270px;
+	height: 50px;
+	padding: 10px 15px 10px 15px;
+	font-size: 12pt;
+	color: #f37321;
+	font-weight: bold;
+	line-height: 50px;
+	cursor: pointer;
+}
 
 .bmk_popup .btn_list span:first-child, .bmk_popup .alert_btn_list2 span:first-child {
 	border-radius: 0 0 0 10px;
@@ -1153,9 +1166,9 @@ a {
 }
 
 .popup {
-	display:none;
+	display:inline-block;
 	width: 600px;
-	height: 515px;
+	height: 512px;
 	background-color: #fcfcfc;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	position: fixed;
@@ -1164,7 +1177,6 @@ a {
 	z-index: 500;
 	font-size: 12pt;
 	border-radius: 10px;
-	font-size: 0px;
 	border: 0px;
 }
 
@@ -1292,7 +1304,7 @@ input[type="radio"]:checked {
 	border-radius: 0 0 10px 0;
 }
 
-.popup_btn_list span:hover, .alert_btn_list span:hover, .alert_btn_list2 span:hover
+.popup_btn_list span:hover, .alert_btn_list span:hover, .alert_btn_list2 span:hover, .submit_btn:hover, .close_btn:hover 
 	{
 	background-color: #f37321;
 	color: white;
@@ -1307,7 +1319,7 @@ input[type="radio"]:checked {
 
 .bg {
 	position: fixed;
-    display: none; 
+    display: inline-block; 
     width: 100%;
     height: 100%;
     top: 0px;
@@ -1592,6 +1604,28 @@ input[type="radio"]:checked {
 				} //error end
 			}); //ajax end
 	  	}); //logoutBtn click end
+	  	
+	  	$(".report_btn").on("click", function(){
+			if("${sMEM_NO}" == "")
+			{
+				alert("로그인이 필요한 기능입니다.");
+				return false;
+			}
+			
+			$("#writeMemNo").val($(".title_area").attr("journalMno"));	
+			reportPopup();
+		}); 
+		
+		$(".container_wrap").on("click", ".report_btn", function(){
+			if("${sMEM_NO}" == "")
+			{
+				alert("로그인이 필요한 기능입니다.");
+				return false;
+			}
+			
+			$("#writeMemNo").val($(".title_area").attr("journalMno"));
+			reportPopup();
+		});
 		
 		// 여행게시판 작성자 번호 가져오기
 		$("#journalWriteMemNo").val($(".title_area").attr("journalMno"));
@@ -2447,6 +2481,93 @@ input[type="radio"]:checked {
 	   $("#wrap").append(html);
 	}
 	
+	function reportPopup() {
+		var html = "";
+
+        html += "<div class=\"popup\">";
+		html += "<div class=\"popup_contents_txt\">";
+		html += "	<div>";
+		html += "		신고하기<span>필수 입력 사항 </span><span class= \"asterisk\">&#42;</span>";
+		html += "	</div>";
+		html += "	<div class= \"report_title\">";
+		html += "		<span>신고글</span> <span>글 제목(*댓글의 경우 '댓글'표기)</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>작성자</span> <span>닉네임</span>";
+		html += "	</div>";
+		html += "	<div class=\"radio_title\">";
+		html += "		<span>신고 사유</span> <span class= \"asterisk\">&#42;</span>";
+		html += "		<p>여러 사유에 해당하는 경우, 대표적인 사유 1개를 선택하십시오.</p>";
+		html += "	</div>";
+		html += "	<div class=\"report_radio\">";
+		html += "		<div class=\"report_radio_box\">";
+		html += "			<input type=\"radio\" id=\"report_radio0\" value=\"0\"name=\"report_reason\"><label for=\"report_radio0\">욕설 </label>";
+		html += "		</div>";
+		html += "		<div class=\"report_radio_box\">";
+		html += "			<input type=\"radio\" id=\"report_radio1\" value=\"1\" name=\"report_reason\"><label for=\"report_radio1\">비방</label>";
+		html += "		</div>";
+		html += "	    <div class=\"report_radio_box\">";
+		html += "		    <input type=\"radio\" id=\"report_radio2\" value=\"2\" name=\"report_reason\"><label for=\"report_radio2\">정치적 발언</label>";
+		html += "	    </div>";
+		html += "	    <div class=\"report_radio_box\">";
+		html += "		    <input type=\"radio\" id=\"report_radio3\" value=\"3\" name=\"report_reason\"><label for=\"report_radio3\">외설적 언어</label>";
+		html += "	    </div>";
+		html += "	    <div class=\"report_radio_box\">";
+		html += "		    <input type=\"radio\" id=\"report_radio4\" value=\"4\" name=\"report_reason\"><label for=\"report_radio4\">기타</label>";
+		html += "	    </div>";
+		html += "	</div>";
+		html += "	<div>";
+		html += "		상세 내용 <span class= \"asterisk\">&#42;</span><br /> <textarea class=\"pop_memo\" name=\"inputContents\" rows=\"3\" cols=\"73\"  placeholder=\"자세하게 적어주십시오\" ></textarea>";
+		html += "	</div>";
+		html += "</div>";
+		html += "	<span class=\"submit_btn\">확 인</span> <span class=\"close_btn\">취 소</span>";
+		html += "</div>";
+		html += "</div>";
+		html += "<div class=\"bg\"></div>";
+		
+		
+		$("#pop").html(html);
+
+		$(".submit_btn").on("click", function(){
+			if(isNaN($(":radio[name='report_reason']:checked").val())) 
+			{
+				alert("신고 사유를 선택하세요.");
+			}
+			else if($.trim($(".pop_memo").val()) =="")
+			{
+				alert("내용을 입력하세요.");
+			}
+			else
+			{
+				var params = $("#reportForm").serialize();
+				console.log(params);
+				 $.ajax({
+					url: "reports",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(result) {
+						if(result.msg == "success")
+						{
+							$(".popup").remove();
+							$(".bg").remove();
+							alert("신고 되었습니다.");
+						}
+						else
+						{
+							alert("실패하였습니다");
+						}
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				}); 
+			}
+		}); //.submit_btn click end
+		
+		$("#pop").on("click", ".close_btn", function(){
+			$(".popup").remove();
+			$(".bg").remove();
+		}); //.close_btn click end
+}//reportPopup end
+	
 	function getBmkNo() {
 		var params = $("#actionForm").serialize();
 		
@@ -2705,43 +2826,10 @@ input[type="radio"]:checked {
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
 	</div>
-	<div class="popup">
-		<div class="popup_contents_txt">
-			<div>
-				신고하기<span>필수 입력 사항 </span><span class= "asterisk">&#42;</span>
-			</div>
-			<div class= "report_title">
-				<span>신고글</span> <span>글 제목(*댓글의 경우 '댓글'표기)</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>작성자</span> <span>닉네임</span>
-			</div>
-			<div class="radio_title">
-				<span>신고 사유</span> <span class= "asterisk">&#42;</span>
-				<p>여러 사유에 해당하는 경우, 대표적인 사유 1개를 선택하십시오.</p>
-			</div>
-			<div class="report_radio">
-				<div class="report_radio_box">
-					<input type="radio" id="report_radio0" name="report_reason"><label for="report_radio0">욕설 </label>
-				</div>
-				<div class="report_radio_box">
-					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">비방</label>
-				</div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">정치적 발언</label>
-			    </div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">외설적 언어</label>
-			    </div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio4" name="report_reason"><label for="report_radio4">기타</label>
-			    </div>
-			</div>
-			<div>
-				상세 내용 <span class= "asterisk">&#42;</span><br /> <textarea class="pop_memo" rows="3" cols="73"  placeholder="자세하게 적어주십시오" ></textarea>
-			</div>
-		</div>
-		<div class="popup_btn_list">
-			<span class="submit_btn">확 인</span> <span class="close_btn">취 소</span>
-		</div>
-	</div>
-	<div class="bg"></div>
+	<form action="#" id="reportForm">
+       		 <input type="hidden" name="MEM_NO" value="${sMEM_NO}" />
+       		 <input type="hidden" id="writeMemNo" name="writeMemNo"/>
+        	 <div id="pop"></div>   
+    </form>
 </body>
 </html>
