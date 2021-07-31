@@ -476,7 +476,7 @@ a {
 	padding: 30px 0 0 45px;
 }
 
-#post, .folder {
+.post2, .folder {
 	float: left;
 	width: 340px;
 	cursor: pointer;
@@ -486,7 +486,7 @@ a {
 	color: black;
 }
 
-#post {
+.post2 {
 	height: 390px;
 }
 
@@ -1283,7 +1283,7 @@ function makeJournalList(detail)
 	
 	for(data of detail)
 	{ 
-		html += "   <div id=\"post\">";
+		html += "   <div class=\"post2\">";
 		html += "		<input type = \"checkbox\" class=\"ck\" ck=\"" + data.JOURNAL_NO + "\"/>";	
 		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
 		html += "   	<div class=\"post_info\">";

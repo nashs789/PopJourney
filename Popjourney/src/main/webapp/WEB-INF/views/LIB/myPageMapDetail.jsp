@@ -490,7 +490,7 @@ a {
 	padding: 30px 0 0 45px;
 }
 
-.post {
+.post2 {
 	float: left;
 	width: 340px;
 	height: 390px;
@@ -500,7 +500,7 @@ a {
 	color: black;
 }
 
-.post:hover {
+.post2:hover {
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 }
 
@@ -1053,7 +1053,7 @@ function makeGallery(regionList)
 	
 	for(data of regionList)
 	{ 
-		html += "   <div class=\"post\">";
+		html += "   <div class=\"post2\">";
 		html += "   <span class=\"thumb\" thumb=\"" + data.JOURNAL_NO + "\"><img alt=\"썸네일\" src=\"resources/upload/" + data.PHOTO_PATH + "\"></span>";
 		html += "   	<div class=\"post_info\">";
 		html += "   		<p>";

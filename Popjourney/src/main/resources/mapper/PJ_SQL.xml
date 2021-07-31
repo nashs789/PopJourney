@@ -149,6 +149,7 @@
 		      WHERE TO_CHAR(J.JOURNAL_DATE, 'YY')= TO_CHAR(SYSDATE, 'YY')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
 		                                                                               FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                                                      ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                                                      AND JC.DEL = 1
 		                                                                               GROUP BY J.JOURNAL_NO) JC
 		                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
 		WHERE J.RK BETWEEN 1 AND 10
@@ -182,6 +183,7 @@
 		      AND TO_CHAR(J.JOURNAL_DATE, 'MM')= TO_CHAR(SYSDATE, 'MM')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
 		                                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                                                           AND JC.DEL = 1
 		                                                                                    GROUP BY J.JOURNAL_NO) JC
 		                                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
 		WHERE J.RK BETWEEN 1 AND 10
@@ -216,6 +218,7 @@
 		      AND TO_CHAR(J.JOURNAL_DATE, 'IW')= TO_CHAR(SYSDATE, 'IW')) J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CMT
 		                                                                                    FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                                                           ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                                                           AND JC.DEL = 1
 		                                                                                    GROUP BY J.JOURNAL_NO) JC
 		                                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
 		WHERE J.RK BETWEEN 1 AND 10
@@ -427,6 +430,7 @@
 		                                        LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
 		                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
 		                                                                              ON B.POST_NO = BC.POST_NO
+		                                                                              AND BC.DEL = 1
 		                                                         GROUP BY BC.POST_NO) BCMT
 		                                                     ON B.POST_NO = BCMT.POST_NO
 		          UNION
@@ -454,6 +458,7 @@
 		                        LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
 		                                         FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                AND JC.DEL = 1
 		                                         GROUP BY JC.JOURNAL_NO) JCMT
 		                                     ON J.JOURNAL_NO = JCMT.JOURNAL_NO
 		          UNION       
@@ -477,6 +482,7 @@
 		                       LEFT OUTER JOIN (SELECT BC.POST_NO, COUNT(*) AS CNT
 		                                                         FROM BOARD B INNER JOIN BOARD_CMT BC
 		                                                                              ON B.POST_NO = BC.POST_NO
+		                                                                              AND BC.DEL = 1
 		                                                         GROUP BY BC.POST_NO) BCMT
 		                                                     ON B.POST_NO = BCMT.POST_NO
 		          WHERE BC.MEM_NO IN (SELECT TARGET_MEM_NO
@@ -507,6 +513,7 @@
 		                         LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
 		                                          FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                 ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                 AND JC.DEL = 1
 		                                          GROUP BY JC.JOURNAL_NO) JCMT
 		                                      ON J.JOURNAL_NO = JCMT.JOURNAL_NO
 		          WHERE JC.MEM_NO IN (SELECT TARGET_MEM_NO
@@ -735,6 +742,7 @@
 		                     LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
 		                                      FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                             ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                             AND JC.DEL = 1
 		                                      GROUP BY J.JOURNAL_NO) JCMT
 		                                  ON J.JOURNAL_NO = JCMT.JOURNAL_NO
 		                     LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
@@ -1088,6 +1096,7 @@
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
 		                                           FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                  ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                  AND JC.DEL = 1
 		                                           GROUP BY J.JOURNAL_NO) JCMT
 		                                       ON J.JOURNAL_NO = JCMT.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT
@@ -1196,6 +1205,7 @@
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, COUNT(*) AS CNT
 		                                           FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                  ON J.JOURNAL_NO = JC.JOURNAL_NO
+		                                                                  AND JC.DEL = 1
 		                                           GROUP BY J.JOURNAL_NO) JCMT
 		                                       ON J.JOURNAL_NO = JCMT.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS LIKE_CNT

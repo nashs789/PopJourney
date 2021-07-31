@@ -854,6 +854,32 @@ $(document).ready(function() {
 		} // error end
 	}); //ajax end 
 	
+	$.ajax({
+		url: "checkPoints",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				var html = "";
+				
+				html += "<span>총 게시글  " + result.data.JOURNAL_CNT + "</span> <span>팔로워 " + result.data.FOLLOWER_CNT + "</span>";
+				
+				$(".cnt").html(html);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
 	$("#profilePhoto").on("click", function(){
 		$("#notification").css("display", "none");
 		if($("#profileSlidedown").css("display") == "block")
@@ -1563,7 +1589,7 @@ function makeNotification(notification)
 							</c:choose>
 						</div>
 						<div class="cnt">
-							<span>총 게시글 100</span> <span>총 댓글 100</span>
+
 						</div>
 					</div>
 				</div>

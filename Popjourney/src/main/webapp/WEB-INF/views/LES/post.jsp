@@ -785,7 +785,7 @@ p {
 }
 
 .popup {
-	display:none;
+	display:inline-block;
 	width: 600px;
 	height: 515px;
 	background-color: #fcfcfc;
@@ -1132,6 +1132,34 @@ $(document).ready(function(){
 		}); //ajax end 
 	}//if end -> 로그인 상태여부에 따른 처리
 	
+	var params = $("#tempForm").serialize();
+	
+	$.ajax({
+		url: "checkPoints",
+		data: params,
+		dataType: "json",
+		type: "post",
+		success:function(result)
+		{
+			if(result.msg == "success")
+			{
+				var html = "";
+				
+				html += "<span>총 게시글  " + result.data.JOURNAL_CNT + "</span> <span>팔로워 " + result.data.FOLLOWER_CNT + "</span>";
+				
+				$(".cnt").html(html);
+			}
+			else
+			{
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
+			}
+		}, //success end
+		error: function(request, status, error) {
+			console.log(error);
+		} // error end
+	}); //ajax end 
+	
 	likeLoad();
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$(".logo_photo").on("click", function() {
@@ -1153,15 +1181,9 @@ $(document).ready(function(){
   		location.href = "memAdmin";
   	});
 	$(".report_btn").on("click", function(){
-		$(".popup, .bg").show();
+		reportPopup();
 	}); 
-	
-	$(".ok_btn").on("click", function(){
-		$(".popup, .bg").hide();
-	});
-	$(".cancel_btn").on("click", function(){
-		$(".popup, .bg").hide();
-	});
+
 	$(".follow_btn_area").on("click", "input[type='button']", function(){
 		if("${sMEM_NO}" != "${data.MEM_NO}") {
 			$("#userNo").val($(this).attr($(this).attr("class")));
@@ -1718,9 +1740,9 @@ function popup() {
 	}
 }
 function reportPopup() {
-	var html = "";
-	for(var d of report) {
-		
+		var html = "";
+
+        html += "<div class=\"popup\">";
 		html += "<div class=\"popup_contents_txt\">";
 		html += "	<div>";
 		html += "		신고하기<span>필수 입력 사항 </span><span class= \"asterisk\">&#42;</span>";
@@ -1755,9 +1777,10 @@ function reportPopup() {
 		html += "</div>";
 		html += "	<span class=\"submit_btn\">확 인</span> <span class=\"close_btn\">취 소</span>";
 		html += "</div>";
-	}
-	
-	$(".popup").html(html);
+		html += "</div>";
+		html += "<div class=\"bg\"></div>";
+
+	$("#pop").html(html);
 }//reportPopup end
 function makeNotification(notification)
 {
@@ -2039,6 +2062,9 @@ function drawPaging(pb) {
 		<input type="hidden" id="GBN" name="GBN" value="1"/>
 		<input type="hidden" id="firstPage" name="firstPage" value="1"/>
 	</form>
+	<form action="" id="tempForm">
+		<input type="hidden" id="MEM_NO" name="MEM_NO" value="${data.MEM_NO}"/>
+	</form>
 	<form action="#" id="notificationForm">
 		<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
 	</form>
@@ -2278,43 +2304,7 @@ function drawPaging(pb) {
                GDJ-35기 LEE Eun-Soo, LEE In-Bok, CHOI Jeong-Min<br/>
                Copyright© POPJOURNEY. All Rights Reserved.
             </p>
-         </div>         
-         <div class="popup">
-		<div class="popup_contents_txt">
-			<div>
-				신고하기<span>필수 입력 사항 </span><span class= "asterisk">&#42;</span>
-			</div>
-			<div class= "report_title">
-				<span>신고글</span> <span>글 제목(*댓글의 경우 '댓글'표기)</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>작성자</span> <span>닉네임</span>
-			</div>
-			<div class="radio_title">
-				<span>신고 사유</span> <span class= "asterisk">&#42;</span>
-				<p>여러 사유에 해당하는 경우, 대표적인 사유 1개를 선택하십시오.</p>
-			</div>
-			<div class="report_radio">
-				<div class="report_radio_box">
-					<input type="radio" id="report_radio0" name="report_reason"><label for="report_radio0">욕설 </label>
-				</div>
-				<div class="report_radio_box">
-					<input type="radio" id="report_radio1" name="report_reason"><label for="report_radio1">비방</label>
-				</div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio2" name="report_reason"><label for="report_radio2">정치적 발언</label>
-			    </div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio3" name="report_reason"><label for="report_radio3">외설적 언어</label>
-			    </div>
-			    <div class="report_radio_box">
-				    <input type="radio" id="report_radio4" name="report_reason"><label for="report_radio4">기타</label>
-			    </div>
-			</div>
-			<div>
-				상세 내용 <span class= "asterisk">&#42;</span><br /> <textarea class="pop_memo" rows="3" cols="73"  placeholder="자세하게 적어주십시오" ></textarea>
-			</div>
-		</div>
-		<div class="popup_btn_list">
-			<span class="submit_btn">확 인</span> <span class="close_btn">취 소</span>
-		</div>
-	</div>
+         </div>      
+         <div id="pop"></div>   
    </body>
 </html>
