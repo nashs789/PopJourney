@@ -970,7 +970,7 @@ input[type="radio"]:checked {
    height:40px;
    margin: 30px auto 30px auto;
 }
-#yesBtn{
+#yesBtn, .submit_btn, .close_btn{
    text-decoration: none;
    display:inline-block;
    text-align:center;
@@ -982,8 +982,9 @@ input[type="radio"]:checked {
    font-weight: bold;
    line-height: 30px;
    border-radius: 0 0 10px 10px; 
+   cursor: pointer;
 }
-#yesBtn:hover {
+#yesBtn:hover, .submit_btn:hover, .close_btn:hover {
    background-color: #f37321;
    color: white;
 }
@@ -2074,6 +2075,7 @@ function drawPaging(pb) {
 	<form action="post" id="postForm1" method="post">
 		<input type="hidden" id="postNo" name="postNo" value=""/>
 		<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+		<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 	</form>
    <form action="#" id="likeForm" method="post">
    		<input type="hidden" id="lLoginUserNo" name="loginUserNo" value="${sMEM_NO}"/> 
