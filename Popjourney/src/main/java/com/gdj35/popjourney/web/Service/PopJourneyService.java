@@ -412,4 +412,10 @@ public class PopJourneyService implements IPopJourneyService {
 		ipjd.updateJournalDetail(params);
 		
 	}
+
+	@Override
+	public int report(HashMap<String, String> params) throws Throwable {
+		return ipjd.report(params);
+	}
+
 }

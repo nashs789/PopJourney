@@ -1416,7 +1416,7 @@
 	
 	<select id="getJournalDetail" parameterType="hashmap" resultType="hashmap">
 		SELECT J.TITLE, J.CATEGORY, J.SUB_CATEGORY, H.PATH
-		FROM JOURNAL J INNER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
+		FROM JOURNAL J LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS PATH
 		                                      FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
 		                                                 ROW_NUMBER() OVER(PARTITION BY J.JOURNAL_NO ORDER BY H.HASH_NO ASC) AS RNUM
 		                                            FROM JOURNAL J INNER JOIN JOURNAL_HASH JH 
@@ -1429,8 +1429,8 @@
 		                                      GROUP BY J.JOURNAL_NO) H 
 		                       ON J.JOURNAL_NO = H.JOURNAL_NO
 		                       AND J.DEL = 1
-		                       AND J.MEM_NO = #{memNo}
-		                       AND J.JOURNAL_NO = #{journalNo}
+		WHERE J.MEM_NO = #{memNo}
+		AND J.JOURNAL_NO = #{journalNo}
 	</select>
 	
 	<select id="getJournalDetail2" parameterType="hashmap" resultType="hashmap">
@@ -1454,4 +1454,9 @@
 		WHERE JOURNAL_NO = #{JOURNAL_NO}
 		AND JOURNAL_SEQUENCE = #{journalSequence}	
 	</update>
+	
+	<insert id="report" parameterType="hashmap">
+		INSERT INTO REPORT(REPORT_NO, REASON_NO,  REQUEST_MEM_NO, TARGET_MEM_NO, CONTENTS)
+		VALUES (REPORT_SEQ.NEXTVAL, #{report_reason}, #{MEM_NO}, #{writeMemNo}, #{inputContents})
+	</insert>
 </mapper>

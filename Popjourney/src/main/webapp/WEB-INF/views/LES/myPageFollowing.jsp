@@ -1000,6 +1000,12 @@ $(document).ready(function(){
 	}); //follow_list input:checkbox changed end
 	
 	$(".edit_btn").on("click", function(){
+		if($("input[type='checkbox']").filter(':checked').size() == 0)
+		{
+			alert("하나라도 선택 ㄱㄱ");
+			return false;
+		}
+		
 		$("#box").val(boxName.substring(2));
 		
 		var params = $("#boxNumber").serialize();
@@ -1351,6 +1357,7 @@ function makeNotification(notification)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 	<div id="wrap">
 		<div id="header">

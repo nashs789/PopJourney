@@ -800,6 +800,10 @@ a {
    background-color: #f37321;
    color: white;
 }
+#comBg{
+	width:100%;
+	height: 300px;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -1464,9 +1468,12 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+	<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
 </form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>		
 	<div id="wrap">
 		<!-- header부분 고정 -->
@@ -1561,9 +1568,10 @@ function makeNotification(notification)
 			<span>자유게시판</span>
 			<span>다른 사용자들과 의견을 나누세요.</span>
 		</div>
+		<img id="comBg" src="./resources/images/board2.png">
 		<div class="sub_area">
 			
-			<img src="./resources/images/board2.png">
+			
 		</div>
 		
 		<div id="container">

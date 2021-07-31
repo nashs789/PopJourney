@@ -895,6 +895,7 @@ function makeNotification(notification)
 </form>
 <form action="journal" id="journalForm" method="post">
 	<input type="hidden" id="journalNo" name="journalNo" value=""/>
+	<input type="hidden" id="memNo" name="memNo" value="${sMEM_NO }"/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
@@ -902,6 +903,8 @@ function makeNotification(notification)
 </form>
 <form action="userPage" id="userForm" method="post">
 	<input type="hidden" id="userNo" name="userNo" value=""/>
+	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 	<div id="wrap">
 		<!-- header부분 고정 -->

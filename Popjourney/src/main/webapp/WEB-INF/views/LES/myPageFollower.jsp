@@ -1110,6 +1110,7 @@ function makeNotification(notification)
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
+	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>

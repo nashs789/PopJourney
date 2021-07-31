@@ -1811,4 +1811,31 @@ public class PopJourneyController {
 					
 				return mapper.writeValueAsString(modelMap);
 		}	
+		
+		//신고
+		@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String reports(@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+
+			 try {
+				 int cnt = ipjs.report(params);
+				 
+				 if(cnt > 0)
+				 {
+					 modelMap.put("msg", "success");
+				 }
+				 else
+				 {
+					 modelMap.put("msg", "failed");
+				 }
+				 
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+					}
+					
+				return mapper.writeValueAsString(modelMap);
+		}	
 }
