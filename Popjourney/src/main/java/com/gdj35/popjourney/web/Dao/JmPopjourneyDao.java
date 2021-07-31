@@ -366,4 +366,24 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.delete("JmPJ.getJournalBmkDeletes", params);
 	}
 
+	@Override
+	public int getGradeUpgrade(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getGradeUpgrade", params);
+	}
+
+	@Override
+	public int getDownGrade(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getDownGrade", params);
+	}
+
+	@Override
+	public int getReportApprovals(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getReportApprovals", params);
+	}
+
+	@Override
+	public int getUnReportApprovals(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getUnReportApprovals", params);
+	}
+
 }

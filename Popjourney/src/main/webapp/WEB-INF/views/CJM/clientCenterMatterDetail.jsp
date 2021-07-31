@@ -1026,6 +1026,10 @@
 					location.href = "clientCenterMatter";
 				})
 				
+				$(".sidebar1").on("click", function() {
+					location.href = "clientCenterQuestion";
+				});
+				
 				// 회원이 작성한 글 수정하기
 				$(".matter_edit_btn").on("click", function() {
 					$("#actionForm").attr("action", "clientCenterMatterUpdate");

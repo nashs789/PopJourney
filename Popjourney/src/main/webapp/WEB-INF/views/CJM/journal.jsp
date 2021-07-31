@@ -1362,6 +1362,9 @@ input[type="radio"]:checked {
     text-decoration: underline;
     cursor: pointer;
 }
+#admin {
+	display: none;
+}
 
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js" /></script>
@@ -1960,32 +1963,7 @@ input[type="radio"]:checked {
 						console.log("bmkNo >> " + $("#bmkNo").val());
 					});
 		
-					$("#wrap").on("click", "#yes", function() {
-						if($(".folder_radio_box:checked").each == false) {
-							alert("폴더를 선택해주세요.");
-						} else {
-							console.log("북마크 완료");
-							var params = $("#actionForm").serialize();
-							
-							$.ajax({
-								url: "journalBmkAdds",
-								type: "post",
-								dataType: "json",
-								data: params,
-								success: function(res) {
-									$(".bmk_popup").remove();
-									$(".bmk_bg").remove();
-									$("#bmkBtn").css("background-color", "rgb(243, 115, 33)");
-									$(".bmkText").css("color", "rgb(243, 115, 33)");
-									$("#bmkBtn").attr("bmkcheck","1");
-								},
-								error: function(request, status, error) {
-									console.log(error);
-								}
-							}); // ajax end..
-						}
-						
-					});
+					
 				} else {
 					var params = $("#actionForm").serialize();
 					
@@ -2010,7 +1988,7 @@ input[type="radio"]:checked {
 		
 		if($("#memNo").val() == $("#journalWriteMemNo").val() || $("#memNo").val() == 1) {
 			var html = "";
-			console.log(".!!!");
+			
 			html += "<div class=\"btn_list\">";
 			html += "<input type=\"button\" class=\"edit_btn\" value=\"수  정\" />";
 			html += "<input type=\"button\" class=\"del_btn\" value=\"삭  제\" />";
@@ -2445,6 +2423,34 @@ input[type="radio"]:checked {
 	   html += "<div class=\"bmk_bg\"></div>"
 	   
 	   $("#wrap").append(html);
+	   
+	   $("#yes").on("click", function() {
+			
+			if(isNaN($(":radio[name='folder_img']:checked").val())) {
+				alert("폴더를 선택해주세요.");
+			} else {
+				console.log("북마크 완료");
+				var params = $("#actionForm").serialize();
+				
+				$.ajax({
+					url: "journalBmkAdds",
+					type: "post",
+					dataType: "json",
+					data: params,
+					success: function(res) {
+						$(".bmk_popup").remove();
+						$(".bmk_bg").remove();
+						$("#bmkBtn").css("background-color", "rgb(243, 115, 33)");
+						$(".bmkText").css("color", "rgb(243, 115, 33)");
+						$("#bmkBtn").attr("bmkcheck","1");
+					},
+					error: function(request, status, error) {
+						console.log(error);
+					}
+				}); // ajax end..
+			}
+			
+		});
 	}
 	
 	function getBmkNo() {
@@ -2487,9 +2493,6 @@ input[type="radio"]:checked {
 </form>
 <form action="#" id="notificationForm">
 	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
-</form>
-<form action="userPage" id="userForm" method="post">
-	<input type="hidden" id="userNo" name="userNo" value=""/>
 </form>
 <form action="post" id="postForm" method="post">
 	<input type="hidden" id="postNo" name="postNo" value=""/>

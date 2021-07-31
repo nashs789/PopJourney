@@ -367,5 +367,25 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getJournalBmkDeletes(params);
 	}
 
+	@Override
+	public int getGradeUpgrade(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getGradeUpgrade(params);
+	}
+
+	@Override
+	public int getDownGrade(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getDownGrade(params);
+	}
+
+	@Override
+	public int getReportApprovals(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getReportApprovals(params);
+	}
+
+	@Override
+	public int getUnReportApprovals(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getUnReportApprovals(params);
+	}
+
 
 }

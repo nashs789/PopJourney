@@ -262,10 +262,6 @@
 				border-bottom: 1px solid #ccc;
 				height: 40px;
 				text-align: center;
-				cursor: pointer;
-			}
-			tbody tr:hover {
-				background-color: #FFFFFF;
 			}
 			tbody tr td {
 				font-size: 9pt;
@@ -319,23 +315,6 @@
 			.profile_move:hover {
 				color: #f37321;
 			}
-			.info {
-				margin-top: 20px;
-				font-size: 10pt;
-				text-align: right;
-			}
-			/* .not_del {
-				background-color: #f9f9f9;
-			}
-			.del {
-				background-color: #d9d9d9;
-				pointer-events: none;
-			}
-			.del .edit_btn {
-				background-color: #d9d9d9;
-				border: 2px solid #2E3459;
-			} */
-			
 			
 			.paging { 
 	            font-size: 0;
@@ -386,6 +365,32 @@
 				background-color: #2E3459;
 				color: #FFFFFF;
 				border: 2px solid #2E3459;
+			}
+			.reports_ok {
+				background-color: #ffb3b3;
+				pointer-events: none;
+				color: white;
+			}
+			.reports_cancel {
+				background-color: #b3d1ff;
+				pointer-events: none;
+				color: white;
+			}
+			.reports_ok #approvalBtn {
+				background-color: #ffb3b3;
+				border: 2px solid #ffe6e6;
+			}
+			.reports_cancel #approvalBtn {
+				background-color: #b3d1ff;
+				border: 2px solid #e6f0ff;
+			}
+			.reports_ok #unApprovalBtn {
+				background-color: #ffb3b3;
+				border: 2px solid #ffe6e6;
+			}
+			.reports_cancel #unApprovalBtn {
+				background-color: #b3d1ff;
+				border: 2px solid #e6f0ff;
 			}
 			
 			
@@ -471,29 +476,60 @@
 				$("#list_wrap table").on("click", "#approvalBtn", function() {
 					$(".popup_approval").css("display", "inline-block");
 					$(".bg_approval").css("display", "inline-block");
+					
+					$("#reportNo").val($(this).parent().parent().attr("pno"));
 				});
-				$("#list_wrap table").on("click", "#approvalBtn #ok", function() {
-					$(".popup_approval").css("display", "none");
-					$(".bg_approval").css("display", "none");
-					// 추가 작업하기
-				});
-				$("#list_wrap table").on("click", "#approvalBtn #cancel", function() {
+				$("#cancel").on("click", function() {
 					$(".popup_approval").css("display", "none");
 					$(".bg_approval").css("display", "none");
 				});
+				$("#ok").on("click", function() {
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "reportApprovals",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							$(".popup_approval").css("display", "none");
+							$(".bg_approval").css("display", "none");
+							reloadList();
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
+				});
+				
 				//미승인
 				$("#list_wrap table").on("click", "#unApprovalBtn", function() {
 					$(".popup_unapproval").css("display", "inline-block");
 					$(".bg_unapproval").css("display", "inline-block");
+					
+					$("#reportNo").val($(this).parent().parent().attr("pno"));
 				});
-				$("#list_wrap table").on("click", "#unApprovalBtn #ok", function() {
+				$("#cancels").on("click", function() {
 					$(".popup_unapproval").css("display", "none");
 					$(".bg_unapproval").css("display", "none");
-					// 추가 작업하기
 				});
-				$("#list_wrap table").on("click", "#unApprovalBtn #cancel", function() {
-					$(".popup_unapproval").css("display", "none");
-					$(".bg_unapproval").css("display", "none");
+				$("#oks").on("click", function() {
+					var params = $("#actionForm").serialize();
+					
+					$.ajax({
+						url: "unReportApprovals",
+						type: "post",
+						dataType: "json",
+						data: params,
+						success: function(res) {
+							$(".popup_unapproval").css("display", "none");
+							$(".bg_unapproval").css("display", "none");
+							reloadList();
+						},
+						error: function(request, status, error) {
+							console.log(error);
+						}
+					});
 				});
 				
 				// 메인검색창 넘어가는 부분(동기)
@@ -554,10 +590,12 @@
 				var html = "";
 				
 				for(d of list) {
-					if(d.HANDEL_DATE == "-") {
-						html += "<tr pno=\"" + d.REPORT_NO + "\" class=\"not_del\">";
+					if(d.STATUS_NO == "신고대기") {
+						html += "<tr pno=\"" + d.REPORT_NO + "\" tno=\"" + d.TARGET_MEM_NO + "\" class=\"reports\">";
+					} else if(d.STATUS_NO == "승인") {
+						html += "<tr pno=\"" + d.REPORT_NO + "\" tno=\"" + d.TARGET_MEM_NO + "\" class=\"reports_ok\">";
 					} else {
-						html += "<tr pno=\"" + d.REPORT_NO + "\" class=\"del\">";
+						html += "<tr pno=\"" + d.REPORT_NO + "\" tno=\"" + d.TARGET_MEM_NO + "\" class=\"reports_cancel\">";
 					}
 					html += "<td id=\"mNo\">" + d.REPORT_NO + "</td>";
 					html += "<td>" + d.REASON_NAME + "</td>";
@@ -566,6 +604,7 @@
 					html += "<td>" + d.TARGET_NIC + "</td>";
 					html += "<td>" + d.REPORT_DATE + "</td>";
 					html += "<td>" + d.HANDLE_DATE + "</td>";
+					html += "<td>" + d.STATUS_NO + "</td>";
 					html += "<td><input type=\"button\" class=\"approval_btn\" id=\"approvalBtn\" value=\"승인\" readonly=\"readonly\"/><input type=\"button\" class=\"un_approval_btn\" id=\"unApprovalBtn\" value=\"미승인\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
@@ -623,8 +662,8 @@
 		<div class="popup_unapproval">
 	   		<div class="popup_entity_txt">미승인하시겠습니까?</div>
 	        <div class="btn_list">
-	           <span id="ok">확인</span>>
-	           <span id="cancel">취소</span>>
+	           <span id="oks">확인</span>>
+	           <span id="cancels">취소</span>>
 	        </div>
 	    </div>
  		<div class="bg_unapproval"></div>
@@ -704,6 +743,7 @@
 										<col width="124px" /> <!-- 처리회원 -->
 										<col width="124px" /> <!-- 등록일 -->
 										<col width="124px" /> <!-- 처리일 -->
+										<col width="124px" /> <!-- 처리상태 -->
 										<col width="150px" /> <!-- 비고 -->
 								</colgroup>
 								<thead>
@@ -715,6 +755,7 @@
 			            				<th>처리회원</th>
 			            				<th>등록일</th>
 			            				<th>처리일</th>
+			            				<th>처리상태</th>
 			            				<th>비고</th>
 			            			</tr>
 								</thead>
@@ -722,7 +763,6 @@
 							</table>
 						</div>
 					</form>
-					<div class="info">일지(글)번호 클릭 시 해당 세부페이지로 이동합니다. (A: 일지 / B: 게시판)</div>
 				</div> <!-- mem_admin_area end -->
 				<div class="paging"></div>
 			</div> <!-- container end -->

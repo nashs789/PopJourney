@@ -226,6 +226,7 @@
 				background-color: #000000;
 				z-index: 400;
 				opacity: 0.2;
+				position: fixed;
 			}
 			.popup_grade {
 				display: none;
@@ -423,6 +424,43 @@
 				border-radius: 20px;
 				border: 2px solid #2E3459;
 			}
+			.grade_btn1 {
+				width: 70px;
+				height: 24px;
+				background-color: #FFFFFF;
+				color: #000000;
+				font-weight: bold;
+				font-size: 10pt;
+				cursor: pointer;
+				text-align: center;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+				
+			}
+			.grade_btn2 {
+				width: 70px;
+				height: 24px;
+				background-color: #FFFFFF;
+				color: #000000;
+				font-weight: bold;
+				font-size: 10pt;
+				cursor: pointer;
+				text-align: center;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+			}
+			.grade_btn3 {
+				width: 70px;
+				height: 24px;
+				background-color: #FFFFFF;
+				color: #000000;
+				font-weight: bold;
+				font-size: 10pt;
+				cursor: pointer;
+				text-align: center;
+				border-radius: 20px;
+				border: 2px solid #2E3459;
+			}
 			.grade_btn:hover {
 				background-color: #2E3459;
 				color: #FFFFFF;
@@ -472,6 +510,18 @@
 	            color: #F1404B;
 	            text-decoration: underline;
 	            cursor: pointer;
+	        }
+	        
+	        .apply0 {
+	        	font-weight: bold;
+	        }
+	        .apply2 {
+	        	font-weight: bold;
+	        	color: blue;
+	        }
+	        .apply3 {
+	        	font-weight: bold;
+	        	color: red;
 	        }
 			
 			
@@ -631,30 +681,54 @@
 				});
 				
 				// 등급설정 버튼
-				$("#list_wrap tbody").on("click", ".grade_btn", function() {
+				$("#list_wrap tbody").on("click", "#gradeBtn", function() {
 					$(".bg_grade").show();
 					$(".popup_grade").show();
+					$("#gradeMemNo").val($(this).parent().parent().attr("mno"));
 				});
 				$(".popup_grade #cancel").on("click", function() {
 					$(".bg_grade").hide();
 					$(".popup_grade").hide();
 				});
-				
-				$("popup_grade #ok").on("click", function() {
-					var params = $("#gradeActionForm").serialize();
-					
-					$.ajax({
-						url: "memGrade",
-						type: "post",
-						dataType: "json",
-						data: params,
-						success: function(res) {
-							
-						},
-						error: function(request, status, error) {
-							console.log(error);
-						}
-					});
+				$(".popup_grade #ok").on("click", function() {
+					if($("#gradeSearchFilter").val() == 2) {
+						var params = $("#gradeActionForm").serialize();
+						
+						$.ajax({
+							url: "memGrades",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								$(".bg_grade").hide();
+								$(".popup_grade").hide();
+								reloadList();
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					} else if($("#gradeSearchFilter").val() == 1) {
+						var params = $("#gradeActionForm").serialize();
+						
+						$.ajax({
+							url: "memDownGrades",
+							type: "post",
+							dataType: "json",
+							data: params,
+							success: function(res) {
+								$(".bg_grade").hide();
+								$(".popup_grade").hide();
+								reloadList();
+							},
+							error: function(request, status, error) {
+								console.log(error);
+							}
+						});
+					} else {
+						$(".bg_grade").hide();
+						$(".popup_grade").hide();
+					}
 				});
 				
 				// 회원프로필 이동
@@ -738,8 +812,16 @@
 					html += "<td>" + d.FOLLOW_SUM + "</td>"; // 팔로워수
 					html += "<td>" + d.REPORT_CNT +"</td>"; // 누적신고수
 					html += "<td>" + d.ACC_CNT + "</td>";
-					html += "<td>" + d.APPLY + "</td>"; // 등업신청유무
-					html += "<td><input type=\"button\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
+					if(d.APPLY == "등급하락") {
+						html += "<td class=\"apply3\">" + d.APPLY + "</td>"; // 등업신청유무
+					} else if(d.APPLY == "등업완료") {
+						html += "<td class=\"apply2\">" + d.APPLY + "</td>"; // 등업신청유무
+					} else if(d.APPLY == "등업대기") {
+						html += "<td class=\"apply0\">" + d.APPLY + "</td>"; // 등업신청유무
+					} else {
+						html += "<td>" + d.APPLY + "</td>"; // 등업신청유무
+					}
+					html += "<td><input type=\"button\" id=\"gradeBtn\" class=\"grade_btn\" value=\"등급설정\" readonly=\"readonly\"/></td>";
 					html += "</tr>";
 				}
 				
@@ -800,6 +882,7 @@
 		    </div>
 		</div>
 		<form action="#" id="gradeActionForm" method="post">
+			<input type="hidden" id="gradeMemNo" name="gradeMemNo" />
 	 		<div class="popup_grade">
 				<div class="popup_entity_grade">
 					<select class="popup_opt_grade" id="gradeSearchFilter" name="gradeSearchFilter">

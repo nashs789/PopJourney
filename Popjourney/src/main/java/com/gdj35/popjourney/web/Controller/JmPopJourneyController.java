@@ -515,12 +515,49 @@ public class JmPopJourneyController {
 		
 	}
 	
-	@RequestMapping(value="/memGrade", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
+	@RequestMapping(value="/memGrades", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
 	@ResponseBody public String memGrade(@RequestParam HashMap<String, String>	params) throws Throwable {
 	 
 		ObjectMapper mapper = new ObjectMapper();
 		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getGradeUpgrade(params);
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		 
+		System.out.println("params >> " + params);
+		 
+		return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	@RequestMapping(value="/memDownGrades", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
+	@ResponseBody public String memDownGrades(@RequestParam HashMap<String, String>	params) throws Throwable {
+	 
+		ObjectMapper mapper = new ObjectMapper();
+		 
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getDownGrade(params);
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
 		 
 		System.out.println("params >> " + params);
 		 
@@ -1581,5 +1618,54 @@ public class JmPopJourneyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	@RequestMapping(value="/reportApprovals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String reportApprovals(@RequestParam HashMap<String, String> params) throws Throwable {
+
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getReportApprovals(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	@RequestMapping(value="/unReportApprovals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String unReportApprovals(@RequestParam HashMap<String, String> params) throws Throwable {
+	
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iJmPopjourneyService.getUnReportApprovals(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 }
