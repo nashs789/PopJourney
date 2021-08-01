@@ -577,7 +577,7 @@
 		                                       ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, PHOTO_PATH AS JOURNAL_PHOTO_PATH
 		                                           FROM JOURNAL_DETAIL
-		                                           WHERE JOURNAL_SEQUENCE = 1) JD
+		                                           WHERE JOURNAL_SEQUENCE = 0) JD
 		                                       ON J.JOURNAL_NO = JD.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS HASH
 		                                           FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
@@ -624,7 +624,7 @@
 		                                       ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, PHOTO_PATH AS JOURNAL_PHOTO_PATH
 		                                           FROM JOURNAL_DETAIL
-		                                           WHERE JOURNAL_SEQUENCE = 1) JD
+		                                           WHERE JOURNAL_SEQUENCE = 0) JD
 		                                       ON J.JOURNAL_NO = JD.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS HASH
 		                                           FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
@@ -693,7 +693,7 @@
 		                                       ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, PHOTO_PATH AS JOURNAL_PHOTO_PATH
 		                                           FROM JOURNAL_DETAIL
-		                                           WHERE JOURNAL_SEQUENCE = 1) JD
+		                                           WHERE JOURNAL_SEQUENCE = 0) JD
 		                                       ON J.JOURNAL_NO = JD.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS HASH
 		                                           FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
@@ -740,7 +740,7 @@
 		                                       ON J.JOURNAL_NO = JL.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT JOURNAL_NO, PHOTO_PATH AS JOURNAL_PHOTO_PATH
 		                                           FROM JOURNAL_DETAIL
-		                                           WHERE JOURNAL_SEQUENCE = 1) JD
+		                                           WHERE JOURNAL_SEQUENCE = 0) JD
 		                                       ON J.JOURNAL_NO = JD.JOURNAL_NO
 		                          LEFT OUTER JOIN (SELECT J.JOURNAL_NO, MAX(SUBSTR(SYS_CONNECT_BY_PATH(J.HASH_NAME, ','), 2)) AS HASH
 		                                           FROM (SELECT J.JOURNAL_NO, h.HASH_NAME,
@@ -1001,7 +1001,7 @@
 		                  AND J.JOURNAL_NO = #{journalNo}
 		           INNER JOIN JOURNAL_DETAIL JD
 		                   ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                  AND JD.JOURNAL_SEQUENCE = 1
+		                  AND JD.JOURNAL_SEQUENCE = 0
 		      LEFT OUTER JOIN (SELECT JOURNAL_NO, COUNT(*) AS JOURNAL_LIKE_CNT
 		                       FROM JOURNAL_LIKE
 		                       GROUP BY JOURNAL_NO) JL
