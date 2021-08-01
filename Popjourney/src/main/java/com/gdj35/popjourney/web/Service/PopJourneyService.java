@@ -417,5 +417,4 @@ public class PopJourneyService implements IPopJourneyService {
 	public int report(HashMap<String, String> params) throws Throwable {
 		return ipjd.report(params);
 	}
-
 }

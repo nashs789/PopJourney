@@ -1284,9 +1284,7 @@ $(document).ready(function(){
 		var like = $(this).attr("like");
 		var params = $("#likeForm").serialize();
 
-		//console.log(params);
 		if(like == 0){ //좋아요 x : 좋아요 기능
-			console.log("좋아요!");
 			$.ajax({
 				url:"postLikes", 
 				type: "post",
@@ -1294,7 +1292,7 @@ $(document).ready(function(){
 				data : params,
 				success: function(res){
 					if(res.msg == "success")
-					{
+					{					
 						likeReload();
 					}
 				}, //success end
@@ -1303,7 +1301,6 @@ $(document).ready(function(){
 				}//error end
 			});//ajax end
 		} else if(like == 1) { //좋아요 o : 좋아요 취소기능
-			console.log("좋아요 취소");
 			$.ajax({
 				url:"postLikeCancles", 
 				type: "post",
@@ -1822,7 +1819,7 @@ function reportPopup() {
 			else
 			{
 				var params = $("#reportForm").serialize();
-				console.log(params);
+
 				 $.ajax({
 					url: "reports",
 					type: "post",

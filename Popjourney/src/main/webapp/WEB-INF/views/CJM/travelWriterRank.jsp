@@ -356,7 +356,7 @@
 				cursor: pointer;
 			}
 			.menu ul li:hover {
-				color: #F37321;
+				color: #fcba03;
 			}
 			.menu ul li a {
 				display: inline-block;
@@ -719,6 +719,10 @@
 					location.href = "main";
 				});
 				
+				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
+				$("#journalBoard").on("click", function() {
+					location.href = "journalBoard";
+				});
 				// 상단배너 -> 여행게시판 - 자유게시판 - 여행작가 - 고객센터 - 내부관리자 메뉴 이동
 				$("#community").on("click", function() {
 					location.href = "community";
@@ -1130,7 +1134,7 @@
 				</div>
 				<nav class="menu">
 					<ul>
-						<li>여행게시판</li>
+						<li id="journalBoard">여행게시판</li>
 						<li id="community">자유게시판</li>
 						<li id="travelWriter">여행작가</li>
 						<li id="clientCenter">고객센터</li>

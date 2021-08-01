@@ -1520,7 +1520,7 @@ function makeNotification(notification)
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
