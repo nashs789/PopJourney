@@ -114,6 +114,7 @@ body {
 	color: white;
 }
 #profilePhoto{
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
@@ -1249,12 +1250,12 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
-	$("#postEditBtn").on("click", function () {
+	$("#editBtn").on("click", function () {
 		$("#goForm").attr("action","postUpdate");
 		$("#goForm").submit();
 	});
 	//게시글 삭제
-	$(".delete_btn").on("click", function () {
+	$(".bnt_lists").on("click", ".del_btn", function () {
 		if(confirm("삭제하시겠습니까?")){
 			var params = $("#goForm").serialize();
 			
@@ -1686,13 +1687,11 @@ $(document).ready(function(){
 		}
 	});
 	
-	console.log($("#MEM_NO").val());
-	console.log($("#postMem").val());
 	if($("#MEM_NO").val() == $("#postMem").val() || $("#MEM_NO").val() == 1) {
 		var html = "";
 		
 		html += "<div class=\"btn_list\">";
-		html += "<input type=\"button\" class=\"edit_btn\" value=\"수  정\" />";
+		html += "<input type=\"button\" id=\"editBtn\" class=\"edit_btn\" value=\"수  정\" />";
 		html += "<input type=\"button\" class=\"del_btn\" value=\"삭  제\" />";
 		html += "</div>";
 		$(".bnt_lists").html(html);
