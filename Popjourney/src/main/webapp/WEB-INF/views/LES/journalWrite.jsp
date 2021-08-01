@@ -879,6 +879,9 @@ a {
 #fileName{
 	font-size: 12pt;
 }
+#admin{
+	display: none;
+}
 </style>
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -1197,7 +1200,7 @@ $(document).ready(function() {
 			alert("제목 비어있음");
 			return false;
 		}
-		else if($("#pref_filter option:selected").val() == 0)
+		else if($(".pref_filter option:selected").val() == 0)
 		{
 			alert("선호도를 선택하세요.");
 			return false;
