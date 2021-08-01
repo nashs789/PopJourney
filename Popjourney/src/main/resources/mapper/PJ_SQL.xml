@@ -233,7 +233,7 @@
 		                                   WHERE JOURNAL_NO = #{journalNo}) JL
 		                               ON 1 = 1
 		WHERE JD.JOURNAL_NO = #{journalNo} 
-		AND JD.JOURNAL_SEQUENCE = 1     
+		AND JD.JOURNAL_SEQUENCE = 0     
 	</select>
 	
 	<select id="notification" parameterType="hashmap" resultType="hashmap">
@@ -454,7 +454,7 @@
 		                                ON F.TARGET_MEM_NO = J.MEM_NO
 		                        INNER JOIN JOURNAL_DETAIL JD
 		                                ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                                AND JD.JOURNAL_SEQUENCE = 1
+		                                AND JD.JOURNAL_SEQUENCE = 0
 		                        LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
 		                                         FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 		                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
@@ -600,7 +600,7 @@
 			                                ON F.TARGET_MEM_NO = J.MEM_NO
 			                        INNER JOIN JOURNAL_DETAIL JD
 			                                ON J.JOURNAL_NO = JD.JOURNAL_NO
-			                                AND JD.JOURNAL_SEQUENCE = 1
+			                                AND JD.JOURNAL_SEQUENCE = 0
 			                        LEFT OUTER JOIN (SELECT JC.JOURNAL_NO, COUNT(*) AS CNT
 			                                         FROM JOURNAL J INNER JOIN JOURNAL_CMT JC
 			                                                                ON J.JOURNAL_NO = JC.JOURNAL_NO
@@ -735,7 +735,7 @@
 		                             AND JC2.CATEGORY_NO = 0
 		                     INNER JOIN JOURNAL_DETAIL JD
 		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
+		                             AND JD.JOURNAL_SEQUENCE = 0
 		                     INNER JOIN JOURNAL_CATEGORY JC3
 		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
 		                             AND JC3.CATEGORY_NO = 1
@@ -934,7 +934,7 @@
 		                             AND JC2.CATEGORY_NO = 0
 		                     INNER JOIN JOURNAL_DETAIL JD
 		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
+		                             AND JD.JOURNAL_SEQUENCE = 0
 		                     INNER JOIN JOURNAL_CATEGORY JC3
 		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
 		                             AND JC3.CATEGORY_NO = 1
@@ -995,7 +995,7 @@
 		                             AND JC2.CATEGORY_NO = 0
 		                     INNER JOIN JOURNAL_DETAIL JD
 		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
+		                             AND JD.JOURNAL_SEQUENCE = 0
 		                     INNER JOIN JOURNAL_CATEGORY JC3
 		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
 		                             AND JC3.CATEGORY_NO = 1
@@ -1343,7 +1343,7 @@
 		                             AND JC2.CATEGORY_NO = 0
 		                     INNER JOIN JOURNAL_DETAIL JD
 		                             ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                             AND JD.JOURNAL_SEQUENCE = 1
+		                             AND JD.JOURNAL_SEQUENCE = 0
 		                     INNER JOIN JOURNAL_CATEGORY JC3
 		                             ON J.REGION_NO = JC3.SUB_CATEGORY_NO
 		                             AND JC3.CATEGORY_NO = 1
