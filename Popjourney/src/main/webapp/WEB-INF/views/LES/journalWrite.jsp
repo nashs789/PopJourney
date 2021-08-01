@@ -988,8 +988,12 @@ $(document).ready(function() {
 		$(".category_filter").html(html);
 	});//pref_filter change end
 	
+	var save = 0;
+	
 	$(".date_nav ul").on("click", "li", function(){
-		console.log(photo);
+		
+		save = 1;
+		
 		$(".date_nav ul li").css("background-color", "white");
 		$(".date_nav ul li").css("color", "black");
 		
@@ -1192,7 +1196,22 @@ $(document).ready(function() {
 			alert("제목 비어있음");
 			return false;
 		}
-			
+		else if($("#pref_filter option:selected").val() == 0)
+		{
+			alert("선호도를 선택하세요.");
+			return false;
+		}
+		
+		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
+		{
+			alert("Diary1을 채워주세요.");
+		}
+		
+		if(save == 0)
+		{
+			contents[0] = $("#inputContents").val();
+			memo[0] = $(".input_memo").val();
+		}
 		var c = "#contents";
 		var m = "#memo";
 		var p = "#photo";
@@ -1211,8 +1230,8 @@ $(document).ready(function() {
 			m = "#memo";
 			p = "#photo";
 		}
-		var params = $("#addJournalForm").serialize()
-		
+		var params = $("#addJournalForm").serialize();
+
 		$.ajax({
 			url: "addJournals",
 			data: params,

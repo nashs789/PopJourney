@@ -470,6 +470,7 @@ $(document).ready(function(){
 				}
 				
 				$("#photo").attr("src", path);
+				$("#photoPath").val(result.PHOTO_PATH);
 				
 				$("#inputNic").val(result.NIC);
 				$("#inputIntro").val(result.INTRO);
@@ -655,14 +656,28 @@ $(document).ready(function(){
 					var params = $("#editInfoForm").serialize();
 					
 					$.ajax({
-						url: "editProfiles",
+						url: "changeProfiles",
 						data: params,
 						dataType:"json",
 						type: "post",
 						success:function(result)
 						{
-							var txt = "프로필 업데이트 되었습니다.";
-							endPopup(txt)
+							var params = $("#editInfoForm").serialize();
+							
+							$.ajax({
+								url: "editProfiles",
+								data: params,
+								dataType:"json",
+								type: "post",
+								success:function(result)
+								{
+									var txt = "프로필 업데이트 되었습니다.";
+									endPopup(txt)
+								}, //success end
+								error: function(request, status, error) {
+									console.log(error);
+								} // error end
+							}); //ajax end 
 						}, //success end
 						error: function(request, status, error) {
 							console.log(error);

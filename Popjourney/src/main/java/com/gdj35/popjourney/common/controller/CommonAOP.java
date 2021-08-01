@@ -28,30 +28,25 @@ public class CommonAOP {
 			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*editProfile(..))"
 			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*notification(..))"
 			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*timeline(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMKDetail(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*journalUpdate(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMapDetail(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPage(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageFollower(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageFollowing(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageBMK(..))"
-			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMKDetail(..))"
+			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageMap(..))"
+			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*postUpdate(..))"
+			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*postWrite(..))"
+			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*journalWrite(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*communityAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*memAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*noticeAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*reportAdmin(..))"
-			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMap(..))"
-			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMapDetail(..))")
+			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*TravelDiaryAdmin(..))"
+			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*clientCenterMatterWrite(..))"
+			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*clientCenterMatterUpdate(..))")
 	
-	/*
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageBMKDetail(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageFollowing(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*myPageMap(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*postWrite(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*journalWrite(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*communityAdmin(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*memAdmin(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*noticeAdmin(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*reportAdmin(..))"
-	+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*TravelWriterRank(..))")*/
-
 	public void loginCheck() {}
 	
 	//ProceedingJoinPoint -> 대상 적용 이벤트 필터

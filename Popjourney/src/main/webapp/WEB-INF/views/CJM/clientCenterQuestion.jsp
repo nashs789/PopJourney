@@ -581,6 +581,24 @@
 				width: 600px;
 				height: 80px;
 			}
+			#ok{
+				   text-decoration: none;
+				   display:inline-block;
+				   text-align:center;
+				   width: 270px;
+				   height:30px;
+				   padding: 10px 15px 10px 15px;
+				   font-size: 12pt;
+				   color: #f37321;
+				   font-weight: bold;
+				   line-height: 30px;
+				   border-radius: 0 0 10px 10px; 
+				   cursor :pointer;
+			}
+			#ok:hover{
+				   background-color: #f37321;
+   					color: white;
+			}
 		</style>
 		<script type="text/javascript"
 				src="resources/script/jquery/jquery-1.12.4.min.js"></script>

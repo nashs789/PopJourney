@@ -79,7 +79,8 @@ body {
    margin-top: 15px;
    cursor: pointer;
 }
-#profilePhoto{
+#profilePhoto {
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;

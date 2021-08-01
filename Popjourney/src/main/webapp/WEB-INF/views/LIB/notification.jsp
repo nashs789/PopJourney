@@ -58,14 +58,18 @@ body {
     text-align: right;
     background-color: #FFFFFF;
 }
-#bookmarkPhoto, #profilePhoto, #notificationPhoto {
+#bookmarkPhoto, #notificationPhoto {
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
    cursor: pointer;
 }
-#profilePhoto{
+#profilePhoto {
+    height: 40px;
+    width: 40px;
 	border-radius: 50%;
+    margin-top: 15px;
+    cursor: pointer;
 }
 #notificationPhoto {
    margin-left: 200px;

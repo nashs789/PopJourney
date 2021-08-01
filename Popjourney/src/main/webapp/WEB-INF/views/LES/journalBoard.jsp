@@ -922,6 +922,8 @@ a {
 $(document).ready(function(){
    loadPage2();
 
+   var popupText ="";
+   
    //로그인 상태 확인
    if("${sMEM_NO}" != "")
    {
@@ -1068,8 +1070,8 @@ $(document).ready(function(){
             {
                if(result.msg == "failed")
                {
-                  //popupText = "ID와 PW가 일치하지 않습니다.";
-                  //commonPopup(popupText);
+                  popupText = "ID와 PW가 일치하지 않습니다.";
+                  commonPopup(popupText);
                   $("#inputID").val("");
                   $("#inputPW").val("");
                }

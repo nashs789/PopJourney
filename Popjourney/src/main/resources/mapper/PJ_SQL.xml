@@ -292,9 +292,9 @@
 		                                                               ON JC.JOURNAL_NO = J.JOURNAL_NO) JCCMT
 		                               ON NF.GBN_NO = JCCMT.JOURNAL_CMT_NO
 		                               AND NF.EVENT_NO = 3
-		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.POST_NO AS BCPOST_NO, CASE WHEN LENGTH(BC2.CONTENTS) > 25
-		                                                                                                 THEN SUBSTR(BC2.CONTENTS, 1, 25) || '....'
-		                                                                                                 ELSE BC2.CONTENTS
+		                  LEFT OUTER JOIN (SELECT BC.POST_CMT_NO, BC.POST_NO AS BCPOST_NO, CASE WHEN LENGTH(BC.CONTENTS) > 25
+		                                                                                                 THEN SUBSTR(BC.CONTENTS, 1, 25) || '....'
+		                                                                                                 ELSE BC.CONTENTS
 		                                                                                             END AS BUP_CONTENTS, 
 		                                                                                            CASE WHEN LENGTH(B.TITLE) > 25
 		                                                                                                 THEN SUBSTR(B.TITLE, 1, 25) || '....'
@@ -1089,7 +1089,7 @@
 		                                  </choose>
 		                          INNER JOIN JOURNAL_DETAIL JD
 		                                        ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                                        AND JD.JOURNAL_SEQUENCE = 1
+		                                        AND JD.JOURNAL_SEQUENCE = 0
 		                          INNER JOIN JOURNAL_CATEGORY JC3
 		                                  ON J.CATEGORY = JC3.SUB_CATEGORY_NO
 		                                  AND JC3.CATEGORY_NO = 0
@@ -1198,7 +1198,7 @@
 		                                  </choose>
 		                          INNER JOIN JOURNAL_DETAIL JD
 		                                        ON J.JOURNAL_NO = JD.JOURNAL_NO
-		                                        AND JD.JOURNAL_SEQUENCE = 1
+		                                        AND JD.JOURNAL_SEQUENCE = 0
 		                          INNER JOIN JOURNAL_CATEGORY JC3
 		                                  ON J.CATEGORY = JC3.SUB_CATEGORY_NO
 		                                  AND JC3.CATEGORY_NO = 0

@@ -510,7 +510,7 @@ public class PopJourneyController {
 				session.setAttribute("sNIC", loginInfo.get("NIC"));
 				session.setAttribute("sPHOTO_PATH", loginInfo.get("PHOTO_PATH"));
 				session.setAttribute("sINTRO", loginInfo.get("INTRO"));
-				
+
 				HashMap<String, String> data = ipjs.getNumber(params);
 
 				session.setAttribute("sFOLLOWER", data.get("FOLLOWER_CNT")); //팔로워 숫자
@@ -1838,4 +1838,20 @@ public class PopJourneyController {
 					
 				return mapper.writeValueAsString(modelMap);
 		}	
+		
+		//세션 프로필값 변경 - 이인복
+		@RequestMapping(value = "/changeProfiles", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String changeProfiles(HttpSession session,@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			 
+			 try {
+				 session.setAttribute("sPHOTO_PATH", params.get("photoPath"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			return mapper.writeValueAsString(modelMap);
+		}
 }

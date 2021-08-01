@@ -763,6 +763,7 @@ a {
    font-weight: bold;
    line-height: 30px;
    border-radius: 0 0 10px 10px; 
+   cursor: pointer;
 }
 .bg {
 	position: fixed;
@@ -804,10 +805,74 @@ a {
 	width:100%;
 	height: 300px;
 }
+.popup2 {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt2 {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list2 a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list2 a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list2 a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list2 a:hover {
+   background-color: #f37321;
+   color: white;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	var popupText = "";
+	
 	if("${sMEM_NO}" != "") { // 로그인 상태
 		$(".btns").css("display","inline-block");
 		$(".sub_profile").css("display","block");
@@ -962,7 +1027,17 @@ $(document).ready(function() {
 				dataType: "json", 
 				data : params, 
 				success: function(res){
-						location.reload();
+					if(res.msg == "success")
+					{
+						location.reload();						
+					}
+					else
+					{
+						popupText = "ID와 PW가 일치하지 않습니다.";
+						commonPopup(popupText);
+						$("#inputID").val("");
+						$("#inputPW").val("");
+					}
 				}, 
 				error: function (request, status, error) {
 					console.log(error);
@@ -1072,9 +1147,7 @@ $(document).ready(function() {
 			$(".gradeNo").children("img").css("background-color","#2e3459");
 		} else {
 			reloadList();
-		}
-		console.log("눌렸나?"+ $("#gradeNo").val());
-		
+		}	
 	}); //right_nav span click end
 	
 	// 메인검색창 넘어가는 부분(동기)
@@ -1144,6 +1217,25 @@ $(document).ready(function() {
   	}); //logoutBtn click end
 }); //document ready end
 
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup2\">";
+	html	 +="	 <div class=\"popup_entity_txt2\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list2\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function findBtnPopup()
 {
 	var html = "";
@@ -1168,7 +1260,7 @@ function findBtnPopup()
 // 카테고리별, 작성자별(등급, 내가 쓴 글)
 function reloadList() {
 	var params = $("#boardForm").serialize();
-	console.log(params);
+
 	$.ajax({
 		url:"communityLists", 
 		type: "post",
@@ -1188,7 +1280,6 @@ function reloadList() {
 function noticeList() {
 	var params = $("#boardForm").serialize();
 	
-	console.log(params);
 	$.ajax({
 		url:"communityNLists", 
 		type: "post",
