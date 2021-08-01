@@ -163,6 +163,7 @@ public class PopJourneyController {
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		System.out.println("회원가입 프로필작성쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
 		data.put("birth", birth);
 		data.put("phone", phone);
@@ -329,6 +330,7 @@ public class PopJourneyController {
 
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		System.out.println("비밀번호 재설정쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
 		try {
 			if (cnt != 0) {
@@ -396,6 +398,7 @@ public class PopJourneyController {
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		System.out.println("회원정보 수정쪽 비빌번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
 		try {
 			int cnt = ipjs.updateInfo(params);
@@ -506,7 +509,7 @@ public class PopJourneyController {
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		
+		System.out.println("로그인할 때 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		try {
 			if (loginInfo != null) {
 				Date lastDate = simpleD.parse(loginInfo.get("LAST_DATE"));
