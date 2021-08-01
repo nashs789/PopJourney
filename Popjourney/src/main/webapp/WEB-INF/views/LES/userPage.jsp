@@ -695,6 +695,11 @@ input[type='text']:focus, input[type='password']:focus{
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if($("#loginMem").val() == $("#MEM_NO"))
+	{
+		location.href = "myPage";
+	}
+	
 	if("${sMEM_NO}" != "")
 	{
 		$(".logins").css("display", "none");
@@ -732,25 +737,67 @@ $(document).ready(function(){
 				
 				if(result.msg == "success") 
 				{
-					html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우</li>";
+					var params = $("#memForm").serialize();
+					
+					$.ajax({
+						url: "checkPoints",
+						data: params,
+						dataType: "json",
+						type: "post",
+						success:function(result)
+						{
+							if(result.msg == "success")
+							{
+								var html = "";
+								html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우" + result.data.FOLLOWER_CNT + "</li>";
+								$(".right_group").html(html);
+							}
+							else
+							{
+								popupText = "오류가 발생했습니다.";
+								commonPopup(popupText);
+							}
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
 				}
 				else if(result.msg == "failed")
 				{
-					html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
+					var params = $("#memForm").serialize();
+					
+					$.ajax({
+						url: "checkPoints",
+						data: params,
+						dataType: "json",
+						type: "post",
+						success:function(result)
+						{
+							if(result.msg == "success")
+							{
+								var html = "";
+								html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우" + result.data.FOLLOWER_CNT + "</li>";
+								
+								$(".right_group").html(html);
+							}
+							else
+							{
+								popupText = "오류가 발생했습니다.";
+								commonPopup(popupText);
+							}
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
 				}
-				
-				$(".right_group").html(html);
+
 			},//success end
 			error: function(error){
 				console.log(error);
 			} //error end
 		});//ajax end
-	}
-	else
-	{
-		var html = "";
-		html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
-		$(".right_group").html(html);
 	}
 	
 	var params = $("#memForm").serialize();
@@ -762,7 +809,6 @@ $(document).ready(function(){
 		type: "post",
 		success: function(result){
 			var html = ""; 
-			console.log(result.myProfile.PHOTO_PATH);
 			if(result.myProfile.PHOTO_PATH != null)
 			{
 				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";
@@ -844,10 +890,32 @@ $(document).ready(function(){
 				dataType: "json",
 				type: "post",
 				success: function(result){
-					var html = "";
-					html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우</li>";
+					var params = $("#memForm").serialize();
 					
-					$(".right_group").html(html);
+					$.ajax({
+						url: "checkPoints",
+						data: params,
+						dataType: "json",
+						type: "post",
+						success:function(result)
+						{
+							if(result.msg == "success")
+							{
+								var html = "";
+								html +="<li><img alt=\"follow\" id=\"follow\" src=\"./resources/images/follower.png\"><br />팔로우" + result.data.FOLLOWER_CNT + "</li>";
+								
+								$(".right_group").html(html);
+							}
+							else
+							{
+								popupText = "오류가 발생했습니다.";
+								commonPopup(popupText);
+							}
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
 				},//success end
 				error: function(error){
 					console.log(error);
@@ -864,10 +932,32 @@ $(document).ready(function(){
 				dataType: "json",
 				type: "post",
 				success: function(result){
-					var html = "";
-					html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />언팔로우</li>";
+					var params = $("#memForm").serialize();
 					
-					$(".right_group").html(html);	
+					$.ajax({
+						url: "checkPoints",
+						data: params,
+						dataType: "json",
+						type: "post",
+						success:function(result)
+						{
+							if(result.msg == "success")
+							{
+								var html = "";
+								html +="<li><img alt=\"follow\" id=\"following\" src=\"./resources/images/follower.png\"><br />팔로우" + result.data.FOLLOWER_CNT + "</li>";
+								
+								$(".right_group").html(html);
+							}
+							else
+							{
+								popupText = "오류가 발생했습니다.";
+								commonPopup(popupText);
+							}
+				},//success end
+				error: function(error){
+					console.log(error);
+				}//error end
+			}); //ajax end 
 				},//success end
 				error: function(error){
 					console.log(error);

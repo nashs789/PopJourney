@@ -230,7 +230,7 @@ body{
 	margin-top: 15px;
 	height: 300px;
 }
-input[type='text']:focus{
+input[type='text']:focus, #inputIntro:hover{
 	outline-color: #fcba03;
 }
 input[type='button']{
@@ -781,7 +781,7 @@ function findBtnPopup()
 					<input type="button" value="중복확인" id="nicDbCkBtn"/>
 					
 					<div class="title">소개글</div>
-					<input type="text" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/>
+					<textarea rows="50" cols="15" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/></textarea>
 				</form>
 			</div> <!-- infoWrap end -->
 			

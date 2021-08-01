@@ -634,7 +634,7 @@ a {
 }
 
 .popup_contents_txt>div:first-child {
-	font-size: 18pt;
+	font-size: 17pt;
 	padding-bottom: 7px;
 	border-bottom: 2px solid #f37321;
 }
@@ -1222,7 +1222,7 @@ function makeAddPopup()
 	html += "    <div class=\"popup\">";
 	html += "    	<div class=\"popup_contents_txt\">";
 	html += "    		<div>";
-	html += "    			폴더 수정<span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
+	html += "    			폴더 추가<span>필수 입력 사항 </span><span class=\"asterisk\">&#42;</span>";
 	html += "    		</div>";
 	html += "    		<div class=\"radio_title\">";
 	html += "    			<span>폴더 선택</span> <span class=\"asterisk\">&#42;</span>";
@@ -1234,7 +1234,7 @@ function makeAddPopup()
 	html += "    			</div>";
 	html += "    			<div class=\"folder_radio_box\">";
 	html += "    				<input type=\"radio\" id=\"folder_radio2\" value=\"2\" name=\"folder_img\"><br/>";
-	html += "    		    	<label for=\folder_radio2\"><img src=\"./resources/images/backpack2.png\"></label>";
+	html += "    		    	<label for=\"folder_radio2\"><img src=\"./resources/images/backpack2.png\"> </label>";
 	html += "    			</div>";
 	html += "    		    <div class=\"folder_radio_box\">";
 	html += "    			    <input type=\"radio\" id=\"folder_radio3\" value=\"3\" name=\"folder_img\"><br/>";
