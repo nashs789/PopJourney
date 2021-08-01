@@ -1144,13 +1144,19 @@ a {
 	display: table-cell;
 	text-align: center;
 	width: 270px;
-	height: 50px;
+	height: 30px;
 	padding: 10px 15px 10px 15px;
 	font-size: 12pt;
 	color: #f37321;
 	font-weight: bold;
-	line-height: 50px;
+	line-height: 30px;
 	cursor: pointer;
+}
+.submit_btn {
+	border-radius: 0 0 0 10px;
+}
+.close_btn {
+	border-radius: 0 0 10px 0;
 }
 
 .bmk_popup .btn_list span:first-child, .bmk_popup .alert_btn_list2 span:first-child {
@@ -1170,7 +1176,7 @@ a {
 .popup {
 	display:inline-block;
 	width: 600px;
-	height: 512px;
+	height: 450px;
 	background-color: #fcfcfc;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
 	position: fixed;
@@ -1186,7 +1192,7 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	/* height: 435px; */
+	height: 370px;
 	margin: 30px auto 0 auto;
 }
 
@@ -1211,24 +1217,8 @@ a {
 	border-bottom: 2px solid #f37321;
 }
 
-.report_title {
-	color: black;
-	margin-top: 10px;
-}
-
-.report_title span {
-	line-height: 15pt;
-	font-size: 12pt;
-	font-weight: bold;
-	line-height: 20pt;
-}
-
-.report_title span:nth-child(2n-1) {
-	color: #f37321;
-}
-
 .radio_title {
-	margin-top: 30px;
+	margin-top: 10px;
 }
 
 .radio_title p {
@@ -2526,9 +2516,6 @@ input[type="radio"]:checked {
 		html += "<div class=\"popup_contents_txt\">";
 		html += "	<div>";
 		html += "		신고하기<span>필수 입력 사항 </span><span class= \"asterisk\">&#42;</span>";
-		html += "	</div>";
-		html += "	<div class= \"report_title\">";
-		html += "		<span>신고글</span> <span>글 제목(*댓글의 경우 '댓글'표기)</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>작성자</span> <span>닉네임</span>";
 		html += "	</div>";
 		html += "	<div class=\"radio_title\">";
 		html += "		<span>신고 사유</span> <span class= \"asterisk\">&#42;</span>";

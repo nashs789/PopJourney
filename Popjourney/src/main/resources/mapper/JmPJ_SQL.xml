@@ -916,6 +916,7 @@
 		                   ON M.MEM_NO = G.MEM_NO
 		                  AND G.GRADE_NO = 2
 		WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+		AND M.NIC LIKE '%' || #{sTxt} || '%'
 	</select>
 	
 	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
@@ -951,7 +952,7 @@
 		                                                               ON F.REQUEST_MEM_NO = M.MEM_NO
 		                                         GROUP BY TARGET_MEM_NO) F
 		                                     ON M.MEM_NO = F.TARGET_MEM_NO
-		                             INNER JOIN (SELECT R.MEM_NO, SUM( (R.JOURNAL_CNT * 5) + (R.JOURNAL_LIKE_CNT * 1) + (R.FOLLOW_CNT * 1) ) AS SUM
+		                             INNER JOIN (SELECT R.MEM_NO, SUM( (R.JOURNAL_CNT * 20) + (R.JOURNAL_LIKE_CNT * 5) + (R.FOLLOW_CNT * 5) ) AS SUM
 		                                         FROM (SELECT M.MEM_NO, M.NIC, G.GRADE_NO, GC.GRADE_NAME, NVL(J.JOURNAL_CNT, 0) AS JOURNAL_CNT, 
 		                                                      NVL(JL.JOURNAL_LIKE_CNT, 0) AS JOURNAL_LIKE_CNT, NVL(F.FOLLOW_CNT, 0) AS FOLLOW_CNT
 		                                               FROM MEM M INNER JOIN GRADE G
@@ -983,7 +984,9 @@
 		                                               WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R
 		                                         GROUP BY R.MEM_NO) S
 		                                     ON M.MEM_NO = S.MEM_NO
-		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R) R) R
+		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+		                  AND M.NIC LIKE '%' || #{sTxt} || '%'
+		                  ) R) R) R
 		WHERE R.RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
