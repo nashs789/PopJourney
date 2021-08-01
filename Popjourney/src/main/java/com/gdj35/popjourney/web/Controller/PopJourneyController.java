@@ -223,7 +223,6 @@ public class PopJourneyController {
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		System.out.println("회원가입 프로필작성쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 
 		try {
 			int cnt = ipjs.join(params);
@@ -325,12 +324,11 @@ public class PopJourneyController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 
-		int cnt = ipjs.updatePW(params);
 
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		System.out.println("비밀번호 재설정쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
+		int cnt = ipjs.updatePW(params);
 		try {
 			if (cnt != 0) {
 				modelMap.put("msg", "success");
@@ -397,7 +395,6 @@ public class PopJourneyController {
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		System.out.println("회원정보 수정쪽 비빌번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
 		try {
 			int cnt = ipjs.updateInfo(params);
@@ -503,12 +500,12 @@ public class PopJourneyController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		// loginInfo로 넘어오는 키: MEM_NO, GRADE_NO, NIC, LAST_DATE, TODAY
-		HashMap<String, String> loginInfo = ipjs.login(params);
 		SimpleDateFormat simpleD = new SimpleDateFormat("yyyy-MM-dd");
 		
 		//암호화
 		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		System.out.println("로그인할 때 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
+
+		HashMap<String, String> loginInfo = ipjs.login(params);
 		try {
 			if (loginInfo != null) {
 				Date lastDate = simpleD.parse(loginInfo.get("LAST_DATE"));
