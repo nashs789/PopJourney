@@ -517,6 +517,7 @@ a {
 #cke_40 {
 	display: none;
 }
+
 #admin{
 	display: none;
 }
@@ -741,7 +742,6 @@ $(document).ready(function(){
 		$("#categorySelect").val("4").prop("selected", true); 		
 	} 
 	$("#editBtn").on("click", function () {
-		//CKEDITOR.instances['postCon'].setData(${data.CONTENTS});
 		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
 		if($.trim($("#postTitle").val()) == "") {
 			alert("제목을 입력해 주세요.");
