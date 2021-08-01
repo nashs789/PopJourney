@@ -587,7 +587,7 @@ $(document).ready(function(){
   		location.href = "memAdmin";
   	});
 	if("editPostNo" != null){
-		//$("input[name=postTitle]").attr("value",${data.TITLE});	
+		//$("input[name=postTitle]").attr("value", ${data.TITLE});	
 		//$("#postCon").val(CKEDITOR.instances['postCon'].getData());
 	}
 	CKEDITOR.replace("postCon", {
@@ -614,7 +614,6 @@ $(document).ready(function(){
 		$("#categorySelect").val("4").prop("selected", true); 		
 	} 
 	$("#editBtn").on("click", function () {
-		//CKEDITOR.instances['postCon'].setData(${data.CONTENTS});
 		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
 		if($.trim($("#postTitle").val()) == "") {
 			alert("제목을 입력해 주세요.");
