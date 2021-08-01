@@ -1282,19 +1282,19 @@
 		                                             WHERE J.MEM_NO = #{MEM_NO}) JC
 		                                         ON 1 = 1
 		                                 INNER JOIN (SELECT A1.LIKE_POINT + A2.JOURNAL_POINT + A3.FOLLOWER_POINT AS TOTAL_POINT
-		                                             FROM (SELECT COUNT(*) AS LIKE_POINT
+		                                             FROM (SELECT COUNT(*) * 5 AS LIKE_POINT
 		                                                   FROM JOURNAL_LIKE JL INNER JOIN JOURNAL J
 		                                                                                ON JL.JOURNAL_NO = J.JOURNAL_NO
 		                                                                                AND J.MEM_NO = #{MEM_NO}
 		                                                                        INNER JOIN MEM M
 		                                                                                ON JL.MEM_NO = M.MEM_NO
-		                                                                                AND M.LEAVE_DATE IS NULL) A1 INNER JOIN (SELECT COUNT(*) * 5 AS JOURNAL_POINT
+		                                                                                AND M.LEAVE_DATE IS NULL) A1 INNER JOIN (SELECT COUNT(*) * 20 AS JOURNAL_POINT
 		                                                                                     FROM JOURNAL J INNER JOIN MEM M
 		                                                                                                            ON J.MEM_NO = M.MEM_NO
 		                                                                                                            AND M.LEAVE_DATE IS NULL
 		                                                                                                            AND J.MEM_NO = #{MEM_NO}) A2
 		                                                                                 ON 1 = 1
-		                                                                         INNER JOIN (SELECT COUNT(*) AS FOLLOWER_POINT
+		                                                                         INNER JOIN (SELECT COUNT(*) * 5 AS FOLLOWER_POINT
 		                                                                                     FROM FOLLOW F INNER JOIN MEM M
 		                                                                                                           ON F.REQUEST_MEM_NO = M.MEM_NO
 		                                                                                                           AND M.LEAVE_DATE IS NULL
