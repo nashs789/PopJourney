@@ -419,6 +419,9 @@ a {
 	margin-left: 580px;
 	font-weight: bold;
 }
+#admin{
+	display: none;
+}
 
 #footer {
 	display: block;
@@ -453,6 +456,177 @@ a {
 					width : "1280",
 					height : "500"
 				});
+				
+				//로그인 상태 확인
+				if("${sMEM_NO}" != "")
+				{
+					$(".logins").css("display", "none");
+					$(".btns").css("display", "inline-block");
+					//로그인 상태에 따라서 우측 상단 제어
+					
+					var path = ""; //사진경로 담아줄 변수
+					
+					if("${sPHOTO_PATH}" != "")
+					{
+						path = "resources/upload/" + "${sPHOTO_PATH}";
+						
+						$("#profilePhoto").attr("src", path);
+					}
+					else
+					{
+						path = "./resources/images/profile.png";
+
+						$("#profilePhoto").attr("src", path);
+					}//if ~ else end
+					//프로필 사진이 DB에 있는경우 저장된 사진으로, 없는 경우 기본 사진으로
+					
+					if("${sGRADE_NO}" == "0")
+					{
+						$("#admin").show();
+					}//등급에 따라서 내부 관리자 보이기
+					
+					var params = $("#memForm").serialize();
+					
+					$.ajax({
+						url: "notifications",
+						data: params,
+						dataType: "json",
+						type: "post",
+						success:function(result)
+						{
+							if(result.msg == "success")
+							{
+								makeNotification(result.notification);
+							}
+							else
+							{
+								popupText = "오류가 발생했습니다.";
+								commonPopup(popupText);
+							}
+						}, //success end
+						error: function(request, status, error) {
+							console.log(error);
+						} // error end
+					}); //ajax end 
+				}//if end -> 로그인 상태여부에 따른 처리
+				
+				$("#notification tbody").on("click", "span, tr, img", function(){
+					if($(this).attr("class") == "notRead")
+					{
+						$("#NOTF_NO").val($(this).attr($(this).attr("class")));
+				
+					    var params = $("#notificationForm").serialize();
+						
+						$.ajax({
+							url: "reads",
+							data: params,
+							dataType: "json",
+							type: "post",
+							success:function(result)
+							{
+							}, //success end
+							error: function(request, status, error) {
+								console.log(error);
+							} // error end
+						}); //ajax end  
+					} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
+					
+					if($(this).attr("class") == "user")
+					{
+						$("#userNo").val($(this).attr($(this).attr("class")));
+						$("#userForm").submit();
+					}
+					else if($(this).attr("class") == "journal")
+					{
+						$("#journalNo").val($(this).attr($(this).attr("class")));
+						$("#journalForm").submit();
+					}
+					else if($(this).attr("class") == "post")
+					{
+						$("#postNo").val($(this).attr($(this).attr("class")));
+						$("#postForm").submit();
+					}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
+				}); //notification tbody span tr click end
+				
+				$("#profilePhoto").on("click", function(){
+					$("#notification").css("display", "none");
+					if($("#profileSlidedown").css("display") == "block")
+					{
+						$("#profileSlidedown").css("display", "none");
+					}
+					else
+					{
+						$("#profileSlidedown").css("display", "block");
+					}
+				}); //profilePhoto click end
+				//프로필 사진 클릭 시 하위메뉴 나왔다 사라졌다 & 알람 팝업은 안보이도록
+				
+				$("#notificationPhoto").on("click", function(){
+					$("#profileSlidedown").css("display", "none");
+					if($("#notification").css("display") == "block")
+					{
+						$("#notification").css("display", "none");
+					}
+					else
+					{
+						$("#notification").css("display", "inline-block");
+					}
+				}); //notificationPhoto click end
+				
+				$("#journalBoard").on("click", function() {
+			  		location.href = "journalBoard";
+			  		console.log("눌려?");
+			  	});
+				$("#community").on("click", function() {
+			  		location.href = "community";
+			  	});
+				$("#travelWriter").on("click", function() {
+			  		location.href = "travelWriterRank";
+			  	});
+				$("#clientCenter").on("click", function() {
+			  		location.href = "clientCenterQuestion";
+			  	});
+				$("#admin").on("click", function() {
+			  		location.href = "memAdmin";
+			  	});
+				
+				$("#myPage").on("click", function(){
+			  		location.href = "myPage";
+				}); //find click endmyPage
+			  	
+			  	$("#timeline").on("click", function(){
+			  		location.href = "timeline";
+			  	}); //timeline click end
+			  	
+			  	$("#editProfile").on("click", function(){
+			  		location.href = "editProfile";
+			  	}); //editProfile click end
+			  	
+				$("#editInfo").on("click", function(){
+					location.href = "editInfo";
+			  	}); //editInfo click end
+				
+				$("#notificationMore").on("click", function(){
+					location.href="notification";
+				}); //notificationMore click end
+				
+				$("#bookmarkPhoto").on("click", function(){
+					location.href = "myPageBMK";
+				}); //bookmarkPhoto click end
+			  	
+			  	$("#logoutBtn").on("click", function(){
+					$.ajax({
+						url: "logouts",
+						type: "post",
+						dataType: "json",
+						success: function(result) {
+							location.reload();
+						}, //success end
+						error: function(request, status, error) {
+							console.log(error);
+						} //error end
+					}); //ajax end
+			  	}); //logoutBtn click end
 				
 				$("#backBtn").on("click", function() {
 					$("#goForm").submit();
@@ -520,7 +694,113 @@ a {
 				});
 				
 			}); // document ready end..
-			
+			function makeNotification(notification)
+			{
+				var html = ""; //알림 표현용
+				var readCnt = 0;
+				var html1 = "";  //알림 개수 표현용
+				
+				for(noti of notification)
+				{
+					if(noti.READ == 1)
+					{
+						html += "<tr class=\"notRead\" notRead=\"" + noti.NOTF_NO + "\">";
+						readCnt++;
+					}
+					else
+					{
+						html += "<tr class=\"read\" read=\"" + noti.NOTF_NO + "\">";
+					}
+					
+					var path ="";
+					
+					if(noti.PHOTO_PATH != null)
+					{
+						path = "resources/upload/"+noti.PHOTO_PATH;
+					}
+					else
+					{
+						path = "./resources/images/profile.png";
+					}
+					
+					switch(noti.EVENT_NO)
+					{
+						case 0:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th><span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST +"</span>님이 당신을 팔로우 하셨습니다.</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 1:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JOURNAL_NO + "\">" + noti.JCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;	
+						case 2:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.POST_NO + "\">" + noti.BCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 3:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>[여행일지]<span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JCTITLE + "</span>에  <span class=\"user\" user=" + noti.NOTF_MEM_NO + ">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.JCJOURNAL_NO + "\">" + noti.JUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 4:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>[게시글]<span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BCTITLE + "</span>에  <span class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.BCPOST_NO + "\">" + noti.BUP_CONTENTS + "...</span> 댓글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 5:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.JCCMEM_NO + "\"></th>";
+							html +=" 	<th>내 댓글<span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.UPJCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.JCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"journal\" journal=\"" + noti.CCJOURNAL_NO + "\">" + noti.DOWNJCONTENTS + "...</span> 답글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 6:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.BCCMEM_NO + "\"></th>";
+							html +=" 	<th>내 댓글<span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.UPBCONTENTS + "</span>에  <span class=\"user\" user=\"" + noti.BCCMEM_NO + "\">" + noti.REQUEST + "</span>님이 <span class=\"post\" post=\"" + noti.CCPOST_NO + "\">" + noti.DOWNBCONTENTS + "...</span> 댓글을 다셨습니다</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 7:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 남기셨습니다.</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 8:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>관리자가 내가 올린 [문의사항]<span class=\"qna\" qna=\"" + noti.GBN_NO + "\">" + noti.QTITLE + "</span>에 답글을 수정 하셨습니다.</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 9:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>내가 작성한 [여행일지]<span class=\"journal\" journal=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE + "</span> 를 좋아요 누르셨습니다.</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						case 10:
+							html +=" 	<th ><img alt=\"프로필\" src=\"" + path + "\" class=\"user\" user=\"" + noti.NOTF_MEM_NO + "\"></th>";
+							html +=" 	<th>내가 작성한 [게시글]<span class=\"post\" post=\"" + noti.GBN_NO + "\">" + noti.LIKE_TITLE2 + "</span> 를 좋아요 누르셨습니다.</th>";
+							html +=" 	<th>" + noti.NOTF_DATE +"[" + noti.msg + "]</th>";
+							html +=" </tr>";
+							break;
+						default:
+							console.log("여긴 뭐넣을까?");
+					}
+				}
+				
+				html1 = "<div id=\"notificationTxt\">" + readCnt + "<div>";
+				
+				$("#cnt").prepend(html1);
+				$("#notification tbody").html(html);
+			} //makeNotification end
 		</script>
 	</head>
 	<body>
@@ -549,7 +829,7 @@ a {
 			<div class="banner">
 				<div class="top">
 					<div class="logo_area">
-						<a href="#"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
+						<a href="main"><img alt="로고" src="./resources/images/logo.png" class="logo_photo"></a>
 						<div class="site_name">우리들의 여행일지</div>
 					</div>
 					<div class="btns">
