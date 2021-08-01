@@ -953,6 +953,7 @@ $(document).ready(function(){
          $("#admin").show();
       }//등급에 따라서 내부 관리자 보이기
       
+      var params = $("#memForm").serialize();
       var html = "";
                                                                                                       
       html +="   <div class=\"sub_profile\">";
@@ -976,16 +977,36 @@ $(document).ready(function(){
       }
       html +="         </div>";
       html +="         <div class=\"cnt\">";
-      html +="            <span>총 게시글 ${sJOURNAL}</span> <span>팔로워 ${sFOLLOWER}</span>";
-      html +="         </div>";
-      html +="      </div>";
-      html +="   </div>";
-                                                                                               
-      $(".top_area").prepend(html);
-      $(".sub_profile").css("display", "block");
+      $.ajax({
+  		url: "checkPoints",
+  		data: params,
+  		dataType: "json",
+  		type: "post",
+  		success:function(result)
+  		{
+  			console.log(result);
+  			if(result.msg == "success")
+  			{
+    		 	 html +="            <span>총 게시글 " + result.data.JOURNAL_CNT + "</span> <span>팔로워  " + result.data.FOLLOWER_CNT + "</span>";
+    		 	 html +="         </div>";
+    		     html +="      </div>";
+    		     html +="   </div>";
+    		     
+    		      $(".top_area").prepend(html);
+    		      $(".sub_profile").css("display", "block");
+  			}
+  			else
+  			{
+  				popupText = "오류가 발생했습니다.";
+  				commonPopup(popupText);
+  			}
+  		}, //success end
+  		error: function(request, status, error) {
+  			console.log(error);
+  		} // error end
+  	}); //ajax end 	
+                                                                                              
       
-      var params = $("#memForm").serialize();
-		
 		$.ajax({
 			url: "notifications",
 			data: params,

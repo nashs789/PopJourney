@@ -1192,7 +1192,7 @@
 					</div>
 					<div class="travel_writer_score">
 						<h4>※ 여행작가 점수 산정 방법</h4>
-						<h6>·여행게시판 작성 : 5점 ·좋아요 : 1점 ·팔로워 :1점</h6>
+						<h6>·여행게시판 작성 : 20점  ·좋아요 : 5점  ·팔로워 : 5점</h6>
 					</div>
 					<div class="paging"></div>
 				</div>

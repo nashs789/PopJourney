@@ -1685,7 +1685,7 @@ public class PopJourneyController {
 			
 			 try {
 				 ipjs.addJournal(params);
-				 
+
 				 for(int i = 0; i < contents.size(); i++)
 				 {
 					 if(contents.get(i) == "" || memo.get(i) == "" || photo.get(i) == "")

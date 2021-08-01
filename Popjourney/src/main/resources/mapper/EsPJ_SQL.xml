@@ -233,9 +233,9 @@
 					</when>
 				</choose>
 			</if>       
-                    )
+                     )
                     WHERE RK BETWEEN  #{startCnt} AND #{endCnt}
-		      ORDER BY DECODE(CATEGORY_NO, 1,1), RK
+		      ORDER BY DECODE(CATEGORY_NO, 1,1), POST_NO DESC 
 	</select>
 	<select id="getPostNCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT

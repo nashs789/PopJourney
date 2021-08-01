@@ -891,6 +891,8 @@ $(document).ready(function() {
 	
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
+	$(".date_nav ul li:first-child").attr("class");
+	
 	//로그인 상태 확인
 	if("${sMEM_NO}" != "")
 	{
@@ -1246,9 +1248,14 @@ $(document).ready(function() {
 			m = "#memo";
 			p = "#photo";
 		}
+		
+		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
+		{
+			alert("Diary1을 채워주세요.");
+			return false;
+		}
+		
 		var params = $("#addJournalForm").serialize();
-		console.log(params);
-		alert("!");
 		
 		$.ajax({
 			url: "updateJournals",
