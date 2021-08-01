@@ -114,6 +114,7 @@ body {
 	color: white;
 }
 #profilePhoto{
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
@@ -1686,8 +1687,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	console.log($("#MEM_NO").val());
-	console.log($("#postMem").val());
 	if($("#MEM_NO").val() == $("#postMem").val() || $("#MEM_NO").val() == 1) {
 		var html = "";
 		

@@ -114,6 +114,7 @@ body {
 	color: white;
 }
 #profilePhoto{
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
@@ -633,9 +634,7 @@ $(document).ready(function(){
 						success: function(res){
 							if(res.msg == "success"){
 								$("#newPostNo").val(res.postNo);
-								$("#writeForm").attr("action", "post");
-								$("#writeForm").submit();
-								console.log(params);
+								location.href = "community";
 							} else if (res.msg =="failed") {
 								alert("작성에 실패하였습니다.")
 							} else {

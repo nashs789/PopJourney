@@ -113,6 +113,7 @@ body {
 	color: white;
 }
 #profilePhoto{
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;
@@ -707,7 +708,7 @@ input[type="radio"]:checked {
 
 .btn_list span {
 	text-decoration: none;
-	display: inline-block;
+	display: table-cell;
 	text-align: center;
 	width: 270px;
 	height: 30px;
@@ -730,59 +731,6 @@ input[type="radio"]:checked {
 	{
 	background-color: #f37321;
 	color: white;
-}
-
-.alert_popup {
-	display: none;
-	width: 300px;
-	height: 150px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 75px);
-	left: calc(50% - 150px);
-	z-index: 500;
-	font-size: 16pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
-}
-
-.alert_popup_entity_txt {
-	font-size: 12pt;
-	font-weight: bold;
-	text-align: center;
-	line-height: 50px;
-	width: 265px;
-	height: 40px;
-	margin: 30px auto 30px auto;
-}
-
-.alert_btn_list span {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 270px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
-}
-.alert_btn_list2 span {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 120px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
 }
 .bg {
 	position: fixed;
@@ -1304,7 +1252,7 @@ function makeAddPopup()
 	html += "    </div>";
 	html += "<div class=\"bg\"></div>"
 	
-	$("#wrap").append(html);
+	$("#footer").append(html); 
 	
 	$("#no").on("click", function(){
 		$(".popup").remove();
@@ -1323,7 +1271,7 @@ function makeAddPopup()
 		else
 		{
 			var params = $("#editForm").serialize();
-			
+			console.log(params);
 			$.ajax({
 				url:"addBMKs",
 				data:params,
