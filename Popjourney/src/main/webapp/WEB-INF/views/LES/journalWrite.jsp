@@ -1230,6 +1230,7 @@ $(document).ready(function() {
 		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
 		{
 			alert("Diary1을 채워주세요.");
+			return false;
 		}
 		
 		var params = $("#addJournalForm").serialize();
