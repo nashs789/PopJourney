@@ -894,7 +894,7 @@ $(document).ready(function() {
 	var contents = ["", "", "", "", ""];
 	
 	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
-	
+		
 	//로그인 상태 확인
 	if("${sMEM_NO}" != "")
 	{
@@ -1191,6 +1191,8 @@ $(document).ready(function() {
 	}); //notificationPhoto click end
 	
 	$(".enroll_btn").on("click", function(){
+		$("#dateNav ul li:first-child").click();
+
 		if($.trim($(".input_title").val()) == "")
 		{
 			alert("제목 비어있음");
@@ -1233,7 +1235,7 @@ $(document).ready(function() {
 		}
 		
 		var params = $("#addJournalForm").serialize();
-
+		
 		$.ajax({
 			url: "addJournals",
 			data: params,
@@ -1633,7 +1635,7 @@ function makeNotification(notification)
 					<strong class="title_font">2. 일정 추가</strong> <span>필수 입력 사항</span>
 				</div>
 				<div class="schedule">
-					<nav class="date_nav">
+					<nav class="date_nav" id="dateNav">
 							<ul>
 								<li class="diary" diary="0">DIARY 1</li>
 								<li class="diary" diary="1">DIARY 2</li>
