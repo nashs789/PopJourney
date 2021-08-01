@@ -36,6 +36,8 @@
 		                  THEN '-'
 		                  WHEN G.APPLY = 2
 		                  THEN '등업완료'
+		                  WHEN G.APPLY = 3
+		                  THEN '등급하락'
 		             END AS APPLY
 		      FROM MEM M INNER JOIN GRADE G
 		                         ON M.MEM_NO = G.MEM_NO
@@ -314,17 +316,24 @@
 	
 	<select id="getReportCnt" parameterType="hashmap" resultType="Integer">
 		SELECT COUNT(*) AS CNT
-		FROM (SELECT R.REPORT_NO, R.REASON_NO, R.POST_NO, R.POST_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO,
-		             R.CONTENTS, R.STATUS_NO, TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
-		             RR.REASON_NAME, RR.DEL, M.MEM_NO, M.NIC AS REQUEST_NIC
-		      FROM REPORT R INNER JOIN REPORT_REASON RR
-		                            ON R.REASON_NO = RR.REASON_NO
-		                    INNER JOIN MEM M
-		                            ON M.MEM_NO = R.REQUEST_MEM_NO
-		      WHERE R.HANDLE_DATE IS NULL) R LEFT OUTER JOIN (SELECT M.MEM_NO, R.TARGET_MEM_NO AS REAL_TARGET_MEM_NO, M.NIC AS TARGET_NIC
-		                                                      FROM REPORT R INNER JOIN MEM M
-		                                                                            ON R.TARGET_MEM_NO = M.MEM_NO) A
-		                                                  ON R.TARGET_MEM_NO = A.REAL_TARGET_MEM_NO
+		FROM (SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, R.REPORT_DATE,
+		             R.REQUEST_MEM_NO, M.MEM_NO AS TARGET_MEM_NO, M.NIC AS TARGET_NIC, 
+		             CASE WHEN R.STATUS_NO = 1
+		                  THEN '신고대기'
+		                  WHEN R.STATUS_NO = 2
+		                  THEN '승인'
+		                  WHEN R.STATUS_NO = 3
+		                  THEN '미승인'
+		             END AS STATUS_NO,
+		             ROW_NUMBER() OVER(ORDER BY REPORT_NO DESC) AS RNUM, R.HANDLE_DATE
+		      FROM (SELECT R.REPORT_NO, R.REASON_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO,R.CONTENTS, R.STATUS_NO, 
+		                   TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
+		                   RR.REASON_NAME, RR.DEL, M.MEM_NO, M.NIC AS REQUEST_NIC
+		            FROM REPORT R INNER JOIN REPORT_REASON RR
+		                                  ON R.REASON_NO = RR.REASON_NO
+		                          INNER JOIN MEM M
+		                                  ON M.MEM_NO = R.REQUEST_MEM_NO) R INNER JOIN MEM M
+		                                                                            ON R.TARGET_MEM_NO = M.MEM_NO
 		WHERE 1 = 1
 		<if test="searchTxt != null and searchTxt != ''">
 			<choose>
@@ -339,29 +348,33 @@
 					AND R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
 				</when>
 				<when test="searchFilter == 3">
-					AND A.TARGET_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+					AND M.NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
 				</when>
 			</choose>
 		</if>
+		)
 	</select>
 	
 	<select id="getReportList" parameterType="hashmap" resultType="hashmap">
-		SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, R.TARGET_NIC, R.REPORT_DATE, R.HANDLE_DATE,
-		       R.POST_NO, R.POST_CMT_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.RNUM
-		FROM (SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, A.TARGET_NIC, R.REPORT_DATE, R.HANDLE_DATE,
-		             R.POST_NO, R.POST_CMT_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO, R.REQUEST_MEM_NO, A.REAL_TARGET_MEM_NO AS TARGET_MEM_NO,
-		             ROW_NUMBER() OVER(ORDER BY REPORT_NO DESC) AS RNUM
-		      FROM (SELECT R.REPORT_NO, R.REASON_NO, R.POST_NO, R.POST_CMT_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO, R.JOURNAL_NO, R.JOURNAL_CMT_NO,
-		                   R.CONTENTS, R.STATUS_NO, TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
+		SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_MEM_NO, R.REQUEST_NIC, R.TARGET_MEM_NO, R.TARGET_NIC, R.REPORT_DATE, R.HANDLE_DATE, R.STATUS_NO, R.RNUM
+		FROM (SELECT R.REPORT_NO, R.REASON_NAME, R.CONTENTS, R.REQUEST_NIC, R.REPORT_DATE,
+		             R.REQUEST_MEM_NO, M.MEM_NO AS TARGET_MEM_NO, M.NIC AS TARGET_NIC, 
+		             CASE WHEN R.STATUS_NO = 1
+		                  THEN '신고대기'
+		                  WHEN R.STATUS_NO = 2
+		                  THEN '승인'
+		                  WHEN R.STATUS_NO = 3
+		                  THEN '미승인'
+		             END AS STATUS_NO,
+		             ROW_NUMBER() OVER(ORDER BY REPORT_NO DESC) AS RNUM, R.HANDLE_DATE
+		      FROM (SELECT R.REPORT_NO, R.REASON_NO, R.REQUEST_MEM_NO, R.TARGET_MEM_NO,R.CONTENTS, R.STATUS_NO, 
+		                   TO_CHAR(R.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE, NVL(TO_CHAR(R.HANDLE_DATE, 'YYYY-MM-DD'), '-') AS HANDLE_DATE,
 		                   RR.REASON_NAME, RR.DEL, M.MEM_NO, M.NIC AS REQUEST_NIC
 		            FROM REPORT R INNER JOIN REPORT_REASON RR
 		                                  ON R.REASON_NO = RR.REASON_NO
 		                          INNER JOIN MEM M
-		                                  ON M.MEM_NO = R.REQUEST_MEM_NO
-		            WHERE R.HANDLE_DATE IS NULL) R LEFT OUTER JOIN (SELECT M.MEM_NO, R.TARGET_MEM_NO AS REAL_TARGET_MEM_NO, M.NIC AS TARGET_NIC
-		                                                            FROM REPORT R INNER JOIN MEM M
-		                                                                                  ON R.TARGET_MEM_NO = M.MEM_NO) A
-		                                                        ON R.TARGET_MEM_NO = A.REAL_TARGET_MEM_NO
+		                                  ON M.MEM_NO = R.REQUEST_MEM_NO) R INNER JOIN MEM M
+		                                                                            ON R.TARGET_MEM_NO = M.MEM_NO
 		      WHERE 1 = 1
 		      <if test="searchTxt != null and searchTxt != ''">
 				  <choose>
@@ -376,7 +389,7 @@
 					      AND R.REQUEST_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
 					  </when>
 					  <when test="searchFilter == 3">
-						  AND A.TARGET_NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
+						  AND M.NIC LIKE '%' || #{searchTxt} || '%' AND R.REPORT_DATE BETWEEN #{searchDate1} AND #{searchDate2}
 					  </when>
 				  </choose>
 			  </if>
@@ -1220,4 +1233,25 @@
 		DELETE FROM BMK
 		WHERE JOURNAL_NO = #{journalNo}
 	</delete>
+	
+	<update id="getGradeUpgrade" parameterType="hashmap">
+		UPDATE GRADE SET GRADE_NO = 2, GRADE_DATE = SYSDATE, APPLY = 2
+		WHERE MEM_NO = #{gradeMemNo}
+	</update>
+	
+	<update id="getDownGrade" parameterType="hashmap">
+		UPDATE GRADE SET GRADE_NO = 1, GRADE_DATE = SYSDATE, APPLY = 3
+		WHERE MEM_NO = #{gradeMemNo}
+	</update>
+	
+	<update id="getReportApprovals" parameterType="hashmap">
+		UPDATE REPORT SET STATUS_NO = 2, HANDLE_DATE = SYSDATE
+		WHERE REPORT_NO = #{reportNo}
+	</update>
+	
+	<update id="getUnReportApprovals" parameterType="hashmap">
+		UPDATE REPORT SET STATUS_NO = 3, HANDLE_DATE = SYSDATE
+		WHERE REPORT_NO = #{reportNo}
+	</update>
+	
 </mapper>

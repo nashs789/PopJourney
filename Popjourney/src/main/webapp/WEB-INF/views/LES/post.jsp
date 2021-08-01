@@ -540,7 +540,7 @@ p {
 }
 
 .btn_list {
-	display: none;
+	display: block;
 	width: 1280px;
 	height: 70px;
 	text-align: center;
@@ -550,7 +550,7 @@ p {
 	display: inline-block;
 }
 
-.edit_btn, .delete_btn, .reset_btn{
+.edit_btn, .del_btn, .reset_btn{
 	padding: 5px 10px;
 	border-radius: 20px;
 	font-size: 13px;
@@ -587,7 +587,7 @@ p {
 	color: white;
 }
 
-.delete_btn:hover, .reset_btn:hover{
+.del_btn:hover, .reset_btn:hover{
 	border: 2px solid #F1404B;
 	background-color: #F1404B;
 	color: white;
@@ -1072,7 +1072,6 @@ $(document).ready(function(){
 		$(".btns").css("display","inline-block");
 		$(".logins").css("display","none");
 		$(".btn_list").css("display","inline-block");
-		$(".reaction").css("display","none");
 	} 
 	if("${sMEM_NO}" == ""){
 		$(".reaction").css("display","none");
@@ -1686,6 +1685,19 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
+	console.log($("#MEM_NO").val());
+	console.log($("#postMem").val());
+	if($("#MEM_NO").val() == $("#postMem").val() || $("#MEM_NO").val() == 1) {
+		var html = "";
+		
+		html += "<div class=\"btn_list\">";
+		html += "<input type=\"button\" class=\"edit_btn\" value=\"수  정\" />";
+		html += "<input type=\"button\" class=\"del_btn\" value=\"삭  제\" />";
+		html += "</div>";
+		$(".bnt_lists").html(html);
+	}
+	
 });// document ready end
 //좋아요 첫화면 구성
 function likeLoad() {
@@ -2111,7 +2123,46 @@ function drawPaging(pb) {
 	$(".paging").html(html);
 	
 }
-
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup2\">";
+	html	 +="	 <div class=\"popup_entity_txt2\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list2\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg2\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg2").remove();
+	}); //yesBtn click end
+}//commonPopup end
+function findBtnPopup()
+{
+	var html = "";
+	
+	html +="<div class=\"popup2\">";
+	html +="	   <div class=\"popup_entity_txt2\">무엇이 필요하십니까?</div>";
+	html +="       <div class=\"btn_list2\">";
+	html +="       		<a href=\"findID\">ID찾기</a>";
+	html +="      		<a href=\"findPW\">PW찾기</a>";
+	html +="       <img src=\"./resources/images/cancel.png\" id=\"cancelImg\"/>";
+	html +="    </div>";
+	html +="</div>";
+	html +="<div class=\"bg2\"></div>";
+	
+	$("body").append(html);
+	
+	$("#cancelImg").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg2").remove();
+	}); //cancelImg click end
+}//findBtnPopup end
 </script>
    </head>
    <body>
@@ -2337,10 +2388,7 @@ function drawPaging(pb) {
 	         		</div>
          		</div>		
             <div class="post_bottom">
-            	<div class="btn_list">
-            		<input type="button" id="postEditBtn" class="edit_btn" value="수  정" />
-            		<input type="button" class="delete_btn" value="삭  제" />
-            	</div>
+            	<div class="bnt_lists"></div>
             	<div class="reaction">
             		<ul><li><img alt="좋아요" src="./resources/images/like.png" id="likeImg" class="like" like="0"><br/><span class="likeText">좋아요</span></li></ul>
             	</div>

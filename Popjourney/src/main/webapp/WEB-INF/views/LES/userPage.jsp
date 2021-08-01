@@ -720,7 +720,7 @@ $(document).ready(function(){
 		}
 		
 		var params = $("#memForm").serialize();
-		
+
 		$.ajax({
 			url: "followStatus",
 			data: params,
@@ -753,7 +753,7 @@ $(document).ready(function(){
 	}
 	
 	var params = $("#memForm").serialize();
-	
+
 	$.ajax({
 		url: "myPageProfiles",
 		data: params,
@@ -761,7 +761,7 @@ $(document).ready(function(){
 		type: "post",
 		success: function(result){
 			var html = ""; 
-
+			console.log(result.myProfile.PHOTO_PATH);
 			if(result.myProfile.PHOTO_PATH != null)
 			{
 				html += "<img alt=\"profile\" src=\"resources/upload/" + result.myProfile.PHOTO_PATH + "\"class=\"profile_img\">";

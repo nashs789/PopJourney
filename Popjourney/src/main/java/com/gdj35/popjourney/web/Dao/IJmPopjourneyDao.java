@@ -147,5 +147,13 @@ public interface IJmPopjourneyDao {
 
 	public int getJournalBmkDeletes(HashMap<String, String> params) throws Throwable;
 
+	public int getGradeUpgrade(HashMap<String, String> params) throws Throwable;
+
+	public int getDownGrade(HashMap<String, String> params) throws Throwable;
+
+	public int getReportApprovals(HashMap<String, String> params) throws Throwable;
+
+	public int getUnReportApprovals(HashMap<String, String> params) throws Throwable;
+
 
 }
