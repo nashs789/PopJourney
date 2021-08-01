@@ -1203,11 +1203,6 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
-		{
-			alert("Diary1을 채워주세요.");
-		}
-		
 		if(save == 0)
 		{
 			contents[0] = $("#inputContents").val();
@@ -1231,6 +1226,12 @@ $(document).ready(function() {
 			m = "#memo";
 			p = "#photo";
 		}
+		
+		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
+		{
+			alert("Diary1을 채워주세요.");
+		}
+		
 		var params = $("#addJournalForm").serialize();
 
 		$.ajax({

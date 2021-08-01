@@ -1251,7 +1251,6 @@ $(document).ready(function(){
 		}// if ~ else end
 	}); //loginBtn click end
 	$(".bnt_lists").on("click","#editBtn", function () {
-		console.log("되나");
 		$("#goForm").attr("action","postUpdate");
 		$("#goForm").submit();
 	});
