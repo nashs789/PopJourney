@@ -1250,7 +1250,8 @@ $(document).ready(function(){
 			}); //ajax end 
 		}// if ~ else end
 	}); //loginBtn click end
-	$("#editBtn").on("click", function () {
+	$(".bnt_lists").on("click","#editBtn", function () {
+		console.log("되나");
 		$("#goForm").attr("action","postUpdate");
 		$("#goForm").submit();
 	});

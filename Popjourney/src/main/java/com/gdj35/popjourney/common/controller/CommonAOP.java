@@ -38,7 +38,7 @@ public class CommonAOP {
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*myPageMap(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*postUpdate(..))"
 			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*postWrite(..))"
-			+ "|| execution(* com.gdj35.popjourney..EsPopJourneyController.*journalWrite(..))"
+			+ "|| execution(* com.gdj35.popjourney..PopJourneyController.*journalWrite(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*communityAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*memAdmin(..))"
 			+ "|| execution(* com.gdj35.popjourney..JmPopJourneyController.*noticeAdmin(..))"
