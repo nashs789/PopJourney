@@ -984,10 +984,6 @@ $(document).ready(function() {
 			html +=" 	<option value=\"6\">야외활동</option>";
 			html +=" 	<option value=\"7\">식도락</option>";
 		}
-		else
-		{
-			html +=" 	<option value=\"0\">카테고리</option>";
-		}
 		
 		$(".category_filter").html(html);
 	});//pref_filter change end

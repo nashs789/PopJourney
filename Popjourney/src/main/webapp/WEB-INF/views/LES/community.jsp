@@ -885,20 +885,23 @@ $(document).ready(function() {
 	//관리자 외 내부관리자 X
 	if("${sMEM_NO}" != "1"){
 		$("#admin").css("display","none");
-		
-		if("${sPHOTO_PATH}" != "")
-		{
-			path = "resources/upload/" + "${sPHOTO_PATH}";
-			
-			$("#profilePhoto").attr("src", path);
-		}
-		else
-		{
-			path = "./resources/images/profile.png";
-
-			$("#profilePhoto").attr("src", path);
-		}//if ~ else end
 	}
+	
+	var path = "";
+	var path2 = "";
+	
+	if("${sPHOTO_PATH}" != "")
+	{
+		path = "resources/upload/" + "${sPHOTO_PATH}";
+		
+		$("#profilePhoto").attr("src", path);
+		$(".profile_img").attr("src", path);
+	}
+	else
+	{	
+		$("#profilePhoto").attr("src", "./resources/images/profile.png");
+		$(".profile_img").attr("src", "./resources/images/profile3.png");
+	}//if ~ else end
 	
 	var params = $("#memForm").serialize();
 	
@@ -1669,7 +1672,7 @@ function makeNotification(notification)
 		<div id="container">
 			<div class="top_area">
 				<div class="sub_profile">
-					<div>
+					<div id="tempArea">
 						<img alt="profile" src="./resources/images/profile3.png" class="profile_img">
 					</div>
 					<div class="info">
