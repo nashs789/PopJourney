@@ -466,4 +466,9 @@
 		WHERE POST_CMT_NO = #{cmtWriteMemNo}
 	</update>
 	
+	<update id="getCmtCmtDeletes" parameterType="hashmap">
+		UPDATE BOARD_CMT SET DEL = 0
+		WHERE PARENTS_CMT_NO = #{cmtNo}
+	</update>
+	
 </mapper>

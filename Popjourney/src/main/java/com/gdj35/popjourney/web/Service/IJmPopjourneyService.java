@@ -155,5 +155,7 @@ public interface IJmPopjourneyService {
 
 	public int getUnReportApprovals(HashMap<String, String> params) throws Throwable;
 
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable;
+
 
 }

@@ -489,8 +489,9 @@ public class EsPopJourneyController {
 		 
 		try {
 			int cnt = iEsPopjourneyService.getCmtDeletes(params);
+			int cnt2 = iEsPopjourneyService.getCmtCmtDeletes(params);
 			
-			if(cnt > 0) {
+			if(cnt > 0 || cnt2 > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");

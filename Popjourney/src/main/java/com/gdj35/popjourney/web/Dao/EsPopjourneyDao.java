@@ -157,4 +157,9 @@ public class EsPopjourneyDao implements IEsPopjourneyDao {
 		return sqlSession.update("EsPJ.getCmtDeletes", params);
 	}
 
+	@Override
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("EsPJ.getCmtCmtDeletes", params);
+	}
+
 }

@@ -159,4 +159,9 @@ public class EsPopjourneyService implements IEsPopjourneyService {
 		return iEsPopjourneyDao.getCmtDeletes(params);
 	}
 
+	@Override
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return iEsPopjourneyDao.getCmtCmtDeletes(params);
+	}
+
 }

@@ -1254,4 +1254,9 @@
 		WHERE REPORT_NO = #{reportNo}
 	</update>
 	
+	<update id="getCmtCmtDeletes" parameterType="hashmap">
+		UPDATE JOURNAL_CMT SET DEL = 0
+		WHERE PARENTS_CMT_NO = #{cmtNo}
+	</update>
+	
 </mapper>
