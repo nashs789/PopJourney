@@ -916,6 +916,7 @@
 		                   ON M.MEM_NO = G.MEM_NO
 		                  AND G.GRADE_NO = 2
 		WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+		AND M.NIC LIKE '%' || #{sTxt} || '%'
 	</select>
 	
 	<select id="getRankList" parameterType="hashmap" resultType="hashmap">
@@ -983,7 +984,9 @@
 		                                               WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R
 		                                         GROUP BY R.MEM_NO) S
 		                                     ON M.MEM_NO = S.MEM_NO
-		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL) R) R) R
+		                  WHERE M.MEM_NO != 1 AND M.LEAVE_DATE IS NULL
+		                  AND M.NIC LIKE '%' || #{sTxt} || '%'
+		                  ) R) R) R
 		WHERE R.RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	

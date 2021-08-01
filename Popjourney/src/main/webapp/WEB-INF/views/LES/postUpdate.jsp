@@ -741,8 +741,10 @@ $(document).ready(function(){
 		$("#categorySelect").val("4").prop("selected", true); 		
 	} 
 	$("#editBtn").on("click", function () {
-		CKEDITOR.instances['postCon'].setData($("#postCon").val());
 		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
+		console.log("pc >> " + $("#postCon").val());
+		console.log("pcㄴ >> " + CKEDITOR.instances['postCon'].getData());
+		alert("멈춰");
 		if($.trim($("#postTitle").val()) == "") {
 			alert("제목을 입력해 주세요.");
 			$("#postTitle").focus();
