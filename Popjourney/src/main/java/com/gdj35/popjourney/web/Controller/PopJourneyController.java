@@ -151,7 +151,7 @@ public class PopJourneyController {
 
 		return mapper.writeValueAsString(modelMap);
 	}
-
+	
 	// 프로필 작성- 이인복
 	@RequestMapping(value = "/writeProfile")
 	public ModelAndView writeProfile(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
@@ -160,10 +160,6 @@ public class PopJourneyController {
 		String email = params.get("inputEmail") + "@" + params.get("inputDomain");
 
 		HashMap<String, String> data = params;
-		
-		//암호화
-		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
-		System.out.println("회원가입 프로필작성쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 		
 		data.put("birth", birth);
 		data.put("phone", phone);
@@ -225,6 +221,9 @@ public class PopJourneyController {
 		// inputCode, inputKeyword, sex, selectTelcom, selectKeyword, photoPath
 		// inputNic, inputIntro, marketing
 		
+		//암호화
+		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		System.out.println("회원가입 프로필작성쪽 비밀번호 >> " + Utils.encryptAES128(params.get("inputPW")));
 
 		try {
 			int cnt = ipjs.join(params);
