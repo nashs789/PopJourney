@@ -387,5 +387,10 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getUnReportApprovals(params);
 	}
 
+	@Override
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getCmtCmtDeletes(params);
+	}
+
 
 }

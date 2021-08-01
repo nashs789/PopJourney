@@ -1631,6 +1631,8 @@ $(document).ready(function(){
 	// 댓글 삭제버튼 클릭 시
 	$("#cmtList").on("click", ".cmt_delete_btn", function() {
 		$("#cmtWriteMemNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+		$("#cmtNo").val($(this).parent().parent().parent().parent().attr("cmtno"));
+		
 		if(confirm("삭제하시겠습니까?")) {
 			
 			var params = $("#goForm").serialize();

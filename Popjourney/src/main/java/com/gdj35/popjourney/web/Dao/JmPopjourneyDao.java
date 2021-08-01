@@ -386,4 +386,9 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.update("JmPJ.getUnReportApprovals", params);
 	}
 
+	@Override
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("JmPJ.getCmtCmtDeletes", params);
+	}
+
 }

@@ -1408,7 +1408,7 @@
 					<input type="hidden" id="memNo" name="memNo" value="${param.memNo}" />
 					<input type="hidden" id="qNo" name="qNo" value="${param.qNo}" />
 					<input type="hidden" id="nic" name="nic" value="${param.nic}" />
-					<input type="hidden" id="page" name="page" value="${param.page}" />
+					<input type="hidden" id="pages" name="pages" value="${param.pages}" />
 					<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}" />
 					<input type="hidden" id="writeMemNo" name="writeMemNo" value="${data.MEM_NO}" />
 					<div class="sidebar">

@@ -63,4 +63,6 @@ public interface IEsPopjourneyService {
 
 	public int getCmtDeletes(HashMap<String, String> params) throws Throwable;
 
+	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable;
+
 }

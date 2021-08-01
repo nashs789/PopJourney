@@ -334,24 +334,20 @@ public class JmPopJourneyController {
 	
 	@RequestMapping(value = "/clientCenterMatterUpdates", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String clientCenterMatterUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String clientCenterMatterUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
-	
 		try {
 			int cnt = iJmPopjourneyService.updateMatters(params);
-			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
 			}
-			
 		} catch (Throwable e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-	
 		return mapper.writeValueAsString(modelMap);
 	}
 	
@@ -1388,8 +1384,9 @@ public class JmPopJourneyController {
 		 
 		try {
 			int cnt = iJmPopjourneyService.getCmtDeletes(params);
+			int cnt2 = iJmPopjourneyService.getCmtCmtDeletes(params);
 			
-			if(cnt > 0) {
+			if(cnt > 0 || cnt2 > 0) {
 				modelMap.put("msg", "success");
 			} else {
 				modelMap.put("msg", "failed");
