@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdj35.popjourney.util.Utils;
 import com.gdj35.popjourney.common.bean.PagingBean;
 import com.gdj35.popjourney.common.service.IPagingService;
 import com.gdj35.popjourney.web.Service.IPopJourneyService;
@@ -153,13 +154,16 @@ public class PopJourneyController {
 
 	// 프로필 작성- 이인복
 	@RequestMapping(value = "/writeProfile")
-	public ModelAndView writeProfile(@RequestParam HashMap<String, String> params, ModelAndView mav) {
+	public ModelAndView writeProfile(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		String birth = params.get("inputYear") + "-" + params.get("inputMonth") + "-" + params.get("inputDay");
 		String phone = "010" + params.get("inputPhone");
 		String email = params.get("inputEmail") + "@" + params.get("inputDomain");
 
 		HashMap<String, String> data = params;
-
+		
+		//암호화
+		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		
 		data.put("birth", birth);
 		data.put("phone", phone);
 		data.put("email", email);
@@ -323,6 +327,9 @@ public class PopJourneyController {
 
 		int cnt = ipjs.updatePW(params);
 
+		//암호화
+		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		
 		try {
 			if (cnt != 0) {
 				modelMap.put("msg", "success");
@@ -386,7 +393,10 @@ public class PopJourneyController {
 		params.put("birth", birth);
 		params.put("phone", phone);
 		params.put("email", email);
-
+		
+		//암호화
+		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		
 		try {
 			int cnt = ipjs.updateInfo(params);
 
@@ -493,7 +503,10 @@ public class PopJourneyController {
 		// loginInfo로 넘어오는 키: MEM_NO, GRADE_NO, NIC, LAST_DATE, TODAY
 		HashMap<String, String> loginInfo = ipjs.login(params);
 		SimpleDateFormat simpleD = new SimpleDateFormat("yyyy-MM-dd");
-
+		
+		//암호화
+		params.put("inputPW", Utils.encryptAES128(params.get("inputPW")));
+		
 		try {
 			if (loginInfo != null) {
 				Date lastDate = simpleD.parse(loginInfo.get("LAST_DATE"));
