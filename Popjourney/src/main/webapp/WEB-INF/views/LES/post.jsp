@@ -62,7 +62,6 @@ body {
 	font-size: 18px;
 	font-weight: 900;
 }
-
 .btns>ul>li {
 	margin-right: 10px;
 }
@@ -168,6 +167,9 @@ body {
 	cursor: pointer;
     margin-top: 5px;
     border-radius: 50%;
+}
+.profile_img{
+	height: 120px;
 }
 
 #notification tfoot tr{
@@ -2342,11 +2344,11 @@ function findBtnPopup()
          			<div class="profile_info">
 	         			<div>
 	         				<c:choose>
-								<c:when test="${data.MEM_PHOTO_PATH eq null}">
+								<c:when test="${data.PHOTO_PATH eq null}">
 									<img alt="profile" src="./resources/images/profile3.png" class="profile_img">									
 								</c:when>
 								<c:otherwise>
-									<img alt="profile" src="./resources/upload/${data.MEM_PHOTO_PATH}" class="profile_img">
+									<img alt="profile" src="./resources/upload/${data.PHOTO_PATH}" class="profile_img">
 								</c:otherwise>
 							</c:choose>
 	         			</div>

@@ -621,6 +621,18 @@ $(document).ready(function(){
 		}); //ajax end 
 	}); //IdDbCkBtn click end
 	
+	$("#inputPhone").on("keypress", function(){  //핸드폰 번호 숫자만 받기
+		$(".popup").remove();
+		$(".bg").remove();
+		
+		if(event.keyCode < 48 || event.keyCode > 57)
+		{
+			popupText = "숫자만 입력하세요.";
+			commonPopup(popupText);
+			return false;
+		}
+	}); //inputPhone keypress end
+	
 	$("#nextBtn").on("click", function(){      //다음 버튼을 눌렀을때 필수 입력필드가 전부 채워졌는지 확인
 		if($.trim($("#inputID").val()) == "")
 		{

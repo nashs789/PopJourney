@@ -309,7 +309,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus, input[type
 
 .sub_area img {
    width: 100%;
-   height: 350px;
+   height: 300px;
 }
 .sub_profile>div {
    width: 50%;
@@ -616,7 +616,8 @@ a {
    width: 100%;
    height: 100px;
    padding-top: 50px;
-   font-size: 18pt;
+   font-size: 12pt;
+   font-weight: bold;
    text-align: center;
    display: inline-block;
 }
@@ -1120,7 +1121,8 @@ $(document).ready(function(){
    $("#write").on("click", function(){
 	   if("${sMEM_NO}" == "")
 	   {
-		   alert("로그인이 필요한 서비스 입니다.");
+		   popupText = "로그인이 필요한 서비스 입니다.";
+			commonPopup(popupText);
 		   return false;
 	   }
       makePopup();
@@ -1410,11 +1412,13 @@ function loadPage()
          }
          else if(result.msg == "failed")
          {
-            alert("일지가 없습니다.");
+            popupText = "일지가 없습니다.";
+			commonPopup(popupText);
          }
          else
          {
-            alert("실패 ");
+            popupText = "오류가 발생했습니다.";
+			commonPopup(popupText);
          }
       }, //success end
       error: function(error){
@@ -1573,11 +1577,13 @@ function loadPage2()
          }
          else if(result.msg == "failed")
          {
-            alert("일지가 없습니다.");
+            popupText = "일지가 없습니다.";
+			commonPopup(popupText);
          }
          else
          {
-            alert("실패 ");
+            popupText = "오류가 발생했습니다.";
+			commonPopup(popupText);
          }
       }, //success end
       error: function(error){
@@ -1786,19 +1792,23 @@ function makePopup()
    $("#goWrite").on("click", function(){
       if($(".start_date").val() == "")
       {
-         alert("시작일을 입력하세요.");
+         popupText = "시작일을 입력하세요.";
+		 commonPopup(popupText);
       }
       else if($(".end_date").val() == "")
       {
-         alert("종료일을 입력하세요.");
+         popupText = "종료일을 입력하세요.";
+		 commonPopup(popupText);
       }
       else if($("#startDate").val() > $("#endDate").val())
       {
-         alert("시작일이 종료일보다 클 수 없음");
+         popupText = "시작일이 종료일보다 클 수 없음";
+		 commonPopup(popupText);
       }
       else if($("#regionSelect[id='regionSelect'] option:selected").val() == "17")
       {
-         alert("지역을 입력하세요.");
+         popupText = "지역을 입력하세요.";
+		 commonPopup(popupText);
       }
       else
       {

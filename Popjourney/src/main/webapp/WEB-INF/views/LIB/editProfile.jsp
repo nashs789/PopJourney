@@ -143,7 +143,7 @@ body{
 	margin-top: 15px;
 	height: 300px;
 }
-input[type='text']:focus{
+input[type='text']:focus, #inputIntro:hover{
 	outline-color: #fcba03;
 }
 input[type='button']{

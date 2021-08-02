@@ -639,6 +639,7 @@ a {
 }
 
 .profile_info img {
+	height: 120px;
 	margin-left: 450px;
 	width: 120px;
 }
@@ -651,6 +652,7 @@ a {
 }
 
 .info img {
+	height: 25px;
 	width: 25px;
 	margin-left: 0;
 }
@@ -1191,7 +1193,6 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	height: 370px;
 	margin: 30px auto 0 auto;
 }
 
@@ -1431,6 +1432,34 @@ input[type="radio"]:checked {
 				} // error end
 			}); //ajax end 
 		}//if end -> 로그인 상태여부에 따른 처리
+		
+		var params = $("#checkForm").serialize();
+		
+		$.ajax({
+			url: "checkPoints",
+			data: params,
+			dataType: "json",
+			type: "post",
+			success:function(result)
+			{
+				if(result.msg == "success")
+				{
+					var html = "";
+					
+					html += "<span>총 게시글  " + result.data.JOURNAL_CNT + "</span> <span>팔로워 " + result.data.FOLLOWER_CNT + "</span>";
+					
+					$(".cnt").html(html);
+				}
+				else
+				{
+					popupText = "오류가 발생했습니다.";
+					commonPopup(popupText);
+				}
+			}, //success end
+			error: function(request, status, error) {
+				console.log(error);
+			} // error end
+		}); //ajax end 
 		
 		$("#notification tbody").on("click", "span, tr, img", function(){
 			if($(this).attr("class") == "notRead")
@@ -2610,6 +2639,9 @@ input[type="radio"]:checked {
 	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
 	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
 </form>
+<form action="#" id="checkForm">
+	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${data.MEM_NO}"/>
+</form>
 	<div id="wrap">
 		<!-- header부분 고정 -->
 		<div id="header">
@@ -2771,7 +2803,7 @@ input[type="radio"]:checked {
 								</c:choose>
 							</div>
 							<div class="cnt">
-								<span>총 게시글 ${data.MEM_JOURNAL_CNT}</span> <span>총 팔로우 ${data.MEM_FOLLOW_CNT}</span>
+							
 							</div>
 						</div>
 					</div>
