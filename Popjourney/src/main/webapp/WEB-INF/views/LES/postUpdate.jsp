@@ -464,49 +464,70 @@ a {
 	height: 80px;
 }
 
-.alert_popup {
-	display: none;
-	width: 400px;
-	height: 150px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 75px);
-	left: calc(50% - 150px);
-	z-index: 500;
-	font-size: 16pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
 }
-
-.alert_popup_entity_txt {
-	font-size: 12pt;
-	font-weight: bold;
-	text-align: center;
-	line-height: 50px;
-	width: 350px;
-	height: 40px;
-	margin: 30px auto 30px auto;
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
 }
-
-.alert_btn_list2 span {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 170px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
+#yesBtn{
+   text-decoration: none;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
 }
-
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
 .bg {
 	position: fixed;
-    display: none;
+    display: inline-block;
     width: 100%;
     height: 100%;
     top: 0px;
@@ -647,12 +668,10 @@ $(document).ready(function(){
 	
 	//상단메뉴 (여행게시판, 자유게시판, 여행작가,고객센터, 내부관리자) 페이지 이동
 	$(".logo_photo").on("click", function() {
-		alert("변경사항이 저장되지 않습니다.");
   		location.href = "main";
   	});
 	$("#journalBoard").on("click", function() {
   		location.href = "journalBoard";
-  		console.log("눌려?");
   	});
 	$("#community").on("click", function() {
   		location.href = "community";
@@ -742,15 +761,15 @@ $(document).ready(function(){
 	} 
 	$("#editBtn").on("click", function () {
 		$("#postCon").val(CKEDITOR.instances['postCon'].getData());
-		console.log("pc >> " + $("#postCon").val());
-		console.log("pcㄴ >> " + CKEDITOR.instances['postCon'].getData());
-		alert("멈춰");
+
 		if($.trim($("#postTitle").val()) == "") {
-			alert("제목을 입력해 주세요.");
+			popupText = "제목을 입력해 주세요.";
+			commonPopup(popupText);
 			$("#postTitle").focus();
 			return false; // ajaxForm 실행 불가
 		} else if ($.trim($("#postCon").val()) == "") {
-			alert("내용을 입력해 주세요.");
+			popupText = "내용을 입력해 주세요.";
+			commonPopup(popupText);
 			$("#postCon").focus();
 			return false;
 		}
@@ -766,9 +785,11 @@ $(document).ready(function(){
 						$("#writeForm").attr("action", "post");
 						$("#writeForm").submit();
 					} else if (res.msg =="failed") {
-						alert("작성에 실패하였습니다.")
+						popupText = "작성에 실패 하였습니다.";
+						commonPopup(popupText);
 					} else {
-						alert("작성중 문제가 발생하였습니다.")
+						popupText = "작성에 실패 하였습니다.";
+						commonPopup(popupText);
 					}
 				}, 
 				error : function (request, status, error) {
@@ -780,8 +801,8 @@ $(document).ready(function(){
 	$("#delBtn").on("click", function () {
 		$("#postCon").val('');
 		CKEDITOR.instances['postCon'].setData('');
-		console.log($("#postCon").val());
-		alert("글을 삭제합니다. // 팝업창 : 예, 아니오 로 만들기");
+		popupText = "글을 지웠습니다.";
+		commonPopup(popupText);
 	});
 	
 	// 메인검색창 넘어가는 부분(동기)
@@ -1056,7 +1077,7 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 				<div class="post_bottom">
 					<div class="btn_list">
 						<input type="button" id="editBtn" class="add_btn" value="수  정" /> 
-						<input type="reset" id="delBtn" class="del_btn" value="삭  제" />
+						<input type="reset" id="delBtn" class="del_btn" value="글 지우기" />
 					</div>
 				</div>
 			</div>
@@ -1068,12 +1089,5 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 			Copyright© POPJOURNEY. All Rights Reserved.
 		</p>
 	</div>
-	<div class="alert_popup">
-		<div class="alert_popup_entity_txt">작성 중인 내용을 전부 삭제하시겠습니까?</div>
-		<div class="alert_btn_list2">
-			<span>확 인</span><span>취 소</span>
-		</div>
-	</div>
-	<div class="bg"></div>
 </body>
 </html>

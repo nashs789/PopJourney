@@ -882,6 +882,22 @@ a {
 #admin{
 	display: none;
 }
+#photoBtn{
+	padding: 4px 0px;
+	background-color: white;
+	border: 2px solid #2e3459;
+	border-radius: 20px;
+	height: 35px;
+	cursor: pointer;
+	width: 80px;
+	margin-left: 10px;
+	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+	font-weight: bold;
+}
+#photoBtn:hover{
+	color: white;
+	background-color: #2e3459;
+}
 </style>
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
