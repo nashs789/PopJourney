@@ -880,6 +880,7 @@
 		SELECT BMK_NO, FOLDER_NAME, FOLDER_MEMO, FOLDER_IMG
 		FROM BMK_FOLDER
 		WHERE BMK_NO = #{box}
+		ORDER BY BMK_NO DESC
 	</select>
 	
 	<select id="myBMKCnt" parameterType="hashmap" resultType="Integer">

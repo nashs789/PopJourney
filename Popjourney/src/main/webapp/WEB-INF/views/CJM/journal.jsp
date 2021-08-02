@@ -1193,7 +1193,6 @@ a {
 	font-size: 11pt;
 	font-weight: bold;
 	width: 540px;
-	height: 370px;
 	margin: 30px auto 0 auto;
 }
 

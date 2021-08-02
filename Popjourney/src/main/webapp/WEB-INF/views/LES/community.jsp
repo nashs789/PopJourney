@@ -450,7 +450,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	padding: 0;
 	display: block;
 	margin-top: 10px;
-	left: 130px;
 }
 #postAll span img {
 	background-color: #f37321;
@@ -472,7 +471,7 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	float: left;
 	text-align: center;
 	color: #2e3459;
-	margin-left: 30px;
+	margin-right: 30px;
 	line-height: 25px;
 	text-decoration: none;
 	font-size: 18px;
@@ -1018,10 +1017,12 @@ $(document).ready(function() {
 	
 	$(".login_btn").on("click", function () {
 		if($.trim($("#inputID").val())==""){
-			alert("아이디를 입력해 주세요.");
+			popupText = "아이디를 입력해 주세요.";
+			commonPopup(popupText);
 			$("#inputID").focus();
 		} else if ($.trim($("#inputPW").val())=="") {
-			alert("비밀번호를 입력해 주세요.");
+			popupText = "비밀번호를 입력해 주세요.";
+			commonPopup(popupText);
 			$("#inputPW").focus();
 		} else {
 			var params = $("#loginForm").serialize();
@@ -1074,7 +1075,8 @@ $(document).ready(function() {
   	});
 	$("#newPost").on("click", function() {
 		if("${sMEM_NO}" == "") { // 비로그인 상태
-			alert("로그인이 필요한 서비스입니다.");
+			popupText = "로그인이 필요한 서비스입니다.";
+			commonPopup(popupText);
 		} else {
 			location.href = "postWrite";
 		}
@@ -1113,7 +1115,7 @@ $(document).ready(function() {
 		$(".categoryNo").css("color","#2e3459");
 		$(".gradeNo").children("img").css("background-color","#2e3459");
 		$("#postAll").children("span").children("img").css("background-color","#f37321");
-		console.log($(this).attr($(this).attr("class")));
+
 		$("#gradeNo").val(0);
 		$("#categoryNo").val($(this).attr($(this).attr("class")));
 		if($("#categoryNo").val() == 1){ //공지사항
@@ -1147,7 +1149,8 @@ $(document).ready(function() {
 		$(this).children("img").css("background-color","#f37321");
 		$("#gradeNo").val($(this).attr($(this).attr("class")));
 		if("${sMEM_NO}" == "") { // 비로그인 상태
-			alert("로그인이 필요한 서비스입니다.");
+			popupText = "로그인이 필요한 서비스입니다.";
+			commonPopup(popupText);
 			$(".gradeNo").children("img").css("background-color","#2e3459");
 		} else {
 			reloadList();
@@ -1237,6 +1240,25 @@ function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 
 	
 	$("#yesBtn").on("click", function(){ 
 		$(".popup2").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup1\">";
+	html	 +="	 <div class=\"popup1_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn1_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup1").remove();
 		$(".bg").remove();
 	}); //yesBtn click end
 }//commonPopup end

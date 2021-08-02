@@ -1155,11 +1155,13 @@ $(document).ready(function() {
 				} 
 				else 
 				{
-					alert("파일 업로드중 문제 발생");
+					popupText = "파일 업로드중 문제 발생.";
+					commonPopup(popupText);
 				}
 			},
 			error : function() {
-				alert("파일 업로드중 문제 발생");
+				popupText = "파일 업로드중 문제 발생.";
+				commonPopup(popupText);
 			}
 		}); // ajaxForm end
 		fileForm.submit();
@@ -1195,7 +1197,8 @@ $(document).ready(function() {
 
 		if($.trim($(".input_title").val()) == "")
 		{
-			alert("제목 비어있음");
+			popupText = "제목을 입력하세요.";
+			commonPopup(popupText);
 			return false;
 		}
 		else if($(".pref_filter option:selected").val() == 0)
