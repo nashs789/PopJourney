@@ -650,7 +650,8 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alert("오류 발생");
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
 			}
 		},//success end
 		error: function(error){
@@ -765,7 +766,8 @@ $(document).ready(function(){
 	$(".info").on("click", "#upgradeBtn", function(){
 		if("${sGRADE_NO}" == 2)
 		{
-			alert("이미 여행작가 입니다.");
+			popupText = "이미 여행작가 입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 	
@@ -790,7 +792,7 @@ $(document).ready(function(){
 				}
 				else
 				{
-					popupText = "오류 발생.";
+					popupText = "오류가 발생 했습니다.";
 					commonPopup(popupText);
 				}
 			}, //success end
@@ -819,7 +821,8 @@ $(document).ready(function(){
 				}
 				else
 				{
-					alert("오류 발생");
+					popupText = "오류가 발생했습니다.";
+					commonPopup(popupText);
 				}
 			},//success end
 			error: function(error){

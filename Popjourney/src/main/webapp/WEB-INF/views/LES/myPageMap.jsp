@@ -453,6 +453,79 @@ a {
 #map, #myPage{
 	background-color: #f37321;
 }
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 .location-image a img {
   width: 100%; /* need to overwrite inline dimensions */
   height: 200px;
@@ -660,7 +733,8 @@ $(document).ready(function() {
 	$(".info").on("click", "#upgradeBtn", function(){
 		if("${sGRADE_NO}" == 2)
 		{
-			alert("이미 여행작가 입니다.");
+			popupText = "이미 여행작가 입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 
@@ -675,15 +749,17 @@ $(document).ready(function() {
 			{
 				if(result.msg == "success")
 				{
-					alert("신청완료");
+					popupText = "신청 완료.";
+					commonPopup(popupText);
 				}
 				else if(result.msg == "notEnough")
 				{
-					alert("100점 이상 되어야 합니다");
+					popupText = "100점 이상되어야 합니다.";
+					commonPopup(popupText);
 				}
 				else
 				{
-					popupText = "오류 발생.";
+					popupText = "오류가 발생 했습니다.";
 					commonPopup(popupText);
 				}
 			}, //success end
@@ -850,6 +926,25 @@ $(document).ready(function() {
 		}
 	});
 });//document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function makeNotification(notification)
 {
 	var html = ""; //알림 표현용

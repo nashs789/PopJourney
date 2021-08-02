@@ -771,6 +771,68 @@ input[type="radio"]:checked {
 #yes, #no, #add{
 	cursor: pointer;
 }
+.popup2 {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt2 {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list2 a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list2 a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list2 a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list2 a:hover {
+   background-color: #f37321;
+   color: white;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -812,7 +874,8 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alert("실패");
+				popupText = "오류가 발생 했습니다.";
+				commonPopup(popupText);
 			}
 		},//success end
 		error:function(error){
@@ -945,7 +1008,8 @@ $(document).ready(function(){
 	$(".info").on("click", "#upgradeBtn", function(){
 		if("${sGRADE_NO}" == 2)
 		{
-			alert("이미 여행작가 입니다.");
+			popupText = "이미 여행작가 입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 
@@ -960,11 +1024,13 @@ $(document).ready(function(){
 			{
 				if(result.msg == "success")
 				{
-					alert("신청완료");
+					popupText = "신청 완료.";
+					commonPopup(popupText);
 				}
 				else if(result.msg == "notEnough")
 				{
-					alert("100점 이상 되어야 합니다");
+					popupText = "100점 이상되어야 합니다.";
+					commonPopup(popupText);
 				}
 				else
 				{
@@ -1049,7 +1115,8 @@ $(document).ready(function(){
 	$(".edit_btn").on("click", function(){
 		if($("input[type='checkbox']").filter(':checked').size() == 0)
 		{
-			alert("하나라도 선택 ㄱㄱ");
+			popupText = "북마크를 선택하세요.";
+			commonPopup(popupText);
 		}
 		else
 		{
@@ -1060,7 +1127,8 @@ $(document).ready(function(){
 	$(".add_btn").on("click", function(){
 		if($("#BMKCnt").val() == 9)
 		{
-			alert("생성 가능한 최대수 도달");
+			popupText = "생성 가능한 최대수 도달";
+			commonPopup(popupText);
 		}
 		else
 		{
@@ -1069,6 +1137,13 @@ $(document).ready(function(){
 	}); //add_btn click end
 	
 	$(".del_btn").on("click", function(){
+		if($("input[type='checkbox']").filter(':checked').size() == 0)
+		{
+			popupText = "북마크를 선택하세요.";
+			commonPopup(popupText);
+			return false;
+		}
+		
 		var params = $("#BMKForm").serialize();
 		
 		$.ajax({
@@ -1077,7 +1152,6 @@ $(document).ready(function(){
 			dataType:"json",
 			type:"post",
 			success:function(result){
-					alert("삭제성공");
 					location.reload();
 			},//success end
 			error:function(error){
@@ -1215,6 +1289,25 @@ function makeBMK(BMK)
 	
 	$(".gallery").html(html);
 }
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup2\">";
+	html	 +="	 <div class=\"popup_entity_txt2\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list2\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function makeAddPopup()
 {
 	var html = "";
@@ -1262,11 +1355,13 @@ function makeAddPopup()
 	$("#add").on("click", function(){
 		if(isNaN($(":radio[name='folder_img']:checked").val())) 
 		{
-			alert("이용할 폴더 이미지를 선택하세요");
+			popupText = "폴더 이미지를 선택하세요.";
+			commonPopup(popupText);
 		}
 		else if($.trim($(".pop_name").val()) == "")
 		{
-			alert("이름을 입력하세요.");
+			popupText = "폴더 이름을 입력하세요.";
+			commonPopup(popupText);
 		}
 		else
 		{
@@ -1286,7 +1381,8 @@ function makeAddPopup()
 					}
 					else
 					{
-						alert("실패");
+						popupText = "오류가 발생 했습니다.";
+						commonPopup(popupText);
 					}
 				},//success end
 				error:function(error){
@@ -1362,7 +1458,8 @@ function editBMK()
 			}
 			else
 			{
-				alert("실패");
+				popupText = "오류가 발생 했습니다.";
+				commonPopup(popupText);
 			}
 		},//success end
 		error:function(error){
@@ -1385,7 +1482,8 @@ function editBMK()
 			dataType:"json",
 			type:"post",
 			success:function(result){
-				alert("수정 성공");
+				popupText = "수정에 성공 했습니다.";
+				commonPopup(popupText);
 				location.reload();
 			},//success end
 			error:function(error){

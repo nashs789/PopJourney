@@ -689,6 +689,80 @@ hr {
 #point, #intro{
 	font-size: 10pt;
 }
+
+.popup2 {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt2 {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list2 a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list2 a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list2 a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list2 a:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -733,7 +807,8 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alert("오류 발생");
+				popupText = "오류가 발생했습니다.";
+				commonPopup(popupText);
 			}
 		},//success end
 		error: function(error){
@@ -848,7 +923,8 @@ $(document).ready(function(){
 	$(".info").on("click", "#upgradeBtn", function(){
 		if("${sGRADE_NO}" == 2)
 		{
-			alert("이미 여행작가 입니다.");
+			popupText = "이미 여행작가 입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 
@@ -863,15 +939,17 @@ $(document).ready(function(){
 			{
 				if(result.msg == "success")
 				{
-					alert("신청완료");
+					popupText = "신청 완료.";
+					commonPopup(popupText);
 				}
 				else if(result.msg == "notEnough")
 				{
-					alert("100점 이상 되어야 합니다");
+					popupText = "100점 이상되어야 합니다.";
+					commonPopup(popupText);
 				}
 				else
 				{
-					popupText = "오류 발생.";
+					popupText = "오류가 발생 했습니다.";
 					commonPopup(popupText);
 				}
 			}, //success end
@@ -965,11 +1043,13 @@ $(document).ready(function(){
 				}
 				else if(result.msg == "full")
 				{
-					alert("마지막 입니다.");
+					popupText = "마지막 페이지 입니다.";
+					commonPopup(popupText);
 				}
 				else
 				{
-					alert("오류 발생");
+					popupText = "오류가 발생 했습니다.";
+					commonPopup(popupText);
 				}
 			},//success end
 			error: function(error){
@@ -1003,7 +1083,8 @@ $(document).ready(function(){
 	$(".edit_btn").on("click", function(){
 		if($("input[type='checkbox']").filter(':checked').size() == 0)
 		{
-			alert("하나라도 선택 ㄱㄱ");
+			popupText = "유저를 선택해 주세요.";
+			commonPopup(popupText);
 			return false;
 		}
 		
@@ -1119,6 +1200,25 @@ $(document).ready(function(){
 		}
 	});
 }); //document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup2\">";
+	html	 +="	 <div class=\"popup_entity_txt2\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list2\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup2").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function makeFollowing(myFollowing)
 {
 	var html = "";
@@ -1205,12 +1305,12 @@ function makeMemo(followingMemo)
 				{
 					$(".popup").remove();
 					$(".bg").remove();
-					alert("수정 완료");
 					location.reload();
 				}
 				else
 				{
-					alert("오류 발생");
+					popupText = "오류가 발생 했습니다.";
+					commonPopup(popupText);
 				}
 			},//success end
 			error: function(error){

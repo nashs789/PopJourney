@@ -1057,7 +1057,79 @@ input[type="radio"]:checked {
 .cmt_cmt_delete_btn {
 	cursor: pointer;
 }
-
+.popup2 {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt2 {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list2 a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list2 a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list2 a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list2 a:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg2 {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -1179,7 +1251,8 @@ $(document).ready(function(){
 	$(".report_btn").on("click", function(){
 		if("${sMEM_NO}" == "")
 		{
-			alert("로그인이 필요한 기능입니다.");
+			popupText = "로그인이 필요한 기능입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 			
@@ -1189,7 +1262,8 @@ $(document).ready(function(){
 	$(".container_wrap").on("click", ".report_btn", function(){
 		if("${sMEM_NO}" == "")
 		{
-			alert("로그인이 필요한 기능입니다.");
+			popupText = "로그인이 필요한 기능입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 			
@@ -1263,9 +1337,11 @@ $(document).ready(function(){
 					if(res.msg == "success"){
 						location.href = "community";
 					} else if (res.msg =="failed") {
-						alert("삭제에 실패하였습니다.")
+						popupText = "삭제중 문제가 발생하였습니다.";
+						commonPopup(popupText);
 					} else {
-						alert("삭제중 문제가 발생하였습니다.")
+						popupText = "삭제중 문제가 발생하였습니다.";
+						commonPopup(popupText);
 					}
 				}, 
 				error: function (request, status, error) {
@@ -1453,11 +1529,13 @@ $(document).ready(function(){
 	// 댓글작성
 	$("#addBtn").on("click", function() {
 		if($("#loginUserNo").val() == "") {
-			alert("로그인 후 이용 바랍니다.");
+			popupText = "로그인이 필요한 기능입니다.";
+			commonPopup(popupText);
 			$("#cmtContents").val("");
 		} else {
 			if($.trim($("#cmtContents").val()) == "") {
-				alert("내용을 넣어주세요.");
+				popupText = "내용이 비어있습니다.";
+				commonPopup(popupText);
 				$("#cmtContents").focus();
 			} else {
 				$("#getCmtContents").val($("#cmtContents").val());
@@ -1507,7 +1585,8 @@ $(document).ready(function(){
 	// 댓글 수정 후 수정버튼 클릭 시
 	$("#cmtList").on("click", "#editBtn", function() {
 		if($.trim($("#editCmt").val()) == "") {
-			alert("내용을 넣어주세요.");
+			popupText = "내용이 비어있습니다.";
+			commonPopup(popupText);
 			$("#editCmt").focus();
 		} else {
 			$("#getCmtContents").val($("#editCmt").val());
@@ -1551,7 +1630,8 @@ $(document).ready(function(){
 	// 대댓글 수정 후 수정버튼 클릭 시
 	$("#cmtList").on("click", "#editBtn", function() {
 		if($.trim($("#editCmt").val()) == "") {
-			alert("내용을 넣어주세요.");
+			popupText = "내용이 비어있습니다.";
+			commonPopup(popupText);
 			$("#editCmt").focus();
 		} else {
 			$("#getCmtContents").val($("#editCmt").val());
@@ -1595,14 +1675,16 @@ $(document).ready(function(){
 		
 			$(".cmt_content_list[cmtno=" + cmtNo + "]").append(html);
 		} else {
-			alert("로그인 후 이용해 주시기 바랍니다.");
+			popupText = "로그인이 필요한 기능입니다.";
+			commonPopup(popupText);
 		}
 		
 	});
 	// 댓글 답글 클릭 후 등록 버튼 클릭 시
 	$("#cmtList").on("click", "#cmtAddBtn", function() {
 		if($.trim($("#addCmt").val()) == "") {
-			alert("내용을 넣어주세요.");
+			popupText = "내용이 비어 있습니다.";
+			commonPopup(popupText);
 			$("#addCmt").focus();
 		} else {
 			$("#getCmtContents").val($("#addCmt").val());
@@ -1641,9 +1723,11 @@ $(document).ready(function(){
 					if(res.msg == "success") {
 						reloadList();
 					} else if(res.msg == "failed") {
-						alert("삭제에 실패하였습니다.");
+						popupText = "삭제에 실패하였습니다.";
+						commonPopup(popupText);
 					} else {
-						alert("삭제중 문제가 발생하였습니다.");
+						popupText = "삭제중 문제가 발생하였습니다.";
+						commonPopup(popupText);
 					}
 				},
 				error: function(request, status, error) {
@@ -1669,9 +1753,11 @@ $(document).ready(function(){
 					if(res.msg == "success") {
 						reloadList();
 					} else if(res.msg == "failed") {
-						alert("삭제에 실패하였습니다.");
+						popupText = "삭제에 실패하였습니다.";
+						commonPopup(popupText);
 					} else {
-						alert("삭제중 문제가 발생하였습니다.");
+						popupText = "삭제중 문제가 발생하였습니다.";
+						commonPopup(popupText);
 					}
 				},
 				error: function(request, status, error) {
@@ -1804,11 +1890,13 @@ function reportPopup() {
 		$(".submit_btn").on("click", function(){
 			if(isNaN($(":radio[name='report_reason']:checked").val())) 
 			{
-				alert("신고 사유를 선택하세요.");
+				popupText = "신고 사유를 선택하세요.";
+				commonPopup(popupText);
 			}
 			else if($.trim($(".pop_memo").val()) =="")
 			{
-				alert("내용을 입력하세요.");
+				popupText = "신고 내용을 입력하세요.";
+				commonPopup(popupText);
 			}
 			else
 			{
@@ -1824,11 +1912,13 @@ function reportPopup() {
 						{
 							$(".popup").remove();
 							$(".bg").remove();
-							alert("신고 되었습니다.");
+							popupText = "신고가 접수 되었습니다.";
+							commonPopup(popupText);
 						}
 						else
 						{
-							alert("실패하였습니다");
+							popupText = "오류가 발생 하였습니다.";
+							commonPopup(popupText);
 						}
 					},
 					error: function(request, status, error) {

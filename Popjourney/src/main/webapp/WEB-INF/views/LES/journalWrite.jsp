@@ -1203,7 +1203,8 @@ $(document).ready(function() {
 		}
 		else if($(".pref_filter option:selected").val() == 0)
 		{
-			alert("선호도를 선택하세요.");
+			popupText = "선호도를 선택하세요.";
+			commonPopup(popupText);
 			return false;
 		}
 		
@@ -1233,7 +1234,8 @@ $(document).ready(function() {
 		
 		if(contents[0] == "" || memo[0] == "" || photo[0] == "")
 		{
-			alert("Diary1을 채워주세요.");
+			popupText = "Diary1을 채워주세요.";
+			commonPopup(popupText);
 			return false;
 		}
 		

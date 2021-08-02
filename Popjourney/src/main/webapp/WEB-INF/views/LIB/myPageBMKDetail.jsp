@@ -608,41 +608,6 @@ a {
 	width: 600px;
 	height: 80px;
 }
-
-.popup {
-	display: none;
-	width: 600px;
-	height: 500px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 250px);
-	left: calc(50% - 300px);
-	z-index: 500;
-	font-size: 12pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
-}
-
-.popup_contents_txt {
-	font-size: 11pt;
-	font-weight: bold;
-	width: 540px;
-	height: 390px;
-	margin: 30px auto 30px auto;
-}
-
-.popup_contents_txt>div>span {
-	margin-top: 12px;
-}
-
-.popup_contents_txt>div:first-child {
-	font-size: 18pt;
-	padding-bottom: 7px;
-	border-bottom: 2px solid #f37321;
-}
-
 .radio_title {
 	margin-top: 15px;
 }
@@ -737,70 +702,6 @@ input[type="radio"]:checked {
 	color: white;
 }
 
-.alert_popup {
-	display: none;
-	width: 300px;
-	height: 150px;
-	background-color: #fcfcfc;
-	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	position: fixed;
-	top: calc(50% - 75px);
-	left: calc(50% - 150px);
-	z-index: 500;
-	font-size: 16pt;
-	border-radius: 10px;
-	font-size: 0px;
-	border: 0px;
-}
-
-.alert_popup_entity_txt {
-	font-size: 12pt;
-	font-weight: bold;
-	text-align: center;
-	line-height: 50px;
-	width: 265px;
-	height: 40px;
-	margin: 30px auto 30px auto;
-}
-
-.alert_btn_list span {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 270px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
-}
-
-.alert_btn_list2 span {
-	text-decoration: none;
-	display: inline-block;
-	text-align: center;
-	width: 120px;
-	height: 30px;
-	padding: 10px 15px 10px 15px;
-	font-size: 12pt;
-	color: #f37321;
-	font-weight: bold;
-	line-height: 30px;
-	border-radius: 0 0 10px 10px;
-}
-
-.bg {
-	position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    background-color: #000000;
-    z-index: 400;
-    opacity: 0.2;
-}
 .paging_wrap {
 	width: 100%;
 	height: 100px;
@@ -841,12 +742,86 @@ input[type="radio"]:checked {
 #point, #intro{
 	font-size: 10pt;
 }
+.popup {
+   display: inline-block;
+   width: 300px;
+   height: 150px;
+   background-color: #fcfcfc;
+   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+   position: fixed;
+   top: calc(50% - 75px); 
+   left: calc(50% - 150px); 
+   z-index: 500;
+   border-radius: 10px;
+   font-size: 0px;
+   border: 0px;
+}
+.popup_entity_txt {
+   font-size: 12pt;
+   font-weight: bold;
+   text-align: center;
+   line-height: 50px;
+   width: 265px;
+   height:40px;
+   margin: 30px auto 30px auto;
+}
+#yesBtn{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 270px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+   border-radius: 0 0 10px 10px; 
+}
+#yesBtn:hover {
+   background-color: #f37321;
+   color: white;
+}
+.btn_list a{
+   text-decoration: none;
+   display:inline-block;
+   text-align:center;
+   width: 120px;
+   height:30px;
+   padding: 10px 15px 10px 15px;
+   font-size: 12pt;
+   color: #f37321;
+   font-weight: bold;
+   line-height: 30px;
+}
+.btn_list a:first-child {
+   border-radius: 0 0 0 10px; 
+}
+.btn_list a:last-child {
+   border-radius: 0 0 10px 0; 
+}
+.btn_list a:hover {
+   background-color: #f37321;
+   color: white;
+}
+.bg {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 400;
+	opacity: 0.2;
+}
 </style>
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var path = "";
 	var html = "";  
+	var popupText = ""; //공통 팝업에 들어가는 문구 담아줄 변수
 	
 	if("${sPHOTO_PATH}" != "")
 	{
@@ -883,7 +858,8 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alert("가져오는데 실패!");
+				popupText = "해당 북마크에 일지가 없습니다.";
+				commonPopup(popupText);
 			}
 		},//success end
 		error:function(error){
@@ -1004,7 +980,8 @@ $(document).ready(function(){
 	$(".del_btn").on("click", function(){
 		if($("input[type='checkbox']").filter(':checked').size() == 0)
 		{
-			alert("하나라도 선택 ㄱㄱ");
+			popupText = "일지를 선택하세요.";
+			commonPopup(popupText);
 		}
 		else
 		{
@@ -1023,7 +1000,8 @@ $(document).ready(function(){
 					}
 					else
 					{
-						alert("오류 발생");
+						popupText = "오류가 발생 했습니다.";
+						commonPopup(popupText);
 					}
 				},//success end
 				error: function(error){
@@ -1036,7 +1014,8 @@ $(document).ready(function(){
 	$(".info").on("click", "#upgradeBtn", function(){
 		if("${sGRADE_NO}" == 2)
 		{
-			alert("이미 여행작가 입니다.");
+			popupText = "이미 여행작가 입니다.";
+			commonPopup(popupText);
 			return false;
 		}
 
@@ -1051,15 +1030,17 @@ $(document).ready(function(){
 			{
 				if(result.msg == "success")
 				{
-					alert("신청완료");
+					popupText = "신청 완료.";
+					commonPopup(popupText);
 				}
 				else if(result.msg == "notEnough")
 				{
-					alert("100점 이상 되어야 합니다");
+					popupText = "100점 이상되어야 합니다.";
+					commonPopup(popupText);
 				}
 				else
 				{
-					popupText = "오류 발생.";
+					popupText = "오류가 발생 했습니다.";
 					commonPopup(popupText);
 				}
 			}, //success end
@@ -1249,7 +1230,8 @@ $(document).ready(function(){
 				}
 				else
 				{
-					alert("오류 발생");
+					popupText = "오류가 발생 했습니다.";
+					commonPopup(popupText);
 				}
 			},//success end
 			error: function(error){
@@ -1278,6 +1260,25 @@ $(document).ready(function(){
 		}
 	});
 }); //document ready end
+function commonPopup(txt) //공통적으로 쓰이는 팝업 , txt는 팝업에 들어갈 문자열 
+{
+	var html = "";
+	
+	html 	 +="<div class=\"popup\">";
+	html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+	html	 +="     <div class=\"btn_list\">";
+	html	 +="        <div id=\"yesBtn\">예</div>";
+	html	 +="     </div>";
+	html	 +="</div>";
+	html	 +="<div class=\"bg\"></div>";
+	
+	$("body").append(html);
+	
+	$("#yesBtn").on("click", function(){ 
+		$(".popup").remove();
+		$(".bg").remove();
+	}); //yesBtn click end
+}//commonPopup end
 function makeJournalList(detail)
 {
 	var html = "";
