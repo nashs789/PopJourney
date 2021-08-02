@@ -781,7 +781,7 @@ function findBtnPopup()
 					<input type="button" value="중복확인" id="nicDbCkBtn"/>
 					
 					<div class="title">소개글</div>
-					<textarea rows="50" cols="15" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/></textarea>
+					<input type="text" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/>
 				</form>
 			</div> <!-- infoWrap end -->
 			

@@ -695,10 +695,17 @@ input[type='text']:focus, input[type='password']:focus{
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	if($("#loginMem").val() == $("#MEM_NO"))
+	if($("#loginMem").val() == $("#MEM_NO").val())
 	{
 		location.href = "myPage";
 	}
+
+	
+	if($("#mem").val() == 1)
+	{
+		history.back();
+	}
+	
 	
 	if("${sMEM_NO}" != "")
 	{
@@ -1443,6 +1450,7 @@ function findBtnPopup()
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${userNo}"/> <!-- 쿼리랑 이름 맞춰야 해서 변경  -->
 	<input type="hidden" id="loginMem" name="loginMem" value="${sMEM_NO}"/> <!-- 로그인 한 사람의 아이디 -->
 	<input type="hidden" id="page" name="page" value="${page}"/>
+	<input type="hidden" id="mem" value="${userNo}"/> <!-- 쿼리랑 이름 맞춰야 해서 변경  -->
 </form>
 <form action="#" id="memForm1">
 	<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO }"/>

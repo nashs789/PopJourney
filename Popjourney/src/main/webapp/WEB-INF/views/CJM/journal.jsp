@@ -652,6 +652,7 @@ a {
 }
 
 .info img {
+	height: 25px;
 	width: 25px;
 	margin-left: 0;
 }

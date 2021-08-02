@@ -362,7 +362,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 150px;
 	border-radius: 20px;
 	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-	border: 2px solid;
 }
 
 .sub_area, .top_msg {
@@ -451,13 +450,14 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	padding: 0;
 	display: block;
 	margin-top: 10px;
+	left: 130px;
 }
 #postAll span img {
 	background-color: #f37321;
 }
 .right_nav {
 	position: relative;
-	left: 750px;
+	left: 920px;
 	text-align: center;
 	height: 100px;
 	padding: 0 0 0 100px;
@@ -1719,8 +1719,7 @@ function makeNotification(notification)
 					</nav>
 					<nav class="right_nav">
 						<ul>
-							<li><span class="gradeNo" gradeNo="3"><img alt="bookmark" src="./resources/images/doc.png"></span><br />내가 쓴 글</li>
-							<li><span class="gradeNo" gradeNo="4"><img alt="bookmark" src="./resources/images/comment.png"></span><br />댓글 쓴 글</li>
+							<li><span class="gradeNo" gradeNo="3"><img alt="bookmark" src="./resources/images/doc.png"></span><br />내가 쓴 글</li>			
 							<li id="newPost"><img alt="bookmark" src="./resources/images/pen.png"><br />글쓰기</li>
 						</ul>
 					</nav>

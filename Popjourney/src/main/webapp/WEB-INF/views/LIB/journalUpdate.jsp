@@ -1030,8 +1030,12 @@ $(document).ready(function() {
 		$(".category_filter").html(html);
 	});//pref_filter change end
 	
+	var save = 0;
+	
 	$(".date_nav ul").on("click", "li", function(){
-		console.log(photo);
+		
+		save = 1;
+		
 		$(".date_nav ul li").css("background-color", "white");
 		$(".date_nav ul li").css("color", "black");
 		
@@ -1229,6 +1233,24 @@ $(document).ready(function() {
 	}); //notificationPhoto click end
 	
 	$(".enroll_btn").on("click", function(){
+		$("#dateNav ul li:first-child").click();
+
+		if($.trim($(".input_title").val()) == "")
+		{
+			alert("제목 비어있음");
+			return false;
+		}
+		else if($(".pref_filter option:selected").val() == 0)
+		{
+			alert("선호도를 선택하세요.");
+			return false;
+		}
+		
+		if(save == 0)
+		{
+			contents[0] = $("#inputContents").val();
+			memo[0] = $(".input_memo").val();
+		}
 		
 		var c = "#contents";
 		var m = "#memo";

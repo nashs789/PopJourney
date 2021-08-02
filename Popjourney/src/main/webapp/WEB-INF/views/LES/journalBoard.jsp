@@ -616,7 +616,8 @@ a {
    width: 100%;
    height: 100px;
    padding-top: 50px;
-   font-size: 18pt;
+   font-size: 12pt;
+   font-weight: bold;
    text-align: center;
    display: inline-block;
 }

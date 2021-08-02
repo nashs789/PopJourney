@@ -1031,7 +1031,7 @@ function makeNotification(notification)
 					<input type="button" value="중복확인" id="nicDbCkBtn"/>
 					
 					<div class="title">소개글</div>
-					<textarea rows="50" cols="15" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/></textarea>
+					<input type="text" placeholder="안녕하세요~ 잘 부탁드립니다." id="inputIntro" name="inputIntro"/>
 					<input type="hidden" id="MEM_NO" name="MEM_NO" value="${sMEM_NO}"/>
 				</form>
 			</div> <!-- infoWrap end -->
