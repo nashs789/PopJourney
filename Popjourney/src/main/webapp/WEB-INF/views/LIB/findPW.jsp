@@ -326,6 +326,21 @@ select{
    border-radius: 0 0 10px 10px; 
    cursor:pointer;
 }
+#mainSearchTxt{
+	margin-top: 20px;
+}
+.search {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 250px;
+   height: 29px;
+}
+.filter {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 100px;
+   height: 35px;
+}
 #yesBtn:hover, #yesBtn2:hover {
    background-color: #f37321;
    color: white;

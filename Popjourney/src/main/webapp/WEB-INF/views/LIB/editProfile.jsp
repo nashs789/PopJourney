@@ -284,6 +284,7 @@ input[type='button']:hover{
 	color: white;
 }
 #profilePhoto{
+   height: 40px;
    width: 40px;
    margin-right: 20px;
    margin-top: 15px;

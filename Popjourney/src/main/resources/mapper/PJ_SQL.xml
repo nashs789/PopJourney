@@ -397,12 +397,8 @@
 	<![CDATA[
 		SELECT MEM_NO, NIC, PHOTO_PATH, POST_NO, TITLE, TO_CHAR(POSTING_DATE, 'YYYY')||'년' AS YEAR, TO_CHAR(POSTING_DATE, 'MM')||'월' AS MONTH,
 		        TO_CHAR(POSTING_DATE, 'DD')||'일' AS DAY, CHA_DATE, GBN, THUMB_PHOTO_PATH, CONTENTS
-		FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*, CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 < 60
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 24 * 60 *60 || '초 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60  < 3600
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) * 60 *60 || '분 전'
-		                                                                            WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *24 *60 *60  < 86400
-		                                                                            THEN (TO_DATE(SYSDATE, 'YYYY-MM-DD HH-MI-SS') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD HH-MI-SS')) *60 || '시간 전'
+		FROM(SELECT RANK() OVER(ORDER BY POSTING_DATE DESC) AS RK, TIMELINE.*,  CASE WHEN (TO_DATE(SYSDATE, 'YYYY-MM-DD') = TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))
+                                                                          			THEN '오늘'
 		                                                                            WHEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) >= 1
 		                                                                            THEN FLOOR((TO_DATE(SYSDATE, 'YYYY-MM-DD') - TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD')) / 365) || '년 전'
 		                                                                            WHEN FLOOR(MONTHS_BETWEEN(TO_DATE(SYSDATE, 'YYYY-MM-DD'), TO_DATE(TIMELINE.POSTING_DATE, 'YYYY-MM-DD'))) >= 1

@@ -16,6 +16,21 @@ body{
    min-width: 1480px;
    height: 100%;
 }
+#mainSearchTxt{
+	margin-top: 20px;
+}
+.search {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 250px;
+   height: 29px;
+}
+.filter {
+   float: right;
+   margin: 20px 20px 20px 0px; 
+   width: 100px;
+   height: 35px;
+}
 #wrap{
    width: 100%;
    height: calc(100% - 0px);
