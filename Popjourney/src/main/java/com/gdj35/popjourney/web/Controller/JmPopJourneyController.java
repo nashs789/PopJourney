@@ -471,28 +471,19 @@ public class JmPopJourneyController {
 	@RequestMapping(value = "/memAdminDeletes", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String memAdminDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
-		
 		ObjectMapper mapper = new ObjectMapper();
-		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
 			String userNos = (params.get("userNos"));
 			String[] arrayUserNos = userNos.split(",");
+			
 			for(int i = 0 ; i < arrayUserNos.length ; i++) {
 				System.out.println("arrayUserNos[i] >> " + arrayUserNos[i]);
 				params.put("userNos", arrayUserNos[i]);
+				
 				// 탈퇴일
 				int cnt = iJmPopjourneyService.deleteMem(params);
-				
-				// 여행일지
-				//int cnt2 = iJmPopjourneyService.deleteJournal(params);
-				// 여행일지 댓글
-				//int cnt3 = iJmPopjourneyService.deleteJournalCmt(params);
-				// 게시판
-				//int cnt4 = iJmPopjourneyService.deleteBoard(params);
-				// 게시판 댓글
-				//int cnt5 = iJmPopjourneyService.deleteBoardCmt(params);
 				
 				if(cnt > 0) {
 					modelMap.put("msg", "success");
@@ -500,22 +491,17 @@ public class JmPopJourneyController {
 					modelMap.put("msg", "failed");
 				}
 			}
-			
 		} catch (Throwable e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		
-		System.out.println("delParams >> " + params);
 		return mapper.writeValueAsString(modelMap);
-		
 	}
 	
 	@RequestMapping(value="/memGrades", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
 	@ResponseBody public String memGrade(@RequestParam HashMap<String, String>	params) throws Throwable {
 	 
 		ObjectMapper mapper = new ObjectMapper();
-		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
@@ -529,18 +515,13 @@ public class JmPopJourneyController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		 
-		System.out.println("params >> " + params);
-		 
 		return mapper.writeValueAsString(modelMap);
-	
 	}
 	
 	@RequestMapping(value="/memDownGrades", method = RequestMethod.POST, produces =	"text/json;charset=UTF-8")
 	@ResponseBody public String memDownGrades(@RequestParam HashMap<String, String>	params) throws Throwable {
 	 
 		ObjectMapper mapper = new ObjectMapper();
-		 
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
@@ -554,11 +535,7 @@ public class JmPopJourneyController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		 
-		System.out.println("params >> " + params);
-		 
 		return mapper.writeValueAsString(modelMap);
-	
 	}
 	
 	// 내부관리자-여행일지
@@ -1620,7 +1597,6 @@ public class JmPopJourneyController {
 	public String reportApprovals(@RequestParam HashMap<String, String> params) throws Throwable {
 
 		ObjectMapper mapper = new ObjectMapper();
-		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
@@ -1635,9 +1611,7 @@ public class JmPopJourneyController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		
 		return mapper.writeValueAsString(modelMap);
-		
 	}
 	
 	@RequestMapping(value="/unReportApprovals", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
@@ -1645,7 +1619,6 @@ public class JmPopJourneyController {
 	public String unReportApprovals(@RequestParam HashMap<String, String> params) throws Throwable {
 	
 		ObjectMapper mapper = new ObjectMapper();
-		
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
@@ -1660,9 +1633,7 @@ public class JmPopJourneyController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		
 		return mapper.writeValueAsString(modelMap);
-		
 	}
 
 }
