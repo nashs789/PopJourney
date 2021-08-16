@@ -847,7 +847,6 @@
 				});
 
 			 	if($("#sidebarGbn").val() == "") {
-			 		console.log("click 누르기");
 					reloadCnt();
 				}
 				
@@ -855,21 +854,18 @@
 					$("#sidebarGbn").val($("#sidebarGbn1").val());
 					$(".qna_list").empty();
 					$("#searchTxt").val("");
-					console.log($("#sidebarGbn").val());
 					reloadCnt();
 				});
 				$("#sidebarGbn2").on("click", function() {
 					$("#sidebarGbn").val($("#sidebarGbn2").val());
 					$(".qna_list").empty();
 					$("#searchTxt").val("");
-					console.log($("#sidebarGbn").val());
 					reloadCnt();
 				});
 				 $("#sidebarGbn3").on("click", function() {
 					$("#sidebarGbn").val($("#sidebarGbn3").val());
 					$(".qna_list").empty();
 					$("#searchTxt").val("");
-					console.log($("#sidebarGbn").val());
 					reloadCnt();
 				});
 				 
@@ -877,7 +873,6 @@
 					$("#sidebarGbn").val($("#sidebarGbn4").val());
 					$(".qna_list").empty();
 					$("#searchTxt").val("");
-					console.log($("#sidebarGbn").val());
 					reloadCnt();
 				}); 
 				
