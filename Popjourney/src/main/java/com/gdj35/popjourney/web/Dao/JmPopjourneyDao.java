@@ -391,4 +391,21 @@ public class JmPopjourneyDao implements IJmPopjourneyDao {
 		return sqlSession.update("JmPJ.getCmtCmtDeletes", params);
 	}
 
+	
+	// -----------------간단한 모바일 작업--------------------------
+	@Override
+	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.login", params);
+	}
+
+	@Override
+	public void accCnt(HashMap<String, String> params) throws Throwable {
+		sqlSession.update("JmPJ.accCnt", params);
+	}
+
+	@Override
+	public HashMap<String, String> getNumber(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("JmPJ.getNumber", params);
+	}
+
 }

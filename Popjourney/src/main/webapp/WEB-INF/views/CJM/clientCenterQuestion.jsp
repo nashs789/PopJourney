@@ -1105,7 +1105,6 @@
 					dataType: "json",
 					data: params,
 					success: function(res) {
-							console.log("여기????");
 							$("#firstCnt").val(res.firstCnt);
 							$("#lastCnt").val(res.lastCnt);
 							drawFAQList(res.list);

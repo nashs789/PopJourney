@@ -392,5 +392,22 @@ public class JmPopjourneyService implements IJmPopjourneyService {
 		return iJmPopjourneyDao.getCmtCmtDeletes(params);
 	}
 
+	
+	// -----------------간단한 모바일 작업--------------------------
+	@Override
+	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.login(params);
+	}
+
+	@Override
+	public void accCnt(HashMap<String, String> params) throws Throwable {
+		iJmPopjourneyDao.accCnt(params);
+	}
+
+	@Override
+	public HashMap<String, String> getNumber(HashMap<String, String> params) throws Throwable {
+		return iJmPopjourneyDao.getNumber(params);
+	}
+
 
 }
