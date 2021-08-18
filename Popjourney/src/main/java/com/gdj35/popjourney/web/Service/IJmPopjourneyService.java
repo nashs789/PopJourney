@@ -157,13 +157,4 @@ public interface IJmPopjourneyService {
 
 	public int getCmtCmtDeletes(HashMap<String, String> params) throws Throwable;
 
-	
-	// -----------------간단한 모바일 작업--------------------------
-	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable;
-
-	public void accCnt(HashMap<String, String> params) throws Throwable;
-
-	public HashMap<String, String> getNumber(HashMap<String, String> params) throws Throwable;
-
-
 }
