@@ -46,6 +46,70 @@
 				margin-left: 20px;
 				border-radius: 5px;
 			}
+			.popup {
+			   display: inline-block;
+			   width: 300px;
+			   height: 150px;
+			   background-color: #fcfcfc;
+			   box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
+			   position: fixed;
+			   top: calc(50% - 75px); 
+			   left: calc(50% - 150px); 
+			   z-index: 500;
+			   border-radius: 10px;
+			}
+			.popup_entity_txt {
+			   font-size: 1.2em;
+			   font-weight: bold;
+			   text-align: center;
+			   line-height: 50px;
+			   width: 265px;
+			   height:40px;
+			   margin: 30px auto 30px auto;
+			}
+			#yesBtn{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 270px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 1.2em;
+			   color: #FFFFFF;
+			   font-weight: bold;
+			   line-height: 30px;
+			   border-radius: 0 0 10px 10px; 
+			   background-color: #f37321;
+			}
+			.btn_list a{
+			   text-decoration: none;
+			   display:inline-block;
+			   text-align:center;
+			   width: 120px;
+			   height:30px;
+			   padding: 10px 15px 10px 15px;
+			   font-size: 12pt;
+			   color: #f37321;
+			   font-weight: bold;
+			   line-height: 30px;
+			}
+			.btn_list a:first-child {
+			   border-radius: 0 0 0 10px; 
+			}
+			.btn_list a:last-child {
+			   border-radius: 0 0 10px 0; 
+			}
+			.bg {
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				background-color: #000000;
+				z-index: 400;
+				opacity: 0.2;
+			}
 		</style>
 		<script type="text/javascript"
 				src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -54,11 +118,11 @@
 				
 				$("#loginBtn").on("click", function() {
 					if($.trim($("#inputID").val()) == "") {
-						alert("아이디를 입력해주세요!!");
-						$("#inputID").focus();
+						txt = "아이디를 입력해주세요!!";
+						commonPopup(txt);
 					} else if($.trim($("#inputPW").val()) == "") {
-						alert("비밀번호를 입력해 주세요!!");
-						$("#inputPW").focus();
+						txt = "비밀번호를 입력해 주세요!!";
+						commonPopup(txt);
 					} else {
 						
 						var params = $("#loginForm").serialize();
@@ -74,7 +138,9 @@
 									$("#loginForm").attr("action", "CJMMyPage");
 									$("#loginForm").submit();
 								} else {
-									alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+									txt = "아이디 또는 비밀번호가 일치하지 않습니다!!";
+									commonPopup(txt);
+									$(".popup_entity_txt").css("font-size", "0.99em");
 								}
 							},
 							error: function(request, status, error) {
@@ -83,7 +149,26 @@
 						});
 					}
 				});
-			});
+			}); // document ready end..
+			
+			function commonPopup(txt) {
+				var html = "";
+				
+				html 	 +="<div class=\"popup\">";
+				html	 +="	 <div class=\"popup_entity_txt\">"+ txt +"</div>";
+				html	 +="     <div class=\"btn_list\">";
+				html	 +="        <div id=\"yesBtn\">예</div>";
+				html	 +="     </div>";
+				html	 +="</div>";
+				html	 +="<div class=\"bg\"></div>";
+				
+				$("body").append(html);
+				
+				$("#yesBtn").on("click", function(){ 
+					$(".popup").remove();
+					$(".bg").remove();
+				});
+			}//commonPopup end
 		</script>
 	</head>
 	<body>

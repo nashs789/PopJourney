@@ -33,132 +33,11 @@ body {
 	position: relative;
 	padding-top: 18px;
 }
-.site_name {
-	display: inline-block;
-	vertical-align: top;
-	position: absolute; /* 추가하기 */
-	width: 200px;
-	font-size: 16px;
-	font-weight: bold;
-	line-height: 70px;
-	color: #2e3459;
-}
 .logo_photo {
 	display: block;
 	width: 80vw;
 	height: 5vh;
 	margin: 0 auto;
-}
-#bookmarkPhoto, #notificationPhoto {
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-}
-#notificationPhoto{
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   position: relative;
-}
-#notificationTxt{
-	line-height: 17px;
-	width: 20px;
-	height: 20px;
-	background-color: red;
-	position: absolute;
-	top: 10px;
-	right: 190px;
-	border-radius: 50%;
-	color: white;
-}
-#profilePhoto{
-   height: 40px;
-   width: 40px;
-   margin-right: 20px;
-   margin-top: 15px;
-   cursor: pointer;
-   border-radius: 50%;
-}
-#notificationPhoto {
-   margin-left: 200px;
-}
-#profileSlidedown{
-	display: none;
-   	box-shadow: rgba(0, 0, 0, 0.09) 0 6px 9px 0;
-   	border: 2px solid #fcba03;
-   	background-color: white;
-   	position: absolute;
-   	padding: 0px;
-   	right: 8px;
-   	width: 122px;
-   	margin-top: 10px;
-   	z-index: 300;
-}
-#profileSlidedown li {
-   	display: inline-block;
-   	border: 1px solid rgb(250,250,250);
-   	font-size: 12pt;
-   	width: 120px;
-   	text-align: center;
-   	cursor: pointer;
-}
-#notification{
- 	 display:none;
-     width: 600px;
-     box-shadow: 0px 0px 1px 1px #444444;
-     position: absolute;
-     right: 10px;
-     z-index: 300;
-     font-size: 10pt;
-}
-.read{
-    background-color: #d1d1e0;
-	height: 50px;
-	border-bottom: 1px solid black;
-}
-.notRead{
-	background-color: #a3a3c2;
-	height: 50px;
-	border-bottom: 1px solid black;
-}
-#notification table{
-	border-collapse: collapse;
-}
-
-#notification table tr th:first-child{
-	text-align: center;
-}
-
-#notification tr th{
-	text-align: left;
-}
-
-#notification tr th img{
-	height: 50px;
-	width: 50px;
-	text-align: center;
-	cursor: pointer;
-    margin-top: 5px;
-    border-radius: 50%;
-}
-
-#notification tfoot tr{
-	background-color: #48486a;
-	color: white;
-}
-   
-#notification tfoot tr th{
-	text-align: center;
-	cursor: pointer;
-}
-#notification table tr th span{
-	text-decoration: underline;
-	cursor: pointer;
-}
-#myPage{
-	background-color: #f37321;
 }
 input[type='text']:focus, input[type='password']:focus, select:focus {
 	outline-color: #fcba03;
@@ -373,9 +252,6 @@ a {
 	width: 85%;
 	height: 80px;
 }
-.journal, .thumb{
-	cursor:pointer;
-}
 #admin{
 	display: none;	
 }
@@ -511,21 +387,12 @@ $(document).ready(function(){
 				if("${sPHOTO_PATH}" != "")
 				{
 					path = "resources/upload/" + "${sPHOTO_PATH}";
-					
-					$("#profilePhoto").attr("src", path);
 					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
 				}
 				else
 				{
-					path = "./resources/images/profile.png";
-					$("#profilePhoto").attr("src", path);
 					path = "./resources/images/profile3.png";
 					html += "<img alt=\"profile\" src=\"" + path + "\"class=\"profile_img\">";
-				}
-				
-				if("${sGRADE_NO}" == "0")
-				{
-					$("#admin").show();
 				}
 				
 				html += "<div>${sNIC}";
@@ -589,73 +456,6 @@ $(document).ready(function(){
 		}); //ajax end 
 	}); //paging_wrap click end
 	
-	$("#profilePhoto").on("click", function(){
-		$("#notification").css("display", "none");
-		if($("#profileSlidedown").css("display") == "block")
-		{
-			$("#profileSlidedown").css("display", "none");
-		}
-		else
-		{
-			$("#profileSlidedown").css("display", "block");
-		}
-	}); //profilePhoto click end
-	
-	$("#notificationPhoto").on("click", function(){
-		$("#profileSlidedown").css("display", "none");
-		if($("#notification").css("display") == "block")
-		{
-			$("#notification").css("display", "none");
-		}
-		else
-		{
-			$("#notification").css("display", "inline-block");
-		}
-	}); //notificationPhoto click end
-	
-	$("#notification tbody").on("click", "span, tr, img", function(){
-		if($(this).attr("class") == "notRead")
-		{
-			$("#NOTF_NO").val($(this).attr($(this).attr("class")));
-	
-		    var params = $("#notificationForm").serialize();
-			
-			$.ajax({
-				url: "reads",
-				data: params,
-				dataType: "json",
-				type: "post",
-				success:function(result)
-				{
-				}, //success end
-				error: function(request, status, error) {
-					console.log(error);
-				} // error end
-			}); //ajax end  
-		} //if end 알람 팝업에서 아이디, 글 제목, 프로필 사진 눌렸을 경우에 읽음표시
-		
-		if($(this).attr("class") == "user")
-		{
-			$("#userNo").val($(this).attr($(this).attr("class")));
-			$("#userForm").submit();
-		}
-		else if($(this).attr("class") == "journal")
-		{
-			$("#journalNo").val($(this).attr($(this).attr("class")));
-			$("#journalForm").submit();
-		}
-		else if($(this).attr("class") == "post")
-		{
-			$("#postNo").val($(this).attr($(this).attr("class")));
-			$("#postForm").submit();
-		}//if ~ else end 클릭된 것에 따라서 해당 프로필 or 글로 이동
-	}); //notification tbody span tr click end
-	
-	$(".gallery").on("click", "span, strong", function(){
-		$("#journalNo").val($(this).attr($(this).attr("class")));
-		$("#journalForm").submit();
-	}); //post click span end
-
   	$("#wrap").on("click", "#logoutBtn", function(){
 		$.ajax({
 			url: "CJMLogouts",
@@ -669,26 +469,6 @@ $(document).ready(function(){
 			}
 		});
   	});
-  	
- 	// 메인검색창 넘어가는 부분
-	$(".search_icon").on("click", function() {
-		if($("#mainSearchFilter").val() == 0) {
-			$("#goSearch").attr("action", "search");
-			$("#goSearch").submit();
-		} else if($("#mainSearchFilter").val() == 1) {
-			$("#goSearch").attr("action", "searchTravelDiary");
-			$("#goSearch").submit();
-		} else if($("#mainSearchFilter").val() == 2) {
-			$("#goSearch").attr("action", "searchHashtag");
-			$("#goSearch").submit();
-		} else if($("#mainSearchFilter").val() == 3) {
-			$("#goSearch").attr("action", "searchCommunity");
-			$("#goSearch").submit();
-		} else {
-			$("#goSearch").attr("action", "searchNic");
-			$("#goSearch").submit();
-		}
-	});
 }); //document ready end
 function makeGallery(myPage)
 {
