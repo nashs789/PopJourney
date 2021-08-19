@@ -6,14 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gdj35.popjourney.common.bean.PagingBean;
 import com.gdj35.popjourney.web.Dao.ICJMMDao;
 
 @Service
 public class CJMMService implements ICJMMService {
 	@Autowired ICJMMDao iCJMMDao;
 	
-	// -----------------간단한 모바일 작업--------------------------
 	@Override
 	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable {
 		return iCJMMDao.login(params);

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 public class CJMMDao implements ICJMMDao {
 	@Autowired SqlSession sqlSession;
 	
-	// -----------------간단한 모바일 작업--------------------------
 	@Override
 	public HashMap<String, String> login(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectOne("CJMM.login", params);

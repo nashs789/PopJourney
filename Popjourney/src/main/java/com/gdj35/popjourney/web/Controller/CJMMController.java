@@ -30,8 +30,6 @@ public class CJMMController {
 	@Autowired
 	public IPagingService iPagingService;
 	
-	// -----------------간단한 모바일 작업--------------------------
-	
 	// 로그인
 	@RequestMapping(value = "/CJMLogin")
 	public ModelAndView CJMLogin(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {		
@@ -103,10 +101,13 @@ public class CJMMController {
 	
 	// 마이페이지 썸네일
 	@RequestMapping(value = "/CJMMyPage")
-	public ModelAndView CJMMyPage(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {		
+	public ModelAndView CJMMyPage(@RequestParam HashMap<String, String> params, ModelAndView mav, HttpSession session) throws Throwable {		
 		
-		 mav.setViewName("CJM/CJMMyPage");
-
+		if(session.getAttribute("sMEM_NO") != null) {
+			mav.setViewName("CJM/CJMMyPage");
+		} else {
+			mav.setViewName("redirect:CJMLogin");
+		}
 		return mav;
 	}
 	
@@ -125,19 +126,16 @@ public class CJMMController {
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 
-		 try {
-			 List<HashMap<String, String>> myPage = iCJMMService.myPageJournal(params);
+		try {
+			List<HashMap<String, String>> myPage = iCJMMService.myPageJournal(params);
 
-			 if(myPage != null)
-			 {
+			if(myPage != null) {
 				 modelMap.put("msg", "success");
 				 modelMap.put("myPage", myPage);
 				 modelMap.put("pb", pb);
-			 }
-			 else
-			 {
-				 modelMap.put("msg", "failed");
-			 }
+			} else {
+				modelMap.put("msg", "failed");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
@@ -155,19 +153,15 @@ public class CJMMController {
 	try {
 		HashMap<String, String> data = iCJMMService.getNumber(params);
 		
-		if(data != null)
-		 {
-			 modelMap.put("msg", "success");
-			 modelMap.put("data", data);
-		 }
-		 else
-		 {
-			 modelMap.put("msg", "failed");
-		 }
+		if(data != null) {
+			modelMap.put("msg", "success");
+			modelMap.put("data", data);
+		} else {
+			modelMap.put("msg", "failed");
+		}
 	} catch (Exception e) {
 		System.out.println(e);
 	}
-	
-	return mapper.writeValueAsString(modelMap);
+		return mapper.writeValueAsString(modelMap);
 	}
 }

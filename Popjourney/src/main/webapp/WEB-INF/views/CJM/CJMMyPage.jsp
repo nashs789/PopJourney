@@ -10,23 +10,20 @@
 <title>마이페이지</title>
 <style type="text/css">
 /* #fcba03 노랑
-            #2e3459 남색
-            #f37321 주황
-            #294a37 초록
-         */
+   #2e3459 남색
+   #f37321 주황
+   #294a37 초록
+*/
 body {
 	margin: 0px;
 	font-size: 10pt;
 	font-family: 'Black Han Sans', sans-serif;
 }
-
-/* 여기서부터 헤더 레이아웃 */
 #wrap {
 	width: 100%;
 	height: 100%;
 	background-color: #FFFFFF;
 }
-
 #header {
 	width: 100%;
 	height: 7vh;
@@ -42,7 +39,6 @@ body {
 input[type='text']:focus, input[type='password']:focus, select:focus {
 	outline-color: #fcba03;
 }
-/* 여기까지 헤더 레이아웃 !!! */
 #container {
 	display: block;
 	width: 100%;
@@ -55,7 +51,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	height: 35vh;
 	background-color: #fcba03;
 }
-
 .info {
 	position: relative;
 	z-index: 1;
@@ -66,7 +61,6 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	font-weight: bold;
 	color: #2e3459;
 }
-
 .info img {
 	border-radius: 50%;
 	width: 150px;
@@ -94,17 +88,14 @@ input[type='text']:focus, input[type='password']:focus, select:focus {
 	padding: 0;
 	font-weight: 500;
 }
-
 a {
 	text-decoration: none;
 	color: inherit;
 }
-
 .board_list {
 	width: 100%;
 	border-top: 2px solid #2e3459;
 }
-
 #path_info {
 	height: 4vh;
 	font-size: 1em;
@@ -112,23 +103,16 @@ a {
 	padding-left: 5vw;
 	margin-bottom: 3vh;
 }
-
 #path_info {
 	text-decoration: none;
 	color: black;
 }
-
 .home_icon {
 	position: relative;
 	top: 3px;
 	width: 20px;
 	height: 20px;
 }
-
-/* .gallery {
-	padding: 30px 0 0 45px;
-} */
-
 #post {
 	float: left;
 	width: 90vw;
@@ -143,70 +127,57 @@ a {
 	display: block;
 	position: relative;
 }
-
 .thumb img {
 	width: 77.6vw;
 	height: 21vh;
 	margin: 6.78%;
 }
-
 .post_info {
 	height: 110px;
 	position: relative;
 	display: inline-block;
 	padding: 0 23px 0 23px;
 }
-
 .post_info p:first-child {
 	margin-top: 0;
 }
-
 .post_info strong {
 	font-size: 1.2em;
 }
-
 #post_profile {
 	position: absolute;
 	width: 317px;
 	height: 50px;
 	margin: 10px 0 0 23px;
 }
-
 .post_profile img {
 	visibility: hidden;
 	width: 42px;
 	height: 42px;
 }
-
 .post_profile>span {
 	visibility: hidden;
 	position: absolute;
 	line-height: 42px;
 	margin-left: 8px;
 }
-
 .post_profile>div {
 	float: right;
 	margin-top: 5px;
 }
-
 .post_profile>div>span {
 	float: right;
 	margin-right: 23px;
 }
-
 .post_profile>div>div {
 	margin-right: 23px;
 }
-
 .post_profile>div span {
 	margin-top: 0.5em;
 }
-
 .post_profile>div>div .cnt {
 	color: #F1404B;
 }
-
 .paging_wrap {
 	font-size: 1.3em;
 	display: inline-block;
@@ -245,7 +216,6 @@ a {
 	color: #FFFFFF;
 	font-size: 1em;
 }
-
 #footer p {
 	margin: 0px auto;
 	padding-top: 2.4vh;
@@ -546,7 +516,7 @@ var html = "";
 		html += "<div name=\"" + ($("#page").val() - 1) + "\">이전</div>";
 	}
 	
-	html += "<div name=\"" + $("#page").val() + "\"><b>" + $("#page").val() + "</b></div>";
+	html += "<div><b>" + $("#page").val() + "</b></div>";
 	
 	if($("#page").val() == pb.maxPcount) {
 		html += "<div name=\"" + pb.maxPcount + "\">다음</div>";
@@ -565,31 +535,13 @@ var html = "";
 	<input type="hidden" id="page" name="page" value="1"/>
 	<input type="hidden" id="GBN" name="GBN" value="1"/>
 	<input type="hidden" id="point" name="point"/>
-	<input type="hidden" id="firstPage" name="firstPage" value="1"/>
-</form>
-<form action="userPage" id="userForm" method="post">
-	<input type="hidden" id="userNo" name="userNo" value=""/>
-</form>
-<form action="journal" id="journalForm" method="post">
-	<input type="hidden" id="journalNo" name="journalNo" value=""/>
-   <input type="hidden" id="memNo" name="memNo" value="${sMEM_NO}"/>
-</form>
-<form action="post" id="postForm" method="post">
-	<input type="hidden" id="postNo" name="postNo" value=""/>
-	<input type="hidden" id="newPostNo" name="newPostNo" value="1"/>
-	<input type="hidden" id="loginUserNo" name="loginUserNo" value="${sMEM_NO}" />
-</form>
-<form action="#" id="notificationForm">
-	<input type="hidden" id="NOTF_NO" name="NOTF_NO" value=""/>
 </form>
 	<div id="wrap">
 		<div id="header">
 			<img alt="로고" src="./resources/images/logo.png" class="logo_photo">
 		</div>
 		<div class="sub_profile">
-			<div class="info">
-				
-			</div>
+			<div class="info"></div>
 		</div>
 		<div id="container">
 			<div class="board_list_wrap">
@@ -606,12 +558,8 @@ var html = "";
 					&nbsp;&nbsp;>&nbsp;&nbsp; <span> 여행일지 </span>
 					&nbsp;>&nbsp;&nbsp;썸네일
 				</div> <!-- path_info end -->
-				<div class="gallery">
-					
-				</div><!-- gallery end -->
-				<div class="paging_wrap">
-				
-				</div> <!-- paging_wrap end -->
+				<div class="gallery"></div>
+				<div class="paging_wrap"></div>
 			</div> <!-- board_list_wrap end -->
 		</div>
 	</div>

@@ -134,7 +134,6 @@
 							data: params,
 							success: function(res) {
 								if(res.msg == "success") {
-									//location.href = "CJMMyPage";
 									$("#loginForm").attr("action", "CJMMyPage");
 									$("#loginForm").submit();
 								} else {
@@ -168,7 +167,7 @@
 					$(".popup").remove();
 					$(".bg").remove();
 				});
-			}//commonPopup end
+			}
 		</script>
 	</head>
 	<body>
